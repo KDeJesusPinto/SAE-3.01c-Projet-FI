@@ -22,11 +22,11 @@ class Entreprise (db.Model):
     
 class Etudiant(db.Model):
     Id_etudiant=db.Columm(db.Integer,primary_key=True)
-    Nom_etudiant=db.Column()
-    Prenom_etudiant=db.Column()
-    Date_naissance=db.Column()
-    Telephone_etudiant=db.Column()
-    Email_etudiant=db.Column()
+    Nom_etudiant=db.Column(db.String(20),nullable=False)
+    Prenom_etudiant=db.Column(db.String(20),nullable=False)
+    Date_naissance=db.Column(db.String(20),nullable=False)
+    Telephone_etudiant=db.Column(db.String(10),nullable=False)
+    Email_etudiant=db.Column(db.String(100),nullable=False)
 
     def _init_(self,Id_etudiant,Nom_etudiant,Prenom_etudiant,Date_naissance,Telephone_etudiant,Email_etudiant):
         self.Id_etudiant=Id_etudiant
@@ -38,3 +38,16 @@ class Etudiant(db.Model):
     
     def _repr_(self):
         return f"Etudiant :{self.Nom_etudiant} {self.Prenom_etudiant} nait le {self.Date_naissance} contact: {self.Email_etudiant} {self.Telephone_etudiant}"
+    
+class Promo(db.Model):
+    Nom_Promo=db.Column(db.String(20),primary_key=True)
+    Annee_Promo=db.Column(db.String(20),primary_key=True)
+    Formation_Promo=db.Column(db.String(20),nullable=False)
+
+    def _init_(self,Id_Promo,Nom_Promo,Annee_Promo,Formation_Promo):
+            self.Nom_Promo=Nom_Promo
+            self.Annee_Promo=Annee_Promo
+            self.Formation_Promo=Formation_Promo
+
+    def _repr_(self):
+         return f"Promo : {self.Nom_Promo} {self.Annee_Promo} {self.Formation_Promo}"
