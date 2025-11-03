@@ -59,6 +59,8 @@ class Stage(db.Model):
     Description = db.Column(db.String(500))
     Competence = db.Column(db.String(200))
     Revenu = db.Column(db.Float)
+    demarche_id = db.Column(db.Integer, db.ForeignKey("demarche.Id_demarche"))
+    demarche = db.relationship("Demarche", backref = db.backref("stages", lazy = "dynamic"))
 
     def __init__(self, type, duree, date_debut, sujet, description, competence, revenu):
         self.Type = type
@@ -71,7 +73,3 @@ class Stage(db.Model):
 
     def __repr__(self):
         return f"<Stage {self.Sujet} de type {self.Type} débutant le {self.Date_debut} pour une durée de {self.Duree} semaines>"
-
-
-# class Travailler(db.Model):
-# class Obtenir(db.Model):
