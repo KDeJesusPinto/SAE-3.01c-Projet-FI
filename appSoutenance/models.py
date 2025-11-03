@@ -50,9 +50,28 @@ class Demarche(db.Model):
         return f"<Demarche {self.Id_demarche} de type {self.Type} envoyée le {self.Date_envoi} pour l'entreprise {self.entreprise.Nom_entreprise}. Situation actuelle: {self.Situation}>"
 
 
+class Stage(db.Model):
+    Id_stage = db.Column(db.Integer, primary_key = True)
+    Type = db.Column(db.String(100), nullable = False)
+    Duree = db.Column(db.Integer, nullable = False)
+    Date_debut = db.Column(db.Date, nullable = False)
+    Sujet = db.Column(db.String(300), nullable = False)
+    Description = db.Column(db.String(500))
+    Competence = db.Column(db.String(200))
+    Revenu = db.Column(db.Float)
+
+    def __init__(self, type, duree, date_debut, sujet, description, competence, revenu):
+        self.Type = type
+        self.Duree = duree
+        self.Date_debut = date_debut
+        self.Sujet = sujet
+        self.Description = description
+        self.Competence = competence
+        self.Revenu = revenu
+
+    def __repr__(self):
+        return f"<Stage {self.Sujet} de type {self.Type} débutant le {self.Date_debut} pour une durée de {self.Duree} semaines>"
 
 
-# class Contact(db.Model):
 # class Travailler(db.Model):
-# class Stage(db.Model):
 # class Obtenir(db.Model):
