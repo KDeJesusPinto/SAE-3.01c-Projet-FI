@@ -19,3 +19,22 @@ class Entreprise (db.Model):
     
     def __repr__(self):
         return f"<Entreprise {self.Nom_entreprise} de type {self.Type} dans le secteur {self.Secteur} situé à {self.Adresse}. \nTel: {self.Tel_entreprise} \nEmail: {self.Email_entreprise}>"
+    
+class Etudiant(db.Model):
+    Id_etudiant=db.Columm(db.Integer,primary_key=True)
+    Nom_etudiant=db.Column()
+    Prenom_etudiant=db.Column()
+    Date_naissance=db.Column()
+    Telephone_etudiant=db.Column()
+    Email_etudiant=db.Column()
+
+    def _init_(self,Id_etudiant,Nom_etudiant,Prenom_etudiant,Date_naissance,Telephone_etudiant,Email_etudiant):
+        self.Id_etudiant=Id_etudiant
+        self.Nom_etudiant=Nom_etudiant
+        self.Prenom_etudiant=Prenom_etudiant
+        self.Date_naissance=Date_naissance
+        self.Telephone_etudiant=Telephone_etudiant
+        self.Email_etudiant=Email_etudiant
+    
+    def _repr_(self):
+        return f"Etudiant :{self.Nom_etudiant} {self.Prenom_etudiant} nait le {self.Date_naissance} contact: {self.Email_etudiant} {self.Telephone_etudiant}"
