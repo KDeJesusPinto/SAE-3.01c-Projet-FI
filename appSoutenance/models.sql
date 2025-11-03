@@ -1,9 +1,9 @@
 DROP TABLE IF EXISTS STAGE;
-DROP TABLE IF EXISTs DEMARCHE;
+DROP TABLE IF EXISTS DEMARCHE;
 DROP TABLE IF EXISTS ENTREPRISE;
 
 CREATE TABLE ENTREPRISE (
-    id_entreprise PRIMARY KEY,
+    id_entreprise INTEGER PRIMARY KEY,
     nom_entreprise VARCHAR(200) NOT NULL,
     secteur VARCHAR(200) NOT NULL,
     adresse VARCHAR(300) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE ENTREPRISE (
 );
 
 CREATE TABLE DEMARCHE (
-    id_demarche PRIMARY KEY,
+    id_demarche INTEGER PRIMARY KEY,
     source VARCHAR(300) NOT NULL,
     typeD VARCHAR(100) NOT NULL,
     situation VARCHAR(300) NOT NULL,
@@ -23,8 +23,8 @@ CREATE TABLE DEMARCHE (
     raison_refus VARCHAR(300),
     cv VARCHAR(200),
     lettre_motiv VARCHAR(200),
-    id_entreprise INTEGER,
-    id_etudiant INTEGER,
+    id_entreprise INTEGER
+    -- id_etudiant INTEGER
 );
 
 CREATE TABLE STAGE (
@@ -36,11 +36,11 @@ CREATE TABLE STAGE (
     descriptionS VARCHAR(500),
     competence VARCHAR(200),
     revenu DECIMAL(10,2),
-    id_demarche INTEGER,
+    id_demarche INTEGER
 );
 
 
 
 ALTER TABLE DEMARCHE ADD FOREIGN KEY (id_entreprise) REFERENCES ENTREPRISE(id_entreprise);
-ALTER TABLE DEMARCHE ADD FOREIGN KEY (id_etudiant) REFERENCES ETUDIANT(id_etudiant);
+-- ALTER TABLE DEMARCHE ADD FOREIGN KEY (id_etudiant) REFERENCES ETUDIANT(id_etudiant);
 ALTER TABLE STAGE ADD FOREIGN KEY (id_demarche) REFERENCES DEMARCHE(id_demarche);
