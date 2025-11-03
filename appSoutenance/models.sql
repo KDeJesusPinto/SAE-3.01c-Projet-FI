@@ -7,7 +7,7 @@ CREATE TABLE ENTREPRISE (
     nom_entreprise VARCHAR(200) NOT NULL,
     secteur VARCHAR(200) NOT NULL,
     adresse VARCHAR(300) NOT NULL,
-    type VARCHAR(100) NOT NULL,
+    typeE VARCHAR(100) NOT NULL,
     tel_entreprise VARCHAR(20),
     email_entreprise VARCHAR(200)
 );
@@ -15,7 +15,7 @@ CREATE TABLE ENTREPRISE (
 CREATE TABLE DEMARCHE (
     id_demarche PRIMARY KEY,
     source VARCHAR(300) NOT NULL,
-    type VARCHAR(100) NOT NULL,
+    typeD VARCHAR(100) NOT NULL,
     situation VARCHAR(300) NOT NULL,
     date_envoi DATE NOT NULL,
     date_relance DATE,
