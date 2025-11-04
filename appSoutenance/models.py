@@ -153,8 +153,7 @@ class Etudiant(db.Model):
     telephone_etudiant=db.Column(db.String(10))
     email_etudiant=db.Column(db.String(100))
 
-    def _init_(self,id_etudiant,nom_etudiant,prenom_etudiant,date_naissance,telephone_etudiant,email_etudiant):
-        self.id_etudiant=id_etudiant
+    def _init_(self,nom_etudiant,prenom_etudiant,date_naissance,telephone_etudiant,email_etudiant):
         self.nom_etudiant=nom_etudiant
         self.prenom_etudiant=prenom_etudiant
         self.date_naissance=date_naissance
@@ -169,7 +168,7 @@ class Promo(db.Model):
     annee_promo=db.Column(db.String(20),primary_key=True)
     formation_promo=db.Column(db.String(20),nullable=False)
 
-    def _init_(self,Id_Promo,nom_promo,annee_promo,formation_promo):
+    def _init_(self,nom_promo,annee_promo,formation_promo):
             self.nom_promo=nom_promo
             self.annee_promo=annee_promo
             self.formation_promo=formation_promo
