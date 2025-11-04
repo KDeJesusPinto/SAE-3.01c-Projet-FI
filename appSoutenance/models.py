@@ -190,3 +190,21 @@ class Appartenir(db.Model):
     def _repr_(self):
         return f"etudiant : {self.id_etudiant} appatient a {self.nom_promo} en {self.annee_promo}"
 
+class Enseignant(db.Model):
+    id_enseignant=db.Columm(db.Integer,primary_key=True)
+    nom_enseignant=db.Column(db.String(20))
+    prenom_enseignant=db.Column(db.String(20))
+    civilite_enseignant=db.Column(db.Sting(10))
+    email_enseignant=db.Coluln(db.String(100))
+
+    def _init_(self,id,nom,prenom,civilite,email):
+        self.id_enseignant=id
+        self.nom_enseignant=nom
+        self.prenom_enseignant=prenom
+        self.civilite_enseignant=civilite
+        self.email_enseignant=email
+
+    def _repr_(self):
+        return f"Enseignant : {self.id_enseignant} {self.civilite_enseignant} {self.nom_enseignant} {self.prenom_enseignant} {self.email_enseignant}"
+
+    

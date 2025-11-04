@@ -57,6 +57,14 @@ CREATE TABLE PROMO(
     formation_promo VARCHAR(20)
 );
 
+CREATE TABLE ENSEIGNANT(
+    id_enseignant INT PRIMARY KEY,
+    nom_enseignant VARCHAR(20)
+    prenom_enseignant VARCHAR(20)
+    civilite_enseignant VARCHAR(10)
+    email_enseignant VARCHAR(100)
+);
+
 
 ALTER TABLE DEMARCHE ADD FOREIGN KEY (id_entreprise) REFERENCES ENTREPRISE(id_entreprise);
 -- ALTER TABLE DEMARCHE ADD FOREIGN KEY (id_etudiant) REFERENCES ETUDIANT(id_etudiant);
