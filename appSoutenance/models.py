@@ -141,48 +141,48 @@ class Soutenance(db.Model):
 
     
 class Etudiant(db.Model):
-    Id_etudiant=db.Columm(db.Integer,primary_key=True)
-    Nom_etudiant=db.Column(db.String(20),nullable=False)
-    Prenom_etudiant=db.Column(db.String(20),nullable=False)
-    Date_naissance=db.Column(db.String(20),nullable=False)
-    Telephone_etudiant=db.Column(db.String(10),nullable=False)
-    Email_etudiant=db.Column(db.String(100),nullable=False)
+    id_etudiant=db.Columm(db.Integer,primary_key=True)
+    nom_etudiant=db.Column(db.String(20),nullable=False)
+    prenom_etudiant=db.Column(db.String(20),nullable=False)
+    date_naissance=db.Column(db.String(20),nullable=False)
+    telephone_etudiant=db.Column(db.String(10),nullable=False)
+    email_etudiant=db.Column(db.String(100),nullable=False)
 
-    def _init_(self,Id_etudiant,Nom_etudiant,Prenom_etudiant,Date_naissance,Telephone_etudiant,Email_etudiant):
-        self.Id_etudiant=Id_etudiant
-        self.Nom_etudiant=Nom_etudiant
-        self.Prenom_etudiant=Prenom_etudiant
-        self.Date_naissance=Date_naissance
-        self.Telephone_etudiant=Telephone_etudiant
-        self.Email_etudiant=Email_etudiant
+    def _init_(self,Id_etudiant,nom_etudiant,prenom_etudiant,date_naissance,telephone_etudiant,email_etudiant):
+        self.id_etudiant=id_etudiant
+        self.nom_etudiant=nom_etudiant
+        self.prenom_etudiant=prenom_etudiant
+        self.date_naissance=date_naissance
+        self.telephone_etudiant=telephone_etudiant
+        self.email_etudiant=email_etudiant
     
     def _repr_(self):
-        return f"Etudiant :{self.Nom_etudiant} {self.Prenom_etudiant} nait le {self.Date_naissance} contact: {self.Email_etudiant} {self.Telephone_etudiant}"
+        return f"Etudiant :{self.nom_etudiant} {self.prenom_etudiant} nait le {self.date_naissance} contact: {self.email_etudiant} {self.telephone_etudiant}"
     
 class Promo(db.Model):
-    Nom_Promo=db.Column(db.String(20),primary_key=True)
-    Annee_Promo=db.Column(db.String(20),primary_key=True)
-    Formation_Promo=db.Column(db.String(20),nullable=False)
+    nom_promo=db.Column(db.String(20),primary_key=True)
+    annee_promo=db.Column(db.String(20),primary_key=True)
+    formation_promo=db.Column(db.String(20),nullable=False)
 
-    def _init_(self,Id_Promo,Nom_Promo,Annee_Promo,Formation_Promo):
-            self.Nom_Promo=Nom_Promo
-            self.Annee_Promo=Annee_Promo
-            self.Formation_Promo=Formation_Promo
+    def _init_(self,Id_Promo,nom_promo,annee_promo,formation_promo):
+            self.nom_promo=nom_promo
+            self.annee_promo=annee_promo
+            self.formation_promo=formation_promo
 
     def _repr_(self):
-        return f"Promo : {self.Nom_Promo} {self.Annee_Promo} {self.Formation_Promo}"
+        return f"Promo : {self.nom_promo} {self.annee_promo} {self.formation_promo}"
 
 class Appartenir(db.Model):
-    Id_etudiant=db.Columm(db.Integer,db.ForeignKey("etudiant.Id_etudiant"),primary_key=True)
+    id_etudiant=db.Columm(db.Integer,db.ForeignKey("etudiant.id_etudiant"),primary_key=True)
     etudiant=db.relationship("Etudiant",backref=db.backref(""),lazy="dynamic")
-    Nom_Promo=db.Column(db.String(20),primary_key=True)
-    Annee_Promo=db.Column(db.String(20),primary_key=True)
+    nom_promo=db.Column(db.String(20),primary_key=True)
+    annee_promo=db.Column(db.String(20),primary_key=True)
 
-    def _init_(self,Id_etudiant,Nom_Promo,Annee_Promo):
-        self.Id_etudiant=Id_etudiant
-        self.Nom_Promo=Nom_Promo
-        self.Annee_Promo=Annee_Promo
+    def _init_(self,id_etudiant,nom_promo,annee_promo):
+        self.id_etudiant=id_etudiant
+        self.nom_promo=nom_promo
+        self.annee_promo=annee_promo
     
     def _repr_(self):
-        return f"etudiant : {self.Id_etudiant} appatient a {self.Nom_Promo} en {self.Annee_Promo}"
+        return f"etudiant : {self.id_etudiant} appatient a {self.nom_promo} en {self.annee_promo}"
 
