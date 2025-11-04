@@ -5,8 +5,8 @@ class Entreprise (db.Model):
     nom_entreprise = db.Column(db.String(200), nullable = False)
     secteur = db.Column(db.String(200), nullable = False)
     adresse = db.Column(db.String(300), nullable = False)
-    Code_postal = db.Column(db.Integer(5), nullable = False)
-    Ville = db.Column(db.String(100), nullable = False)
+    code_postal = db.Column(db.Integer(5), nullable = False)
+    ville = db.Column(db.String(100), nullable = False)
     typeE = db.Column(db.String(100), nullable = False)
     tel_entreprise = db.Column(db.String(20))
     email_entreprise = db.Column(db.String(200))
@@ -15,8 +15,8 @@ class Entreprise (db.Model):
         self.nom_entreprise = nom_entreprise
         self.secteur = secteur
         self.adresse = adresse
-        self.Code_postal = code_postal
-        self.Ville = ville
+        self.code_postal = code_postal
+        self.ville = ville
         self.typeE = type
         self.tel_entreprise = tel_entreprise
         self.email_entreprise = email_entreprise
@@ -63,6 +63,7 @@ class Stage(db.Model):
     description = db.Column(db.String(500))
     competence = db.Column(db.String(200))
     revenu = db.Column(db.Float)
+
     id_demarche = db.Column(db.Integer, db.ForeignKey("demarche.id_demarche"))
     demarche = db.relationship("Demarche", backref = db.backref("stages", lazy = "dynamic"))
 
@@ -81,47 +82,47 @@ class Stage(db.Model):
     
 
 class MaitreStage (db.Model):
-    Id_maitre = db.Column(db.Integer, primary_key = True)
-    Civilite_maitre = db.Column(db.String(50), nullable = False)
-    Nom_maitre = db.Column(db.String(100), nullable = False)
-    Prenom_maitre = db.Column(db.String(100), nullable = False)
-    Tel_maitre = db.Column(db.Integer(10), nullable = True)
-    Email_maitre = db.Column(db.String(200), nullable = False)
+    id_maitre = db.Column(db.Integer, primary_key = True)
+    civilite_maitre = db.Column(db.String(50), nullable = False)
+    nom_maitre = db.Column(db.String(100), nullable = False)
+    prenom_maitre = db.Column(db.String(100), nullable = False)
+    tel_maitre = db.Column(db.Integer(10), nullable = True)
+    email_maitre = db.Column(db.String(200), nullable = False)
 
     entreprise_id = db.Column(db.Integer, db.ForeignKey ("entreprise.Id_entreprise"))
-    entreprise = db.relationship("Entreprise", backref = db.backref("maitre", lazy = "dynamic"))
+    entreprise = db.relationship("Entreprise", backref = db.backref("maitres", lazy = "dynamic"))
 
     def __init__(self, id_maitre, civilite_maitre, nom_maitre, prenom_maitre, tel_maitre, email_maitre):
-        self.Id_maitre = id_maitre
-        self.Civilite_maitre = civilite_maitre
-        self.Nom_maitre = nom_maitre
-        self.Prenom_maitre = prenom_maitre
-        self.Tel_maitre = tel_maitre
-        self.Email_maitre = email_maitre
+        self.id_maitre = id_maitre
+        self.civilite_maitre = civilite_maitre
+        self.nom_maitre = nom_maitre
+        self.prenom_maitre = prenom_maitre
+        self.tel_maitre = tel_maitre
+        self.email_maitre = email_maitre
 
     def __repr__(self):
-        return f"<{self.Civilite_maitre} {self.Nom_maitre} {self.Prenom_maitre} est le maitre de stage>"
+        return f"<{self.civilite_maitre} {self.nom_maitre} {self.prenom_maitre} est le maitre de stage>"
     
 
 
 class Soutenance (db.Model) :
-    Id_soutenance = db.Column(db.Integer, primary_key = True)
-    Salle = db.Column(db.Integer(5), nullable = False)
-    Nom_bat = db.Column(db.String(50), nullable = False)
-    Date = db.Column(db.Date(10), nullable = False)
-    H_debut = db.Column(db.String(5), nullable = False)
-    H_fin  = db.Column(db.String(5), nullable = False)
+    id_soutenance = db.Column(db.Integer, primary_key = True)
+    salle = db.Column(db.Integer(5), nullable = False)
+    nom_bat = db.Column(db.String(50), nullable = False)
+    date = db.Column(db.Date(10), nullable = False)
+    h_debut = db.Column(db.String(5), nullable = False)
+    h_fin  = db.Column(db.String(5), nullable = False)
 
     stage_id = db.Column(db.Integer, db.ForeignKey ("stage.Id_stage"))
     stage = db.relationship("Stage", backref = db.backref("soutenance", lazy = "dynamic"))
 
     def __init__(self, id_soutenance, salle, nom_bat, date, h_debut,h_fin) :
-        self.Id_soutenance = id_soutenance
-        self.Salle = salle
-        self.Nom_bat = nom_bat
-        self.Date = date
-        self.H_debut = h_debut
-        self.H_fin = h_fin
+        self.id_soutenance = id_soutenance
+        self.salle = salle
+        self.nom_bat = nom_bat
+        self.date = date
+        self.h_debut = h_debut
+        self.h_fin = h_fin
 
     def __repr__(self):
-        return f"<La soutenance a lieu le {self.Date} à {self.H_debut} au batîment {self.Nom_bat} {self.Salle}>"
+        return f"<La soutenance a lieu le {self.date} à {self.h_debut} au batîment {self.nom_bat} {self.salle}>"
