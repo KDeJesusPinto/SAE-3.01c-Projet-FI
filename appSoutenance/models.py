@@ -50,4 +50,19 @@ class Promo(db.Model):
             self.Formation_Promo=Formation_Promo
 
     def _repr_(self):
-         return f"Promo : {self.Nom_Promo} {self.Annee_Promo} {self.Formation_Promo}"
+        return f"Promo : {self.Nom_Promo} {self.Annee_Promo} {self.Formation_Promo}"
+
+class Appartenir(db.Model):
+    Id_etudiant=db.Columm(db.Integer,db.ForeignKey("etudiant.Id_etudiant"),primary_key=True)
+    etudiant=db.relationship("Etudiant",backref=db.backref(""),lazy="dynamic")
+    Nom_Promo=db.Column(db.String(20),primary_key=True)
+    Annee_Promo=db.Column(db.String(20),primary_key=True)
+
+    def _init_(self,Id_etudiant,Nom_Promo,Annee_Promo):
+        self.Id_etudiant=Id_etudiant
+        self.Nom_Promo=Nom_Promo
+        self.Annee_Promo=Annee_Promo
+    
+    def _repr_(self):
+        return f"etudiant : {self.Id_etudiant} appatient a {self.Nom_Promo} en {self.Annee_Promo}"
+
