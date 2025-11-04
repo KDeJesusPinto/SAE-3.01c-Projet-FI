@@ -89,8 +89,8 @@ CREATE TABLE ETUDIANT (
 CREATE TABLE JURY (
   PRIMARY KEY (date_jury),
   date_jury     DATE NOT NULL,
-  h_debut       VARCHAR(10),
-  duree         VARCHAR(10),
+  h_debut       VARCHAR(5),
+  duree         VARCHAR(5),
   id_soutenance INT NULL,
   UNIQUE (id_soutenance)
 );
@@ -116,21 +116,21 @@ CREATE TABLE PROMO (
 
 CREATE TABLE SOUTENANCE (
   PRIMARY KEY (id_soutenance),
-  id_soutenance VARCHAR(42) NOT NULL,
-  salle         VARCHAR(42),
-  nom_bat       VARCHAR(42),
+  id_soutenance INT NOT NULL,
+  salle         INT,
+  nom_bat       VARCHAR(50),
   dateS         DATE,
-  h_debut       VARCHAR(42),
-  h_fin         VARCHAR(42),
+  h_debut       VARCHAR(5),
+  h_fin         VARCHAR(5),
   id_stage      INT NOT NULL,
   UNIQUE (id_stage)
 );
 
 CREATE TABLE TUTORER (
   PRIMARY KEY (id_enseignant, id_etudiant),
-  id_enseignant VARCHAR(42) NOT NULL,
-  id_etudiant   VARCHAR(42) NOT NULL,
-  annee         VARCHAR(42)
+  id_enseignant INT NOT NULL,
+  id_etudiant   INT NOT NULL,
+  annee         INT(4)
 );
 
 ALTER TABLE APPARTENIR ADD FOREIGN KEY (nom_promo, annee_promo) REFERENCES PROMO (nom_promo, annee_promo);
