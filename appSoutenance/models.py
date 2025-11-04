@@ -41,7 +41,11 @@ class Demarche(db.Model):
     id_entreprise = db.Column(db.Integer, db.ForeignKey("entreprise.id_entreprise"), nullable = False)
     entreprise = db.relationship("Entreprise", backref = db.backref("demarches", lazy = "joined"))
 
-    def __init__(self, source, typeD, situation, date_envoi, id_entreprise, date_relance = None, resultat = None, raison_refus = None, cv = None, lettre_motiv = None):
+    # 1.1
+    id_etudiant = db.Column(db.Integer, db.ForeignKey("etudiant.id_etudiant"), nullable = False)
+    etudiant = db.relationship("Etudiant", backref = db.backref("demarches", lazy = "joined"))
+
+    def __init__(self, source, typeD, situation, date_envoi, id_entreprise, id_etudiant, date_relance = None, resultat = None, raison_refus = None, cv = None, lettre_motiv = None):
         self.source = source
         self.typeD = typeD
         self.situation = situation
@@ -52,6 +56,7 @@ class Demarche(db.Model):
         self.raison_refus = raison_refus
         self.cv = cv
         self.lettre_motiv = lettre_motiv
+        self.id_etudiant = id_etudiant
 
     def __repr__(self):
         return f"<Demarche {self.id_demarche} de type {self.typeD} envoyée le {self.date_envoi} pour l'entreprise {self.entreprise.nom_entreprise}. Situation actuelle: {self.situation}>"
@@ -162,17 +167,18 @@ class Etudiant(db.Model):
         return f"Etudiant :{self.nom_etudiant} {self.prenom_etudiant} nait le {self.date_naissance} contact: {self.email_etudiant} {self.telephone_etudiant}"
     
 class Promo(db.Model):
-    nom_promo=db.Column(db.String(50),primary_key=True)
-    annee_promo=db.Column(db.String(20),primary_key=True)
-    formation_promo=db.Column(db.String(20),nullable=False)
+    nom_promo = db.Column(db.String(50), primary_key = True)
+    annee_promo = db.Column(db.String(20), primary_key = True)
+    formation_promo = db.Column(db.String(20), nullable = False)
 
-    def _init_(self,Id_Promo,nom_promo,annee_promo,formation_promo):
-            self.nom_promo=nom_promo
-            self.annee_promo=annee_promo
-            self.formation_promo=formation_promo
+    def __init__(self, nom_promo, annee_promo, formation_promo):
+        self.nom_promo = nom_promo
+        self.annee_promo = annee_promo
+        self.formation_promo = formation_promo
 
-    def _repr_(self):
-        return f"Promo : {self.nom_promo} {self.annee_promo} {self.formation_promo}"
+    def __repr__(self):
+        return f"<Promo: {self.nom_promo} {self.annee_promo} {self.formation_promo}>"
+
 
 class Appartenir(db.Model):
     id_etudiant=db.Columm(db.Integer,db.ForeignKey("etudiant.id_etudiant"),primary_key=True)
