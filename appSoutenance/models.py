@@ -144,14 +144,16 @@ class Etudiant(db.Model):
     id_etudiant=db.Columm(db.Integer,primary_key=True)
     nom_etudiant=db.Column(db.String(20),nullable=False)
     prenom_etudiant=db.Column(db.String(20),nullable=False)
+    civilite_etudiant=db.Column(db.String(10))
     date_naissance=db.Column(db.String(20),nullable=False)
     telephone_etudiant=db.Column(db.String(10))
     email_etudiant=db.Column(db.String(100))
 
-    def _init_(self,id_etudiant,nom_etudiant,prenom_etudiant,date_naissance,telephone_etudiant,email_etudiant):
+    def _init_(self,id_etudiant,nom_etudiant,prenom_etudiant,civilite_etudiant,date_naissance,telephone_etudiant,email_etudiant):
         self.id_etudiant=id_etudiant
         self.nom_etudiant=nom_etudiant
         self.prenom_etudiant=prenom_etudiant
+        self.civilite_etudiant=civilite_etudiant
         self.date_naissance=date_naissance
         self.telephone_etudiant=telephone_etudiant
         self.email_etudiant=email_etudiant

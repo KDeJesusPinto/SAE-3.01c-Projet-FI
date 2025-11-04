@@ -45,6 +45,7 @@ CREATE TABLE ETUDIANT(
     id_etudiant INT PRIMARY KEY,
     nom_etudiant VARCHAR(20) NOT NULL,
     prenom_etudiant VARCHAR(20) NOT NULL,
+    civilite_etudiant VARCHAR(10),
     date_naissance VARCHAR(20) NOT NULL,
     telephone_etudiant VARCHAR(10),
     email_etudiant VARCHAR(100) 
