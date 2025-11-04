@@ -1,13 +1,13 @@
 from .app import db
 
 class Entreprise (db.Model):
-    Id_entreprise = db.Column(db.Integer, primary_key = True)
-    Nom_entreprise = db.Column(db.String(200), nullable = False)
-    Secteur = db.Column(db.String(200), nullable = False)
-    Adresse = db.Column(db.String(300), nullable = False)
-    Type = db.Column(db.String(100), nullable = False)
-    Tel_entreprise = db.Column(db.String(20))
-    Email_entreprise = db.Column(db.String(200))
+    id_entreprise = db.Column(db.Integer, primary_key = True)
+    nom_entreprise = db.Column(db.String(200), nullable = False)
+    secteur = db.Column(db.String(200), nullable = False)
+    adresse = db.Column(db.String(300), nullable = False)
+    typeE = db.Column(db.String(100), nullable = False)
+    tel_entreprise = db.Column(db.String(20))
+    email_entreprise = db.Column(db.String(200))
 
     def __init__(self, nom_entreprise, secteur, adresse, type, tel_entreprise, email_entreprise):
         self.Nom_entreprise = nom_entreprise
@@ -21,17 +21,17 @@ class Entreprise (db.Model):
         return f"<Entreprise {self.Nom_entreprise} de type {self.Type} dans le secteur {self.Secteur} situé à {self.Adresse}. \nTel: {self.Tel_entreprise} \nEmail: {self.Email_entreprise}>"
     
 class Demarche(db.Model):
-    Id_demarche = db.Column(db.Integer, primary_key = True)
-    Source = db.Column(db.String(300), nullable = False)
-    Type = db.Column(db.String(100), nullable = False)
-    Situation = db.Column(db.String(300), nullable = False)
-    Date_envoi = db.Column(db.Date, nullable = False)
-    Date_relance = db.Column(db.Date)
-    Resultat = db.Column(db.String(300))
-    Raison_refus = db.Column(db.String(300))
-    Cv = db.Column(db.String(200))
-    Lettre_motiv = db.Column(db.String(200))
-    entreprise_id = db.Column(db.Integer, db.ForeignKey("entreprise.Id_entreprise"))
+    id_demarche = db.Column(db.Integer, primary_key = True)
+    source = db.Column(db.String(300), nullable = False)
+    typeD = db.Column(db.String(100), nullable = False)
+    situation = db.Column(db.String(300), nullable = False)
+    date_envoi = db.Column(db.Date, nullable = False)
+    date_relance = db.Column(db.Date)
+    resultat = db.Column(db.String(300))
+    raison_refus = db.Column(db.String(300))
+    cv = db.Column(db.String(200))
+    lettre_motiv = db.Column(db.String(200))
+    id_entreprise = db.Column(db.Integer, db.ForeignKey("entreprise.Id_entreprise"))
     entreprise = db.relationship("Entreprise", backref = db.backref("demarches", lazy = "dynamic"))
 
     def __init__(self, id_demarche, source, type, situation, date_envoi, date_relance, resultat, raison_refus, cv, lettre):
@@ -51,15 +51,15 @@ class Demarche(db.Model):
 
 
 class Stage(db.Model):
-    Id_stage = db.Column(db.Integer, primary_key = True)
-    Type = db.Column(db.String(100), nullable = False)
-    Duree = db.Column(db.Integer, nullable = False)
-    Date_debut = db.Column(db.Date, nullable = False)
-    Sujet = db.Column(db.String(300), nullable = False)
-    Description = db.Column(db.String(500))
-    Competence = db.Column(db.String(200))
-    Revenu = db.Column(db.Float)
-    demarche_id = db.Column(db.Integer, db.ForeignKey("demarche.Id_demarche"))
+    id_stage = db.Column(db.Integer, primary_key = True)
+    typeS = db.Column(db.String(100), nullable = False)
+    duree = db.Column(db.Integer, nullable = False)
+    date_debut = db.Column(db.Date, nullable = False)
+    sujet = db.Column(db.String(300), nullable = False)
+    description = db.Column(db.String(500))
+    competence = db.Column(db.String(200))
+    revenu = db.Column(db.Float)
+    id_demarche = db.Column(db.Integer, db.ForeignKey("demarche.id_demarche"))
     demarche = db.relationship("Demarche", backref = db.backref("stages", lazy = "dynamic"))
 
     def __init__(self, type, duree, date_debut, sujet, description, competence, revenu):
