@@ -146,47 +146,51 @@ class Soutenance(db.Model):
 
     
 class Etudiant(db.Model):
-    id_etudiant=db.Columm(db.Integer,primary_key=True)
-    nom_etudiant=db.Column(db.String(20),nullable=False)
-    prenom_etudiant=db.Column(db.String(20),nullable=False)
-    date_naissance=db.Column(db.String(20),nullable=False)
-    telephone_etudiant=db.Column(db.String(10))
-    email_etudiant=db.Column(db.String(100))
+    id_etudiant = db.Column(db.Integer, primary_key = True)
+    nom_etudiant = db.Column(db.String(20), nullable = False)
+    prenom_etudiant = db.Column(db.String(20), nullable = False)
+    date_naissance = db.Column(db.String(20), nullable = False)
+    telephone_etudiant = db.Column(db.String(10))
+    email_etudiant = db.Column(db.String(100))
 
-    def _init_(self,nom_etudiant,prenom_etudiant,date_naissance,telephone_etudiant,email_etudiant):
-        self.nom_etudiant=nom_etudiant
-        self.prenom_etudiant=prenom_etudiant
-        self.date_naissance=date_naissance
-        self.telephone_etudiant=telephone_etudiant
-        self.email_etudiant=email_etudiant
-    
-    def _repr_(self):
-        return f"Etudiant :{self.nom_etudiant} {self.prenom_etudiant} nait le {self.date_naissance} contact: {self.email_etudiant} {self.telephone_etudiant}"
-    
+    def __init__(self, nom_etudiant, prenom_etudiant, date_naissance, telephone_etudiant, email_etudiant):
+        self.nom_etudiant = nom_etudiant
+        self.prenom_etudiant = prenom_etudiant
+        self.date_naissance = date_naissance
+        self.telephone_etudiant = telephone_etudiant
+        self.email_etudiant = email_etudiant
+
+    def __repr__(self):
+        return f"<Etudiant: {self.nom_etudiant} {self.prenom_etudiant} né le {self.date_naissance} contact: {self.email_etudiant} {self.telephone_etudiant}>"
+
+
 class Promo(db.Model):
-    nom_promo=db.Column(db.String(50),primary_key=True)
-    annee_promo=db.Column(db.String(20),primary_key=True)
-    formation_promo=db.Column(db.String(20),nullable=False)
+    nom_promo = db.Column(db.String(50), primary_key = True)
+    annee_promo = db.Column(db.String(20), primary_key = True)
+    formation_promo = db.Column(db.String(20), nullable = False)
 
-    def _init_(self,nom_promo,annee_promo,formation_promo):
-            self.nom_promo=nom_promo
-            self.annee_promo=annee_promo
-            self.formation_promo=formation_promo
+    def __init__(self, nom_promo, annee_promo, formation_promo):
+        self.nom_promo = nom_promo
+        self.annee_promo = annee_promo
+        self.formation_promo = formation_promo
 
-    def _repr_(self):
-        return f"Promo : {self.nom_promo} {self.annee_promo} {self.formation_promo}"
+    def __repr__(self):
+        return f"<Promo: {self.nom_promo} {self.annee_promo} {self.formation_promo}>"
+
 
 class Appartenir(db.Model):
-    id_etudiant=db.Columm(db.Integer,db.ForeignKey("etudiant.id_etudiant"),primary_key=True)
-    etudiant=db.relationship("Etudiant",backref=db.backref(""),lazy="dynamic")
-    nom_promo=db.Column(db.String(20),primary_key=True)
-    annee_promo=db.Column(db.String(20),primary_key=True)
+    id_etudiant = db.Column(db.Integer, db.ForeignKey("etudiant.id_etudiant"), primary_key = True)
+    nom_promo = db.Column(db.String(50), db.ForeignKey("promo.nom_promo"), primary_key = True)
+    annee_promo = db.Column(db.String(20), db.ForeignKey("promo.annee_promo"), primary_key = True)
 
-    def _init_(self,id_etudiant,nom_promo,annee_promo):
-        self.id_etudiant=id_etudiant
-        self.nom_promo=nom_promo
-        self.annee_promo=annee_promo
-    
-    def _repr_(self):
-        return f"etudiant : {self.id_etudiant} appatient a {self.nom_promo} en {self.annee_promo}"
+    # 0,N
+    etudiant = db.relationship("Etudiant", backref = db.backref("promos", lazy = "dynamic"))
+    promo = db.relationship("Promo", backref = db.backref("etudiants", lazy = "dynamic"))
 
+    def __init__(self, id_etudiant, nom_promo, annee_promo):
+        self.id_etudiant = id_etudiant
+        self.nom_promo = nom_promo
+        self.annee_promo = annee_promo
+
+    def __repr__(self):
+        return f"<Etudiant: {self.id_etudiant} appartient à {self.nom_promo} en {self.annee_promo}>"
