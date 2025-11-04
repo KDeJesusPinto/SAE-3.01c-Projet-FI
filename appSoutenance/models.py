@@ -39,7 +39,7 @@ class Demarche(db.Model):
 
     # 1,1
     id_entreprise = db.Column(db.Integer, db.ForeignKey("entreprise.id_entreprise"), nullable = False)
-    entreprise = db.relationship("Entreprise", backref = db.backref("demarches", lazy = "dynamic"))
+    entreprise = db.relationship("Entreprise", backref = db.backref("demarches", lazy = "joined"))
 
     def __init__(self, source, typeD, situation, date_envoi, id_entreprise, date_relance = None, resultat = None, raison_refus = None, cv = None, lettre_motiv = None):
         self.source = source
@@ -69,15 +69,15 @@ class Stage(db.Model):
 
     # 1,1
     id_demarche = db.Column(db.Integer, db.ForeignKey("demarche.id_demarche"), unique = True, nullable = False)
-    demarche = db.relationship("Demarche", backref=db.backref("stage", lazy = "joined", uselist = False))
+    demarche = db.relationship("Demarche", backref = db.backref("stage", lazy = "joined", uselist = False))
 
     # 0,1
-    id_maitre = db.Column(db.Integer, db.ForeignKey("maitre_stage.id_maitre"), unique=True, nullable = True)
-    maitre_stage = db.relationship("MaitreStage", backref=db.backref("stage", lazy = "joined", uselist = False))
+    id_maitre = db.Column(db.Integer, db.ForeignKey("maitre_stage.id_maitre"), unique = True, nullable = True)
+    maitre_stage = db.relationship("MaitreStage", backref = db.backref("stage", lazy = "select", uselist = False))
 
     # 0,1
     id_soutenance = db.Column(db.Integer, db.ForeignKey("soutenance.id_soutenance"), unique = True, nullable = True)
-    soutenance = db.relationship("Soutenance", backref=db.backref("stage_rel", lazy = "select", uselist = False))
+    soutenance = db.relationship("Soutenance", backref = db.backref("stage_rel", lazy = "select", uselist = False))
 
     def __init__(self, typeS, duree, date_debut, sujet, id_demarche, description = None, competence = None, revenu = None):
         self.typeS = typeS
