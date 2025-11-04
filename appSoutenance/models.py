@@ -41,7 +41,11 @@ class Demarche(db.Model):
     id_entreprise = db.Column(db.Integer, db.ForeignKey("entreprise.id_entreprise"), nullable = False)
     entreprise = db.relationship("Entreprise", backref = db.backref("demarches", lazy = "joined"))
 
-    def __init__(self, source, typeD, situation, date_envoi, id_entreprise, date_relance = None, resultat = None, raison_refus = None, cv = None, lettre_motiv = None):
+    # 1.1
+    id_etudiant = db.Column(db.Integer, db.ForeignKey("etudiant.id_etudiant"), nullable = False)
+    etudiant = db.relationship("Etudiant", backref = db.backref("demarches", lazy = "joined"))
+
+    def __init__(self, source, typeD, situation, date_envoi, id_entreprise, id_etudiant, date_relance = None, resultat = None, raison_refus = None, cv = None, lettre_motiv = None):
         self.source = source
         self.typeD = typeD
         self.situation = situation
@@ -52,6 +56,7 @@ class Demarche(db.Model):
         self.raison_refus = raison_refus
         self.cv = cv
         self.lettre_motiv = lettre_motiv
+        self.id_etudiant = id_etudiant
 
     def __repr__(self):
         return f"<Demarche {self.id_demarche} de type {self.typeD} envoyée le {self.date_envoi} pour l'entreprise {self.entreprise.nom_entreprise}. Situation actuelle: {self.situation}>"
