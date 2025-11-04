@@ -138,3 +138,51 @@ class Soutenance(db.Model):
 
     def __repr__(self):
         return f"<La soutenance a lieu le {self.date} à {self.h_debut} au batîment {self.nom_bat} {self.salle}>"
+
+    
+class Etudiant(db.Model):
+    id_etudiant=db.Columm(db.Integer,primary_key=True)
+    nom_etudiant=db.Column(db.String(20),nullable=False)
+    prenom_etudiant=db.Column(db.String(20),nullable=False)
+    date_naissance=db.Column(db.String(20),nullable=False)
+    telephone_etudiant=db.Column(db.String(10),nullable=False)
+    email_etudiant=db.Column(db.String(100),nullable=False)
+
+    def _init_(self,Id_etudiant,nom_etudiant,prenom_etudiant,date_naissance,telephone_etudiant,email_etudiant):
+        self.id_etudiant=id_etudiant
+        self.nom_etudiant=nom_etudiant
+        self.prenom_etudiant=prenom_etudiant
+        self.date_naissance=date_naissance
+        self.telephone_etudiant=telephone_etudiant
+        self.email_etudiant=email_etudiant
+    
+    def _repr_(self):
+        return f"Etudiant :{self.nom_etudiant} {self.prenom_etudiant} nait le {self.date_naissance} contact: {self.email_etudiant} {self.telephone_etudiant}"
+    
+class Promo(db.Model):
+    nom_promo=db.Column(db.String(20),primary_key=True)
+    annee_promo=db.Column(db.String(20),primary_key=True)
+    formation_promo=db.Column(db.String(20),nullable=False)
+
+    def _init_(self,Id_Promo,nom_promo,annee_promo,formation_promo):
+            self.nom_promo=nom_promo
+            self.annee_promo=annee_promo
+            self.formation_promo=formation_promo
+
+    def _repr_(self):
+        return f"Promo : {self.nom_promo} {self.annee_promo} {self.formation_promo}"
+
+class Appartenir(db.Model):
+    id_etudiant=db.Columm(db.Integer,db.ForeignKey("etudiant.id_etudiant"),primary_key=True)
+    etudiant=db.relationship("Etudiant",backref=db.backref(""),lazy="dynamic")
+    nom_promo=db.Column(db.String(20),primary_key=True)
+    annee_promo=db.Column(db.String(20),primary_key=True)
+
+    def _init_(self,id_etudiant,nom_promo,annee_promo):
+        self.id_etudiant=id_etudiant
+        self.nom_promo=nom_promo
+        self.annee_promo=annee_promo
+    
+    def _repr_(self):
+        return f"etudiant : {self.id_etudiant} appatient a {self.nom_promo} en {self.annee_promo}"
+
