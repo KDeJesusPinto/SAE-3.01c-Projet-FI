@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS DEMARCHE;
 DROP TABLE IF EXISTS ENTREPRISE;
 
 CREATE TABLE ENTREPRISE (
-    id_entreprise INTEGER PRIMARY KEY,
+    id_entreprise INT PRIMARY KEY,
     nom_entreprise VARCHAR(200) NOT NULL,
     secteur VARCHAR(200) NOT NULL,
     adresse VARCHAR(300) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE ENTREPRISE (
 );
 
 CREATE TABLE DEMARCHE (
-    id_demarche INTEGER PRIMARY KEY,
+    id_demarche INT PRIMARY KEY,
     source VARCHAR(300) NOT NULL,
     typeD VARCHAR(100) NOT NULL,
     situation VARCHAR(300) NOT NULL,
@@ -23,20 +23,20 @@ CREATE TABLE DEMARCHE (
     raison_refus VARCHAR(300),
     cv VARCHAR(200),
     lettre_motiv VARCHAR(200),
-    id_entreprise INTEGER
-    -- id_etudiant INTEGER
+    id_entreprise INT
+    -- id_etudiant INT
 );
 
 CREATE TABLE STAGE (
-    id_stage INTEGER PRIMARY KEY,
+    id_stage INT PRIMARY KEY,
     typeS VARCHAR(100) NOT NULL,
-    duree INTEGER NOT NULL,
+    duree INT NOT NULL,
     date_debut DATE NOT NULL,
     sujet VARCHAR(300) NOT NULL,
     descriptionS VARCHAR(500),
     competence VARCHAR(200),
     revenu DECIMAL(10,2),
-    id_demarche INTEGER
+    id_demarche INT
 );
 
 
