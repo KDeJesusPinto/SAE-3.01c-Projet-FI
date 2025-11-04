@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS STAGE;
 DROP TABLE IF EXISTS DEMARCHE;
 DROP TABLE IF EXISTS ENTREPRISE;
+DROP TABLE IF EXISTS ETUDIANT;
+DROP TABLE IF EXISTS PROMO;
 
 CREATE TABLE ENTREPRISE (
     id_entreprise INT PRIMARY KEY,
@@ -39,6 +41,20 @@ CREATE TABLE STAGE (
     id_demarche INT
 );
 
+CREATE TABLE ETUDIANT(
+    id_etudiant INT PRIMARY KEY,
+    nom_etudiant VARCHAR(20) NOT NULL,
+    prenom_etudiant VARCHAR(20) NOT NULL,
+    date_naissance VARCHAR(20) NOT NULL,
+    telephone_etudiant VARCHAR(10),
+    email_etudiant VARCHAR(100) 
+);
+
+CREATE TABLE PROMO(
+    nom_promo VARCHAR(50) PRIMARY KEY,
+    annee_promo VARCHAR(20) PRIMARY KEY,
+    formation_promo VARCHAR(20)
+);
 
 
 ALTER TABLE DEMARCHE ADD FOREIGN KEY (id_entreprise) REFERENCES ENTREPRISE(id_entreprise);

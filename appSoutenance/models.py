@@ -145,10 +145,10 @@ class Etudiant(db.Model):
     nom_etudiant=db.Column(db.String(20),nullable=False)
     prenom_etudiant=db.Column(db.String(20),nullable=False)
     date_naissance=db.Column(db.String(20),nullable=False)
-    telephone_etudiant=db.Column(db.String(10),nullable=False)
-    email_etudiant=db.Column(db.String(100),nullable=False)
+    telephone_etudiant=db.Column(db.String(10))
+    email_etudiant=db.Column(db.String(100))
 
-    def _init_(self,Id_etudiant,nom_etudiant,prenom_etudiant,date_naissance,telephone_etudiant,email_etudiant):
+    def _init_(self,id_etudiant,nom_etudiant,prenom_etudiant,date_naissance,telephone_etudiant,email_etudiant):
         self.id_etudiant=id_etudiant
         self.nom_etudiant=nom_etudiant
         self.prenom_etudiant=prenom_etudiant
@@ -160,7 +160,7 @@ class Etudiant(db.Model):
         return f"Etudiant :{self.nom_etudiant} {self.prenom_etudiant} nait le {self.date_naissance} contact: {self.email_etudiant} {self.telephone_etudiant}"
     
 class Promo(db.Model):
-    nom_promo=db.Column(db.String(20),primary_key=True)
+    nom_promo=db.Column(db.String(50),primary_key=True)
     annee_promo=db.Column(db.String(20),primary_key=True)
     formation_promo=db.Column(db.String(20),nullable=False)
 
