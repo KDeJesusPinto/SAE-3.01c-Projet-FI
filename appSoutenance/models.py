@@ -177,11 +177,13 @@ class Appartenir(db.Model):
     etudiant=db.relationship("Etudiant",backref=db.backref(""),lazy="dynamic")
     nom_promo=db.Column(db.String(20),primary_key=True)
     annee_promo=db.Column(db.String(20),primary_key=True)
+    regime_etudiant=db.Column(db.String(20))
 
-    def _init_(self,id_etudiant,nom_promo,annee_promo):
+    def _init_(self,id_etudiant,nom_promo,annee_promo,regime_etudiant):
         self.id_etudiant=id_etudiant
         self.nom_promo=nom_promo
         self.annee_promo=annee_promo
+        self.regime_etudiant=regime_etudiant
     
     def _repr_(self):
         return f"etudiant : {self.id_etudiant} appatient a {self.nom_promo} en {self.annee_promo}"
