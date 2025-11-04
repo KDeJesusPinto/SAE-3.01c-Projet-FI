@@ -126,7 +126,7 @@ class Soutenance(db.Model):
     id_soutenance = db.Column(db.Integer, primary_key = True)
     salle = db.Column(db.Integer, nullable = False)
     nom_bat = db.Column(db.String(50), nullable = False)
-    date = db.Column(db.Date, nullable = False)
+    dateS = db.Column(db.Date, nullable = False)
     h_debut = db.Column(db.String(5), nullable = False)
     h_fin = db.Column(db.String(5), nullable = False)
 
