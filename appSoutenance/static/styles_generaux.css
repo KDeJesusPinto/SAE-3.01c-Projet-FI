@@ -50,7 +50,7 @@ a{
 /* ---------------- STYLES GÉNÉRAUX DES BOÎTES ----------------*/
 
 .glass{
-    border-radius: 60px;
+    border-radius: 40px;
     border: 2px solid rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(3px);
     background-color: rgba(255, 255, 255, 0.55);
@@ -58,53 +58,25 @@ a{
     /*padding: 2% !important;*/
 }
 
-.petite_boite_verticale{
-    /*background-color: red;*/
+.boite_verticale{
     display: flex;
     flex-direction: column;
     padding: 10px;
     align-items: center;
-    /*border: 2px black solid;*/
     row-gap: 20px;
-    /*flex-wrap: wrap;*/
 }
 
-.boite_verticale{
-    /*background-color: red;*/
-    display: flex;
-    flex-direction: column;
-    row-gap: 50px;
-    padding: 20px;
-    align-items: center;
-    justify-items: center;
-    /*border: 2px black solid;*/
-    /*flex-wrap: wrap;*/
-}
-
-.petite_boite_horizontale{
-    /*background-color: red;*/
+.boite_horizontale{
     display: flex;
     flex-direction: row;
     padding: 20px;
     align-items: center;
-    justify-items: center;
-    /*border: 2px black solid;*/
     column-gap: 20px;
-    /*flex-wrap: wrap;*/
-}
-
-.boite_horizontale{
-    /*background-color: red;*/
-    display: flex;
-    column-gap: 50px;
-    padding: 20px;
-    align-items: center;
-    /*border: 2px black solid;*/
 }
 
 /* ---------------- STYLES DES TEXTES ----------------*/
 
-div.petite_boite_horizontale p{
+div.boite_horizontale p{
     margin: 0;
     text-align: center;
 }
