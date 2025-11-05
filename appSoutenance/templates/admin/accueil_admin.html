@@ -1,21 +1,21 @@
-{% extends "base.html" %}
+{% extends "base.html" %}*
+
+{% block navbar %}
+    <a href="{{ url_for('planning_admin') }}" class="bouton_nav">Soutenances</a>
+    <a href="{{ url_for('liste_etu_admin') }}" class="bouton_nav">Etudiants</a>
+    <a href="{{ url_for('liste_ens_admin') }}" class="bouton_nav">Enseignants</a>
+{% endblock %}
 
 {% block content %}
-    <div id="soutenance" class="glass">
-        <h1>Soutenance</h1>
-        <div class="info_horizontal">
-            <div class="info_horizontal">
-                <i class="fas fa-calendar-alt grande_icone"></i>
-                <p>25 juillet 2025<br>11:00</p>
-            </div>
-            <div class="info_horizontal">
-                <i class="fas fa-map-marker-alt grande_icone"></i>
-                <p>I202</p>
-            </div>
-            <div class="info_horizontal">
-                <i class="fas fa-users grande_icone"></i>
-                <p>Mr Arsouze (tuteur), Mr Lorem, Mme Ipsum</p>
-            </div>
-        </div>
+    <div class="glass" id="filtre_admin">
+        <select class="petit_bouton2" name="Formation" id="formation">
+            <option value="Info">Informatique</option>
+            <option value="Physique">Physique</option>
+            <option value="GEA">GEA</option>
+        </select>
+        <select class="petit_bouton2" name="Année" id="annee">
+            <option value="2A">2ème année</option>
+            <option value="3A">3ème année</option>
+        </select>
     </div>
 {% endblock %}
