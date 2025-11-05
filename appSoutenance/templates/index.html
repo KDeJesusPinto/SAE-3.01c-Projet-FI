@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div id="connexion" class="glass">
+        <h1>Bienvenue<br>connectez-vous en tant que...</h1>
+        <div id="buttons">
+            <a href="{{ url_for('accueil_enseignant') }}">Enseignant</a>
+            <a href="{{ url_for('accueil_admin') }}">Administrateur</a>
+            <a href="{{ url_for('accueil_etudiant') }}">Étudiant</a>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bebas+Neue&family=PT+Sans+Narrow:wght@400;700&display=swap');
+
+body{
+    background: url(images/fond.png) no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-family: "Arimo", sans-serif;
+    font-size: 4em;
+}
+
+h1{
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-transform: uppercase;
+    font-size: 2.5em;
+    text-align: center;
+    letter-spacing: -4px;
+    margin: 0;
+}
+
+h2{
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-transform: uppercase;
+    font-size: 2em;
+    text-align: center;
+    letter-spacing: -4px;
+    margin: 0;
+    white-space: nowrap !important;
+}
+
+nav#barre_navigation{
+    background-color: #a671b0;
+    padding: 40px;
+    position: fixed;
+    height: 5vh;
+    width: 100%;
+    z-index: 2;
+}
+
+nav#barre_navigation img{
+    height: 90%;
+}
+
+div#main_body{
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: calc(5vh + 200px) 0 200px;
+}
+
+div#connexion{
+    padding: 50px 150px;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 30px;
+    align-items: center;
+    justify-content: space-around;
+
+    width: 60%;
+    min-height: 60%;
+}
+
+.glass{
+    border-radius: 60px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(7px);
+    background-color: rgba(255, 255, 255, 0.65);
+
+    padding: 2% !important;
+}
+
+div#buttons{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 70px;
+    align-items: center;
+}
+
+a{
+    color: black;
+    text-decoration: none;
+    cursor: url(images/cursor.png), pointer;
+}
+
+div#connexion a{
+    padding: 40px 0;
+    width: 70%;
+
+    font-family: "Arimo", sans-serif;
+    font-size: 1em;
+
+    border-radius: 100px;
+    background-color: #242f53;
+    color: white;
+    text-align: center;
+}
+
+div.info_horizontal{
+    /*background-color: red;*/
+    display: flex;
+    column-gap: 100px;
+    padding: 20px;
+    align-items: center;
+    /*border: 2px black solid;*/
+}
+
+div.info_vertical{
+    /*background-color: red;*/
+    display: flex;
+    flex-direction: column;
+    row-gap: 100px;
+    padding: 20px;
+    align-items: center;
+    justify-items: center;
+    /*border: 2px black solid;*/
+    /*flex-wrap: wrap;*/
+}
+
+div.boite_verticale{
+    /*background-color: red;*/
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    align-items: center;
+    /*border: 2px black solid;*/
+    row-gap: 20px;
+    /*flex-wrap: wrap;*/
+}
+
+div.info_horizontal p{
+    margin: 0;
+    text-align: center;
+}
+
+.short{
+    white-space: nowrap;
+}
+
+.grande_icone{
+    font-size: 3em !important;
+}
+
+.petit_bouton{
+    padding: 30px;
+    width: 100%;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 30px;
+    background-color: #242f53;
+    color: white;
+    text-align: center;
+}
+
+.tooltip:hover::after{
+    content: attr(data-tooltip);
+    background-color: red;
+    position: absolute;
+   /* bottom: -1lh;*/
+    visibility: visible;
+    font-size: 0.5em;
+}
+
+div#demarches div.glass{
+    width: 100%;
+}
+
+div#demarches div.glass h2{
+    width: 30%;
+    text-align: left;
+}
