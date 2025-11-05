@@ -165,6 +165,18 @@ div.info_horizontal p{
     text-align: center;
 }
 
+.bouton_nav{
+    padding: 30px;
+    width: 100%;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 30px;
+    background-color: #a671b0;
+    color: white;
+    text-align: center;
+}
+
 .tooltip:hover::after{
     content: attr(data-tooltip);
     background-color: red;
