@@ -34,7 +34,7 @@ def demarches_etudiant():
     return render_template("etudiant/demarches.html", title="Mes démarches")
 
 @app.route('/etudiant/stage/')
-def accueil_etudiant():
+def info_stage():
     return render_template("etudiant/info_stage_valide.html", title="Mon stage")
 
 @app.route('/etudiant/demarches/new/')
@@ -43,7 +43,7 @@ def nouvelle_demarches_etudiant():
 
 @app.route('/etudiant/demarches/resume/')
 def resume_demarches_etudiant():
-    return render_template("etudiant/resume_demarches.html", title="Résumé de la démarche")
+    return render_template("etudiant/resume_demarche.html", title="Résumé de la démarche")
 
 
 #Pour page administrateur
