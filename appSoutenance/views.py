@@ -9,11 +9,11 @@ def index():
 #Pour page enseignants
 @app.route('/enseignant/')
 def accueil_enseignant():
-    return render_template("prof/accueil_enseignant.html", title="Accueil")
+    return render_template("enseignant/accueil_enseignant.html", title="Accueil")
 
 @app.route('/enseignant/liste+etu/')
 def liste_etu_enseignant():
-    return render_template("prof/lst_etudiants_enseignant.html", title="Liste des étudiants")
+    return render_template("enseignant/lst_etudiants_enseignant.html", title="Liste des étudiants")
 
 
 #Pour page étudiants
