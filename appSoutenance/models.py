@@ -150,7 +150,7 @@ class Etudiant(db.Model):
     nom_etudiant=db.Column(db.String(20),nullable=False)
     prenom_etudiant=db.Column(db.String(20),nullable=False)
     civilite_etudiant=db.Column(db.String(10))
-    date_naissance=db.Column(db.String(20),nullable=False)
+    date_naissance=db.Column(db.Date,nullable=False)
     telephone_etudiant=db.Column(db.String(10))
     email_etudiant=db.Column(db.String(100))
 
@@ -183,8 +183,9 @@ class Promo(db.Model):
 class Appartenir(db.Model):
     id_etudiant=db.Columm(db.Integer,db.ForeignKey("etudiant.id_etudiant"),primary_key=True)
     etudiant=db.relationship("Etudiant",backref=db.backref(""),lazy="dynamic")
-    nom_promo=db.Column(db.String(20),primary_key=True)
-    annee_promo=db.Column(db.String(20),primary_key=True)
+    nom_promo=db.Column(db.String(20),db.ForeignKey("promo.nom_promo"),primary_key=True)
+    annee_promo=db.Column(db.String(20),db.ForeignKey("promo.annee_promo"),primary_key=True)
+    promo=db.relationship("Promo",backref=db.backref("appartenir"),lazy="dynamic")
     regime_etudiant=db.Column(db.String(20))
 
     def _init_(self,id_etudiant,nom_promo,annee_promo,regime_etudiant):
@@ -214,21 +215,21 @@ class Enseignant(db.Model):
         return f"Enseignant : {self.id_enseignant} {self.civilite_enseignant} {self.nom_enseignant} {self.prenom_enseignant} {self.email_enseignant}"
 
 class Jury(db.Model):
-    id_soutenance = db.Column(db.Integer, primary_key = True)
-    date_jury=db.Column(db.String(20),primary_key=True)
-    heure_jury=db.Column(db.String(20))
-    duree_jury=db.Column(db.INteger)
-    #duree en minute
+    id_soutenance = db.Column(db.Integer,db.ForeignKey("soutenance.id_soutenace"),primary_key = True)
+    soutenance=db.relationship("Soutenance",backref=db.backref("jury",lazy="joined"))
+    date_jury=db.Column(db.Date,primary_key=True)
+    h_jury=db.Column(db.String(5))
+    duree_jury=db.Column(db.String(5))
+    
 
     def _init_(self,id_soutenance,date,heure,duree):
         self.id_soutenance=id_soutenance
         self.date_jury=date
-        self.heure_jury=heure
+        self.h_jury=heure
         self.duree_jury=duree
+        self.id_soutenance
     
     def _repr_(self):
         return f"Le jury pour la soutenance {self.id_soutenance} le {self.date_jury} a {self.heure_jury} pendant {self.duree_jury}"
-
-    
-        
+  
 #penser à crée des constructeur alternatif 

@@ -10,7 +10,6 @@ DROP TABLE IF EXISTS PROMO;
 DROP TABLE IF EXISTS ETUDIANT;
 DROP TABLE IF EXISTS ENSEIGNANT;
 DROP TABLE IF EXISTS ENTREPRISE;
-DROP TABLE IF EXISTS JURY;
 
 CREATE TABLE ENTREPRISE (
   PRIMARY KEY (id_entreprise),
@@ -93,7 +92,7 @@ CREATE TABLE JURY (
   PRIMARY KEY (date_jury),
   date_jury     DATE NOT NULL,
   h_debut       VARCHAR(5),
-  duree         VARCHAR(5),
+  duree_jury         VARCHAR(5),
   id_soutenance INT NULL,
   UNIQUE (id_soutenance)
 );
@@ -168,13 +167,7 @@ CREATE TABLE ENSEIGNANT(
     email_enseignant VARCHAR(100)
 );
 
-CREATE TABLE JURY(
-  --id_soutenance prymary key
-  date_jury VARCHAR(20),
-  heure_jury VARCHAR(5),
-  duree_jury INT
-  --duree en minute
-);
+
 
 
 ALTER TABLE DEMARCHE ADD FOREIGN KEY (id_entreprise) REFERENCES ENTREPRISE(id_entreprise);
