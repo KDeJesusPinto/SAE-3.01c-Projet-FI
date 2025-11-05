@@ -213,4 +213,22 @@ class Enseignant(db.Model):
     def _repr_(self):
         return f"Enseignant : {self.id_enseignant} {self.civilite_enseignant} {self.nom_enseignant} {self.prenom_enseignant} {self.email_enseignant}"
 
+class Jury(db.Model):
+    id_soutenance = db.Column(db.Integer, primary_key = True)
+    date_jury=db.Column(db.String(20),primary_key=True)
+    heure_jury=db.Column(db.String(20))
+    duree_jury=db.Column(db.INteger)
+    #duree en minute
+
+    def _init_(self,id_soutenance,date,heure,duree):
+        self.id_soutenance=id_soutenance
+        self.date_jury=date
+        self.heure_jury=heure
+        self.duree_jury=duree
     
+    def _repr_(self):
+        return f"Le jury pour la soutenance {self.id_soutenance} le {self.date_jury} a {self.heure_jury} pendant {self.duree_jury}"
+
+    
+        
+#penser à crée des constructeur alternatif 

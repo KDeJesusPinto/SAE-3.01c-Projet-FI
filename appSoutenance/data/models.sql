@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS ENTREPRISE;
 DROP TABLE IF EXISTS ETUDIANT;
 DROP TABLE IF EXISTS PROMO;
 DROP TABLE IF EXISTS ENSEIGNANT;
+DROP TABLE IF EXISTS JURY;
 
 CREATE TABLE ENTREPRISE (
   PRIMARY KEY (id_entreprise),
@@ -166,10 +167,18 @@ CREATE TABLE PROMO(
 
 CREATE TABLE ENSEIGNANT(
     id_enseignant INT PRIMARY KEY,
-    nom_enseignant VARCHAR(20)
-    prenom_enseignant VARCHAR(20)
-    civilite_enseignant VARCHAR(10)
+    nom_enseignant VARCHAR(20),
+    prenom_enseignant VARCHAR(20),
+    civilite_enseignant VARCHAR(10),
     email_enseignant VARCHAR(100)
+);
+
+CREATE TABLE JURY(
+  --id_soutenance prymary key
+  date_jury VARCHAR(20),
+  heure_jury VARCHAR(5),
+  duree_jury INT
+  --duree en minute
 );
 
 
