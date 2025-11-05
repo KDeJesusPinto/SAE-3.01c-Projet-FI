@@ -28,8 +28,13 @@ def accueil_etudiant():
 def accueil_admin():
     return render_template("admin/accueil_admin.html", title="Accueil")
 
+@app.route('/admin/liste+etu/')
+def liste_etu_admin():
+    return render_template("admin/lst_etudiants_admin.html", title="Liste des étudiants")
 
-
+@app.route('/admin/liste+ens/')
+def liste_ens_admin():
+    return render_template("admin/lst_enseignants_admin.html", title="Liste des enseignants")
 
 if __name__== "__main__":
     app.run()
