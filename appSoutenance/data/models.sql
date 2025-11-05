@@ -1,9 +1,15 @@
+DROP TABLE IF EXISTS TUTORER;
+DROP TABLE IF EXISTS COMPOSER;
+DROP TABLE IF EXISTS JURY;
+DROP TABLE IF EXISTS SOUTENANCE;
+DROP TABLE IF EXISTS APPARTENIR;
 DROP TABLE IF EXISTS STAGE;
+DROP TABLE IF EXISTS MAITRE_STAGE;
 DROP TABLE IF EXISTS DEMARCHE;
-DROP TABLE IF EXISTS ENTREPRISE;
-DROP TABLE IF EXISTS ETUDIANT;
 DROP TABLE IF EXISTS PROMO;
+DROP TABLE IF EXISTS ETUDIANT;
 DROP TABLE IF EXISTS ENSEIGNANT;
+DROP TABLE IF EXISTS ENTREPRISE;
 DROP TABLE IF EXISTS JURY;
 
 CREATE TABLE ENTREPRISE (
@@ -17,6 +23,15 @@ CREATE TABLE ENTREPRISE (
   typeE            VARCHAR(100),
   tel_entreprise   VARCHAR(15),
   email_entreprise VARCHAR(200)
+);
+
+CREATE TABLE ETUDIANT(
+    id_etudiant INT PRIMARY KEY,
+    nom_etudiant VARCHAR(100) NOT NULL,
+    prenom_etudiant VARCHAR(100) NOT NULL,
+    date_naissance DATE NOT NULL,
+    telephone_etudiant VARCHAR(15),
+    email_etudiant VARCHAR(200) 
 );
 
 CREATE TABLE DEMARCHE (
@@ -34,6 +49,24 @@ CREATE TABLE DEMARCHE (
     id_etudiant INT NOT NULL
 );
 
+CREATE TABLE MAITRE_STAGE (
+  PRIMARY KEY (id_maitre),
+  id_maitre     INT NOT NULL,
+  nom_maitre    VARCHAR(100),
+  prenom_maitre VARCHAR(100),
+  tel_maitre    VARCHAR(15),
+  email_maitre  VARCHAR(200),
+  id_entreprise INT NOT NULL
+);
+
+CREATE TABLE ENSEIGNANT (
+  PRIMARY KEY (id_enseignant),
+  id_enseignant     INT NOT NULL,
+  nom_enseignant    VARCHAR(100),
+  prenom_enseignant VARCHAR(100),
+  email_enseignant  VARCHAR(200)
+);
+
 CREATE TABLE STAGE (
   PRIMARY KEY (id_stage),
   id_stage    INT NOT NULL,
@@ -47,46 +80,13 @@ CREATE TABLE STAGE (
   UNIQUE (id_demarche)
 );
 
-CREATE TABLE ETUDIANT(
-    id_etudiant INT PRIMARY KEY,
-    nom_etudiant VARCHAR(20) NOT NULL,
-    prenom_etudiant VARCHAR(20) NOT NULL,
-    civilite_etudiant VARCHAR(10),
-    date_naissance VARCHAR(20) NOT NULL,
-    telephone_etudiant VARCHAR(10),
-    email_etudiant VARCHAR(100) 
-);
-
-CREATE TABLE APPARTENIR (
-  PRIMARY KEY (id_etudiant, nom_promo, annee),
-  id_etudiant     INT NOT NULL,
-  nom_promo       VARCHAR(42) NOT NULL,
-  annee_promo     VARCHAR(42) NOT NULL,
-  regime_etudiant VARCHAR(100)
-);
-
-CREATE TABLE COMPOSER (
-  PRIMARY KEY (id_enseignant, id_soutenance),
-  id_enseignant INT NOT NULL,
-  id_soutenance INT NOT NULL
-);
-
-CREATE TABLE ENSEIGNANT (
-  PRIMARY KEY (id_enseignant),
-  id_enseignant     INT NOT NULL,
-  nom_enseignant    VARCHAR(100),
-  prenom_enseignant VARCHAR(100),
-  email_enseignant  VARCHAR(200)
-);
-
-CREATE TABLE ETUDIANT (
-  PRIMARY KEY (id_etudiant),
-  id_etudiant     INT NOT NULL,
-  nom_etudiant    VARCHAR(100),
-  prenom_etudiant VARCHAR(100),
-  Dd_N            DATE,
-  tel_etudiant    VARCHAR(15),
-  email_etudiant  VARCHAR(200)
+CREATE TABLE PROMO (
+  PRIMARY KEY (nom_promo, annee_promo),
+  nom_promo       VARCHAR(100) NOT NULL,
+  annee_promo     INT(4) NOT NULL,
+  formation_promo VARCHAR(100),
+  id_enseignant   INT NULL,
+  directeur_etude INT
 );
 
 CREATE TABLE JURY (
@@ -96,25 +96,6 @@ CREATE TABLE JURY (
   duree         VARCHAR(5),
   id_soutenance INT NULL,
   UNIQUE (id_soutenance)
-);
-
-CREATE TABLE MAITRE_STAGE (
-  PRIMARY KEY (id_maitre),
-  id_maitre     INT NOT NULL,
-  nom_maitre    VARCHAR(100),
-  prenom_maitre VARCHAR(100),
-  tel_maitre    VARCHAR(15),
-  email_maitre  VARCHAR(200),
-  id_entreprise INT NOT NULL
-);
-
-CREATE TABLE PROMO (
-  PRIMARY KEY (nom_promo, annee),
-  nom_promo       VARCHAR(100) NOT NULL,
-  annee_promo     INT(4) NOT NULL,
-  formation_promo VARCHAR(100),
-  id_enseignant   INT NULL,
-  directeur_etude INT
 );
 
 CREATE TABLE SOUTENANCE (
@@ -134,6 +115,20 @@ CREATE TABLE TUTORER (
   id_enseignant INT NOT NULL,
   id_etudiant   INT NOT NULL,
   annee         INT(4)
+);
+
+CREATE TABLE COMPOSER (
+  PRIMARY KEY (id_enseignant, id_soutenance),
+  id_enseignant INT NOT NULL,
+  id_soutenance INT NOT NULL
+);
+
+CREATE TABLE APPARTENIR (
+  PRIMARY KEY (id_etudiant, nom_promo, annee_promo),
+  id_etudiant     INT NOT NULL,
+  nom_promo       VARCHAR(100) NOT NULL,
+  annee_promo     INT(4) NOT NULL,
+  regime_etudiant VARCHAR(100)
 );
 
 ALTER TABLE APPARTENIR ADD FOREIGN KEY (nom_promo, annee_promo) REFERENCES PROMO (nom_promo, annee_promo);
@@ -167,18 +162,10 @@ CREATE TABLE PROMO(
 
 CREATE TABLE ENSEIGNANT(
     id_enseignant INT PRIMARY KEY,
-    nom_enseignant VARCHAR(20),
-    prenom_enseignant VARCHAR(20),
-    civilite_enseignant VARCHAR(10),
+    nom_enseignant VARCHAR(20)
+    prenom_enseignant VARCHAR(20)
+    civilite_enseignant VARCHAR(10)
     email_enseignant VARCHAR(100)
-);
-
-CREATE TABLE JURY(
-  --id_soutenance prymary key
-  date_jury VARCHAR(20),
-  heure_jury VARCHAR(5),
-  duree_jury INT
-  --duree en minute
 );
 
 
