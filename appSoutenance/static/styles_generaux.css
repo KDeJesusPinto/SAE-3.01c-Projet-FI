@@ -12,6 +12,7 @@ body{
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: 100vw;
     font-family: "Arimo", sans-serif;
     font-size: 30px;
     /*font-size: 4em;*/
@@ -24,7 +25,7 @@ h1{
     text-transform: uppercase;
     font-size: 2.5em;
     text-align: center;
-    /*letter-spacing: -4px;*/
+    letter-spacing: -0.04em;
     margin: 0;
 }
 
@@ -35,7 +36,7 @@ h2{
     text-transform: uppercase;
     font-size: 2em;
     text-align: center;
-    letter-spacing: -4px;
+    letter-spacing: -0.04em;
     margin: 0;
     white-space: nowrap !important;
 }
@@ -50,27 +51,29 @@ a{
 
 .glass{
     border-radius: 60px;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(7px);
-    background-color: rgba(255, 255, 255, 0.65);
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.55);
 
-    padding: 2% !important;
+    /*padding: 2% !important;*/
 }
 
-div.info_horizontal{
-    /*background-color: red;*/
-    display: flex;
-    column-gap: 100px;
-    padding: 20px;
-    align-items: center;
-    /*border: 2px black solid;*/
-}
-
-div.info_vertical{
+.petite_boite_verticale{
     /*background-color: red;*/
     display: flex;
     flex-direction: column;
-    row-gap: 100px;
+    padding: 10px;
+    align-items: center;
+    /*border: 2px black solid;*/
+    row-gap: 20px;
+    /*flex-wrap: wrap;*/
+}
+
+.boite_verticale{
+    /*background-color: red;*/
+    display: flex;
+    flex-direction: column;
+    row-gap: 50px;
     padding: 20px;
     align-items: center;
     justify-items: center;
@@ -78,18 +81,7 @@ div.info_vertical{
     /*flex-wrap: wrap;*/
 }
 
-div.boite_verticale{
-    /*background-color: red;*/
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    align-items: center;
-    /*border: 2px black solid;*/
-    row-gap: 20px;
-    /*flex-wrap: wrap;*/
-}
-
-div.boite_horizontale{
+.petite_boite_horizontale{
     /*background-color: red;*/
     display: flex;
     flex-direction: row;
@@ -101,7 +93,18 @@ div.boite_horizontale{
     /*flex-wrap: wrap;*/
 }
 
-div.info_horizontal p{
+.boite_horizontale{
+    /*background-color: red;*/
+    display: flex;
+    column-gap: 50px;
+    padding: 20px;
+    align-items: center;
+    /*border: 2px black solid;*/
+}
+
+/* ---------------- STYLES DES TEXTES ----------------*/
+
+div.petite_boite_horizontale p{
     margin: 0;
     text-align: center;
 }
@@ -110,17 +113,25 @@ div.info_horizontal p{
     white-space: nowrap;
 }
 
+/* ---------------- STYLES DES ICONES ----------------*/
+
 .grande_icone{
     font-size: 2em !important;
 }
 
+.petite_icone{
+    font-size: 1.4em !important;
+}
+
+/* ---------------- STYLES DES ÉLÉMENTS CLIQUABLES ----------------*/
+
 .petit_bouton{
-    padding: 30px;
+    padding: 15px;
     width: 100%;
 
     font-family: "Arimo", sans-serif;
 
-    border-radius: 30px;
+    border-radius: 20px;
     background-color: #242f53;
     color: white;
     text-align: center;
@@ -143,7 +154,7 @@ div#main_body{
     align-items: center;
     justify-content: center;
 
-    padding: calc(5vh + 200px) 0 200px;
+    padding: 150px 0 100px;
 }
 
 /*---------------- STYLES BARRE DE NAVIGATION ----------------*/
@@ -151,17 +162,20 @@ div#main_body{
 nav#barre_navigation{
     background-color: #a671b0;
     color: white;
-    padding: 20px;
+    padding: 15px;
     position: fixed;
     /*height: 2vh;*/
     width: 100%;
+    max-width: 100%;
     z-index: 2;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
 }
 
 nav#barre_navigation img{
-    height: 52px;
+    height: 45px;
 }
 
 nav#barre_navigation ul{
@@ -173,4 +187,12 @@ nav#barre_navigation ul{
 nav#barre_navigation li{
     list-style: none;
     /*color: white;*/
+}
+
+nav#barre_navigation p{
+    font-size: 0.7em;
+}
+
+nav#barre_navigation div{
+    padding: 0 !important;
 }

@@ -16,7 +16,7 @@ div#connexion{
 }
 
 div#connexion a{
-    padding: 40px 0;
+    padding: 15px 0;
     width: 70%;
 
     font-family: "Arimo", sans-serif;
@@ -32,8 +32,9 @@ div#buttons{
     width: 100%;
     display: flex;
     flex-direction: column;
-    row-gap: 70px;
+    row-gap: 40px;
     align-items: center;
+    justify-content: space-evenly;
 }
 
 /*---------------- POUR LES DÉMARCHES ----------------*/
