@@ -81,6 +81,15 @@ div.boite_horizontale p{
     text-align: center;
 }
 
+div.boite_H_info_V{
+    display: flex;
+    column-gap: 80px;
+    padding: 20px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .short{
     white-space: nowrap;
 }
@@ -98,7 +107,7 @@ div.boite_horizontale p{
 /* ---------------- STYLES DES ÉLÉMENTS CLIQUABLES ----------------*/
 
 .petit_bouton{
-    padding: 15px;
+    padding: 30px;
     width: 100%;
 
     font-family: "Arimo", sans-serif;
@@ -109,9 +118,32 @@ div.boite_horizontale p{
     text-align: center;
 }
 
+.petit_bouton_imp{
+    padding: 30px;
+    /*width: 300px;*/
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 30px;
+    background-color: #8f11bc;
+    color: white;
+    text-align: center;
+}
+
+div.bouton_horizontal{
+    /*background-color: red;*/
+    display: flex;
+    column-gap: 100px;
+    padding: 20px;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end;
+    /*border: 2px black solid;*/
+}
+
 .tooltip:hover::after{
     content: attr(data-tooltip);
-    background-color: red;
+    background-color: rgb(178, 185, 187);
     position: absolute;
    /* bottom: -1lh;*/
     visibility: visible;
@@ -163,8 +195,4 @@ nav#barre_navigation li{
 
 nav#barre_navigation p{
     font-size: 0.7em;
-}
-
-nav#barre_navigation div{
-    padding: 0 !important;
 }

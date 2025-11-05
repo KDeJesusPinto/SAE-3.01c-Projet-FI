@@ -20,17 +20,44 @@ def demarches():
 
 @app.route('/enseignant/')
 def accueil_enseignant():
-    return render_template("enseignant/accueil_enseignant.html", title="Accueil")
+    return render_template("prof/accueil_enseignant.html", title="Accueil")
 
 @app.route('/enseignant/liste+etu/')
 def liste_etu_enseignant():
-    return render_template("enseignant/lst_etudiants_enseignant.html", title="Liste des étudiants")
+    return render_template("prof/lst_etudiants_enseignant.html", title="Liste des étudiants")
 
-########################## POUR LES ADMINISTRATEURS ##########################
 
+#Pour page étudiants
+@app.route('/etudiant/')
+def accueil_etudiant():
+    return render_template("etudiant/accueil_etu.html", title="Accueil")
+
+
+
+#Pour page administrateur
 @app.route('/admin/')
 def accueil_admin():
     return render_template("admin/accueil_admin.html", accueil="accueil_admin", title="Accueil")
+
+@app.route('/admin/planning/')
+def planning_admin():
+    return render_template("admin/planning_admin.html", title="Plannng")
+
+@app.route('/admin/liste+enseignants/')
+def liste_ens_admin():
+    return render_template("admin/lst_enseignants_admin.html", title="Liste enseignants")
+
+@app.route('/admin/liste+etudiants/')
+def liste_etu_admin():
+    return render_template("admin/lst_etudiants_admin.html", title="Liste etudiants")
+
+@app.route('/admin/enseignant/')
+def detail_enseignant():
+    return render_template("admin/detail_enseignant.html", title="Detail de l'enseignant")
+
+@app.route('/admin/etudiant/')
+def detail_etudiant_admin():
+    return render_template("admin/detail_etudiant_admin.html", title="Detail de l'etudiant")
 
 
 
