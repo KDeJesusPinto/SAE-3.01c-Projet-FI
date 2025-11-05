@@ -108,7 +108,7 @@ div.boite_H_info_V{
 
 .petit_bouton{
     padding: 30px;
-    width: 100%;
+    /*width: 300px;*/
 
     font-family: "Arimo", sans-serif;
 
@@ -116,29 +116,6 @@ div.boite_H_info_V{
     background-color: #242f53;
     color: white;
     text-align: center;
-}
-
-.petit_bouton_imp{
-    padding: 30px;
-    /*width: 300px;*/
-
-    font-family: "Arimo", sans-serif;
-
-    border-radius: 30px;
-    background-color: #8f11bc;
-    color: white;
-    text-align: center;
-}
-
-div.bouton_horizontal{
-    /*background-color: red;*/
-    display: flex;
-    column-gap: 100px;
-    padding: 20px;
-    align-items: center;
-    width: 100%;
-    justify-content: flex-end;
-    /*border: 2px black solid;*/
 }
 
 .tooltip:hover::after{
@@ -195,4 +172,32 @@ nav#barre_navigation li{
 
 nav#barre_navigation p{
     font-size: 0.7em;
+}
+
+div#filtre_admin{
+    width: 50%;
+    padding: 20px;
+    display: flex;
+    margin-top: 150px;
+    gap: 20px;
+}
+
+select.petit_bouton2 {
+    font-size: 0.7em;
+}
+  
+.choix{
+    padding: 20px;
+    width: 100%;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 30px;
+    background-color: #242f53;
+    color: white;
+    text-align: left;
+}
+
+#soutenance{
+    width: 40%;
 }
