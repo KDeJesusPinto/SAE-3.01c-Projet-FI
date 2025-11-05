@@ -34,12 +34,12 @@ def demarches_etudiant():
     return render_template("etudiant/demarches.html", title="Mes démarches")
 
 @app.route('/etudiant/stage/')
-def stage_etudiant():
+def info_stage():
     return render_template("etudiant/info_stage_valide.html", title="Mon stage")
 
 @app.route('/etudiant/demarches/new/')
 def nouvelle_demarches_etudiant():
-    return render_template("etudiant/nouvelle_demarche.html", title="Nouvelle démarche")
+    return render_template("etudiant/nouvelle_demarches.html", title="Nouvelle démarche")
 
 @app.route('/etudiant/demarches/resume/')
 def resume_demarches_etudiant():
