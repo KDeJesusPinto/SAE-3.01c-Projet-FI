@@ -4,9 +4,20 @@ from flask import render_template, request, url_for , redirect
 @app.route('/')
 @app.route('/connexion/')
 def index():
-    return render_template("index.html", title="Soutenance - Connexion")
+    return render_template("index.html", title="Soutenance - Connexion", accueil="index")
 
-#Pour page enseignants
+########################## POUR LES ÉTUDIANTS ##########################
+
+@app.route('/etudiant/')
+def accueil_etudiant():
+    return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", prenom="Leni", nom="Doe", title="Accueil")
+
+@app.route('/etudiant/demarches/')
+def demarches():
+    return render_template("etudiant/demarches.html", accueil="accueil_etudiant")
+
+########################## POUR LES ENSEIGNANTS ##########################
+
 @app.route('/enseignant/')
 def accueil_enseignant():
     return render_template("enseignant/accueil_enseignant.html", title="Accueil")
@@ -15,18 +26,11 @@ def accueil_enseignant():
 def liste_etu_enseignant():
     return render_template("enseignant/lst_etudiants_enseignant.html", title="Liste des étudiants")
 
+########################## POUR LES ADMINISTRATEURS ##########################
 
-#Pour page étudiants
-@app.route('/etudiant/')
-def accueil_etudiant():
-    return render_template("etudiant/accueil_etu.html", title="Accueil")
-
-
-
-#Pour page administrateur
 @app.route('/admin/')
 def accueil_admin():
-    return render_template("admin/accueil_admin.html", title="Accueil")
+    return render_template("admin/accueil_admin.html", accueil="accueil_admin", title="Accueil")
 
 
 

@@ -1,4 +1,17 @@
+<!-- div.boite_horizontale, div.boite_verticale, div.info_horizontal, div.info_vertical -->
+
 {% extends "base.html" %}
+
+{% block navbar %}
+    <div class="info_horizontal">
+        <div class="boite_horizontale">
+            <p>{{ prenom }}<br>{{ nom }}</p>
+            <i class="fas fa-user-circle"></i>
+        </div>
+        <i class="fas fa-sign-out-alt"></i>
+    </div>
+{% endblock %}
+
 
 {% block content %}
     <div id="soutenance" class="glass">
