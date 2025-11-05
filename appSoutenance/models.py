@@ -147,13 +147,15 @@ class Etudiant(db.Model):
     id_etudiant = db.Column(db.Integer, primary_key = True)
     nom_etudiant = db.Column(db.String(100), nullable = False)
     prenom_etudiant = db.Column(db.String(100), nullable = False)
+    civilite_etudiant=db.Column(db.String(10))
     date_naissance = db.Column(db.Date, nullable = False)
-    telephone_etudiant = db.Column(db.String(15), nullable = True)
-    email_etudiant = db.Column(db.String(200), nullable = True)
+    telephone_etudiant = db.Column(db.String(15))
+    email_etudiant = db.Column(db.String(200))
 
-    def __init__(self, nom_etudiant, prenom_etudiant, date_naissance, telephone_etudiant = None, email_etudiant =None):
+    def __init__(self, nom_etudiant, prenom_etudiant, civilite_etudiant, date_naissance, telephone_etudiant = None, email_etudiant =None):
         self.nom_etudiant = nom_etudiant
         self.prenom_etudiant = prenom_etudiant
+        self.civilite_etudiant = civilite_etudiant
         self.date_naissance = date_naissance
         self.telephone_etudiant = telephone_etudiant
         self.email_etudiant = email_etudiant
@@ -182,11 +184,11 @@ class Promo(db.Model):
 
 class Appartenir(db.Model):
     id_etudiant = db.Column(db.Integer, db.ForeignKey("etudiant.id_etudiant"), primary_key = True)
-    etudiant = db.relationship("Etudiant", backref = db.backref("appartenir", lazy = "dynamic"))
-
-    nom_promo = db.Column(db.String(20), primary_key = True)
-    annee_promo = db.Column(db.String(20), primary_key = True)
-
+    etudiant = db.relationship("Etudiant", backref = db.backref(""), lazy = "dynamic")
+    
+    nom_promo = db.Column(db.String(100), primary_key = True)
+    annee_promo = db.Column(db.Integer, primary_key = True)
+    
     regime_etudiant = db.Column(db.String(100))
 
     def __init__(self, id_etudiant, nom_promo, annee_promo, regime_etudiant):
@@ -218,7 +220,7 @@ class Enseignant(db.Model):
 
 class Jury(db.Model):
     date_jury = db.Column(db.Date, primary_key = True)
-    heure_jury = db.Column(db.String(5))
+    h_jury = db.Column(db.String(5))
     duree_jury = db.Column(db.Integer)  # durée en minutes
     
     # 0,1
@@ -227,7 +229,7 @@ class Jury(db.Model):
 
     def __init__(self, date_jury, heure_jury, duree_jury, id_soutenance = None):
         self.date_jury = date_jury
-        self.heure_jury = heure_jury
+        self.h_jury = heure_jury
         self.duree_jury = duree_jury
         self.id_soutenance = id_soutenance
 

@@ -10,7 +10,6 @@ DROP TABLE IF EXISTS PROMO;
 DROP TABLE IF EXISTS ETUDIANT;
 DROP TABLE IF EXISTS ENSEIGNANT;
 DROP TABLE IF EXISTS ENTREPRISE;
-DROP TABLE IF EXISTS JURY;
 
 CREATE TABLE ENTREPRISE (
   PRIMARY KEY (id_entreprise),
@@ -92,8 +91,8 @@ CREATE TABLE PROMO (
 CREATE TABLE JURY (
   PRIMARY KEY (date_jury),
   date_jury     DATE NOT NULL,
-  heure_jury    VARCHAR(5),
-  duree_jury     INT,
+  h_jury        VARCHAR(5),
+  duree         INT,
   id_soutenance INT NULL,
   UNIQUE (id_soutenance)
 );
