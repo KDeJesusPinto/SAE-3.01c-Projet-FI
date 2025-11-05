@@ -72,7 +72,5 @@ def detail_etudiant_admin():
     return render_template("admin/detail_etudiant_admin.html", title="Detail de l'etudiant")
 
 
-
-
 if __name__== "__main__":
     app.run()
