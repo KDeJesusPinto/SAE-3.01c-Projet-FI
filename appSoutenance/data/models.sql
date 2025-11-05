@@ -64,6 +64,7 @@ CREATE TABLE ENSEIGNANT (
   id_enseignant     INT NOT NULL,
   nom_enseignant    VARCHAR(100),
   prenom_enseignant VARCHAR(100),
+  civilite_enseignant VARCHAR(10),
   email_enseignant  VARCHAR(200)
 );
 
@@ -71,8 +72,8 @@ CREATE TABLE STAGE (
   PRIMARY KEY (id_stage),
   id_stage    INT NOT NULL,
   typeS       VARCHAR(100),
-  date_debut  DATE,
-  date_fin    DATE,
+  date_debut  DATE NOT NULL,
+  date_fin    DATE NOT NULL,
   titre_stage VARCHAR(100),
   theme_stage VARCHAR(100),
   id_maitre   INT NULL,
@@ -85,15 +86,14 @@ CREATE TABLE PROMO (
   nom_promo       VARCHAR(100) NOT NULL,
   annee_promo     INT(4) NOT NULL,
   formation_promo VARCHAR(100),
-  id_enseignant   INT NULL,
-  directeur_etude INT
+  id_enseignant   INT NULL -- Directeur d'études
 );
 
 CREATE TABLE JURY (
   PRIMARY KEY (date_jury),
   date_jury     DATE NOT NULL,
-  h_debut       VARCHAR(5),
-  duree         VARCHAR(5),
+  heure_jury    VARCHAR(5),
+  duree_jury     INT,
   id_soutenance INT NULL,
   UNIQUE (id_soutenance)
 );
@@ -153,30 +153,3 @@ ALTER TABLE STAGE ADD FOREIGN KEY (id_maitre) REFERENCES MAITRE_STAGE (id_maitre
 
 ALTER TABLE TUTORER ADD FOREIGN KEY (id_etudiant) REFERENCES ETUDIANT (id_etudiant);
 ALTER TABLE TUTORER ADD FOREIGN KEY (id_enseignant) REFERENCES ENSEIGNANT (id_enseignant);
-
-CREATE TABLE PROMO(
-    nom_promo VARCHAR(50) PRIMARY KEY,
-    annee_promo VARCHAR(20) PRIMARY KEY,
-    formation_promo VARCHAR(20)
-);
-
-CREATE TABLE ENSEIGNANT(
-    id_enseignant INT PRIMARY KEY,
-    nom_enseignant VARCHAR(20),
-    prenom_enseignant VARCHAR(20),
-    civilite_enseignant VARCHAR(10),
-    email_enseignant VARCHAR(100)
-);
-
-CREATE TABLE JURY(
-  --id_soutenance prymary key
-  date_jury VARCHAR(20),
-  heure_jury VARCHAR(5),
-  duree_jury INT
-  --duree en minute
-);
-
-
-ALTER TABLE DEMARCHE ADD FOREIGN KEY (id_entreprise) REFERENCES ENTREPRISE(id_entreprise);
--- ALTER TABLE DEMARCHE ADD FOREIGN KEY (id_etudiant) REFERENCES ETUDIANT(id_etudiant);
-ALTER TABLE STAGE ADD FOREIGN KEY (id_demarche) REFERENCES DEMARCHE(id_demarche);

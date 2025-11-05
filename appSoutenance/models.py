@@ -4,14 +4,14 @@ class Entreprise(db.Model):
     id_entreprise = db.Column(db.Integer, primary_key = True)
     nom_entreprise = db.Column(db.String(200), nullable = False)
     secteur = db.Column(db.String(200), nullable = False)
-    adresse = db.Column(db.String(300), nullable = False)
-    code_postal = db.Column(db.String(5), nullable = False)
     ville = db.Column(db.String(100), nullable = False)
+    adresse = db.Column(db.String(200), nullable = False)
+    code_postal = db.Column(db.String(5), nullable = False)
     typeE = db.Column(db.String(100), nullable = False)
     tel_entreprise = db.Column(db.String(15))
     email_entreprise = db.Column(db.String(200))
 
-    def __init__(self, nom_entreprise, secteur, adresse, code_postal, ville, typeE, tel_entreprise = None, email_entreprise = None):
+    def __init__(self, nom_entreprise, secteur, ville, adresse, code_postal, typeE, tel_entreprise = None, email_entreprise = None):
         self.nom_entreprise = nom_entreprise
         self.secteur = secteur
         self.adresse = adresse
@@ -65,12 +65,10 @@ class Demarche(db.Model):
 class Stage(db.Model):
     id_stage = db.Column(db.Integer, primary_key = True)
     typeS = db.Column(db.String(100), nullable = False)
-    duree = db.Column(db.Integer, nullable = False)
     date_debut = db.Column(db.Date, nullable = False)
-    sujet = db.Column(db.String(300), nullable = False)
-    description = db.Column(db.String(500))
-    competence = db.Column(db.String(200))
-    revenu = db.Column(db.Float)
+    date_fin = db.Column(db.Date, nullable = False)
+    titre_stage = db.Column(db.String(100))
+    theme_stage = db.Column(db.String(100))
 
     # 1,1
     id_demarche = db.Column(db.Integer, db.ForeignKey("demarche.id_demarche"), unique = True, nullable = False)
@@ -81,21 +79,21 @@ class Stage(db.Model):
     maitre_stage = db.relationship("MaitreStage", backref = db.backref("stage", lazy = "select", uselist = False))
 
     # 0,1
-    id_soutenance = db.Column(db.Integer, db.ForeignKey("soutenance.id_soutenance"), unique = True, nullable = True)
-    soutenance = db.relationship("Soutenance", backref = db.backref("stage_rel", lazy = "select", uselist = False))
+    # id_soutenance = db.Column(db.Integer, db.ForeignKey("soutenance.id_soutenance"), unique = True, nullable = True)
+    # soutenance = db.relationship("Soutenance", backref = db.backref("stage", lazy = "select", uselist = False))
 
-    def __init__(self, typeS, duree, date_debut, sujet, id_demarche, description = None, competence = None, revenu = None):
+    def __init__(self, typeS, date_debut, date_fin, titre_stage, theme_stage, id_demarche, id_maitre = None, id_soutenance = None):
         self.typeS = typeS
-        self.duree = duree
         self.date_debut = date_debut
-        self.sujet = sujet
+        self.date_fin = date_fin
+        self.titre_stage = titre_stage
+        self.theme_stage = theme_stage
         self.id_demarche = id_demarche
-        self.description = description
-        self.competence = competence
-        self.revenu = revenu
+        self.id_maitre = id_maitre
+        self.id_soutenance = id_soutenance
 
     def __repr__(self):
-        return f"<Stage {self.sujet} de type {self.typeS} débutant le {self.date_debut} pour une durée de {self.duree} semaines>"
+        return f"<Stage {self.titre_stage} de type {self.typeS} débutant le {self.date_debut} et se terminant le {self.date_fin}>"
 
 
 class MaitreStage(db.Model):
@@ -133,10 +131,10 @@ class Soutenance(db.Model):
     # 1,1
     id_stage = db.Column(db.Integer, db.ForeignKey("stage.id_stage"), unique = True, nullable = False)
 
-    def __init__(self, salle, nom_bat, date, h_debut, h_fin, id_stage):
+    def __init__(self, salle, nom_bat, dateS, h_debut, h_fin, id_stage):
         self.salle = salle
         self.nom_bat = nom_bat
-        self.date = date
+        self.dateS = dateS
         self.h_debut = h_debut
         self.h_fin = h_fin
         self.id_stage = id_stage
@@ -146,30 +144,32 @@ class Soutenance(db.Model):
 
     
 class Etudiant(db.Model):
-    id_etudiant=db.Columm(db.Integer,primary_key=True)
-    nom_etudiant=db.Column(db.String(20),nullable=False)
-    prenom_etudiant=db.Column(db.String(20),nullable=False)
-    civilite_etudiant=db.Column(db.String(10))
-    date_naissance=db.Column(db.String(20),nullable=False)
-    telephone_etudiant=db.Column(db.String(10))
-    email_etudiant=db.Column(db.String(100))
+    id_etudiant = db.Column(db.Integer, primary_key = True)
+    nom_etudiant = db.Column(db.String(100), nullable = False)
+    prenom_etudiant = db.Column(db.String(100), nullable = False)
+    date_naissance = db.Column(db.Date, nullable = False)
+    telephone_etudiant = db.Column(db.String(15), nullable = True)
+    email_etudiant = db.Column(db.String(200), nullable = True)
 
-    def _init_(self,id_etudiant,nom_etudiant,prenom_etudiant,civilite_etudiant,date_naissance,telephone_etudiant,email_etudiant):
-        self.id_etudiant=id_etudiant
-        self.nom_etudiant=nom_etudiant
-        self.prenom_etudiant=prenom_etudiant
-        self.civilite_etudiant=civilite_etudiant
-        self.date_naissance=date_naissance
-        self.telephone_etudiant=telephone_etudiant
-        self.email_etudiant=email_etudiant
+    def __init__(self, nom_etudiant, prenom_etudiant, date_naissance, telephone_etudiant = None, email_etudiant =None):
+        self.nom_etudiant = nom_etudiant
+        self.prenom_etudiant = prenom_etudiant
+        self.date_naissance = date_naissance
+        self.telephone_etudiant = telephone_etudiant
+        self.email_etudiant = email_etudiant
     
-    def _repr_(self):
-        return f"Etudiant :{self.nom_etudiant} {self.prenom_etudiant} nait le {self.date_naissance} contact: {self.email_etudiant} {self.telephone_etudiant}"
-    
+    def __repr__(self):
+        return f"<Etudiant {self.nom_etudiant} {self.prenom_etudiant}>"
+
+
 class Promo(db.Model):
-    nom_promo = db.Column(db.String(50), primary_key = True)
-    annee_promo = db.Column(db.String(20), primary_key = True)
-    formation_promo = db.Column(db.String(20), nullable = False)
+    nom_promo = db.Column(db.String(100), primary_key = True)
+    annee_promo = db.Column(db.Integer, primary_key = True)
+    formation_promo = db.Column(db.String(100), nullable = False)
+
+    # 0,1
+    id_enseignant = db.Column(db.Integer, db.ForeignKey("enseignant.id_enseignant"), nullable = True)
+    enseignant = db.relationship("Enseignant", backref = db.backref("promos", lazy = "select"))
 
     def __init__(self, nom_promo, annee_promo, formation_promo):
         self.nom_promo = nom_promo
@@ -181,54 +181,85 @@ class Promo(db.Model):
 
 
 class Appartenir(db.Model):
-    id_etudiant=db.Columm(db.Integer,db.ForeignKey("etudiant.id_etudiant"),primary_key=True)
-    etudiant=db.relationship("Etudiant",backref=db.backref(""),lazy="dynamic")
-    nom_promo=db.Column(db.String(20),primary_key=True)
-    annee_promo=db.Column(db.String(20),primary_key=True)
-    regime_etudiant=db.Column(db.String(20))
+    id_etudiant = db.Column(db.Integer, db.ForeignKey("etudiant.id_etudiant"), primary_key = True)
+    etudiant = db.relationship("Etudiant", backref = db.backref("appartenir", lazy = "dynamic"))
 
-    def _init_(self,id_etudiant,nom_promo,annee_promo,regime_etudiant):
-        self.id_etudiant=id_etudiant
-        self.nom_promo=nom_promo
-        self.annee_promo=annee_promo
-        self.regime_etudiant=regime_etudiant
-    
-    def _repr_(self):
-        return f"etudiant : {self.id_etudiant} appatient a {self.nom_promo} en {self.annee_promo}"
+    nom_promo = db.Column(db.String(20), primary_key = True)
+    annee_promo = db.Column(db.String(20), primary_key = True)
+
+    regime_etudiant = db.Column(db.String(100))
+
+    def __init__(self, id_etudiant, nom_promo, annee_promo, regime_etudiant):
+        self.id_etudiant = id_etudiant
+        self.nom_promo = nom_promo
+        self.annee_promo = annee_promo
+        self.regime_etudiant = regime_etudiant
+
+    def __repr__(self):
+        return f"<Etudiant : {self.id_etudiant} appartient a {self.nom_promo} en {self.annee_promo}>"
+
 
 class Enseignant(db.Model):
-    id_enseignant=db.Columm(db.Integer,primary_key=True)
-    nom_enseignant=db.Column(db.String(20))
-    prenom_enseignant=db.Column(db.String(20))
-    civilite_enseignant=db.Column(db.Sting(10))
-    email_enseignant=db.Coluln(db.String(100))
+    id_enseignant = db.Column(db.Integer, primary_key = True)
+    nom_enseignant = db.Column(db.String(100))
+    prenom_enseignant = db.Column(db.String(100))
+    civilite_enseignant = db.Column(db.String(10))
+    email_enseignant = db.Column(db.String(200))
 
-    def _init_(self,id,nom,prenom,civilite,email):
-        self.id_enseignant=id
-        self.nom_enseignant=nom
-        self.prenom_enseignant=prenom
-        self.civilite_enseignant=civilite
-        self.email_enseignant=email
+    def __init__(self, nom, prenom, civilite, email):
+        self.nom_enseignant = nom
+        self.prenom_enseignant = prenom
+        self.civilite_enseignant = civilite
+        self.email_enseignant = email
 
-    def _repr_(self):
-        return f"Enseignant : {self.id_enseignant} {self.civilite_enseignant} {self.nom_enseignant} {self.prenom_enseignant} {self.email_enseignant}"
+    def __repr__(self):
+        return f"<Enseignant : {self.id_enseignant} {self.civilite_enseignant} {self.nom_enseignant} {self.prenom_enseignant} {self.email_enseignant}>"
+
 
 class Jury(db.Model):
-    id_soutenance = db.Column(db.Integer, primary_key = True)
-    date_jury=db.Column(db.String(20),primary_key=True)
-    heure_jury=db.Column(db.String(20))
-    duree_jury=db.Column(db.INteger)
-    #duree en minute
-
-    def _init_(self,id_soutenance,date,heure,duree):
-        self.id_soutenance=id_soutenance
-        self.date_jury=date
-        self.heure_jury=heure
-        self.duree_jury=duree
+    date_jury = db.Column(db.Date, primary_key = True)
+    heure_jury = db.Column(db.String(5))
+    duree_jury = db.Column(db.Integer)  # durée en minutes
     
-    def _repr_(self):
-        return f"Le jury pour la soutenance {self.id_soutenance} le {self.date_jury} a {self.heure_jury} pendant {self.duree_jury}"
+    # 0,1
+    id_soutenance = db.Column(db.Integer, db.ForeignKey("soutenance.id_soutenance"), unique = True, nullable = True)
+    soutenance = db.relationship("Soutenance", backref = db.backref("jury", lazy = "select", uselist = False))
 
+    def __init__(self, date_jury, heure_jury, duree_jury, id_soutenance = None):
+        self.date_jury = date_jury
+        self.heure_jury = heure_jury
+        self.duree_jury = duree_jury
+        self.id_soutenance = id_soutenance
+
+    def __repr__(self):
+        return f"<Le jury pour la soutenance {self.id_soutenance} le {self.date_jury} a {self.heure_jury} pendant {self.duree_jury} minutes>"
+
+
+class Composer(db.Model):
+    # 0,N
+    id_enseignant = db.Column(db.Integer, db.ForeignKey("enseignant.id_enseignant"), primary_key=True)
+    enseignant = db.relationship("Enseignant", backref = db.backref("compositions", lazy = "dynamic"))
     
-        
-#penser à crée des constructeur alternatif 
+    # 0,N
+    id_soutenance = db.Column(db.Integer, db.ForeignKey("soutenance.id_soutenance"), primary_key=True)
+    soutenance = db.relationship("Soutenance", backref = db.backref("compositions", lazy = "dynamic"))
+
+    def __init__(self, id_enseignant, id_soutenance):
+        self.id_enseignant = id_enseignant
+        self.id_soutenance = id_soutenance
+
+
+class Tutorer(db.Model):
+    annee = db.Column(db.Integer)
+    # 0,N
+    id_enseignant = db.Column(db.Integer, db.ForeignKey("enseignant.id_enseignant"), primary_key = True)
+    enseignant = db.relationship("Enseignant", backref=db.backref("tutorats", lazy = "dynamic"))
+
+    # 0,N
+    id_etudiant = db.Column(db.Integer, db.ForeignKey("etudiant.id_etudiant"), primary_key = True)
+    etudiant = db.relationship("Etudiant", backref=db.backref("tutorats", lazy = "dynamic"))
+
+    def __init__(self, id_enseignant, id_etudiant, annee):
+        self.id_enseignant = id_enseignant
+        self.id_etudiant = id_etudiant
+        self.annee = annee
