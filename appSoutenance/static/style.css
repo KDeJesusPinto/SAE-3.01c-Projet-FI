@@ -215,6 +215,18 @@ div#demarches div.glass h2{
     text-align: left;
 }
 
+.choix{
+    padding: 20px;
+    width: 100%;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 30px;
+    background-color: #242f53;
+    color: white;
+    text-align: left;
+}
+
 #soutenance{
     width: 40%;
 }

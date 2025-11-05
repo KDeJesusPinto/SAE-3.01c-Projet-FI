@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "prof/base_enseignant.html" %}
 
 {% block content %}
     <div id="soutenance" class="glass">
@@ -15,6 +15,49 @@
             <div class="info_horizontal">
                 <i class="fas fa-users grande_icone"></i>
                 <p>Mr Arsouze (tuteur), Mr Lorem, Mme Ipsum</p>
+            </div>
+        </div>
+    </div>
+    <div class="info_vertical">
+        <div class="info_horizontal">
+            <h1>Tutorés</h1>
+            <select name="filtre" id="filtre_accueil_enseignant" class="choix">
+                <option value="Filtres">Filtres</option>
+            </select>
+            <img src="{{ url_for('static', filename = 'images/icon_recherche_temporaire.png') }} "width="100" alt="filtre">
+            <div class="info_vertical">
+            </div>
+        </div>
+        <div class="info_horizontal">
+            <div class="info_vertical">
+                <div class="info_horizontal">
+                    <h1>Planning</h1>
+                    <select name="filtre_planning1" id="filtre_planning_personel_enseignant" class="choix">
+                        <option value="Personnel">Filtres</option>
+                    </select>
+                    <select name="filtre_planning2" id="filtre_planning_annee_enseignant" class="choix">
+                        <option value="3éme année">Filtres</option>
+                    </select>
+                </div>
+            </div>
+            <div class="info_vertical">
+                <div class="info_horizontal">
+                    <h1>soutenance des BUT3</h1>
+                </div>
+                <div class="info_horizontal">
+                    <div class="glass">
+                    <h1>soutenance posées</h1>
+                        <div class="info_vertical">
+                            <img src="{{ url_for('static', filename = 'images/.png') }} " alt="next">
+                        </div>
+                    </div>
+                    <div class="glass">
+                        <div class="info_vertical">
+                            <h1>soutenance en candide choisies</h1>
+                            <img src="{{ url_for('static', filename = 'images/.png') }} " alt="next">
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
