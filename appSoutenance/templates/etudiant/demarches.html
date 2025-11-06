@@ -15,7 +15,7 @@
     <div class="boite_verticale demarches">
         <div class="boite_horizontale">
             <h1>Mes démarches</h1>
-            <a href="{{ url_for('nouvelle_demarches_etudiant') }}"><i class="fas fa-plus-circle grande_icone"></i></a>        
+            <a href="{{ url_for('nouvelle_demarche1') }}"><i class="fas fa-plus-circle grande_icone"></i></a>        
         </div>
         {% for (num, infos) in liste_dem.items() %}
             <div class="glass boite_horizontale">
@@ -33,7 +33,7 @@
                     <span class="tooltip short" data-tooltip="État : {{ infos[2] }}">État : {{ infos[2] }}</span>
                 </div>
                 <div class="boite_verticale">
-                    <a href="{{ url_for('resume_demarches_etudiant') }}" class="petit_bouton">Résumé</a>
+                    <a href="{{ url_for('resume_demarche_etudiant') }}" class="petit_bouton">Résumé</a>
                     <a href="" class="petit_bouton">Modifier</a>
                 </div>
             </div>
