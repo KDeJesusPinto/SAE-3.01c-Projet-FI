@@ -18,6 +18,7 @@ def accueil_etudiant():
         12:["IUT'O", 256, 'validé'],
         9:["Cognosphère", 10, 'convention signée']
     }
+    lst_demarches = sorted(list(lst_demarches.items()), reverse=True)[:2]
     return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", prenom="Leni", nom="Doe", title="Accueil", liste_dem=lst_demarches)
 
 @app.route('/etudiant/demarches/')
@@ -97,4 +98,13 @@ def liste_etu_admin():
     return render_template("admin/lst_etudiants_admin.html", accueil="accueil_admin", title="Liste etudiants")
 
 if __name__== "__main__":
+    #lst_demarches = {
+    #    15:["Google", 2, 'refusé'],
+    #    1:["Microsoft", 8, 'validé'],
+    #    2:["Ubisoft", 9, 'en attente de validation'],
+    #    11:["Apple", 10, 'convention signée'],
+    #    12:["IUT'O", 256, 'validé'],
+    #    9:["Cognosphère", 10, 'convention signée']
+    #}
+    #print(lst_demarches.keys())
     app.run()

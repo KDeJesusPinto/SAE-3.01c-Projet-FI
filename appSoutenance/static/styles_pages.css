@@ -44,6 +44,11 @@ div.demarches div.boite_horizontale:first-child{
     padding-left: 0;
 }
 
+div.demarches div.boite_horizontale{
+    justify-content: space-between;
+    box-sizing: content-box;
+}
+
 div.demarches div.glass{
     width: 100%;
 }

@@ -103,6 +103,10 @@ div.boite_H_info_V{
 
 .short{
     white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 220px;
+    overflow: hidden;
+    text-align: center;
 }
 
 /* ---------------- STYLES DES ICONES ----------------*/
@@ -173,7 +177,7 @@ div.bouton_horizontal{
     content: attr(data-tooltip);
     background-color: rgb(178, 185, 187);
     position: absolute;
-    /*left: -50px;*/
+    right: 16%;
     font-size: 0.7em;
 }
 
@@ -234,6 +238,10 @@ nav#barre_navigation p{
 
 nav#barre_navigation div{
     padding: 0;
+}
+
+nav#barre_navigation a{
+    color: white;
 }
 
 div#filtre_admin{
