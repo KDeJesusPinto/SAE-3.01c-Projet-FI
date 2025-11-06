@@ -93,6 +93,8 @@ class Stage(db.Model):
     typeS = db.Column(db.String(100), nullable=False)
     date_debut = db.Column(db.Date, nullable=False)
     date_fin = db.Column(db.Date, nullable=False)
+    duree_stage = db.Column(db.Integer)
+    unite_duree = db.Column(db.String(50))
     titre_stage = db.Column(db.String(100))
     theme_stage = db.Column(db.String(100))
 
@@ -256,8 +258,8 @@ class Appartenir(db.Model):
                             db.ForeignKey("etudiant.id_etudiant"),
                             primary_key=True)
     etudiant = db.relationship("Etudiant",
-                               backref=db.backref(""),
-                               lazy="dynamic")
+                               backref=db.backref("appartenirs",
+                               lazy="joined"))
 
     nom_promo = db.Column(db.String(100), primary_key=True)
     annee_promo = db.Column(db.Integer, primary_key=True)
@@ -292,7 +294,8 @@ class Enseignant(db.Model):
 
 
 class Jury(db.Model):
-    date_jury = db.Column(db.Date, primary_key=True)
+    id_jury = db.Column(db.Integer, primary_key=True)
+    date_jury = db.Column(db.Date)
     h_jury = db.Column(db.String(5))
     duree_jury = db.Column(db.Integer)  # durée en minutes
 

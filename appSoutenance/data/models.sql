@@ -11,6 +11,8 @@ DROP TABLE IF EXISTS ETUDIANT;
 DROP TABLE IF EXISTS ENSEIGNANT;
 DROP TABLE IF EXISTS ENTREPRISE;
 
+use appsoutenance;
+
 CREATE TABLE ENTREPRISE (
   PRIMARY KEY (id_entreprise),
   id_entreprise    INT NOT NULL,
@@ -19,7 +21,7 @@ CREATE TABLE ENTREPRISE (
   ville            VARCHAR(100),
   adresse          VARCHAR(200),
   code_postal      VARCHAR(5),
-  typeE            VARCHAR(100),
+  typeE            VARCHAR(100), 
   tel_entreprise   VARCHAR(15),
   email_entreprise VARCHAR(200)
 );
@@ -29,6 +31,7 @@ CREATE TABLE ETUDIANT(
     nom_etudiant VARCHAR(100) NOT NULL,
     prenom_etudiant VARCHAR(100) NOT NULL,
     date_naissance DATE NOT NULL,
+    civilite_etudiant VARCHAR(10),
     telephone_etudiant VARCHAR(15),
     email_etudiant VARCHAR(200) 
 );
@@ -53,6 +56,7 @@ CREATE TABLE MAITRE_STAGE (
   id_maitre     INT NOT NULL,
   nom_maitre    VARCHAR(100),
   prenom_maitre VARCHAR(100),
+  civilite_maitre VARCHAR(10),
   tel_maitre    VARCHAR(15),
   email_maitre  VARCHAR(200),
   id_entreprise INT NOT NULL
@@ -73,8 +77,10 @@ CREATE TABLE STAGE (
   typeS       VARCHAR(100),
   date_debut  DATE NOT NULL,
   date_fin    DATE NOT NULL,
-  titre_stage VARCHAR(100),
-  theme_stage VARCHAR(100),
+  duree_stage INT,
+  unite_duree VARCHAR(50),
+  titre_stage VARCHAR(2000),
+  theme_stage VARCHAR(2000),
   id_maitre   INT NULL,
   id_demarche INT NOT NULL,
   UNIQUE (id_demarche)
@@ -89,10 +95,11 @@ CREATE TABLE PROMO (
 );
 
 CREATE TABLE JURY (
-  PRIMARY KEY (date_jury),
+  PRIMARY KEY (id_jury),
+  id_jury       INT NOT NULL,
   date_jury     DATE NOT NULL,
   h_jury        VARCHAR(5),
-  duree         INT,
+  duree_jury         INT,
   id_soutenance INT NULL,
   UNIQUE (id_soutenance)
 );
