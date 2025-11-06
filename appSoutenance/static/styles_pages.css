@@ -60,3 +60,74 @@ div#boutons_extreme_droite{
     justify-content: flex-end;
     box-sizing: border-box;
 }*/
+
+/*---------------- POUR LA PAGE D'ACCUEIL ADMIN ----------------*/
+
+.bouton_nav{
+    font-size: 1.4em;
+    padding: 10px 15px;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 20px;
+    color: white;
+    text-align: center;
+}
+
+#nav_admin {
+    margin-right: auto;
+    justify-content: flex-start;
+}
+
+button#voir{
+    font-size: 1.5em;
+    font-family: "Arimo", sans-serif;
+    border-radius: 80px;
+}
+
+button#infos{
+    font-size: 1.8em;
+    font-family: "Arimo", sans-serif;
+    border-radius: 40px;
+}
+
+button#importer, button#exporter{
+    font-size: 1.6em;
+    padding: 40px;
+    margin: 20px;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 40px;
+}
+
+div#boite{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    margin: 30px;
+    width: 600px;
+    height: 400px;
+}
+
+h1#donnees_eleves, h1#donnees_professeurs {
+    white-space: nowrap;
+    font-family: "Bebas Neue", sans-serif;
+}
+
+p#texte_admin {
+    font-size: 2em;
+    font-family: "Bebas Neue", sans-serif;
+    margin-top: 20px;
+}
+
+#texte_admin button{
+    margin-top: 15px;
+    font-size: 0.5em;
+}
+
+div#contenu_admin {
+    align-items: center;
+    font-size: 1.2em;
+}

@@ -76,6 +76,14 @@ a{
 
 /* ---------------- STYLES DES TEXTES ----------------*/
 
+#titre_page {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 3em;
+    font-family: "Arimo", sans-serif;
+}
+
 div.boite_horizontale p{
     margin: 0;
     text-align: center;
@@ -176,15 +184,13 @@ nav#barre_navigation p{
 }
 
 div#filtre_admin{
-    width: 50%;
+    width: 20%;
     padding: 20px;
     display: flex;
-    margin-top: 150px;
+    position: fixed;
+    top: 250px;
     gap: 20px;
-}
-
-select.petit_bouton2 {
-    font-size: 0.7em;
+    justify-content: center;
 }
   
 .choix{
@@ -197,4 +203,20 @@ select.petit_bouton2 {
     background-color: #242f53;
     color: white;
     text-align: left;
+}
+
+/* ---------------- STYLES DES COMBOBOX ----------------*/
+
+select.combobox {
+    font-size: 1.5em;
+    padding: 30px;
+    width: 500px;
+    margin: 30px;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 80px;
+    background-color: #a671b0;
+    color: white;
+    text-align: center;
 }

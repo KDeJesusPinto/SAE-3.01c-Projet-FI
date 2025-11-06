@@ -1,21 +1,80 @@
 {% extends "base.html" %}*
 
 {% block navbar %}
-    <a href="{{ url_for('planning_admin') }}" class="bouton_nav">Soutenances</a>
-    <a href="{{ url_for('liste_etu_admin') }}" class="bouton_nav">Etudiants</a>
-    <a href="{{ url_for('liste_ens_admin') }}" class="bouton_nav">Enseignants</a>
+    <div class="boite_horizontale" id="nav_admin">
+        <a href="{{ url_for('planning_admin') }}" class="bouton_nav">Soutenances</a>
+        <a href="{{ url_for('liste_etu_admin') }}" class="bouton_nav">Etudiants</a>
+        <a href="{{ url_for('liste_ens_admin') }}" class="bouton_nav">Enseignants</a>
+    </div>
+    <div id="titre_page"><p>Accueil Admin</p></div>
+    <div class="boite_horizontale">
+        <div class="boite_horizontale">
+            <p>{{ prenom }}<br>{{ nom }}</p>
+            <i class="fas fa-user-circle petite_icone"></i>
+        </div>
+        <i class="fas fa-sign-out-alt petite_icone"></i>
+    </div>
 {% endblock %}
 
 {% block content %}
     <div class="glass" id="filtre_admin">
-        <select class="petit_bouton2" name="Formation" id="formation">
+        <select class="combobox" name="Formation" id="formation">
             <option value="Info">Informatique</option>
-            <option value="Physique">Physique</option>
+            <option value="Chimie">Chimie</option>
             <option value="GEA">GEA</option>
         </select>
-        <select class="petit_bouton2" name="Année" id="annee">
+        <select class="combobox" name="Année" id="annee">
             <option value="2A">2ème année</option>
             <option value="3A">3ème année</option>
         </select>
+    </div>
+
+
+
+    <div class="boite_verticale" id="contenu_admin">
+        <div class="boite_verticale">
+            <div class="boite_horizontale">
+                <h1 id="donnees_eleves"><strong>DONNÉES ÉLÈVES</strong></h1>
+                <select class="combobox" name="Année" id="annee">
+                    <option value="2A">2ème année</option>
+                    <option value="3A">3ème année</option>
+                </select>
+                <button class="petit_bouton" id="voir">Voir tous les étudiants</button>
+            </div>
+            <div class="boite_horizontale">
+                <div class="glass" id="boite">
+                    <p id="texte_admin">STAGE TROUVE :<br>99/100<br><button class="petit_bouton" id="infos">Infos</button></p>
+                </div>
+                <div class="glass" id="boite">
+                    <p id="texte_admin">SOUTENANCE ALTERNANT PRÉVU :<br>3/5<br><button class="petit_bouton" id="infos">Infos</button>
+                    </p>
+                    
+                </div>
+            </div>
+        </div>
+
+
+        <div class="boite_verticale">
+            <div class="boite_horizontale">
+                <h1 id="donnees_professeurs"><strong>DONNÉES PROFESSEURS</strong></h1>
+                <select class="combobox" name="Année" id="annee">
+                    <option value="2A">2ème année</option>
+                    <option value="3A">3ème année</option>
+                </select>
+                <button class="petit_bouton" id="voir">Voir tous les enseignants</button>
+            </div>
+            <div class="boite_horizontale">
+                <div class="glass" id="boite">
+                    <p id="texte_admin">SOUTENANCES POSÉES PAR TUTEUR :<br>8/65<br><button class="petit_bouton" id="infos">Infos</button></p>
+                </div>
+                <div class="glass" id="boite">
+                    <p id="texte_admin">SOUTENANCE EN ATTENTE DE CANDIDE :<br>7/8<br><button class="petit_bouton" id="infos">Infos</button></p>
+                </div>
+            </div>
+        </div>
+        <div class="boite_horizontale">
+            <button class="petit_bouton" id="importer">Importer csv</button>
+            <button class="petit_bouton" id="exporter">Exporter csv</button>
+        </div>
     </div>
 {% endblock %}
