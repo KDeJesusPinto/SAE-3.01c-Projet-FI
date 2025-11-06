@@ -107,6 +107,7 @@ div.boite_H_info_V{
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .short{
@@ -138,15 +139,16 @@ div.boite_H_info_V{
 }
 
 .petit_bouton_imp{
-    padding: 30px;
+    padding: 15px;
     /*width: 300px;*/
 
     font-family: "Arimo", sans-serif;
 
-    border-radius: 30px;
+    border-radius: 20px;
     background-color: #8f11bc;
     color: white;
     text-align: center;
+    text-wrap: nowrap;
 }
 
 .petit_bouton:hover{
@@ -173,6 +175,7 @@ div.bouton_horizontal{
     align-items: center;
     width: 100%;
     justify-content: flex-end;
+    box-sizing: border-box;
     /*border: 2px black solid;*/
 }
 
