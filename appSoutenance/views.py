@@ -10,11 +10,27 @@ def index():
 
 @app.route('/etudiant/')
 def accueil_etudiant():
-    return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", prenom="Leni", nom="Doe", title="Accueil")
+    lst_demarches = {
+        15:["Google", 2, 'refusé'],
+        1:["Microsoft", 8, 'validé'],
+        2:["Ubisoft", 9, 'en attente de validation'],
+        11:["Apple", 10, 'convention signée'],
+        12:["IUT'O", 256, 'validé'],
+        9:["Cognosphère", 10, 'convention signée']
+    }
+    return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", prenom="Leni", nom="Doe", title="Accueil", liste_dem=lst_demarches)
 
 @app.route('/etudiant/demarches/')
-def demarches_etudiant():
-    return render_template("etudiant/demarches.html", accueil="accueil_etudiant", title="Mes démarches")
+def demarches():
+    lst_demarches = {
+        15:["Google", 2, 'refusé'],
+        1:["Microsoft", 8, 'validé'],
+        2:["Ubisoft", 9, 'en attente de validation'],
+        11:["Apple", 10, 'convention signée'],
+        12:["IUT'O", 256, 'validé'],
+        9:["Cognosphère", 10, 'convention signée']
+    }
+    return render_template("etudiant/demarches.html", accueil="accueil_etudiant", title="Mes démarches", liste_dem=lst_demarches)
 
 @app.route('/etudiant/stage/')
 def info_stage():
