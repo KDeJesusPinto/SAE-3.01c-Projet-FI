@@ -21,7 +21,7 @@
     <div class="info_vertical" id="demarches">
         <div class="info_horizontal">
             <h1>Mes démarches</h1>
-            <a href=""><i class="fas fa-plus-circle grande_icone"></i></a>        
+            <a href="{{ url_for('nouvelle_demarche1') }}"><i class="fas fa-plus-circle grande_icone"></i></a>        
         </div>
         <div class="glass info_horizontal">
             <h2>Démarche n°15</h2>
@@ -38,7 +38,7 @@
                 <span class="tooltip short" data-tooltip="État : refusé">État : refusé</span>
             </div>
             <div class="boite_verticale">
-                <a href="{{ url_for('resume_demarches_etudiant') }}" class="petit_bouton">Résumé</a>
+                <a href="{{ url_for('resume_demarche_etudiant') }}" class="petit_bouton">Résumé</a>
                 <a href="" class="petit_bouton">Modifier</a>
             </div>
         </div>

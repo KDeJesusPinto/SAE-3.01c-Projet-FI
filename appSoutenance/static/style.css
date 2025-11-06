@@ -95,6 +95,12 @@ a{
     cursor: url(images/cursor.png), pointer;
 }
 
+.img_chargement{
+    display: flex;
+    justify-self: center;
+    width: 75%;
+}
+
 div#connexion a{
     padding: 40px 0;
     width: 70%;
@@ -191,6 +197,10 @@ div.boite_H_info_V{
     text-align: center;
 }
 
+.petit_bouton:hover{
+    background: #a671b0;
+}
+
 .bouton_nav{
     padding: 30px;
     width: 100%;
@@ -201,6 +211,7 @@ div.boite_H_info_V{
     background-color: #a671b0;
     color: white;
     text-align: center;
+}
 
 div.bouton_horizontal{
     /*background-color: red;*/
@@ -222,7 +233,12 @@ div.bouton_horizontal{
     font-size: 0.5em;
 }
 
-div#demarches div.glass{
+div.demarche_etape{
+    width: 2500px;
+    flex-grow: 0;
+}
+
+div.demarches div.glass{
     width: 100%;
 }
 
@@ -257,4 +273,8 @@ select.petit_bouton2 {
 
 #soutenance{
     width: 40%;
+}
+
+input#import_csv{
+    display: none;
 }
