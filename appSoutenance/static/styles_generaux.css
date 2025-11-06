@@ -172,6 +172,7 @@ nav#barre_navigation li{
 
 nav#barre_navigation p{
     font-size: 0.7em;
+    text-align: right;
 }
 
 div#filtre_admin{
@@ -196,8 +197,4 @@ select.petit_bouton2 {
     background-color: #242f53;
     color: white;
     text-align: left;
-}
-
-#soutenance{
-    width: 40%;
 }
