@@ -243,16 +243,6 @@ nav#barre_navigation p{
 nav#barre_navigation div{
     padding: 0;
 }
-
-div#filtre_admin{
-    width: 20%;
-    padding: 20px;
-    display: flex;
-    position: fixed;
-    top: 250px;
-    gap: 20px;
-    justify-content: center;
-}
   
 .choix{
     padding: 20px;
@@ -277,9 +267,9 @@ input#import_csv{
 /* ---------------- STYLES DES COMBOBOX ----------------*/
 
 select.combobox {
-    font-size: 1.5em;
+    font-size: 1em;
     padding: 30px;
-    width: 500px;
+    width: 300px;
     margin: 30px;
 
     font-family: "Arimo", sans-serif;

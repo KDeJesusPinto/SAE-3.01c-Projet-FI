@@ -43,7 +43,7 @@
             </div>
             <div class="boite_horizontale">
                 <div class="glass" id="boite">
-                    <p id="texte_admin">STAGE TROUVE :<br>99/100<br><button class="petit_bouton" id="infos">Infos</button></p>
+                    <p id="texte_admin">STAGE TROUVÉ :<br>99/100<br><button class="petit_bouton" id="infos">Infos</button></p>
                 </div>
                 <div class="glass" id="boite">
                     <p id="texte_admin">SOUTENANCE ALTERNANT PRÉVU :<br>3/5<br><button class="petit_bouton" id="infos">Infos</button>
@@ -73,8 +73,17 @@
             </div>
         </div>
         <div class="boite_horizontale">
-            <button class="petit_bouton" id="importer">Importer csv</button>
-            <button class="petit_bouton" id="exporter">Exporter csv</button>
+            <label for="import_csv" class="petit_bouton">
+                <span>Importer CSV</span>
+                <input id="import_csv" type="file" name="btn_import_csv" accept=".csv">
+            </label>
+
+            <!-- À voir pour l'export -->
+            <label for="export_csv" class="petit_bouton">
+                <span>Exporter CSV</span>
+                <input id="export_csv" type="file" name="btn_export_csv" accept=".csv">
+            </label>
+
         </div>
     </div>
 {% endblock %}
