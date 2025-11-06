@@ -1,0 +1,277 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bebas+Neue&family=PT+Sans+Narrow:wght@400;700&display=swap');
+
+/*---------------- STYLES GÉNÉRAUX ----------------*/
+
+body{
+    background: url(images/fond.png) no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    font-family: "Arimo", sans-serif;
+    font-size: 30px;
+    /*font-size: 4em;*/
+}
+
+h1{
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-transform: uppercase;
+    font-size: 2.5em;
+    text-align: center;
+    letter-spacing: -0.04em;
+    margin: 0;
+}
+
+h2{
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-transform: uppercase;
+    font-size: 2em;
+    text-align: center;
+    letter-spacing: -0.04em;
+    margin: 0;
+    white-space: nowrap !important;
+}
+
+a{
+    color: black;
+    text-decoration: none;
+    cursor: url(images/cursor.png), pointer;
+}
+
+.img_chargement{
+    display: flex;
+    justify-self: center;
+    width: 75%;
+}
+
+div#connexion a{
+    padding: 40px 0;
+    width: 70%;
+}
+
+/* ---------------- STYLES GÉNÉRAUX DES BOÎTES ----------------*/
+
+.glass{
+    border-radius: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.55);
+
+    /*padding: 2% !important;*/
+}
+
+.boite_verticale{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    align-items: center;
+    row-gap: 20px;
+}
+
+.boite_horizontale{
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    align-items: center;
+    column-gap: 20px;
+}
+
+/* ---------------- STYLES DES TEXTES ----------------*/
+
+div.boite_horizontale p{
+    margin: 0;
+    text-align: center;
+}
+
+div.boite_H_info_V{
+    display: flex;
+    column-gap: 80px;
+    padding: 20px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.short{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 220px;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* ---------------- STYLES DES ICONES ----------------*/
+
+.grande_icone{
+    font-size: 2em !important;
+}
+
+.petite_icone{
+    font-size: 1.4em !important;
+}
+
+/* ---------------- STYLES DES ÉLÉMENTS CLIQUABLES ----------------*/
+
+.petit_bouton{
+    padding: 15px;
+    width: 100%;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 20px;
+    background-color: #242f53;
+    color: white;
+    text-align: center;
+}
+
+.petit_bouton_imp{
+    padding: 30px;
+    /*width: 300px;*/
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 30px;
+    background-color: #8f11bc;
+    color: white;
+    text-align: center;
+}
+
+.petit_bouton:hover{
+    background: #a671b0;
+}
+
+.bouton_nav{
+    padding: 30px;
+    width: 100%;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 30px;
+    background-color: #a671b0;
+    color: white;
+    text-align: center;
+}
+
+div.bouton_horizontal{
+    /*background-color: red;*/
+    display: flex;
+    column-gap: 100px;
+    padding: 20px;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end;
+    /*border: 2px black solid;*/
+}
+
+
+.tooltip:hover::after{
+    content: attr(data-tooltip);
+    background-color: rgb(178, 185, 187);
+    position: absolute;
+    right: 16%;
+    font-size: 0.7em;
+}
+
+div.demarche_etape{
+    width: 2500px;
+    flex-grow: 0;
+}
+
+div.demarches div.glass{
+    width: 100%;
+}
+/*---------------- MAIN BODY STYLES ----------------*/
+
+div#main_body{
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 150px 0 100px;
+}
+
+/*---------------- STYLES BARRE DE NAVIGATION ----------------*/
+
+nav#barre_navigation{
+    background-color: #a671b0;
+    color: white;
+    padding: 15px;
+    position: fixed;
+    width: 100%;
+    max-width: 100%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+nav#barre_navigation img{
+    height: 45px;
+}
+
+nav#barre_navigation ul{
+    margin: 0;
+    display: flex;
+    column-gap: 50px;
+}
+
+nav#barre_navigation li{
+    list-style: none;
+    /*color: white;*/
+}
+
+nav#barre_navigation p{
+    font-size: 0.7em;
+    text-align: right;
+}
+
+nav#barre_navigation div{
+    padding: 0;
+}
+
+nav#barre_navigation a{
+    color: white;
+}
+
+div#filtre_admin{
+    width: 50%;
+    padding: 20px;
+    display: flex;
+    margin-top: 150px;
+    gap: 20px;
+}
+
+select.petit_bouton2 {
+    font-size: 0.7em;
+}
+  
+.choix{
+    padding: 20px;
+    width: 150px;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 30px;
+    background-color: #242f53;
+    color: white;
+    text-align: left;
+}
+
+#soutenance{
+    width: 40%;
+}
+
+input#import_csv{
+    display: none;
+}
