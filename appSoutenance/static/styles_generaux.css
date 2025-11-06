@@ -91,7 +91,7 @@ div#connexion a{
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 3em;
+    font-size: 2em;
     font-family: "Arimo", sans-serif;
 }
 
@@ -271,8 +271,9 @@ input#import_csv{
 
 select.combobox {
     font-size: 1em;
-    padding: 30px;
+    padding: 10px 30px;
     width: 300px;
+    height: 75px;
     margin: 30px;
 
     font-family: "Arimo", sans-serif;
@@ -281,4 +282,7 @@ select.combobox {
     background-color: #a671b0;
     color: white;
     text-align: center;
+    
+    display: flex;
+    align-items: center;
 }

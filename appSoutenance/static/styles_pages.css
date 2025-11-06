@@ -122,6 +122,10 @@ div#filtre_admin{
     justify-content: center;
 }
 
+aside#filtre_liste_admin{
+    align-items: center;
+}
+
 #nav_admin {
     margin-right: auto;
     justify-content: flex-start;
@@ -151,6 +155,13 @@ button#importer, button#exporter{
     font-family: "Arimo", sans-serif;
 
     border-radius: 40px;
+}
+
+button#filtrer{
+    font-size: 1em;
+    margin: 10px auto;
+    width: 300px;
+    display: block;
 }
 
 div#boite{
