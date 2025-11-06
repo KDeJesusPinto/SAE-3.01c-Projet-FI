@@ -55,7 +55,7 @@ INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, date_re
 
 
 INSERT INTO STAGE (id_stage, typeS, date_debut, date_fin, duree_stage, unite_duree, titre_stage, theme_stage, id_maitre, id_demarche) VALUES
-(1, 'Stage de fin d\'études', '2024-10-01', '2025-03-31', 6, 'mois', 'Développement d\'une application web de gestion', 'Développement Full-Stack', 1, 1),
+(1, 'Stage de fin études', '2024-10-01', '2025-03-31', 6, 'mois', 'Développer une application web de gestion', 'Développement Full-Stack', 1, 1),
 (2, 'Stage de deuxième année', '2024-10-15', '2025-04-15', 6, 'mois', 'Analyse de données massives pour la prédiction', 'Big Data et Machine Learning', 2, 4),
-(3, 'Stage d\'initiation', '2023-05-01', '2023-07-31', 3, 'mois', 'Découverte du développement front-end', 'Web & UX', 3, 2),
+(3, 'Stage initiation', '2023-05-01', '2023-07-31', 3, 'mois', 'Découverte du développement front-end', 'Web & UX', 3, 2),
 (4, 'Stage d\'approfondissement', '2025-01-10', '2025-06-30', 6, 'mois', 'Conception d\'un agent conversationnel', 'IA & NLP', 4, 3);
