@@ -20,13 +20,21 @@ def demarches():
 def info_stage():
     return render_template("etudiant/info_stage_valide.html", accueil="accueil_etudiant", title="Mon stage")
 
-@app.route('/etudiant/demarches/new/')
-def nouvelle_demarches_etudiant():
-    return render_template("etudiant/nouvelle_demarche.html", accueil="accueil_etudiant", title="Nouvelle démarche")
+@app.route('/etudiant/demarches/new1/')
+def nouvelle_demarche1():
+    return render_template("etudiant/nouvelle_demarche1.html", title="Nouvelle démarche")
+
+@app.route('/etudiant/demarches/new2/')
+def nouvelle_demarche2():
+    return render_template("etudiant/nouvelle_demarche2.html", title="Nouvelle démarche")
+
+@app.route('/etudiant/demarches/new3/')
+def nouvelle_demarche3():
+    return render_template("etudiant/nouvelle_demarche3.html", title="Nouvelle démarche")
 
 @app.route('/etudiant/demarches/resume/')
-def resume_demarches_etudiant():
-    return render_template("etudiant/resume_demarche.html", accueil="accueil_etudiant", title="Résumé de la démarche")
+def resume_demarche_etudiant():
+    return render_template("etudiant/resume_demarche.html", title="Résumé de la démarche")
 
 ########################## POUR LES ENSEIGNANTS ##########################
 

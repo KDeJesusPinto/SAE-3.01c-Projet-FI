@@ -47,6 +47,17 @@ a{
     cursor: url(images/cursor.png), pointer;
 }
 
+.img_chargement{
+    display: flex;
+    justify-self: center;
+    width: 75%;
+}
+
+div#connexion a{
+    padding: 40px 0;
+    width: 70%;
+}
+
 /* ---------------- STYLES GÉNÉRAUX DES BOÎTES ----------------*/
 
 .glass{
@@ -118,6 +129,46 @@ div.boite_H_info_V{
     text-align: center;
 }
 
+.petit_bouton_imp{
+    padding: 30px;
+    /*width: 300px;*/
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 30px;
+    background-color: #8f11bc;
+    color: white;
+    text-align: center;
+}
+
+.petit_bouton:hover{
+    background: #a671b0;
+}
+
+.bouton_nav{
+    padding: 30px;
+    width: 100%;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 30px;
+    background-color: #a671b0;
+    color: white;
+    text-align: center;
+}
+
+div.bouton_horizontal{
+    /*background-color: red;*/
+    display: flex;
+    column-gap: 100px;
+    padding: 20px;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end;
+    /*border: 2px black solid;*/
+}
+
+
 .tooltip:hover::after{
     content: attr(data-tooltip);
     background-color: rgb(178, 185, 187);
@@ -127,6 +178,14 @@ div.boite_H_info_V{
     font-size: 0.5em;
 }
 
+div.demarche_etape{
+    width: 2500px;
+    flex-grow: 0;
+}
+
+div.demarches div.glass{
+    width: 100%;
+}
 /*---------------- MAIN BODY STYLES ----------------*/
 
 div#main_body{
@@ -197,4 +256,12 @@ select.petit_bouton2 {
     background-color: #242f53;
     color: white;
     text-align: left;
+}
+
+#soutenance{
+    width: 40%;
+}
+
+input#import_csv{
+    display: none;
 }
