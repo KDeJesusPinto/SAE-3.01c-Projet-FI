@@ -256,8 +256,8 @@ class Appartenir(db.Model):
                             db.ForeignKey("etudiant.id_etudiant"),
                             primary_key=True)
     etudiant = db.relationship("Etudiant",
-                               backref=db.backref(""),
-                               lazy="dynamic")
+                               backref=db.backref("appartenirs",
+                               lazy="joined"))
 
     nom_promo = db.Column(db.String(100), primary_key=True)
     annee_promo = db.Column(db.Integer, primary_key=True)
