@@ -14,7 +14,7 @@
 
 
 {% block content %}
-    <div id="soutenance" class="glass">
+    <div class="glass">
         <h1>Soutenance</h1>
         <div class="boite_horizontale">
             <div class="boite_horizontale">
@@ -31,11 +31,12 @@
             </div>
         </div>
     </div>
-    <div class="boite_verticale" id="demarches">
+    <div class="boite_verticale demarches">
         <div class="boite_horizontale">
             <h1>Mes démarches</h1>
             <a href="{{ url_for('nouvelle_demarche1') }}"><i class="fas fa-plus-circle grande_icone"></i></a>        
         </div>
+        
         <div class="glass boite_horizontale">
             <h2>Démarche n°15</h2>
             <div class="boite_verticale">
@@ -74,6 +75,6 @@
                 <a href="" class="petit_bouton">Modifier</a>
             </div>
         </div>
-        <a class="glass" href="">+ Voir plus...</a>
+        <a class="glass" href="{{ url_for('demarches') }}">+ Voir plus...</a>
     </div>
 {% endblock %}
