@@ -5,7 +5,7 @@
 {% block navbar %}
     <div class="boite_horizontale">
         <div class="boite_horizontale">
-            <p>{{ prenom }}<br>{{ nom }}</p>
+            <p>{{ etu.prenom_etudiant }}<br>{{ etu.nom_etudiant }}</p>
             <i class="fas fa-user-circle petite_icone"></i>
         </div>
         <a href="{{ url_for('index') }}"><i class="fas fa-sign-out-alt petite_icone"></i></a>
@@ -37,20 +37,20 @@
             <a href="{{ url_for('nouvelle_demarche1') }}"><i class="fas fa-plus-circle grande_icone"></i></a>        
         </div>
         
-        {% for ele in liste_dem %}
+        {% for demarche in liste_dem %}
             <div class="glass boite_horizontale">
-                <h2>Démarche n°{{ ele[0] }}</h2>
+                <h2>Démarche n°{{ demarche.id_demarche }}</h2>
                 <div class="boite_verticale">
                     <i class="fas fa-building petite_icone"></i>
-                    <p class="short">{{ ele[1][0] }}</p>
+                    <p class="short">{{ demarche.entreprise.nom_entreprise }}</p>
                 </div>
                 <div class="boite_verticale">
                     <i class="fas fa-clock petite_icone"></i>
-                    <p class="short">{{ ele[1][1] }} semaines</p>
+                    <p class="short"><!--{{ demarche.duree }}-->- semaines</p>
                 </div>
                 <div class="boite_verticale">
                     <i class="fas fa-clipboard-list petite_icone"></i>
-                    <span class="tooltip short" data-tooltip="État : {{ ele[1][2] }}">État : {{ ele[1][2] }}</span>
+                    <span class="tooltip short" data-tooltip="État : {{ demarche.situation }}">État : {{ demarche.situation }}</span>
                 </div>
                 <div class="boite_verticale">
                     <a href="{{ url_for('resume_demarche_etudiant') }}" class="petit_bouton">Résumé</a>

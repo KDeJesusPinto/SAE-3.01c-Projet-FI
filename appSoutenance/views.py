@@ -1,3 +1,4 @@
+from appSoutenance.models import Etudiant
 from .app import app
 from flask import render_template, request, url_for , redirect
 
@@ -10,16 +11,9 @@ def index():
 
 @app.route('/etudiant/')
 def accueil_etudiant():
-    lst_demarches = {
-        15:["Google", 2, 'refusé'],
-        1:["Microsoft", 8, 'validé'],
-        2:["Ubisoft", 9, 'en attente de validation'],
-        11:["Apple", 10, 'convention signée'],
-        12:["IUT'O", 256, 'validé'],
-        9:["Cognosphère", 10, 'convention signée']
-    }
-    lst_demarches = sorted(list(lst_demarches.items()), reverse=True)[:2]
-    return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", prenom="Leni", nom="Doe", title="Accueil", liste_dem=lst_demarches)
+    etudiant = Etudiant.query.filter(Etudiant.id_etudiant==1).one()
+    lst_demarches = list(Etudiant.query.filter(Etudiant.id_etudiant==1).one().demarches)[:2]
+    return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", etu=etudiant, title="Accueil", liste_dem=lst_demarches)
 
 @app.route('/etudiant/demarches/')
 def demarches():
