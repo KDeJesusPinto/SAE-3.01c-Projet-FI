@@ -1,6 +1,7 @@
 import csv
 import click
 import logging as lg
+from sqlalchemy import text
 from datetime import datetime
 from pathlib import Path
 from .app import app, db
@@ -15,6 +16,20 @@ def loaddb(filename):
     db.drop_all()
     db.create_all()
     
+    # Exécuter le script SQL d'insertion 
+    sql_file = Path("appSoutenance/data/insertion.sql")
+    if sql_file.exists():
+        with open(sql_file, "r", encoding="utf-8") as f:
+            sql_script = f.read()
+            for statement in sql_script.split(";"):
+                statement = statement.strip()
+                if statement:
+                    db.session.execute(text(statement))
+        db.session.commit()
+        lg.warning("Fichier insertion.sql exécuté avec succès!")
+    else:
+        lg.warning("Aucun fichier insertion.sql trouvé.")
+
     with open(filename, newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
         

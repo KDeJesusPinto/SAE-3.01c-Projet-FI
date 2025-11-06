@@ -58,4 +58,25 @@ INSERT INTO STAGE (id_stage, typeS, date_debut, date_fin, duree_stage, unite_dur
 (1, 'Stage de fin études', '2024-10-01', '2025-03-31', 6, 'mois', 'Développer une application web de gestion', 'Développement Full-Stack', 1, 1),
 (2, 'Stage de deuxième année', '2024-10-15', '2025-04-15', 6, 'mois', 'Analyse de données massives pour la prédiction', 'Big Data et Machine Learning', 2, 4),
 (3, 'Stage initiation', '2023-05-01', '2023-07-31', 3, 'mois', 'Découverte du développement front-end', 'Web & UX', 3, 2),
-(4, 'Stage d\'approfondissement', '2025-01-10', '2025-06-30', 6, 'mois', 'Conception d\'un agent conversationnel', 'IA & NLP', 4, 3);
+(4, "Stage d'approfondissement", '2025-01-10', '2025-06-30', 6, 'mois', "Conception d'un agent conversationnel", 'IA & NLP', 4, 3);
+
+
+INSERT INTO SOUTENANCE (id_soutenance, salle, nom_bat, dateS, h_debut, h_fin, id_stage) VALUES
+(1, 101, 'Bâtiment A', '2025-03-25', '09:00', '09:45', 1),
+(2, 102, 'Bâtiment A', '2025-04-10', '10:00', '10:45', 2),
+(3, 103, 'Bâtiment B', '2023-07-15', '14:00', '14:45', 3),
+(4, 104, 'Bâtiment C', '2025-06-20', '11:00', '11:45', 4);
+
+
+INSERT INTO JURY (id_jury, date_jury, h_jury, duree_jury, id_soutenance) VALUES
+(1, '2025-03-25', '09:00', 45, 1),
+(2, '2025-04-10', '10:00', 45, 2),
+(3, '2023-07-15', '14:00', 45, 3),
+(4, '2025-06-20', '11:00', 45, 4);
+
+
+INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4);

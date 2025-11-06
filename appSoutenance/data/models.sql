@@ -99,7 +99,7 @@ CREATE TABLE JURY (
   id_jury       INT NOT NULL,
   date_jury     DATE NOT NULL,
   h_jury        VARCHAR(5),
-  duree         INT,
+  duree_jury         INT,
   id_soutenance INT NULL,
   UNIQUE (id_soutenance)
 );
