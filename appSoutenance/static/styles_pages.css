@@ -33,17 +33,22 @@ div#buttons{
     display: flex;
     flex-direction: column;
     row-gap: 40px;
-    align-items: center;
+    align-items: center; 
     justify-content: space-evenly;
 }
 
 /*---------------- POUR LES DÉMARCHES ----------------*/
 
-div#demarches div.glass{
+div.demarches div.boite_horizontale:first-child{
+    align-self: first baseline;
+    padding-left: 0;
+}
+
+div.demarches div.glass{
     width: 100%;
 }
 
-div#demarches div.glass h2{
+div.demarches div.glass h2{
     width: 30%;
     text-align: left;
 }
@@ -95,4 +100,97 @@ div#boutons_extreme_droite{
     background-color: #242f53;
     color:white;
     padding: 10px;
+}
+
+/*---------------- POUR LA PAGE D'ACCUEIL ADMIN ----------------*/
+
+.bouton_nav{
+    font-size: 1.4em;
+    padding: 10px 15px;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 20px;
+    color: white;
+    text-align: center;
+}
+
+div#filtre_admin{
+    width: 30%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+aside#filtre_liste_admin{
+    align-items: center;
+}
+
+#nav_admin {
+    margin-right: auto;
+    justify-content: flex-start;
+}
+
+button#voir{
+    font-size: 1.2em;
+    font-family: "Arimo", sans-serif;
+    border-radius: 40px;
+    width: 300px;
+    height: 150px;
+}
+
+button#infos{
+    font-size: 1.2em;
+    font-family: "Arimo", sans-serif;
+    border-radius: 40px;
+    width: 200px;
+    height: 100px;
+}
+
+button#importer, button#exporter{
+    font-size: 1.4em;
+    padding: 40px;
+    margin: 20px;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 40px;
+}
+
+button#filtrer{
+    font-size: 1em;
+    margin: 10px auto;
+    width: 300px;
+    display: block;
+}
+
+div#boite{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    margin: 30px;
+    width: 500px;
+    height: 350px;
+}
+
+h1#donnees_eleves, h1#donnees_professeurs {
+    white-space: nowrap;
+    font-family: "Bebas Neue", sans-serif;
+}
+
+p#texte_admin {
+    font-size: 1.5em;
+    font-family: "Bebas Neue", sans-serif;
+    margin-top: 20px;
+}
+
+#texte_admin button{
+    margin-top: 15px;
+    font-size: 0.5em;
+}
+
+div#contenu_admin {
+    align-items: center;
+    font-size: 1em;
 }

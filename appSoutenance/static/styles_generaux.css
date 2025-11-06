@@ -87,6 +87,14 @@ div#connexion a{
 
 /* ---------------- STYLES DES TEXTES ----------------*/
 
+#titre_page {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2em;
+    font-family: "Arimo", sans-serif;
+}
+
 div.boite_horizontale p{
     margin: 0;
     text-align: center;
@@ -99,6 +107,7 @@ div.boite_H_info_V{
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .short{
@@ -118,8 +127,8 @@ div.boite_H_info_V{
 /* ---------------- STYLES DES ÉLÉMENTS CLIQUABLES ----------------*/
 
 .petit_bouton{
-    padding: 30px;
-    /*width: 300px;*/
+    padding: 15px;
+    width: 100%;
 
     font-family: "Arimo", sans-serif;
 
@@ -130,15 +139,16 @@ div.boite_H_info_V{
 }
 
 .petit_bouton_imp{
-    padding: 30px;
+    padding: 15px;
     /*width: 300px;*/
 
     font-family: "Arimo", sans-serif;
 
-    border-radius: 30px;
+    border-radius: 20px;
     background-color: #8f11bc;
     color: white;
     text-align: center;
+    text-wrap: nowrap;
 }
 
 .petit_bouton:hover{
@@ -165,6 +175,7 @@ div.bouton_horizontal{
     align-items: center;
     width: 100%;
     justify-content: flex-end;
+    box-sizing: border-box;
     /*border: 2px black solid;*/
 }
 
@@ -173,9 +184,8 @@ div.bouton_horizontal{
     content: attr(data-tooltip);
     background-color: rgb(178, 185, 187);
     position: absolute;
-   /* bottom: -1lh;*/
-    visibility: visible;
-    font-size: 0.5em;
+    /*left: -50px;*/
+    font-size: 0.7em;
 }
 
 div.demarche_etape{
@@ -204,7 +214,6 @@ nav#barre_navigation{
     color: white;
     padding: 15px;
     position: fixed;
-    /*height: 2vh;*/
     width: 100%;
     max-width: 100%;
     z-index: 2;
@@ -234,16 +243,8 @@ nav#barre_navigation p{
     text-align: right;
 }
 
-div#filtre_admin{
-    width: 50%;
-    padding: 20px;
-    display: flex;
-    margin-top: 150px;
-    gap: 20px;
-}
-
-select.petit_bouton2 {
-    font-size: 0.7em;
+nav#barre_navigation div{
+    padding: 0;
 }
   
 .choix{
@@ -264,4 +265,24 @@ select.petit_bouton2 {
 
 input#import_csv{
     display: none;
+}
+
+/* ---------------- STYLES DES COMBOBOX ----------------*/
+
+select.combobox {
+    font-size: 1em;
+    padding: 10px 30px;
+    width: 300px;
+    height: 75px;
+    margin: 30px;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 80px;
+    background-color: #a671b0;
+    color: white;
+    text-align: center;
+    
+    display: flex;
+    align-items: center;
 }
