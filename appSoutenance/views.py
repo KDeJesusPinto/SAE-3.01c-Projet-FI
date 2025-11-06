@@ -10,22 +10,46 @@ def index():
 
 @app.route('/etudiant/')
 def accueil_etudiant():
-    return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", prenom="Leni", nom="Doe", title="Accueil")
+    lst_demarches = {
+        15:["Google", 2, 'refusé'],
+        1:["Microsoft", 8, 'validé'],
+        2:["Ubisoft", 9, 'en attente de validation'],
+        11:["Apple", 10, 'convention signée'],
+        12:["IUT'O", 256, 'validé'],
+        9:["Cognosphère", 10, 'convention signée']
+    }
+    return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", prenom="Leni", nom="Doe", title="Accueil", liste_dem=lst_demarches)
 
 @app.route('/etudiant/demarches/')
 def demarches():
-    return render_template("etudiant/demarches.html", accueil="accueil_etudiant", title="Mes démarches")
+    lst_demarches = {
+        15:["Google", 2, 'refusé'],
+        1:["Microsoft", 8, 'validé'],
+        2:["Ubisoft", 9, 'en attente de validation'],
+        11:["Apple", 10, 'convention signée'],
+        12:["IUT'O", 256, 'validé'],
+        9:["Cognosphère", 10, 'convention signée']
+    }
+    return render_template("etudiant/demarches.html", accueil="accueil_etudiant", title="Mes démarches", liste_dem=lst_demarches)
 
 @app.route('/etudiant/stage/')
 def info_stage():
     return render_template("etudiant/info_stage_valide.html", accueil="accueil_etudiant", title="Mon stage")
 
-@app.route('/etudiant/demarches/new/')
-def nouvelle_demarches_etudiant():
-    return render_template("etudiant/nouvelle_demarche.html", accueil="accueil_etudiant", title="Nouvelle démarche")
+@app.route('/etudiant/demarches/new1/')
+def nouvelle_demarche1():
+    return render_template("etudiant/nouvelle_demarche1.html", accueil="accueil_etudiant", title="Nouvelle démarche")
+
+@app.route('/etudiant/demarches/new2/')
+def nouvelle_demarche2():
+    return render_template("etudiant/nouvelle_demarche2.html", accueil="accueil_etudiant", title="Nouvelle démarche")
+
+@app.route('/etudiant/demarches/new3/')
+def nouvelle_demarche3():
+    return render_template("etudiant/nouvelle_demarche3.html", accueil="accueil_etudiant", title="Nouvelle démarche")
 
 @app.route('/etudiant/demarches/resume/')
-def resume_demarches_etudiant():
+def resume_demarche_etudiant():
     return render_template("etudiant/resume_demarche.html", accueil="accueil_etudiant", title="Résumé de la démarche")
 
 ########################## POUR LES ENSEIGNANTS ##########################

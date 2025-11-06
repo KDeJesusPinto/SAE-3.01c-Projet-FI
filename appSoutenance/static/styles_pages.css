@@ -33,17 +33,22 @@ div#buttons{
     display: flex;
     flex-direction: column;
     row-gap: 40px;
-    align-items: center;
+    align-items: center; 
     justify-content: space-evenly;
 }
 
 /*---------------- POUR LES DÉMARCHES ----------------*/
 
-div#demarches div.glass{
+div.demarches div.boite_horizontale:first-child{
+    align-self: first baseline;
+    padding-left: 0;
+}
+
+div.demarches div.glass{
     width: 100%;
 }
 
-div#demarches div.glass h2{
+div.demarches div.glass h2{
     width: 30%;
     text-align: left;
 }
@@ -60,6 +65,42 @@ div#boutons_extreme_droite{
     justify-content: flex-end;
     box-sizing: border-box;
 }*/
+
+/*---------------- POUR LES PAGES ENSEIGNANT ----------------*/
+
+#glass_fleche_nav{
+    padding: 20px;
+    align-items: center;
+}
+.glass_tutoré_accueil{
+    border-radius: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.55);
+    width: 400px;
+}
+.glass_soutBUT3_accueil{
+    border-radius: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.55);
+    width: 400px;
+    padding: 10px;
+}
+.glass_planning_accueil{
+    border-radius: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.55);
+    width: 270px;
+    padding: 10px;
+}
+.dark_planning_accueil{
+    border-radius: 40px;
+    background-color: #242f53;
+    color:white;
+    padding: 10px;
+}
 
 /*---------------- POUR LA PAGE D'ACCUEIL ADMIN ----------------*/
 
