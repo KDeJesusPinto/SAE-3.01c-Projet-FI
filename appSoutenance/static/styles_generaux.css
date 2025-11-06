@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bebas+Neue&family=PT+Sans+Narrow:wght@400;700&display=swap');
 
+/*---------------- STYLES GÉNÉRAUX ----------------*/
+
 body{
     background: url(images/fond.png) no-repeat;
     background-position: center;
@@ -10,8 +12,10 @@ body{
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: 100vw;
     font-family: "Arimo", sans-serif;
-    font-size: 4em;
+    font-size: 30px;
+    /*font-size: 4em;*/
 }
 
 h1{
@@ -21,7 +25,7 @@ h1{
     text-transform: uppercase;
     font-size: 2.5em;
     text-align: center;
-    letter-spacing: -4px;
+    letter-spacing: -0.04em;
     margin: 0;
 }
 
@@ -32,61 +36,9 @@ h2{
     text-transform: uppercase;
     font-size: 2em;
     text-align: center;
-    letter-spacing: -4px;
+    letter-spacing: -0.04em;
     margin: 0;
     white-space: nowrap !important;
-}
-
-nav#barre_navigation{
-    background-color: #a671b0;
-    padding: 40px;
-    position: fixed;
-    height: 5vh;
-    width: 100%;
-    z-index: 2;
-}
-
-nav#barre_navigation img{
-    height: 90%;
-}
-
-div#main_body{
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: calc(5vh + 200px) 0 200px;
-}
-
-div#connexion{
-    padding: 50px 150px;
-
-    display: flex;
-    flex-direction: column;
-    row-gap: 30px;
-    align-items: center;
-    justify-content: space-around;
-
-    width: 60%;
-    min-height: 60%;
-}
-
-.glass{
-    border-radius: 60px;
-    border: 2px solid rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(7px);
-    background-color: rgba(255, 255, 255, 0.65);
-
-    padding: 2% !important;
-}
-
-div#buttons{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 70px;
-    align-items: center;
 }
 
 a{
@@ -104,49 +56,38 @@ a{
 div#connexion a{
     padding: 40px 0;
     width: 70%;
-
-    font-family: "Arimo", sans-serif;
-    font-size: 1em;
-
-    border-radius: 100px;
-    background-color: #242f53;
-    color: white;
-    text-align: center;
 }
 
-div.info_horizontal{
-    /*background-color: red;*/
-    display: flex;
-    column-gap: 100px;
-    padding: 20px;
-    align-items: center;
-    /*border: 2px black solid;*/
+/* ---------------- STYLES GÉNÉRAUX DES BOÎTES ----------------*/
+
+.glass{
+    border-radius: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.55);
+
+    /*padding: 2% !important;*/
 }
 
-div.info_vertical{
-    /*background-color: red;*/
+.boite_verticale{
     display: flex;
     flex-direction: column;
-    row-gap: 100px;
-    padding: 20px;
+    padding: 10px;
     align-items: center;
-    justify-items: center;
-    /*border: 2px black solid;*/
-    /*flex-wrap: wrap;*/
-}
-
-div.boite_verticale{
-    /*background-color: red;*/
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    align-items: center;
-    /*border: 2px black solid;*/
     row-gap: 20px;
-    /*flex-wrap: wrap;*/
 }
 
-div.info_horizontal p{
+.boite_horizontale{
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    align-items: center;
+    column-gap: 20px;
+}
+
+/* ---------------- STYLES DES TEXTES ----------------*/
+
+div.boite_horizontale p{
     margin: 0;
     text-align: center;
 }
@@ -164,9 +105,17 @@ div.boite_H_info_V{
     white-space: nowrap;
 }
 
+/* ---------------- STYLES DES ICONES ----------------*/
+
 .grande_icone{
-    font-size: 3em !important;
+    font-size: 2em !important;
 }
+
+.petite_icone{
+    font-size: 1.4em !important;
+}
+
+/* ---------------- STYLES DES ÉLÉMENTS CLIQUABLES ----------------*/
 
 .petit_bouton{
     padding: 30px;
@@ -174,15 +123,10 @@ div.boite_H_info_V{
 
     font-family: "Arimo", sans-serif;
 
-    border-radius: 30px;
+    border-radius: 20px;
     background-color: #242f53;
     color: white;
     text-align: center;
-}
-
-.petit_bouton2{
-    padding: 30px;
-    width: 100%;
 }
 
 .petit_bouton_imp{
@@ -224,6 +168,7 @@ div.bouton_horizontal{
     /*border: 2px black solid;*/
 }
 
+
 .tooltip:hover::after{
     content: attr(data-tooltip);
     background-color: rgb(178, 185, 187);
@@ -241,10 +186,52 @@ div.demarche_etape{
 div.demarches div.glass{
     width: 100%;
 }
+/*---------------- MAIN BODY STYLES ----------------*/
 
-div#demarches div.glass h2{
-    width: 30%;
-    text-align: left;
+div#main_body{
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 150px 0 100px;
+}
+
+/*---------------- STYLES BARRE DE NAVIGATION ----------------*/
+
+nav#barre_navigation{
+    background-color: #a671b0;
+    color: white;
+    padding: 15px;
+    position: fixed;
+    /*height: 2vh;*/
+    width: 100%;
+    max-width: 100%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+nav#barre_navigation img{
+    height: 45px;
+}
+
+nav#barre_navigation ul{
+    margin: 0;
+    display: flex;
+    column-gap: 50px;
+}
+
+nav#barre_navigation li{
+    list-style: none;
+    /*color: white;*/
+}
+
+nav#barre_navigation p{
+    font-size: 0.7em;
+    text-align: right;
 }
 
 div#filtre_admin{

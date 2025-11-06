@@ -1,40 +1,53 @@
+<!-- div.boite_horizontale, div.boite_verticale, div.petite_boite_horizontale, div.boite_verticale -->
+
 {% extends "base.html" %}
+
+{% block navbar %}
+    <div class="boite_horizontale">
+        <div class="boite_horizontale">
+            <p>{{ prenom }}<br>{{ nom }}</p>
+            <i class="fas fa-user-circle petite_icone"></i>
+        </div>
+        <i class="fas fa-sign-out-alt petite_icone"></i>
+    </div>
+{% endblock %}
+
 
 {% block content %}
     <div id="soutenance" class="glass">
         <h1>Soutenance</h1>
-        <div class="info_horizontal">
-            <div class="info_horizontal">
+        <div class="boite_horizontale">
+            <div class="boite_horizontale">
                 <i class="fas fa-calendar-alt grande_icone"></i>
                 <p>25 juillet 2025<br>11:00</p>
             </div>
-            <div class="info_horizontal">
+            <div class="boite_horizontale">
                 <i class="fas fa-map-marker-alt grande_icone"></i>
                 <p>I202</p>
             </div>
-            <div class="info_horizontal">
+            <div class="boite_horizontale">
                 <i class="fas fa-users grande_icone"></i>
                 <p>Mr Arsouze (tuteur), Mr Lorem, Mme Ipsum</p>
             </div>
         </div>
     </div>
-    <div class="info_vertical" id="demarches">
-        <div class="info_horizontal">
+    <div class="boite_verticale" id="demarches">
+        <div class="boite_horizontale">
             <h1>Mes démarches</h1>
             <a href="{{ url_for('nouvelle_demarche1') }}"><i class="fas fa-plus-circle grande_icone"></i></a>        
         </div>
-        <div class="glass info_horizontal">
+        <div class="glass boite_horizontale">
             <h2>Démarche n°15</h2>
             <div class="boite_verticale">
-                <i class="fas fa-building"></i>
+                <i class="fas fa-building petite_icone"></i>
                 <p class="short">Google</p>
             </div>
             <div class="boite_verticale">
-                <i class="fas fa-clock"></i>
+                <i class="fas fa-clock petite_icone"></i>
                 <p class="short">2 semaines</p>
             </div>
             <div class="boite_verticale">
-                <i class="fas fa-clipboard-list"></i>
+                <i class="fas fa-clipboard-list petite_icone"></i>
                 <span class="tooltip short" data-tooltip="État : refusé">État : refusé</span>
             </div>
             <div class="boite_verticale">
@@ -42,18 +55,18 @@
                 <a href="" class="petit_bouton">Modifier</a>
             </div>
         </div>
-        <div class="glass info_horizontal">
+        <div class="glass boite_horizontale">
             <h2>Démarche n°1</h2>
             <div class="boite_verticale">
-                <i class="fas fa-building"></i>
+                <i class="fas fa-building petite_icone"></i>
                 <p class="short">Google</p>
             </div>
             <div class="boite_verticale">
-                <i class="fas fa-clock"></i>
+                <i class="fas fa-clock petite_icone"></i>
                 <p class="short">2 semaines</p>
             </div>
             <div class="boite_verticale">
-                <i class="fas fa-clipboard-list"></i>
+                <i class="fas fa-clipboard-list petite_icone"></i>
                 <span class="tooltip short" data-tooltip="État : refusé">État : refusé</span>
             </div>
             <div class="boite_verticale">
