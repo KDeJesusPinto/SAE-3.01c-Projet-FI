@@ -60,3 +60,39 @@ div#boutons_extreme_droite{
     justify-content: flex-end;
     box-sizing: border-box;
 }*/
+
+/*---------------- POUR LES PAGES ENSEIGNANT ----------------*/
+
+#glass_fleche_nav{
+    padding: 20px;
+    align-items: center;
+}
+.glass_tutoré_accueil{
+    border-radius: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.55);
+    width: 400px;
+}
+.glass_soutBUT3_accueil{
+    border-radius: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.55);
+    width: 400px;
+    padding: 10px;
+}
+.glass_planning_accueil{
+    border-radius: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.55);
+    width: 270px;
+    padding: 10px;
+}
+.dark_planning_accueil{
+    border-radius: 40px;
+    background-color: #242f53;
+    color:white;
+    padding: 10px;
+}
