@@ -33,17 +33,22 @@ div#buttons{
     display: flex;
     flex-direction: column;
     row-gap: 40px;
-    align-items: center;
+    align-items: center; 
     justify-content: space-evenly;
 }
 
 /*---------------- POUR LES DÉMARCHES ----------------*/
 
-div#demarches div.glass{
+div.demarches div.boite_horizontale:first-child{
+    align-self: first baseline;
+    padding-left: 0;
+}
+
+div.demarches div.glass{
     width: 100%;
 }
 
-div#demarches div.glass h2{
+div.demarches div.glass h2{
     width: 30%;
     text-align: left;
 }
