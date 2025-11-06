@@ -13,7 +13,7 @@ def accueil_etudiant():
     return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", prenom="Leni", nom="Doe", title="Accueil")
 
 @app.route('/etudiant/demarches/')
-def demarches():
+def demarches_etudiant():
     return render_template("etudiant/demarches.html", accueil="accueil_etudiant", title="Mes démarches")
 
 @app.route('/etudiant/stage/')
@@ -22,19 +22,19 @@ def info_stage():
 
 @app.route('/etudiant/demarches/new1/')
 def nouvelle_demarche1():
-    return render_template("etudiant/nouvelle_demarche1.html", title="Nouvelle démarche")
+    return render_template("etudiant/nouvelle_demarche1.html", accueil="accueil_etudiant", title="Nouvelle démarche")
 
 @app.route('/etudiant/demarches/new2/')
 def nouvelle_demarche2():
-    return render_template("etudiant/nouvelle_demarche2.html", title="Nouvelle démarche")
+    return render_template("etudiant/nouvelle_demarche2.html", accueil="accueil_etudiant", title="Nouvelle démarche")
 
 @app.route('/etudiant/demarches/new3/')
 def nouvelle_demarche3():
-    return render_template("etudiant/nouvelle_demarche3.html", title="Nouvelle démarche")
+    return render_template("etudiant/nouvelle_demarche3.html", accueil="accueil_etudiant", title="Nouvelle démarche")
 
 @app.route('/etudiant/demarches/resume/')
 def resume_demarche_etudiant():
-    return render_template("etudiant/resume_demarche.html", title="Résumé de la démarche")
+    return render_template("etudiant/resume_demarche.html", accueil="accueil_etudiant", title="Résumé de la démarche")
 
 ########################## POUR LES ENSEIGNANTS ##########################
 
