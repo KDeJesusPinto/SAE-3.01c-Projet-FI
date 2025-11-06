@@ -2,6 +2,7 @@ import csv
 import click
 import logging as lg
 from datetime import datetime
+from pathlib import Path
 from .app import app, db
 from .models import *
 
@@ -47,7 +48,7 @@ def loaddb(filename):
             db.session.add(promo)
             db.session.flush()
             
-            # Association étudiant → promo
+            # Association étudiant --> promo
             appart = Appartenir(
                 id_etudiant=etu.id_etudiant,
                 nom_promo=promo.nom_promo,
@@ -57,11 +58,12 @@ def loaddb(filename):
             db.session.add(appart)
 
             #Entreprise
-            nom_entreprise = row.get("service_adm_nom_service") or "Entreprise inconnue"
-            entreprise = Entreprise.query.filter_by(nom_entreprise=nom_entreprise).first()
+            nom_ent = row.get("service_adm_nom_service") or "Entreprise inconnue"
+            ville_ent = (row.get("service_adm_ville_service") or "Ville inconnue").upper()
+            entreprise = Entreprise.query.filter_by(nom_entreprise=nom_ent, ville=ville_ent).first()
             if not entreprise:
                 entreprise = Entreprise(
-                    nom_entreprise=nom_entreprise,
+                    nom_entreprise=nom_ent,
                     secteur="NC",
                     ville=row.get("service_adm_ville_service") or "Ville inconnue",
                     adresse=row.get("service_adm_adr1_service") or "Adresse inconnue",
@@ -127,4 +129,40 @@ def loaddb(filename):
             )
             db.session.add(stage)
         db.session.commit()
-        lg.warning("Database initialized!!!!")
+        lg.warning("Database initialized!!!!") 
+
+    # --- 2. Import CSV entreprises dans le dossier ---
+    data_dir = Path("appSoutenance/data/entreprises")
+    for fichier in data_dir.glob("*.csv"):
+        importer_entreprises(fichier)
+
+    lg.warning("Import des entreprises du dossier terminé !")   
+
+def importer_entreprises(fichier):
+    with open(fichier, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+        ajout = 0
+        for row in reader:
+            nom = (row.get('service_adm_nom_service') or "").strip().upper()
+            ville = (row.get('service_adm_ville_service') or "").strip().upper()
+            adresse=" ".join(filter(None, [row.get('service_adm_adr1_service'), row.get('service_adm_adr2_service')])) .strip()
+            if not nom:
+                continue
+            existante = Entreprise.query.filter(
+                db.func.upper(db.func.trim(Entreprise.nom_entreprise)) == nom,
+                db.func.upper(db.func.trim(Entreprise.ville)) == ville
+            ).first()
+            if existante:
+                continue  # Ignorer les doublons
+            ent = Entreprise(
+                nom_entreprise=nom.title(),
+                adresse=adresse,
+                code_postal=row.get('service_adm_cp_service') or "",
+                ville=ville.title(), 
+                secteur="NC",
+                typeE="NC",
+            )
+            db.session.add(ent)
+            ajout += 1
+        db.session.commit()
+        lg.warning(f"{fichier.name} : {ajout} entreprises ajoutées.")
