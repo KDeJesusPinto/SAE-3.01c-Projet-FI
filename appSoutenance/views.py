@@ -1,5 +1,6 @@
 from .app import app
 from flask import render_template, request, url_for , redirect
+from appSoutenance.models import Etudiant
 
 @app.route('/')
 @app.route('/connexion/')
@@ -48,7 +49,8 @@ def planning_enseignant():
 
 @app.route('/enseignant/liste+etu/')
 def liste_etu_enseignant():
-    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", title="Liste des étudiants")
+    lesEtudiants=Etudiant.query.all()
+    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", title="Liste des étudiants",etudiants=lesEtudiants)
 
 @app.route('/enseignant/liste+etu/etudiant/')
 def detail_etudiant_ens():

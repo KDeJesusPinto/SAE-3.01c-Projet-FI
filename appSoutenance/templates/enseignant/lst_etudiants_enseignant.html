@@ -1,1 +1,36 @@
-{% extends "base.html" %}
+{% extends "enseignant/base_enseignant.html" %}
+{% block content %}
+<div class="boite_verticale">
+    <h1>liste étudiants</h1>
+    <div class="boite_horizontale">
+        <div class="boite_verticale">
+            <select name="année_liste_etu"  class="choix">
+                <option value="2éme année">2éme année</option>
+                <option value="3éme année">3éme année</option>
+            </select>
+            <select name=""  class="choix">
+                <option value=""></option>
+                <option value=""></option>
+            </select>
+            <a href="" class="petit_bouton">Modifier</a>
+        </div>
+        <div class="boite_verticale">
+            <i class="fas fa-check"></i>
+        </div>
+        <div class="boite_verticale">
+            <div class="glass">
+                <div class="boite_horizontale">
+                    <i class="fas fa-user-circle petite_icone"></i>
+                    <p>nom prenom</p>
+                    <p>groupe</p>
+                    <p>nb démarche</p>
+                    <p>situation</p>
+                </div>
+                {% for unEtudiant in etudiants%}
+                <p>{{ unEtudiant.}} {{ unEtudiant.}}</p>
+                {% endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

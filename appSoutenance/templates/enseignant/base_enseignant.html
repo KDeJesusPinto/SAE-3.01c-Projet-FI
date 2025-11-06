@@ -14,11 +14,8 @@
             <a href="{{ url_for(accueil) }}">
                 <p>soutenances</p>
             </a>
-            <a href="{{ url_for(accueil) }}">
-                <p>étudiants but2</p>
-            </a>
-            <a href="{{ url_for(accueil) }}">
-                <p>étudiants but3</p>
+            <a href="{{ url_for('liste_etu_enseignant') }}">
+                <p>étudiants</p>
             </a>
             <p>{{ prenom }}<br>{{ nom }}</p>
             <i class="fas fa-user-circle petite_icone"></i>
