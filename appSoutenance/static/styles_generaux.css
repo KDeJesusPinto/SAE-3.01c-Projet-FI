@@ -87,6 +87,14 @@ div#connexion a{
 
 /* ---------------- STYLES DES TEXTES ----------------*/
 
+#titre_page {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2em;
+    font-family: "Arimo", sans-serif;
+}
+
 div.boite_horizontale p{
     margin: 0;
     text-align: center;
@@ -274,4 +282,28 @@ select.petit_bouton2 {
 
 input#import_csv{
     display: none;
+}
+
+
+/* ---------------- STYLES DES COMBOBOX ----------------*/
+
+
+select.combobox {
+    font-size: 1em;
+    padding: 10px 30px;
+    width: 300px;
+    height: 75px;
+    margin: 30px;
+
+
+    font-family: "Arimo", sans-serif;
+
+
+    border-radius: 80px;
+    background-color: #a671b0;
+    color: white;
+    text-align: center;
+   
+    display: flex;
+    align-items: center;
 }

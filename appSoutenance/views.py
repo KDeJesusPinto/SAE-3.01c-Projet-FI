@@ -1,6 +1,7 @@
 from appSoutenance.models import Enseignant, Etudiant
 from .app import app
 from flask import render_template, request, url_for , redirect
+from appSoutenance.models import Etudiant
 
 @app.route('/')
 @app.route('/connexion/')
