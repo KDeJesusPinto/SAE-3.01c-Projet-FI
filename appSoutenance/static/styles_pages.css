@@ -135,6 +135,9 @@ div#boutons_extreme_droite{
     text-align: center;
 }
 
+i#user-icon {
+    font-size: 5rem;
+}
 
 div#filtre_admin{
     width: 30%;
@@ -161,6 +164,59 @@ button#voir{
     border-radius: 40px;
     width: 300px;
     height: 150px;
+div#boite{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    margin: 30px;
+    width: 500px;
+    height: 350px;
+}
+
+div#contenu_admin {
+    align-items: center;
+    font-size: 1em;
+}
+
+div#liste_etu{
+    width: 2200px;
+    height: 100px;
+    min-height: 100px;
+    height: fit-content;
+    margin: 10px 0; 
+}
+
+div#contenu_admin {
+    align-items: center;
+    font-size: 1em;
+}
+
+aside#filtre_liste_admin{
+    align-items: center;
+}
+
+a#voir{
+    font-size: 1.2em;
+    font-family: "Arimo", sans-serif;
+    border-radius: 40px;
+    width: 250px;
+    height: 100px;
+    text-align: center;
+}
+
+a#detail {
+    font-size: 1.2em;
+    font-family: "Arimo", sans-serif;
+    border-radius: 40px;
+    width: 70px;
+    height: auto;
+    text-align: center;
+    color: #242f53;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
 }
 
 
@@ -170,6 +226,15 @@ button#infos{
     border-radius: 40px;
     width: 200px;
     height: 100px;
+}
+
+button#ajout_sout {
+    font-size: 0.8em;
+    font-family: "Arimo", sans-serif;
+    border-radius: 40px;
+    width: 200px;
+    height: auto;
+    /* margin-left: auto; */
 }
 
 
@@ -205,6 +270,11 @@ div#boite{
 }
 
 
+#texte_admin button{
+    margin-top: 15px;
+    font-size: 0.5em;
+}
+
 h1#donnees_eleves, h1#donnees_professeurs {
     white-space: nowrap;
     font-family: "Bebas Neue", sans-serif;
@@ -229,4 +299,20 @@ div#contenu_admin {
     font-size: 1em;
 }
 
+p.pliste {
+    font-size: 1em;
+    font-family: "Arimo", sans-serif;
+    margin: 10px 0;
+}
+
+.fas.fa-user-circle,
+.fa-user-circle {
+    font-size: 4.5rem !important;
+}
+
+.fas.fa-search,
+.fa-plus-circle {
+    font-size: 4.5rem !important;    
+    margin-left: auto;
+}
 
