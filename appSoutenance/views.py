@@ -1,6 +1,6 @@
 from .app import app
 from flask import render_template, request, url_for , redirect
-from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir
+from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer
 from sqlalchemy import desc
 
 @app.route('/')
@@ -77,7 +77,18 @@ def detail_etudiant_ens():
 
 @app.route('/admin/')
 def accueil_admin():
-    return render_template("admin/accueil_admin.html", accueil="accueil_admin", title="Accueil")
+    nb_etudiants = Etudiant.query.count()
+    nb_stages_trouves = Stage.query.count()
+    nb_etudiants_alternants = Appartenir.query.filter_by(regime_etudiant='Alternance').count()
+    nb_soutenances_alternants = 0 
+    nb_soutenances_posees = Soutenance.query.count()
+    nb_soutenances_attente_candide = 0
+    return render_template("admin/accueil_admin.html", accueil="accueil_admin", title="Accueil",
+                           nb_stages_trouves=nb_stages_trouves, 
+                           nb_etudiants=nb_etudiants, nb_etudiants_alternants=nb_etudiants_alternants,
+                           nb_soutenances_alternants=nb_soutenances_alternants,
+                           nb_soutenances_posees=nb_soutenances_posees,
+                           nb_soutenances_attente_candide=nb_soutenances_attente_candide)
 
 @app.route('/admin/planning/')
 def planning_admin():
