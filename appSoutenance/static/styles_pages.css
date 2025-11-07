@@ -146,6 +146,24 @@ div#filtre_admin{
     justify-content: center;
 }
 
+
+aside#filtre_liste_admin{
+    align-items: center;
+}
+
+
+#nav_admin {
+    margin-right: auto;
+    justify-content: flex-start;
+}
+
+
+button#voir{
+    font-size: 1.2em;
+    font-family: "Arimo", sans-serif;
+    border-radius: 40px;
+    width: 300px;
+    height: 150px;
 div#boite{
     display: flex;
     align-items: center;
@@ -240,6 +258,18 @@ button#filtrer{
     display: block;
 }
 
+
+div#boite{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    margin: 30px;
+    width: 500px;
+    height: 350px;
+}
+
+
 #texte_admin button{
     margin-top: 15px;
     font-size: 0.5em;
@@ -255,6 +285,18 @@ p#texte_admin {
     font-size: 1.5em;
     font-family: "Bebas Neue", sans-serif;
     margin-top: 20px;
+}
+
+
+#texte_admin button{
+    margin-top: 15px;
+    font-size: 0.5em;
+}
+
+
+div#contenu_admin {
+    align-items: center;
+    font-size: 1em;
 }
 
 p.pliste {
