@@ -105,7 +105,7 @@ def liste_etu_enseignant():
             'nb_demarches': nb_demarches,
             'situation': derniere_demarche.situation if derniere_demarche else "Aucune"
         })
-    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", title="Liste des étudiants",resultats=res)
+    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Liste des étudiants",resultats=res)
 
 @app.route('/enseignant/liste+etu/etudiant/')
 def detail_etudiant_ens():

@@ -229,21 +229,18 @@ nav#barre_navigation{
 }
 
 nav#barre_navigation img{
-    height: 45px;
+    height: 35px;
 }
 
 nav#barre_navigation ul{
     margin: 0;
+    padding: 0;
     display: flex;
     column-gap: 50px;
-}
-
-nav#barre_navigation li{
     list-style: none;
-    /*color: white;*/
 }
 
-nav#barre_navigation p{
+nav#barre_navigation p, nav#barre_navigation li{
     font-size: 0.7em;
     text-align: right;
 }
