@@ -96,7 +96,13 @@ def liste_ens_admin():
 
 @app.route('/admin/liste+etudiants/')
 def liste_etu_admin():
-    return render_template("admin/lst_etudiants_admin.html", accueil="accueil_admin", title="Liste etudiants")
+    lst_etu = {
+        1: ["DOE", "Leni", "BUT3", "TD1 Groupe 1", 3, True],
+        2: ["SMITH", "John", "BUT2", "TD2 Groupe 2", 5, False],
+        3: ["DUPONT", "Marie", "BUT3", "TD4 Groupe 1", 2, True],
+        4: ["MARTIN", "Claire", "BUT2", "TD3 Groupe 4", 4, False]
+    }
+    return render_template("admin/lst_etudiants_admin.html", accueil="accueil_admin", title="Liste etudiants", lst_etu=lst_etu)
 
 if __name__== "__main__":
     app.run()
