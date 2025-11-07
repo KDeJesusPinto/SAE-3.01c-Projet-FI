@@ -108,16 +108,17 @@ def liste_ens_admin():
     res = []
 
     for enseignant in lesEnseignants:
-        nb_tutorer = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant).count()
+        nb_tutore = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant).count()
+        nb_soutenances = Composer.query.filter_by(id_enseignant=enseignant.id_enseignant).count()
 
+        res.append({
+            "enseignant": enseignant,
+            "nb_tutores": nb_tutore,
+            "nb_soutenances":nb_soutenances,
+        })
 
-
-        # res.append({
-        #     "enseignant": enseignant,
-        #     ""
-        # })
-
-    return render_template("admin/lst_enseignants.html", accueil="accueil_admin", title="Liste enseignants")
+    return render_template("admin/lst_enseignants.html", accueil="accueil_admin",
+                           title="Liste enseignants",resultats=res)
 
 @app.route('/admin/liste+etudiants/')
 def liste_etu_admin():

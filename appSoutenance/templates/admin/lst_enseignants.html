@@ -27,14 +27,27 @@
                 <option value="En cours">En cours</option>
             </select>
             <button class="petit_bouton" id="filtrer">Filtrer</button>
-            <select class="combobox" name="Trier" id="trier">
-                <option value="Trier">Trier par</option>
-                <option value="Nom">Nom</option>
-                <option value="Groupe">Groupe</option>
-                <option value="Situation">Nombre de démarches</option>
-            </select>
         </aside>
 
+
+        <div class="boite_verticale">
+            {% if resultats|length == 0 %}
+                <p>Aucun enseignant trouvé.</p>
+            {% endif %}
+            {% for res in resultats %}
+            <div class="glass" id="liste_etu">
+                <div class="boite_horizontale info-grid">
+                    <i id="user-icon" class="fas fa-user-circle"></i>
+                    <p class="pliste">{{ res.enseignant.nom_enseignant }} {{ res.enseignant.prenom_enseignant }} |</p>
+                    <p class="pliste"></p>
+                    <p class="pliste"> Tutorés : {{ res.nb_tutores }} |</p>
+                    <p class="pliste"> Assiste à soutenance : </p> <!--nombre de soutenances posées sur nombre de soutenances total -->
+                    <button style="color: #242f53;background: none; border: none; cursor: pointer; margin-left: auto; font-size: 1.5em;""><i class="fas fa-info"></i></button>
+                    <button id="ajout_sout" class="petit_bouton">Ajouter soutenance</button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 
 {% endblock %}

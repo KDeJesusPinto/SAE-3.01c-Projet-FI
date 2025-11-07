@@ -30,7 +30,7 @@
             <select class="combobox" name="Trier" id="trier">
                 <option value="Trier">Trier par</option>
                 <option value="Nom">Nom</option>
-                <option value="Groupe">Groupe</option>
+                <option value="Groupe">Année</option>
                 <option value="Situation">Nombre de démarches</option>
             </select>
         </aside>
@@ -39,15 +39,22 @@
             {% if resultats|length == 0 %}
                 <p>Aucun étudiant trouvé.</p>
             {% endif %}
-            {% for result in resultats %}
+            {% for res in resultats %}
             <div class="glass" id="liste_etu">
                 <div class="boite_horizontale info-grid">
                     <i id="user-icon" class="fas fa-user-circle"></i>
-                    <p id="nom_prenom_etudiant">{{ result.etudiant.nom_etudiant }} {{ result.etudiant.prenom_etudiant }} |</p>
-                    <p id="formation_etudiant"> {{ result.formation }} |</p>
-                    <p id="promo_etudiant"> {{ result.promo }} {{ result.annee }} |</p>
-                    <p id="demarches_etudiant">Nombre de démarches : {{ result.nb_demarches }} |</p>
-                    <p id="situation_etudiant">Dérnière démarche : {{ result.situation }}</p>
+                    <p class="pliste">{{ res.etudiant.nom_etudiant }} {{ res.etudiant.prenom_etudiant }} |</p>
+                    <p class="pliste"> {{ res.formation }} |</p>
+                    <p class="pliste"> {{ res.promo }} {{ res.annee }} |</p>
+                    <p class="pliste">Nombre de démarches : {{ res.nb_demarches }} |</p>
+                    <p class="pliste">Dérnière démarche : {{ res.situation }}</p>
+                    {% if res.situation == "Acceptée" %}
+                        <i class="fas fa-check-circle" style="color:green; font-size: 4.5rem !important; margin-left: auto;"></i>
+                    {% elif res.situation == "En cours" %}
+                        <i class="fas fa-search" style="color:orange; font-size: 4.5rem !important; margin-left: auto;"></i>
+                    {% else %}
+                        <i class="fas fa-times-circle" style="color:red; font-size: 4.5rem !important; margin-left: auto;"></i>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}

@@ -136,6 +136,7 @@ div.boite_H_info_V{
     background-color: #242f53;
     color: white;
     text-align: center;
+    cursor: pointer;
 }
 
 .petit_bouton_imp{

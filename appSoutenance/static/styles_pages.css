@@ -202,6 +202,15 @@ button#infos{
     height: 100px;
 }
 
+button#ajout_sout {
+    font-size: 0.8em;
+    font-family: "Arimo", sans-serif;
+    border-radius: 40px;
+    width: 200px;
+    height: auto;
+    /* margin-left: auto; */
+}
+
 
 button#importer, button#exporter{
     font-size: 1.4em;
@@ -240,14 +249,20 @@ p#texte_admin {
     margin-top: 20px;
 }
 
-p#nom_prenom_etudiant, p#formation_etudiant, p#promo_etudiant, p#groupe_etudiant, p#demarches_etudiant, p#situation_etudiant {
-    font-size: 1.4em;
+p.pliste {
+    font-size: 1em;
     font-family: "Arimo", sans-serif;
     margin: 10px 0;
 }
 
-i#user-icon,
 .fas.fa-user-circle,
 .fa-user-circle {
-    font-size: 4.5rem !important; 
+    font-size: 4.5rem !important;
 }
+
+.fas.fa-search,
+.fa-plus-circle {
+    font-size: 4.5rem !important;    
+    margin-left: auto;
+}
+
