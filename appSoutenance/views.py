@@ -24,7 +24,15 @@ def accueil_etudiant():
 def demarches():
     num_personne = request.args.get('num_personne')
     etudiant = Etudiant.query.get(num_personne)
-    lst_demarches = sorted(list(etudiant.demarches), key=sort_id)
+    #lst_demarches = sorted(list(etudiant.demarches), key=sort_id)
+    lst_demarches = {
+        15:["Google", 2, 'refusé'],
+        1:["Microsoft", 8, 'validé'],
+        2:["Ubisoft", 9, 'en attente de validation'],
+        11:["Apple", 10, 'convention signée'],
+        12:["IUT'O", 256, 'validé'],
+        9:["Cognosphère", 10, 'convention signée']
+    }
     return render_template("etudiant/demarches.html", accueil="accueil_etudiant", personne=etudiant, title="Mes démarches", liste_dem=lst_demarches)
 
 @app.route('/etudiant/stage/')
