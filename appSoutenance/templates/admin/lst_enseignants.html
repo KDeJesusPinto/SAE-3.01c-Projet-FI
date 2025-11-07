@@ -42,7 +42,7 @@
                     <p class="pliste"></p>
                     <p class="pliste"> Tutorés : {{ res.nb_tutores }} |</p>
                     <p class="pliste"> Assiste à soutenance : </p> <!--nombre de soutenances posées sur nombre de soutenances total -->
-                    <button style="color: #242f53;background: none; border: none; cursor: pointer; margin-left: auto; font-size: 1.5em;""><i class="fas fa-info"></i></button>
+                    <a id="detail" href="{{ url_for('detail_enseignant', id=res.enseignant.id_enseignant) }}"><i class="fas fa-info"></i></a>
                     <button id="ajout_sout" class="petit_bouton">Ajouter soutenance</button>
                 </div>
             </div>
