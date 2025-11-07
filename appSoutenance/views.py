@@ -1,6 +1,6 @@
 from .app import app
 from flask import render_template, request, url_for , redirect
-from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer
+from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer
 from sqlalchemy import desc
 
 @app.route('/')
@@ -104,6 +104,19 @@ def detail_etudiant_admin():
 
 @app.route('/admin/liste+enseignants/')
 def liste_ens_admin():
+    lesEnseignants = Enseignant.query.all()
+    res = []
+
+    for enseignant in lesEnseignants:
+        nb_tutorer = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant).count()
+
+
+
+        # res.append({
+        #     "enseignant": enseignant,
+        #     ""
+        # })
+
     return render_template("admin/lst_enseignants.html", accueil="accueil_admin", title="Liste enseignants")
 
 @app.route('/admin/liste+etudiants/')
