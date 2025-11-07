@@ -11,7 +11,7 @@
 </head>
 <body>
     <nav id="barre_navigation">
-        <a href="{{ url_for(accueil) }}">
+        <a href="{{ url_for(accueil, num_personne=num_personne) }}">
             <img src="{{ url_for('static', filename = 'images/icone.png') }}" alt="">
         </a>
         {% block navbar %}{% endblock %}
