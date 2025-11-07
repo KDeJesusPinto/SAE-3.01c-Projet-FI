@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="glass demarche_etape">
+    <img class="img_chargement" src="{{ url_for('static', filename = 'images/demarche_etape3.png') }}" alt="icone de chargement des étapes de l'ajout de la démarche">
+    <h1>Etape 3 : avancement de la démarche de prise de contact</h1>
+    <div class="bouton_horizontal">
+        <a href="{{ url_for('nouvelle_demarche2', num_personne=personne.id_etudiant) }}" class="petit_bouton"><i class="fas fa-chevron-circle-left"></i></a>
+        <a href="" class="petit_bouton">Enregistrer</a>
+    </div>
+</div>
+{% endblock %}
