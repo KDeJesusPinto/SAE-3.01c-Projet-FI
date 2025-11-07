@@ -135,6 +135,9 @@ div#boutons_extreme_droite{
     text-align: center;
 }
 
+i#user-icon {
+    font-size: 5rem;
+}
 
 div#filtre_admin{
     width: 30%;
@@ -143,6 +146,33 @@ div#filtre_admin{
     justify-content: center;
 }
 
+div#boite{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    margin: 30px;
+    width: 500px;
+    height: 350px;
+}
+
+div#contenu_admin {
+    align-items: center;
+    font-size: 1em;
+}
+
+div#liste_etu{
+    width: 2200px;
+    height: 100px;
+    min-height: 100px;     /* hauteur minimale */
+    height: fit-content;   /* s'adapte au contenu si dépasse */
+    margin: 10px 0; 
+}
+
+div#contenu_admin {
+    align-items: center;
+    font-size: 1em;
+}
 
 aside#filtre_liste_admin{
     align-items: center;
@@ -193,17 +223,10 @@ button#filtrer{
     display: block;
 }
 
-
-div#boite{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 50px;
-    margin: 30px;
-    width: 500px;
-    height: 350px;
+#texte_admin button{
+    margin-top: 15px;
+    font-size: 0.5em;
 }
-
 
 h1#donnees_eleves, h1#donnees_professeurs {
     white-space: nowrap;
@@ -217,14 +240,14 @@ p#texte_admin {
     margin-top: 20px;
 }
 
-
-#texte_admin button{
-    margin-top: 15px;
-    font-size: 0.5em;
+p#nom_prenom_etudiant, p#formation_etudiant, p#promo_etudiant, p#groupe_etudiant, p#demarches_etudiant, p#situation_etudiant {
+    font-size: 1.4em;
+    font-family: "Arimo", sans-serif;
+    margin: 10px 0;
 }
 
-
-div#contenu_admin {
-    align-items: center;
-    font-size: 1em;
+i#user-icon,
+.fas.fa-user-circle,
+.fa-user-circle {
+    font-size: 4.5rem !important; 
 }

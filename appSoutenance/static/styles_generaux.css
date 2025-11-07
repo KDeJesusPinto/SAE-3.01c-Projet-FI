@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bebas+Neue&family=PT+Sans+Narrow:wght@400;700&display=swap');
 
-
 /*---------------- STYLES GÉNÉRAUX ----------------*/
-
 
 body{
     background: url(images/fond.png) no-repeat;
@@ -20,7 +18,6 @@ body{
     /*font-size: 4em;*/
 }
 
-
 h1{
     font-family: "Barlow Condensed", sans-serif;
     font-weight: 400;
@@ -31,7 +28,6 @@ h1{
     letter-spacing: -0.04em;
     margin: 0;
 }
-
 
 h2{
     font-family: "Barlow Condensed", sans-serif;
@@ -45,13 +41,11 @@ h2{
     white-space: nowrap !important;
 }
 
-
 a{
     color: black;
     text-decoration: none;
     cursor: url(images/cursor.png), pointer;
 }
-
 
 .img_chargement{
     display: flex;
@@ -59,15 +53,12 @@ a{
     width: 75%;
 }
 
-
 div#connexion a{
     padding: 40px 0;
     width: 70%;
 }
 
-
 /* ---------------- STYLES GÉNÉRAUX DES BOÎTES ----------------*/
-
 
 .glass{
     border-radius: 40px;
@@ -75,10 +66,8 @@ div#connexion a{
     backdrop-filter: blur(3px);
     background-color: rgba(255, 255, 255, 0.55);
 
-
     /*padding: 2% !important;*/
 }
-
 
 .boite_verticale{
     display: flex;
@@ -88,7 +77,6 @@ div#connexion a{
     row-gap: 20px;
 }
 
-
 .boite_horizontale{
     display: flex;
     flex-direction: row;
@@ -97,9 +85,7 @@ div#connexion a{
     column-gap: 20px;
 }
 
-
 /* ---------------- STYLES DES TEXTES ----------------*/
-
 
 #titre_page {
     position: absolute;
@@ -109,12 +95,10 @@ div#connexion a{
     font-family: "Arimo", sans-serif;
 }
 
-
 div.boite_horizontale p{
     margin: 0;
     text-align: center;
 }
-
 
 div.boite_H_info_V{
     display: flex;
@@ -126,35 +110,27 @@ div.boite_H_info_V{
     box-sizing: border-box;
 }
 
-
 .short{
     white-space: nowrap;
 }
 
-
 /* ---------------- STYLES DES ICONES ----------------*/
-
 
 .grande_icone{
     font-size: 2em !important;
 }
 
-
 .petite_icone{
     font-size: 1.4em !important;
 }
 
-
 /* ---------------- STYLES DES ÉLÉMENTS CLIQUABLES ----------------*/
-
 
 .petit_bouton{
     padding: 15px;
     width: 100%;
 
-
     font-family: "Arimo", sans-serif;
-
 
     border-radius: 20px;
     background-color: #242f53;
@@ -162,14 +138,11 @@ div.boite_H_info_V{
     text-align: center;
 }
 
-
 .petit_bouton_imp{
     padding: 15px;
     /*width: 300px;*/
 
-
     font-family: "Arimo", sans-serif;
-
 
     border-radius: 20px;
     background-color: #8f11bc;
@@ -178,26 +151,21 @@ div.boite_H_info_V{
     text-wrap: nowrap;
 }
 
-
 .petit_bouton:hover{
     background: #a671b0;
 }
-
 
 .bouton_nav{
     padding: 30px;
     width: 100%;
 
-
     font-family: "Arimo", sans-serif;
-
 
     border-radius: 30px;
     background-color: #a671b0;
     color: white;
     text-align: center;
 }
-
 
 div.bouton_horizontal{
     /*background-color: red;*/
@@ -212,8 +180,6 @@ div.bouton_horizontal{
 }
 
 
-
-
 .tooltip:hover::after{
     content: attr(data-tooltip);
     background-color: rgb(178, 185, 187);
@@ -222,18 +188,15 @@ div.bouton_horizontal{
     font-size: 0.7em;
 }
 
-
 div.demarche_etape{
     width: 2500px;
     flex-grow: 0;
 }
 
-
 div.demarches div.glass{
     width: 100%;
 }
 /*---------------- MAIN BODY STYLES ----------------*/
-
 
 div#main_body{
     flex-grow: 1;
@@ -241,13 +204,10 @@ div#main_body{
     align-items: center;
     justify-content: center;
 
-
     padding: 150px 0 100px;
 }
 
-
 /*---------------- STYLES BARRE DE NAVIGATION ----------------*/
-
 
 nav#barre_navigation{
     background-color: #a671b0;
@@ -263,11 +223,9 @@ nav#barre_navigation{
     box-sizing: border-box;
 }
 
-
 nav#barre_navigation img{
     height: 45px;
 }
-
 
 nav#barre_navigation ul{
     margin: 0;
@@ -275,30 +233,25 @@ nav#barre_navigation ul{
     column-gap: 50px;
 }
 
-
 nav#barre_navigation li{
     list-style: none;
     /*color: white;*/
 }
-
 
 nav#barre_navigation p{
     font-size: 0.7em;
     text-align: right;
 }
 
-
 nav#barre_navigation div{
     padding: 0;
 }
- 
+  
 .choix{
     padding: 20px;
     width: 150px;
 
-
     font-family: "Arimo", sans-serif;
-
 
     border-radius: 30px;
     background-color: #242f53;
@@ -306,19 +259,15 @@ nav#barre_navigation div{
     text-align: left;
 }
 
-
 #soutenance{
     width: 40%;
 }
-
 
 input#import_csv{
     display: none;
 }
 
-
 /* ---------------- STYLES DES COMBOBOX ----------------*/
-
 
 select.combobox {
     font-size: 1em;
@@ -327,15 +276,13 @@ select.combobox {
     height: 75px;
     margin: 30px;
 
-
     font-family: "Arimo", sans-serif;
-
 
     border-radius: 80px;
     background-color: #a671b0;
     color: white;
     text-align: center;
-   
+    
     display: flex;
     align-items: center;
 }

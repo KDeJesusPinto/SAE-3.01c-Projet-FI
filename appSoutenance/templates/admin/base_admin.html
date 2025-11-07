@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+    <div class="boite_horizontale" id="nav_admin">
+        <a href="{{ url_for('planning_admin') }}" class="bouton_nav">Soutenances</a>
+        <a href="{{ url_for('liste_etu_admin') }}" class="bouton_nav">Etudiants</a>
+        <a href="{{ url_for('liste_ens_admin') }}" class="bouton_nav">Enseignants</a>
+    </div>
+    <div id="titre_page"><p>Accueil Admin</p></div>
+    <div class="boite_horizontale">
+        <div class="boite_horizontale">
+            <p>{{ prenom }}<br>{{ nom }}</p>
+            <i class="fas fa-user-circle petite_icone"></i>
+        </div>
+        <i class="fas fa-sign-out-alt petite_icone"></i>
+    </div>
+{% endblock %}
