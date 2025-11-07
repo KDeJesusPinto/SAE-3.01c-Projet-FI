@@ -214,6 +214,10 @@ class Etudiant(db.Model):
     telephone_etudiant = db.Column(db.String(15))
     email_etudiant = db.Column(db.String(200))
 
+    # 0,N
+    promos = db.relationship('Promo', secondary='appartenir',
+                           backref=db.backref('etudiants', lazy='dynamic'))
+
     def __init__(self,
                  nom_etudiant,
                  prenom_etudiant,
@@ -257,14 +261,22 @@ class Appartenir(db.Model):
     id_etudiant = db.Column(db.Integer,
                             db.ForeignKey("etudiant.id_etudiant"),
                             primary_key=True)
-    etudiant = db.relationship("Etudiant",
-                               backref=db.backref("appartenirs",
-                               lazy="joined"))
+    
+    etudiant = db.relationship("Etudiant", 
+                               backref=db.backref("appartenirs", 
+                                                  lazy="joined", 
+                                                  overlaps="promos,etudiants"),
+                               overlaps="promos,etudiants")
 
     nom_promo = db.Column(db.String(100), primary_key=True)
     annee_promo = db.Column(db.Integer, primary_key=True)
 
     regime_etudiant = db.Column(db.String(100))
+
+    __table_args__ = (
+        db.ForeignKeyConstraint(['nom_promo', 'annee_promo'],
+                              ['promo.nom_promo', 'promo.annee_promo']),
+    )
 
     def __init__(self, id_etudiant, nom_promo, annee_promo, regime_etudiant):
         self.id_etudiant = id_etudiant
