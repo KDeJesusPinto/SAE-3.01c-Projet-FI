@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block navbar %}
+    <div class="boite_horizontale">
+        <div class="boite_horizontale">
+            <a href="{{ url_for(accueil) }}">
+                <i class="fas fa-home"></i>
+            </a>
+            <a href="{{ url_for(accueil) }}">
+                <p>planning</p>
+            </a>
+            <a href="{{ url_for(accueil) }}">
+                <p>tutorés</p>
+            </a>
+            <a href="{{ url_for(accueil) }}">
+                <p>soutenances</p>
+            </a>
+            <a href="{{ url_for('liste_etu_enseignant') }}">
+                <p>étudiants</p>
+            </a>
+            <p>{{ prenom }}<br>{{ nom }}</p>
+            <i class="fas fa-user-circle petite_icone"></i>
+        </div>
+        <a href="{{ url_for(accueil) }}">
+            <i class="fas fa-sign-out-alt petite_icone"></i>
+        </a>
+    </div>
+{% endblock %}
