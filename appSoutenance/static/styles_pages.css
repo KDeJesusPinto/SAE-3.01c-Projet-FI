@@ -158,12 +158,14 @@ aside#filtre_liste_admin{
 }
 
 
-button#voir{
+button#voir {
     font-size: 1.2em;
     font-family: "Arimo", sans-serif;
     border-radius: 40px;
     width: 300px;
     height: 150px;
+}
+
 div#boite{
     display: flex;
     align-items: center;
