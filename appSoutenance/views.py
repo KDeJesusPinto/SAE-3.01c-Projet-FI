@@ -1,78 +1,167 @@
 from .app import app
 from flask import render_template, request, url_for , redirect
+from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer
+from sqlalchemy import desc
 
 @app.route('/')
 @app.route('/connexion/')
 def index():
-    return render_template("index.html", title="Soutenance - Connexion")
+    return render_template("index.html", title="Soutenance - Connexion", accueil="index")
 
-#Pour page enseignants
+########################## POUR LES ÉTUDIANTS ##########################
+
+@app.route('/etudiant/')
+def accueil_etudiant():
+    lst_demarches = {
+        15:["Google", 2, 'refusé'],
+        1:["Microsoft", 8, 'validé'],
+        2:["Ubisoft", 9, 'en attente de validation'],
+        11:["Apple", 10, 'convention signée'],
+        12:["IUT'O", 256, 'validé'],
+        9:["Cognosphère", 10, 'convention signée']
+    }
+    return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", prenom="Leni", nom="Doe", title="Accueil", liste_dem=lst_demarches)
+
+@app.route('/etudiant/demarches/')
+def demarches():
+    lst_demarches = {
+        15:["Google", 2, 'refusé'],
+        1:["Microsoft", 8, 'validé'],
+        2:["Ubisoft", 9, 'en attente de validation'],
+        11:["Apple", 10, 'convention signée'],
+        12:["IUT'O", 256, 'validé'],
+        9:["Cognosphère", 10, 'convention signée']
+    }
+    return render_template("etudiant/demarches.html", accueil="accueil_etudiant", title="Mes démarches", liste_dem=lst_demarches)
+
+@app.route('/etudiant/stage/')
+def info_stage():
+    return render_template("etudiant/info_stage_valide.html", accueil="accueil_etudiant", title="Mon stage")
+
+@app.route('/etudiant/demarches/new1/')
+def nouvelle_demarche1():
+    return render_template("etudiant/nouvelle_demarche1.html", accueil="accueil_etudiant", title="Nouvelle démarche")
+
+@app.route('/etudiant/demarches/new2/')
+def nouvelle_demarche2():
+    return render_template("etudiant/nouvelle_demarche2.html", accueil="accueil_etudiant", title="Nouvelle démarche")
+
+@app.route('/etudiant/demarches/new3/')
+def nouvelle_demarche3():
+    return render_template("etudiant/nouvelle_demarche3.html", accueil="accueil_etudiant", title="Nouvelle démarche")
+
+@app.route('/etudiant/demarches/resume/')
+def resume_demarche_etudiant():
+    return render_template("etudiant/resume_demarche.html", accueil="accueil_etudiant", title="Résumé de la démarche")
+
+########################## POUR LES ENSEIGNANTS ##########################
+
 @app.route('/enseignant/')
 def accueil_enseignant():
-    return render_template("enseignant/accueil_enseignant.html", title="Accueil")
+    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", title="Accueil")
 
 @app.route('/enseignant/planning/')
 def planning_enseignant():
-    return render_template("enseignant/planning_enseignant.html", title="Planning enseignant")
+    return render_template("enseignant/planning_enseignant.html", accueil="accueil_enseignant", title="Planning enseignant")
 
 @app.route('/enseignant/liste+etu/')
 def liste_etu_enseignant():
-    return render_template("enseignant/lst_etudiants_enseignant.html", title="Liste des étudiants")
+    lesEtudiants=Etudiant.query.all()
+    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", title="Liste des étudiants",etudiants=lesEtudiants)
 
 @app.route('/enseignant/liste+etu/etudiant/')
 def detail_etudiant_ens():
-    return render_template("admin/detail_etudiant__ens.html", title="Detail de l'etudiant")
+    return render_template("admin/detail_etudiant_ens.html", accueil="accueil_enseignant", title="Detail de l'etudiant")
 
+########################## POUR LES ADMINISTRATEURS ##########################
 
-#Pour page étudiants
-@app.route('/etudiant/')
-def accueil_etudiant():
-    return render_template("etudiant/accueil_etu.html", title="Accueil")
-
-@app.route('/etudiant/demarches/')
-def demarches_etudiant():
-    return render_template("etudiant/demarches.html", title="Mes démarches")
-
-@app.route('/etudiant/stage/')
-def accueil_etudiant():
-    return render_template("etudiant/info_stage_valide.html", title="Mon stage")
-
-@app.route('/etudiant/demarches/new/')
-def nouvelle_demarches_etudiant():
-    return render_template("etudiant/nouvelle_demarches.html", title="Nouvelle démarche")
-
-@app.route('/etudiant/demarches/resume/')
-def resume_demarches_etudiant():
-    return render_template("etudiant/resume_demarches.html", title="Résumé de la démarche")
-
-
-#Pour page administrateur
 @app.route('/admin/')
 def accueil_admin():
-    return render_template("admin/accueil_admin.html", title="Accueil")
+    nb_etudiants = Etudiant.query.count()
+    nb_stages_trouves = Stage.query.count()
+    nb_etudiants_alternants = Appartenir.query.filter_by(regime_etudiant='Alternance').count()
+    nb_soutenances_alternants = 0 
+    nb_soutenances_posees = Soutenance.query.count()
+    nb_soutenances_attente_candide = 0
+    return render_template("admin/accueil_admin.html", accueil="accueil_admin", title="Accueil",
+                           nb_stages_trouves=nb_stages_trouves, 
+                           nb_etudiants=nb_etudiants, nb_etudiants_alternants=nb_etudiants_alternants,
+                           nb_soutenances_alternants=nb_soutenances_alternants,
+                           nb_soutenances_posees=nb_soutenances_posees,
+                           nb_soutenances_attente_candide=nb_soutenances_attente_candide)
 
 @app.route('/admin/planning/')
 def planning_admin():
-    return render_template("admin/planning_admin.html", title="Plannng")
+    return render_template("admin/planning_admin.html", accueil="accueil_admin", title="Planning")
+
+@app.route('/admin/liste+enseignants/<int:id>/')
+def detail_enseignant(id):
+    enseignant = Enseignant.query.get(id)
+    return render_template("admin/detail_enseignant.html", accueil="accueil_admin",
+                           title="Detail de l'enseignant",
+                           enseignant=enseignant)
+
+@app.route('/admin/liste+etudiants/<int:id>/')
+def detail_etudiant_admin(id):
+    etudiant = Etudiant.query.get(id)
+    return render_template("admin/detail_etudiant_admin.html", accueil="accueil_admin",
+                           title="Detail de l'etudiant",
+                           etudiant=etudiant)
 
 @app.route('/admin/liste+enseignants/')
 def liste_ens_admin():
-    return render_template("admin/lst_enseignants_admin.html", title="Liste enseignants")
+    lesEnseignants = Enseignant.query.all()
+    res = []
+
+    for enseignant in lesEnseignants:
+        nb_tutore = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant).count()
+        nb_soutenances = Composer.query.filter_by(id_enseignant=enseignant.id_enseignant).count()
+
+        res.append({
+            "enseignant": enseignant,
+            "nb_tutores": nb_tutore,
+            "nb_soutenances":nb_soutenances,
+        })
+
+    return render_template("admin/lst_enseignants.html", accueil="accueil_admin",
+                           title="Liste enseignants",resultats=res)
 
 @app.route('/admin/liste+etudiants/')
 def liste_etu_admin():
-    return render_template("admin/lst_etudiants_admin.html", title="Liste etudiants")
+    lesEtudiants = Etudiant.query.all()
 
-@app.route('/admin/enseignant/')
-def detail_enseignant():
-    return render_template("admin/detail_enseignant.html", title="Detail de l'enseignant")
+    tri = request.args.get('trier', 'Nom')
 
-@app.route('/admin/etudiant/')
-def detail_etudiant_admin():
-    return render_template("admin/detail_etudiant_admin.html", title="Detail de l'etudiant")
+    res = []
+    
+    for etudiant in lesEtudiants:
+        appartenance = Appartenir.query.filter_by(id_etudiant=etudiant.id_etudiant).first()
+        promo = Promo.query.filter_by(nom_promo=appartenance.nom_promo, 
+                                    annee_promo=appartenance.annee_promo).first() if appartenance else None
+        
+        nb_demarches = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant).count()
+        
+        derniere_demarche = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant)\
+                                  .order_by(desc(Demarche.date_envoi)).first()
+        
+        res.append({
+            'etudiant': etudiant,
+            'formation': promo.formation_promo if promo else "None",
+            'annee': promo.annee_promo if promo else "None",
+            'promo': promo.nom_promo if promo else "None",
+            'nb_demarches': nb_demarches,
+            'situation': derniere_demarche.situation if derniere_demarche else "Aucune"
+        })
 
-
-
+    if tri == "Nom":
+        res = sorted(res, key=lambda x: x["etudiant"].nom_etudiant)
+    elif tri == "Annee":
+        res = sorted(res, key=lambda x: (x["annee"] is None, x["annee"]))
+    elif tri == "NbDemarches":
+        res = sorted(res, key=lambda x: x["nb_demarches"], reverse=True)
+    
+    return render_template("admin/lst_etudiants_admin.html", accueil="accueil_admin", 
+                         title="Liste etudiants", resultats=res)
 
 if __name__== "__main__":
     app.run()
