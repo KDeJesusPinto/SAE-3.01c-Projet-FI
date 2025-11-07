@@ -10,11 +10,11 @@ def index():
 
 ########################## POUR LES ÉTUDIANTS ##########################
 
+def sort_id(demarche):
+    return demarche.id_demarche
+
 @app.route('/etudiant/')
 def accueil_etudiant():
-    def sort_id(demarche):
-        return demarche.id_demarche
-
     num_personne = request.args.get('num_personne')
     etudiant = Etudiant.query.get(num_personne)
     lst_demarches = sorted(list(etudiant.demarches), key=sort_id)[:2]
@@ -22,16 +22,9 @@ def accueil_etudiant():
 
 @app.route('/etudiant/demarches/')
 def demarches():
-    lst_demarches = {
-        15:["Google", 2, 'refusé'],
-        1:["Microsoft", 8, 'validé'],
-        2:["Ubisoft", 9, 'en attente de validation'],
-        11:["Apple", 10, 'convention signée'],
-        12:["IUT'O", 256, 'validé'],
-        9:["Cognosphère", 10, 'convention signée']
-    }
     num_personne = request.args.get('num_personne')
-    etudiant = Etudiant.query.filter(Etudiant.id_etudiant==num_personne).one()
+    etudiant = Etudiant.query.get(num_personne)
+    lst_demarches = sorted(list(etudiant.demarches), key=sort_id)
     return render_template("etudiant/demarches.html", accueil="accueil_etudiant", personne=etudiant, title="Mes démarches", liste_dem=lst_demarches)
 
 @app.route('/etudiant/stage/')
