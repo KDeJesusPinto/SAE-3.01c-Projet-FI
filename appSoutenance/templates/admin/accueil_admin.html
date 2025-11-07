@@ -26,7 +26,7 @@
                     <option value="2A">2ème année</option>
                     <option value="3A">3ème année</option>
                 </select>
-                <button class="petit_bouton" id="voir">Voir tous les étudiants</button>
+                <a class="petit_bouton" id="voir" href="{{ url_for('liste_etu_admin') }}">Voir tous les étudiants</a>
             </div>
             <div class="boite_horizontale">
                 <div class="glass" id="boite">
@@ -49,7 +49,7 @@
                     <option value="2A">2ème année</option>
                     <option value="3A">3ème année</option>
                 </select>
-                <button class="petit_bouton" id="voir">Voir tous les enseignants</button>
+                <a class="petit_bouton" id="voir" href="{{ url_for('liste_ens_admin') }}">Voir tous les enseignant</a>
             </div>
             <div class="boite_horizontale">
                 <div class="glass" id="boite">

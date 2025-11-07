@@ -185,12 +185,13 @@ aside#filtre_liste_admin{
 }
 
 
-button#voir{
+a#voir{
     font-size: 1.2em;
     font-family: "Arimo", sans-serif;
     border-radius: 40px;
-    width: 300px;
-    height: 150px;
+    width: 250px;
+    height: 100px;
+    text-align: center;
 }
 
 
