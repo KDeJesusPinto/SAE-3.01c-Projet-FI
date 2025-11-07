@@ -1,78 +1,113 @@
+from appSoutenance.models import Enseignant, Etudiant
 from .app import app
 from flask import render_template, request, url_for , redirect
+from appSoutenance.models import Etudiant
 
 @app.route('/')
 @app.route('/connexion/')
 def index():
-    return render_template("index.html", title="Soutenance - Connexion")
+    return render_template("index.html", title="Soutenance - Connexion", accueil="index")
 
-#Pour page enseignants
+########################## POUR LES ÉTUDIANTS ##########################
+
+def sort_id(demarche):
+    return demarche.id_demarche
+
+@app.route('/etudiant/')
+def accueil_etudiant():
+    num_personne = request.args.get('num_personne')
+    etudiant = Etudiant.query.get(num_personne)
+    lst_demarches = sorted(list(etudiant.demarches), key=sort_id)[:2]
+    return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", personne=etudiant, title="Accueil", liste_dem=lst_demarches)
+
+@app.route('/etudiant/demarches/')
+def demarches():
+    num_personne = request.args.get('num_personne')
+    etudiant = Etudiant.query.get(num_personne)
+    lst_demarches = sorted(list(etudiant.demarches), key=sort_id)
+    return render_template("etudiant/demarches.html", accueil="accueil_etudiant", personne=etudiant, title="Mes démarches", liste_dem=lst_demarches)
+
+@app.route('/etudiant/stage/')
+def info_stage():
+    num_personne = request.args.get('num_personne')
+    etudiant = Etudiant.query.filter(Etudiant.id_etudiant==num_personne).one()
+    return render_template("etudiant/info_stage_valide.html", accueil="accueil_etudiant", personne=etudiant, title="Mon stage")
+
+@app.route('/etudiant/demarches/new1/')
+def nouvelle_demarche1():
+    num_personne = request.args.get('num_personne')
+    etudiant = Etudiant.query.filter(Etudiant.id_etudiant==num_personne).one()
+    return render_template("etudiant/nouvelle_demarche1.html", accueil="accueil_etudiant", personne=etudiant, title="Nouvelle démarche")
+
+@app.route('/etudiant/demarches/new2/')
+def nouvelle_demarche2():
+    num_personne = request.args.get('num_personne')
+    etudiant = Etudiant.query.filter(Etudiant.id_etudiant==num_personne).one()
+    return render_template("etudiant/nouvelle_demarche2.html", accueil="accueil_etudiant", personne=etudiant, title="Nouvelle démarche")
+
+@app.route('/etudiant/demarches/new3/')
+def nouvelle_demarche3():
+    num_personne = request.args.get('num_personne')
+    etudiant = Etudiant.query.filter(Etudiant.id_etudiant==num_personne).one()
+    return render_template("etudiant/nouvelle_demarche3.html", accueil="accueil_etudiant", personne=etudiant, title="Nouvelle démarche")
+
+@app.route('/etudiant/demarches/resume/')
+def resume_demarche_etudiant():
+    num_personne = request.args.get('num_personne')
+    etudiant = Etudiant.query.filter(Etudiant.id_etudiant==num_personne).one()
+    return render_template("etudiant/resume_demarche.html", accueil="accueil_etudiant", personne=etudiant, title="Résumé de la démarche")
+
+########################## POUR LES ENSEIGNANTS ##########################
+
 @app.route('/enseignant/')
 def accueil_enseignant():
-    return render_template("enseignant/accueil_enseignant.html", title="Accueil")
+    num_personne = request.args.get('num_personne')
+    enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
+    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil")
 
 @app.route('/enseignant/planning/')
 def planning_enseignant():
-    return render_template("enseignant/planning_enseignant.html", title="Planning enseignant")
+    num_personne = request.args.get('num_personne')
+    enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
+    return render_template("enseignant/planning_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Planning enseignant")
 
 @app.route('/enseignant/liste+etu/')
 def liste_etu_enseignant():
-    return render_template("enseignant/lst_etudiants_enseignant.html", title="Liste des étudiants")
+    num_personne = request.args.get('num_personne')
+    enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
+    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Liste des étudiants")
 
 @app.route('/enseignant/liste+etu/etudiant/')
 def detail_etudiant_ens():
-    return render_template("admin/detail_etudiant__ens.html", title="Detail de l'etudiant")
+    num_personne = request.args.get('num_personne')
+    enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
+    return render_template("admin/detail_etudiant_ens.html", accueil="accueil_enseignant", personne=enseignant, title="Detail de l'etudiant")
 
+########################## POUR LES ADMINISTRATEURS ##########################
 
-#Pour page étudiants
-@app.route('/etudiant/')
-def accueil_etudiant():
-    return render_template("etudiant/accueil_etu.html", title="Accueil")
-
-@app.route('/etudiant/demarches/')
-def demarches_etudiant():
-    return render_template("etudiant/demarches.html", title="Mes démarches")
-
-@app.route('/etudiant/stage/')
-def accueil_etudiant():
-    return render_template("etudiant/info_stage_valide.html", title="Mon stage")
-
-@app.route('/etudiant/demarches/new/')
-def nouvelle_demarches_etudiant():
-    return render_template("etudiant/nouvelle_demarches.html", title="Nouvelle démarche")
-
-@app.route('/etudiant/demarches/resume/')
-def resume_demarches_etudiant():
-    return render_template("etudiant/resume_demarches.html", title="Résumé de la démarche")
-
-
-#Pour page administrateur
 @app.route('/admin/')
 def accueil_admin():
-    return render_template("admin/accueil_admin.html", title="Accueil")
+    return render_template("admin/accueil_admin.html", accueil="accueil_admin", title="Accueil")
 
 @app.route('/admin/planning/')
 def planning_admin():
-    return render_template("admin/planning_admin.html", title="Plannng")
-
-@app.route('/admin/liste+enseignants/')
-def liste_ens_admin():
-    return render_template("admin/lst_enseignants_admin.html", title="Liste enseignants")
-
-@app.route('/admin/liste+etudiants/')
-def liste_etu_admin():
-    return render_template("admin/lst_etudiants_admin.html", title="Liste etudiants")
+    return render_template("admin/planning_admin.html", accueil="accueil_admin", title="Planning")
 
 @app.route('/admin/enseignant/')
 def detail_enseignant():
-    return render_template("admin/detail_enseignant.html", title="Detail de l'enseignant")
+    return render_template("admin/detail_enseignant.html", accueil="accueil_admin", title="Detail de l'enseignant")
 
 @app.route('/admin/etudiant/')
 def detail_etudiant_admin():
-    return render_template("admin/detail_etudiant_admin.html", title="Detail de l'etudiant")
+    return render_template("admin/detail_etudiant_admin.html", accueil="accueil_admin", title="Detail de l'etudiant")
 
+@app.route('/admin/liste+enseignants/')
+def liste_ens_admin():
+    return render_template("admin/lst_enseignants.html", accueil="accueil_admin", title="Liste enseignants")
 
-
+@app.route('/admin/liste+etudiants/')
+def liste_etu_admin():
+    return render_template("admin/lst_etudiants_admin.html", accueil="accueil_admin", title="Liste etudiants")
 
 if __name__== "__main__":
     app.run()
