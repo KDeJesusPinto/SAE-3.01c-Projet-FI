@@ -49,7 +49,8 @@
                     <p class="pliste"> {{ res.formation }} |</p>
                     <p class="pliste"> {{ res.promo }} {{ res.annee }} |</p>
                     <p class="pliste">Nombre de démarches : {{ res.nb_demarches }} |</p>
-                    <p class="pliste">Dérnière démarche : {{ res.situation }}</p>
+                    <p class="pliste">Dernière démarche : {{ res.situation }}</p>
+                    <a id="detail" href="{{ url_for('detail_etudiant_admin', id=res.etudiant.id_etudiant) }}"><i class="fas fa-info"></i></a>
                     {% if res.situation == "Acceptée" %}
                         <i class="fas fa-check-circle" style="color:green; font-size: 4.5rem !important; margin-left: auto;"></i>
                     {% elif res.situation == "En cours" %}

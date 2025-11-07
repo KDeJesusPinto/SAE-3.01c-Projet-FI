@@ -178,13 +178,6 @@ aside#filtre_liste_admin{
     align-items: center;
 }
 
-
-#nav_admin {
-    margin-right: auto;
-    justify-content: flex-start;
-}
-
-
 a#voir{
     font-size: 1.2em;
     font-family: "Arimo", sans-serif;
@@ -192,6 +185,20 @@ a#voir{
     width: 250px;
     height: 100px;
     text-align: center;
+}
+
+a#detail {
+    font-size: 1.2em;
+    font-family: "Arimo", sans-serif;
+    border-radius: 40px;
+    width: 70px;
+    height: auto;
+    text-align: center;
+    color: #242f53;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
 }
 
 

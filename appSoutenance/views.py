@@ -94,13 +94,19 @@ def accueil_admin():
 def planning_admin():
     return render_template("admin/planning_admin.html", accueil="accueil_admin", title="Planning")
 
-@app.route('/admin/enseignant/')
-def detail_enseignant():
-    return render_template("admin/detail_enseignant.html", accueil="accueil_admin", title="Detail de l'enseignant")
+@app.route('/admin/liste+enseignants/<int:id>/')
+def detail_enseignant(id):
+    enseignant = Enseignant.query.get(id)
+    return render_template("admin/detail_enseignant.html", accueil="accueil_admin",
+                           title="Detail de l'enseignant",
+                           enseignant=enseignant)
 
-@app.route('/admin/etudiant/')
-def detail_etudiant_admin():
-    return render_template("admin/detail_etudiant_admin.html", accueil="accueil_admin", title="Detail de l'etudiant")
+@app.route('/admin/liste+etudiants/<int:id>/')
+def detail_etudiant_admin(id):
+    etudiant = Etudiant.query.get(id)
+    return render_template("admin/detail_etudiant_admin.html", accueil="accueil_admin",
+                           title="Detail de l'etudiant",
+                           etudiant=etudiant)
 
 @app.route('/admin/liste+enseignants/')
 def liste_ens_admin():
