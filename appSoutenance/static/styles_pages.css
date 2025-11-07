@@ -164,8 +164,8 @@ div#contenu_admin {
 div#liste_etu{
     width: 2200px;
     height: 100px;
-    min-height: 100px;     /* hauteur minimale */
-    height: fit-content;   /* s'adapte au contenu si dépasse */
+    min-height: 100px;
+    height: fit-content;
     margin: 10px 0; 
 }
 

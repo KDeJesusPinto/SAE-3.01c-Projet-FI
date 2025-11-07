@@ -30,10 +30,10 @@
             </div>
             <div class="boite_horizontale">
                 <div class="glass" id="boite">
-                    <p id="texte_admin">STAGE TROUVÉ :<br>99/100<br><button class="petit_bouton" id="infos">Infos</button></p>
+                    <p id="texte_admin">STAGE TROUVÉ :<br>{{ nb_stages_trouves }} / {{ nb_etudiants }}<br><button class="petit_bouton" id="infos">Infos</button></p>
                 </div>
                 <div class="glass" id="boite">
-                    <p id="texte_admin">SOUTENANCE ALTERNANT PRÉVU :<br>3/5<br><button class="petit_bouton" id="infos">Infos</button>
+                    <p id="texte_admin">SOUTENANCE ALTERNANT PRÉVU :<br>{{ nb_soutenances_alternants }} / {{ nb_etudiants_alternants }}<br><button class="petit_bouton" id="infos">Infos</button>
                     </p>
                     
                 </div>
@@ -53,10 +53,10 @@
             </div>
             <div class="boite_horizontale">
                 <div class="glass" id="boite">
-                    <p id="texte_admin">SOUTENANCES POSÉES PAR TUTEUR :<br>8/65<br><button class="petit_bouton" id="infos">Infos</button></p>
+                    <p id="texte_admin">SOUTENANCES POSÉES PAR TUTEUR :<br>{{ nb_soutenances_posees }} / {{ nb_etudiants }}<br><button class="petit_bouton" id="infos">Infos</button></p>
                 </div>
                 <div class="glass" id="boite">
-                    <p id="texte_admin">SOUTENANCE EN ATTENTE DE CANDIDE :<br>7/8<br><button class="petit_bouton" id="infos">Infos</button></p>
+                    <p id="texte_admin">SOUTENANCE EN ATTENTE DE CANDIDE :<br>/ {{ nb_soutenances_attente_candide }}<br><button class="petit_bouton" id="infos">Infos</button></p>
                 </div>
             </div>
         </div>
