@@ -112,7 +112,7 @@ div#boutons_extreme_droite{
 }
 
 
-/*---------------- POUR LA PAGE D'ACCUEIL ADMIN ----------------*/
+/*---------------- POUR LES PAGES ADMIN ----------------*/
 
 
 .bouton_nav{
@@ -128,6 +128,23 @@ div#boutons_extreme_droite{
     text-align: center;
 }
 
+p.pliste {
+    font-size: 1em;
+    font-family: "Arimo", sans-serif;
+    margin: 10px 0;
+}
+
+.fas.fa-user-circle,
+.fa-user-circle {
+    font-size: 4.5rem !important;
+}
+
+.fas.fa-search,
+.fa-plus-circle {
+    font-size: 4.5rem !important;    
+    margin-left: auto;
+}
+
 i#user-icon {
     font-size: 5rem;
 }
@@ -138,7 +155,6 @@ div#filtre_admin{
     display: flex;
     justify-content: center;
 }
-
 
 aside#filtre_liste_admin{
     align-items: center;
@@ -175,6 +191,21 @@ div#liste_etu{
     min-height: 100px;
     height: fit-content;
     margin: 10px 0; 
+}
+
+div#contenu_admin {
+    align-items: center;
+    font-size: 1em;
+}
+
+div#boite{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px;
+    margin: 30px;
+    width: 500px;
+    height: 350px;
 }
 
 div#contenu_admin {
@@ -236,7 +267,6 @@ button#importer, button#exporter{
     border-radius: 40px;
 }
 
-
 button#filtrer{
     font-size: 1em;
     margin: 10px auto;
@@ -244,15 +274,12 @@ button#filtrer{
     display: block;
 }
 
-
-div#boite{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 50px;
-    margin: 30px;
-    width: 500px;
-    height: 350px;
+button#voir {
+    font-size: 1.2em;
+    font-family: "Arimo", sans-serif;
+    border-radius: 40px;
+    width: 300px;
+    height: 150px;
 }
 
 #texte_admin button{
@@ -271,7 +298,6 @@ p#texte_admin {
     font-family: "Bebas Neue", sans-serif;
     margin-top: 20px;
 }
-
 
 #texte_admin button{
     margin-top: 15px;
