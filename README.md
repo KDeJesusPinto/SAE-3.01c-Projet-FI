@@ -34,7 +34,7 @@ Tout d'abord nous vous conseillons de lancer l'application dans un environnement
 ```source venv/bin/activate```
 
 - Les packages que vous allez maintenant installer le seront dans cet environnement. Installez les packages nécessaires à l'application :  
-```pip install -r requirement.txt -v```  
+```pip install -r requirements.txt -v```  
 
 - Chargez la base de données en lançant cette commande depuis la racine du projet :
 ```flask --app appSoutenance.app loaddb appSoutenance/data/arexis_donnees.csv```
