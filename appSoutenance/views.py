@@ -1,6 +1,7 @@
 from .app import app
 from flask import render_template, request, url_for , redirect
-from appSoutenance.models import Etudiant
+from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir
+from sqlalchemy import desc
 
 @app.route('/')
 @app.route('/connexion/')
@@ -96,13 +97,30 @@ def liste_ens_admin():
 
 @app.route('/admin/liste+etudiants/')
 def liste_etu_admin():
-    lst_etu = {
-        1: ["DOE", "Leni", "BUT3", "TD1 Groupe 1", 3, True],
-        2: ["SMITH", "John", "BUT2", "TD2 Groupe 2", 5, False],
-        3: ["DUPONT", "Marie", "BUT3", "TD4 Groupe 1", 2, True],
-        4: ["MARTIN", "Claire", "BUT2", "TD3 Groupe 4", 4, False]
-    }
-    return render_template("admin/lst_etudiants_admin.html", accueil="accueil_admin", title="Liste etudiants", lst_etu=lst_etu)
+    lesEtudiants = Etudiant.query.all()
+    res = []
+    
+    for etudiant in lesEtudiants:
+        appartenance = Appartenir.query.filter_by(id_etudiant=etudiant.id_etudiant).first()
+        promo = Promo.query.filter_by(nom_promo=appartenance.nom_promo, 
+                                    annee_promo=appartenance.annee_promo).first() if appartenance else None
+        
+        nb_demarches = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant).count()
+        
+        derniere_demarche = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant)\
+                                  .order_by(desc(Demarche.date_envoi)).first()
+        
+        res.append({
+            'etudiant': etudiant,
+            'formation': promo.formation_promo if promo else "None",
+            'annee': promo.annee_promo if promo else "None",
+            'promo': promo.nom_promo if promo else "None",
+            'nb_demarches': nb_demarches,
+            'situation': derniere_demarche.situation if derniere_demarche else "Aucune"
+        })
+    
+    return render_template("admin/lst_etudiants_admin.html", accueil="accueil_admin", 
+                         title="Liste etudiants", resultats=res)
 
 if __name__== "__main__":
     app.run()

@@ -36,19 +36,21 @@
         </aside>
 
         <div class="boite_verticale">
-            {% for (id, infos) in lst_etu.items() %}
+            {% if resultats|length == 0 %}
+                <p>Aucun étudiant trouvé.</p>
+            {% endif %}
+            {% for result in resultats %}
             <div class="glass" id="liste_etu">
                 <div class="boite_horizontale info-grid">
-                    <i class="fas fa-plus-circle grande_icone"></i>
-                    <p id="nom_prenom_etudiant">{{ infos[0] }} {{ infos[1] }} |</p>
-                    <p id="formation_etudiant"> {{ infos[2] }} |</p>
-                    <p id="groupe_etudiant"> {{ infos[3] }} |</p>
-                    <p id="demarches_etudiant">Démarches : {{ infos[4] }} |</p>
-                    <p id="situation_etudiant"> {{ "Stage trouvé" if infos[5] else "Recherche en cours" }}</p>
+                    <i id="user-icon" class="fas fa-user-circle"></i>
+                    <p id="nom_prenom_etudiant">{{ result.etudiant.nom_etudiant }} {{ result.etudiant.prenom_etudiant }} |</p>
+                    <p id="formation_etudiant"> {{ result.formation }} |</p>
+                    <p id="promo_etudiant"> {{ result.promo }} {{ result.annee }} |</p>
+                    <p id="demarches_etudiant">Nombre de démarches : {{ result.nb_demarches }} |</p>
+                    <p id="situation_etudiant">Dérnière démarche : {{ result.situation }}</p>
                 </div>
             </div>
             {% endfor %}
         </div>
-
     </div>
 {% endblock %}
