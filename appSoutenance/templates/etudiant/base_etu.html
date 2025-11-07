@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+
+{% block navbar %}
+        <ul>
+            <li><a href="{{ url_for('accueil_etudiant') }}" class="bouton_nav">Accueil</a></li>
+            <li><a href="{{ url_for('demarches') }}" class="bouton_nav">Mes démarches</a></li>
+            <li><a href="" class="bouton_nav">Mon stage</a></li>
+        </ul>
+        <div class="boite_horizontale">
+            <div class="boite_horizontale">
+                <p>{{ prenom }}<br>{{ nom }}</p>
+                <i class="fas fa-user-circle petite_icone"></i>
+            </div>
+            <i class="fas fa-sign-out-alt petite_icone"></i>
+        </div>
+{% endblock %}
