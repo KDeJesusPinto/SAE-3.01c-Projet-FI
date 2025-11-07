@@ -123,6 +123,9 @@ def liste_ens_admin():
 @app.route('/admin/liste+etudiants/')
 def liste_etu_admin():
     lesEtudiants = Etudiant.query.all()
+
+    tri = request.args.get('trier', 'Nom')
+
     res = []
     
     for etudiant in lesEtudiants:
@@ -143,6 +146,13 @@ def liste_etu_admin():
             'nb_demarches': nb_demarches,
             'situation': derniere_demarche.situation if derniere_demarche else "Aucune"
         })
+
+    if tri == "Nom":
+        res = sorted(res, key=lambda x: x["etudiant"].nom_etudiant)
+    elif tri == "Annee":
+        res = sorted(res, key=lambda x: (x["annee"] is None, x["annee"]))
+    elif tri == "NbDemarches":
+        res = sorted(res, key=lambda x: x["nb_demarches"], reverse=True)
     
     return render_template("admin/lst_etudiants_admin.html", accueil="accueil_admin", 
                          title="Liste etudiants", resultats=res)
