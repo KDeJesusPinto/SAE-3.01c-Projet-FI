@@ -10,12 +10,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
 </head>
 <body>
-    <nav id="barre_navigation">
-        <a href="{{ url_for(accueil) }}">
-            <img src="{{ url_for('static', filename = 'images/icone.png') }}" alt="">
-        </a>
-        {% block navbar %}{% endblock %}
-    </nav>
+    {% block navbar %}{% endblock %}
     <div id="main_body" class="boite_verticale">
         {% block content %}{% endblock %}
     </div>

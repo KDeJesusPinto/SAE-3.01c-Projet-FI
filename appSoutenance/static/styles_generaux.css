@@ -112,6 +112,10 @@ div.boite_H_info_V{
 
 .short{
     white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 220px;
+    overflow: hidden;
+    text-align: center;
 }
 
 /* ---------------- STYLES DES ICONES ----------------*/
@@ -185,7 +189,7 @@ div.bouton_horizontal{
     content: attr(data-tooltip);
     background-color: rgb(178, 185, 187);
     position: absolute;
-    /*left: -50px;*/
+    right: 16%;
     font-size: 0.7em;
 }
 
@@ -225,27 +229,40 @@ nav#barre_navigation{
 }
 
 nav#barre_navigation img{
-    height: 45px;
+    height: 35px;
 }
 
 nav#barre_navigation ul{
     margin: 0;
+    padding: 0;
     display: flex;
     column-gap: 50px;
-}
-
-nav#barre_navigation li{
     list-style: none;
-    /*color: white;*/
 }
 
-nav#barre_navigation p{
+nav#barre_navigation p, nav#barre_navigation li{
     font-size: 0.7em;
     text-align: right;
 }
 
 nav#barre_navigation div{
     padding: 0;
+}
+
+nav#barre_navigation a{
+    color: white;
+}
+
+div#filtre_admin{
+    width: 50%;
+    padding: 20px;
+    display: flex;
+    margin-top: 150px;
+    gap: 20px;
+}
+
+select.petit_bouton2 {
+    font-size: 0.7em;
 }
   
 .choix{
@@ -268,7 +285,9 @@ input#import_csv{
     display: none;
 }
 
+
 /* ---------------- STYLES DES COMBOBOX ----------------*/
+
 
 select.combobox {
     font-size: 1em;
@@ -277,13 +296,15 @@ select.combobox {
     height: 75px;
     margin: 30px;
 
+
     font-family: "Arimo", sans-serif;
+
 
     border-radius: 80px;
     background-color: #a671b0;
     color: white;
     text-align: center;
-    
+   
     display: flex;
     align-items: center;
 }
