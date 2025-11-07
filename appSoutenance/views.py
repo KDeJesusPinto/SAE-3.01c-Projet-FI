@@ -1,6 +1,7 @@
 from .app import app
 from flask import render_template, request, url_for , redirect
-from appSoutenance.models import Etudiant
+from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer
+from sqlalchemy import desc
 
 @app.route('/')
 @app.route('/connexion/')
@@ -65,8 +66,28 @@ def planning_enseignant():
 
 @app.route('/enseignant/liste+etu/')
 def liste_etu_enseignant():
-    lesEtudiants=Etudiant.query.all()
-    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", title="Liste des étudiants",etudiants=lesEtudiants)
+    lesEtudiants = Etudiant.query.all()
+    res = []
+    
+    for etudiant in lesEtudiants:
+        appartenance = Appartenir.query.filter_by(id_etudiant=etudiant.id_etudiant).first()
+        promo = Promo.query.filter_by(nom_promo=appartenance.nom_promo, 
+                                    annee_promo=appartenance.annee_promo).first() if appartenance else None
+        
+        nb_demarches = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant).count()
+        
+        derniere_demarche = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant)\
+            .order_by(desc(Demarche.date_envoi)).first()
+        
+        res.append({
+            'etudiant': etudiant,
+            'formation': promo.formation_promo if promo else "None",
+            'annee': promo.annee_promo if promo else "None",
+            'promo': promo.nom_promo if promo else "None",
+            'nb_demarches': nb_demarches,
+            'situation': derniere_demarche.situation if derniere_demarche else "Aucune"
+        })
+    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", title="Liste des étudiants",resultats=res)
 
 @app.route('/enseignant/liste+etu/etudiant/')
 def detail_etudiant_ens():
