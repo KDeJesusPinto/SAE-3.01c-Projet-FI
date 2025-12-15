@@ -5,18 +5,18 @@ INSERT INTO ENTREPRISE (id_entreprise, nom_entreprise, secteur, ville, adresse, 
 (4, 'AI Systems', 'Intelligence Artificielle', 'Toulouse', '42 allée des Startups', '31000', 'SA', '0562347890', 'contact@aisystems.fr');
 
 
-INSERT INTO ETUDIANT (id_etudiant, nom_etudiant, prenom_etudiant, date_naissance, civilite_etudiant, telephone_etudiant, email_etudiant) VALUES
-(1, 'Doe', 'John', '2003-05-14', 'M.', '0601020304', 'john.doe@gmail.com'),
-(2, 'Smith', 'Jane', '2002-11-22', 'Mme', '0605060708', 'jane.smith@gmail.com'),
-(3, 'Brown', 'Alice', '2003-02-10', 'Mme', '0608091011', 'alice.brown@gmail.com'),
-(4, 'Martin', 'Lucas', '2004-03-05', 'M.', '0612131415', 'lucas.martin@gmail.com');
+INSERT INTO ETUDIANT (id_etudiant, nom_etudiant, prenom_etudiant, date_naissance, civilite_etudiant, telephone_etudiant, email_etudiant, login_etudiant, pwd_etudiant) VALUES
+(1, 'Doe', 'John', '2003-05-14', 'M.', '0601020304', 'john.doe@gmail.com', 'johndoe', 'pass1'),
+(2, 'Smith', 'Jane', '2002-11-22', 'Mme', '0605060708', 'jane.smith@gmail.com', 'janesmith', 'pass2'),
+(3, 'Brown', 'Alice', '2003-02-10', 'Mme', '0608091011', 'alice.brown@gmail.com', 'alicebrown', 'pass3'),
+(4, 'Martin', 'Lucas', '2004-03-05', 'M.', '0612131415', 'lucas.martin@gmail.com', 'lucasmartin', 'pass4');
 
 
-INSERT INTO ENSEIGNANT (id_enseignant, nom_enseignant, prenom_enseignant, civilite_enseignant, email_enseignant) VALUES
-(1, 'Dubois', 'Jean', 'M.', 'jean.dubois@univ.fr'),
-(2, 'Martin', 'Sophie', 'Mme', 'sophie.martin@univ.fr'),
-(3, 'Lefebvre', 'Pierre', 'M.', 'pierre.lefebvre@univ.fr'),
-(4, 'Durand', 'Camille', 'Mme', 'camille.durand@univ.fr');
+INSERT INTO ENSEIGNANT (id_enseignant, nom_enseignant, prenom_enseignant, civilite_enseignant, email_enseignant, login_enseignant, pwd_enseignant) VALUES
+(1, 'Dubois', 'Jean', 'M.', 'jean.dubois@univ.fr', 'jdubois', 'prof1'),
+(2, 'Martin', 'Sophie', 'Mme', 'sophie.martin@univ.fr', 'smartin', 'prof2'),
+(3, 'Lefebvre', 'Pierre', 'M.', 'pierre.lefebvre@univ.fr', 'plefebvre', 'prof3'),
+(4, 'Durand', 'Camille', 'Mme', 'camille.durand@univ.fr', 'cdurand', 'prof4');
 
 
 INSERT INTO PROMO (nom_promo, annee_promo, formation_promo, id_enseignant) VALUES
@@ -80,3 +80,15 @@ INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
 (2, 2),
 (3, 3),
 (4, 4);
+
+
+INSERT INTO ADMINI (id_admin, nom_admin, prenom_admin, login_admin, pwd_admin) VALUES
+('A001', 'Biscuit', 'Nathalie', 'nbiscuit', 'nbiscuitpass'),
+('A002', 'Soler', 'Alvaro', 'aSoler', 'aSolerpass');
+
+
+INSERT INTO COMPOSE (id_jury, id_admin) VALUES
+(1, 'A001'),
+(2, 'A002'),
+(3, 'A001'),
+(4, 'A002');

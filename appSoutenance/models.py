@@ -213,6 +213,9 @@ class Etudiant(db.Model):
     date_naissance = db.Column(db.Date, nullable=False)
     telephone_etudiant = db.Column(db.String(15))
     email_etudiant = db.Column(db.String(200))
+    login_etudiant = db.Column(db.String(100))
+    pwd_etudiant = db.Column(db.String(100))
+    
 
     # 0,N
     promos = db.relationship('Promo',
@@ -225,13 +228,18 @@ class Etudiant(db.Model):
                  civilite_etudiant,
                  date_naissance,
                  telephone_etudiant=None,
-                 email_etudiant=None):
+                 email_etudiant=None,
+                 login_etudiant = None,
+                 pwd_etudiant = None
+                 ):
         self.nom_etudiant = nom_etudiant
         self.prenom_etudiant = prenom_etudiant
         self.civilite_etudiant = civilite_etudiant
         self.date_naissance = date_naissance
         self.telephone_etudiant = telephone_etudiant
         self.email_etudiant = email_etudiant
+        self.login_etudiant = login_etudiant
+        self.pwd_etudiant = pwd_etudiant
 
     def __repr__(self):
         return f"<Etudiant {self.nom_etudiant} {self.prenom_etudiant}>"
@@ -294,12 +302,16 @@ class Enseignant(db.Model):
     prenom_enseignant = db.Column(db.String(100))
     civilite_enseignant = db.Column(db.String(10))
     email_enseignant = db.Column(db.String(200))
+    login_enseignant = db.Column(db.String(100))
+    pwd_enseignant = db.Column(db.String(100))
 
-    def __init__(self, nom, prenom, civilite, email):
+    def __init__(self, nom, prenom, civilite, email, login_enseignant, pwd_enseignant):
         self.nom_enseignant = nom
         self.prenom_enseignant = prenom
         self.civilite_enseignant = civilite
         self.email_enseignant = email
+        self.login_enseignant = login_enseignant
+        self.pwd_enseignant = pwd_enseignant
 
     def __repr__(self):
         return f"<Enseignant : {self.id_enseignant} {self.civilite_enseignant} {self.nom_enseignant} {self.prenom_enseignant} {self.email_enseignant}>"
@@ -373,3 +385,43 @@ class Tutorer(db.Model):
         self.id_enseignant = id_enseignant
         self.id_etudiant = id_etudiant
         self.annee = annee
+
+class Admini(db.Model):
+    id_admin = db.Column(db.String(10), primary_key=True)
+    nom_admin = db.Column(db.String(100))
+    prenom_admin = db.Column(db.String(100))
+    login_admin = db.Column(db.String(100))
+    pwd_admin = db.Column(db.String(100))
+
+
+    def __init__(self, id_admin,  nom_admin, prenom_admin, login_admin, pwd_admin):
+        self.id_admin = id_admin
+        self.nom_admin = nom_admin
+        self.prenom_admin = prenom_admin
+        self.login_admin = login_admin
+        self.pwd_admin = pwd_admin
+
+
+    def __repr__(self):
+        return f"<Admini : {self.id_admin} {self.nom_admin} {self.prenom_admin} {self.login_admin}>"
+   
+class Compose(db.Model):
+    __tablename__ = 'COMPOSE'
+
+
+    id_jury = db.Column(db.Integer,
+                        db.ForeignKey("jury.id_jury"),
+                        primary_key=True)
+   
+    id_admin = db.Column(db.String(42),
+                         db.ForeignKey("admini.id_admin"),
+                         primary_key=True)
+
+
+    admini = db.relationship("Admini", backref=db.backref("jury_compositions", lazy="dynamic"))
+    jury = db.relationship("Jury", backref=db.backref("admin_compositions", lazy="dynamic"))
+
+
+    def __init__(self, id_jury, id_admin):
+        self.id_jury = id_jury
+        self.id_admin = id_admin

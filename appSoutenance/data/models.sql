@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS TUTORER;
 DROP TABLE IF EXISTS COMPOSER;
+DROP TABLE IF EXISTS COMPOSE;
 DROP TABLE IF EXISTS JURY;
 DROP TABLE IF EXISTS SOUTENANCE;
 DROP TABLE IF EXISTS APPARTENIR;
@@ -10,6 +11,7 @@ DROP TABLE IF EXISTS PROMO;
 DROP TABLE IF EXISTS ETUDIANT;
 DROP TABLE IF EXISTS ENSEIGNANT;
 DROP TABLE IF EXISTS ENTREPRISE;
+DROP TABLE IF EXISTS ADMINI;
 
 use appsoutenance;
 
@@ -33,7 +35,9 @@ CREATE TABLE ETUDIANT(
     date_naissance DATE NOT NULL,
     civilite_etudiant VARCHAR(10),
     telephone_etudiant VARCHAR(15),
-    email_etudiant VARCHAR(200) 
+    email_etudiant VARCHAR(200),
+    login_etudiant VARCHAR(42),
+    pwd_etudiant VARCHAR(42)
 );
 
 CREATE TABLE DEMARCHE (
@@ -68,7 +72,9 @@ CREATE TABLE ENSEIGNANT (
   nom_enseignant    VARCHAR(100),
   prenom_enseignant VARCHAR(100),
   civilite_enseignant VARCHAR(10),
-  email_enseignant  VARCHAR(200)
+  email_enseignant  VARCHAR(200),
+  login_enseignant VARCHAR(42),
+  pwd_enseignant VARCHAR(42)
 );
 
 CREATE TABLE STAGE (
@@ -137,8 +143,28 @@ CREATE TABLE APPARTENIR (
   regime_etudiant VARCHAR(100)
 );
 
+CREATE TABLE ADMINI (
+  PRIMARY KEY (id_admin),
+  id_admin     VARCHAR(42) NOT NULL,
+  nom_admin    VARCHAR(42),
+  prenom_admin VARCHAR(42),
+  login_admin  VARCHAR(42),
+  pwd_admin    VARCHAR(42)
+);
+
+
+CREATE TABLE COMPOSE (
+  PRIMARY KEY (id_jury, id_admin),
+  id_jury  VARCHAR(42) NOT NULL,
+  id_admin VARCHAR(42) NOT NULL
+);
+
+
 ALTER TABLE APPARTENIR ADD FOREIGN KEY (nom_promo, annee_promo) REFERENCES PROMO (nom_promo, annee_promo);
 ALTER TABLE APPARTENIR ADD FOREIGN KEY (id_etudiant) REFERENCES ETUDIANT (id_etudiant);
+
+ALTER TABLE COMPOSE ADD FOREIGN KEY (id_admin) REFERENCES ADMINI (id_admin);
+ALTER TABLE COMPOSE ADD FOREIGN KEY (id_jury) REFERENCES JURY (id_jury);
 
 ALTER TABLE COMPOSER ADD FOREIGN KEY (id_soutenance) REFERENCES SOUTENANCE (id_soutenance);
 ALTER TABLE COMPOSER ADD FOREIGN KEY (id_enseignant) REFERENCES ENSEIGNANT (id_enseignant);
