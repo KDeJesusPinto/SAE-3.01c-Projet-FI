@@ -17,65 +17,14 @@ def index():
                            accueil="index",
                            form =form)
 
-# @app.route("/login", methods=["GET","POST"])
-# def login():
-#     form = LoginForm()
-
-#     if form.validate_on_submit():
-#         user = Etudiant.query.filter_by(login_etudiant=form.Login.data).first()
-
-#         if user and user.pwd_etudiant == form.Password.data:
-#             login_user(user)
-#             if user.metier.lower() == "chercheur":
-#                 return redirect(url_for("accueil_cher"))
-#             elif user.metier.lower() == "administrateur":
-#                 return redirect(url_for("accueil_admin"))
-#             elif user.metier.lower() == "technicien":
-#                 return redirect(url_for("accueil_tech"))
-
-#         return("Login ou mot de passe incorrect")
-
-#     return render_template("index.html", form=form, error="Login ou mot de passe incorrect")
-
-# @app.route('/login/', methods=('GET', 'POST', ))
-# def login():
-#     """Redirection vers la page de connexion du site"""
-#     form = LoginForm()
-#     if not form.is_submitted():
-#         form.next.data = request.args.get('next')
-#     elif form.validate_on_submit():
-#         etudiant = form.get_authenticated_etudiant()
-#         enseignant = form.get_authenticated_enseignant()
-#         admin = form.get_authenticated_admin()
-
-#         if etudiant is not None:
-#             login_user(etudiant)
-#             return redirect(url_for("accueil_etudiant"))
-        
-#         elif enseignant is not None:
-#             login_user(enseignant)
-#             return redirect(url_for("accueil_enseignant"))
-        
-#         elif admin is not None:
-#             login_user(admin)
-#             return redirect(url_for("accueil_admin"))
-        
-#         else:
-#             flash("Login ou mot de passe incorrect", "warning")
-
-#     return render_template("index.html", form=form)
 
 @app.route('/login/', methods=('GET', 'POST', ))
 def login():
     """Redirection vers la page de connexion du site"""
     form = LoginForm()
-    
-    # 1. GESTION DU GET OU DU NEXT
     if not form.is_submitted():
         form.next.data = request.args.get('next')
-        
-    # 2. GESTION DU POST ET DE L'AUTHENTIFICATION
-    elif form.validate_on_submit(): # <-- Cette ligne doit retourner True
+    elif form.validate_on_submit():
         etudiant = form.get_authenticated_etudiant()
         enseignant = form.get_authenticated_enseignant()
         admin = form.get_authenticated_admin()
@@ -95,26 +44,7 @@ def login():
         else:
             flash("Login ou mot de passe incorrect", "warning")
 
-    # 3. GESTION DE L'ÉCHEC (y compris l'échec de la validation)
-    
-    # Si validate_on_submit() a échoué, vérifions les erreurs :
-    if form.errors:
-        print("--- ERREURS DE FORMULAIRE ---")
-        print(form.errors)
-        print("----------------------------")
-        # Flasher un message d'erreur si la validation WTForms échoue
-        for field, errors in form.errors.items():
-            for error in errors:
-                flash(f"Erreur de validation sur le champ {field} : {error}", "error")
-
-    # On retourne la page de connexion après échec ou si c'est un GET initial
     return render_template("index.html", form=form)
-
-@app.route("/logout/")
-def logout():
-    logout_user()
-    return redirect(url_for("index"))
-
 
 ########################## POUR LES ÉTUDIANTS ##########################
 
