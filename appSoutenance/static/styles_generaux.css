@@ -3,57 +3,78 @@
 /*---------------- STYLES GÉNÉRAUX ----------------*/
 
 body{
+    /* style */
     background: url(images/fond.png) no-repeat;
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    width: 100vw;
+
     font-family: "Arimo", sans-serif;
     font-size: 30px;
-    /*font-size: 4em;*/
+
+    /* positionnement */
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    height: 100vh;
+    width: 100vw;
 }
 
 h1{
+    /* style */
     font-family: "Barlow Condensed", sans-serif;
     font-weight: 400;
     font-style: normal;
-    text-transform: uppercase;
     font-size: 2.5em;
-    text-align: center;
     letter-spacing: -0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    
+    text-align: center;
+
+    /* positionnement */
     margin: 0;
 }
 
 h2{
+    /* style */
     font-family: "Barlow Condensed", sans-serif;
     font-weight: 400;
     font-style: normal;
-    text-transform: uppercase;
     font-size: 2em;
-    text-align: center;
     letter-spacing: -0.04em;
-    margin: 0;
+    text-transform: uppercase;
+
+    /* positionnement */
     white-space: nowrap !important;
+    text-align: center;
+
+    margin: 0;
 }
 
 a{
+    /* style */
     color: black;
     text-decoration: none;
     cursor: url(images/cursor.png), pointer;
+
+    /* positionnement */
 }
 
 .img_chargement{
+    /* style */
+    /* positionnement */
     display: flex;
     justify-self: center;
     width: 75%;
 }
 
 div#connexion a{
+    /* style */
+    /* positionnement */
     padding: 40px 0;
     width: 70%;
 }
@@ -61,78 +82,105 @@ div#connexion a{
 /* ---------------- STYLES GÉNÉRAUX DES BOÎTES ----------------*/
 
 .glass{
+    /* style */
     border-radius: 40px;
     border: 2px solid rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(3px);
     background-color: rgba(255, 255, 255, 0.55);
 
-    /*padding: 2% !important;*/
+    /* positionnement */
 }
 
 .boite_verticale{
+    /* style */
+    /* positionnement */
     display: flex;
     flex-direction: column;
-    padding: 10px;
     align-items: center;
     row-gap: 20px;
+
+    padding: 10px;
 }
 
 .boite_horizontale{
+    /* style */
+    /* positionnement */
     display: flex;
     flex-direction: row;
-    padding: 20px;
     align-items: center;
     column-gap: 20px;
+
+    padding: 20px;
 }
 
 /* ---------------- STYLES DES TEXTES ----------------*/
 
 #titre_page {
+    /* style */
+    font-family: "Arimo", sans-serif;
+    font-size: 2em;
+
+    /* positionnement */
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 2em;
-    font-family: "Arimo", sans-serif;
 }
 
 div.boite_horizontale p{
-    margin: 0;
+    /* style */
     text-align: center;
+
+    /* positionnement */
+    margin: 0;
 }
 
 div.boite_H_info_V{
+    /* style */
+    /* positionnement */
+    width: 100%;
+
     display: flex;
     column-gap: 80px;
-    padding: 20px;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+
     box-sizing: border-box;
+
+    padding: 20px;
 }
 
 .short{
+    /* style */
+    text-align: center;
     white-space: nowrap;
     text-overflow: ellipsis;
-    width: 220px;
     overflow: hidden;
-    text-align: center;
+
+
+    /* positionnement */
+    width: 220px;
 }
 
 /* ---------------- STYLES DES ICONES ----------------*/
 
 .grande_icone{
+    /* style */
     font-size: 2em !important;
+
+    /* positionnement */
 }
 
 .petite_icone{
+    /* style */
     font-size: 1.4em !important;
+
+    /* positionnement */
 }
 
 /* ---------------- STYLES DES ÉLÉMENTS CLIQUABLES ----------------*/
 
 .petit_bouton{
-    padding: 15px;
-    width: 100%;
+    /* style */
 
     font-family: "Arimo", sans-serif;
 
@@ -141,73 +189,94 @@ div.boite_H_info_V{
     color: white;
     text-align: center;
     cursor: pointer;
+
+    /* positionnement */
+    padding: 15px;
+    width: 100%;
 }
 
 .petit_bouton_imp{
-    padding: 15px;
-    /*width: 300px;*/
+    /* style */
+    background-color: #8f11bc;
+    border-radius: 20px;
 
     font-family: "Arimo", sans-serif;
-
-    border-radius: 20px;
-    background-color: #8f11bc;
-    color: white;
     text-align: center;
     text-wrap: nowrap;
+    color: white;
+
+    /* positionnement */
+    /*width: 300px;*/
+    padding: 15px;
 }
 
 .petit_bouton:hover{
+    /* style */
     background: #a671b0;
+
+    /* positionnement */
 }
 
 .bouton_nav{
-    padding: 30px;
-    width: 100%;
+    /* style */
+    background-color: #a671b0;
+    border-radius: 30px;
 
     font-family: "Arimo", sans-serif;
-
-    border-radius: 30px;
-    background-color: #a671b0;
-    color: white;
     text-align: center;
+    color: white;
+
+    /* positionnement */
+    width: 100%;
+    padding: 30px;
 }
 
 div.bouton_horizontal{
-    /*background-color: red;*/
-    display: flex;
-    column-gap: 100px;
-    padding: 20px;
-    align-items: center;
+    /* style */
+    /* positionnement */
     width: 100%;
-    justify-content: flex-end;
+    padding: 20px;
     box-sizing: border-box;
-    /*border: 2px black solid;*/
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 100px;
 }
 
 
 .tooltip:hover::after{
-    content: attr(data-tooltip);
+    /* style */
     background-color: rgb(178, 185, 187);
+    content: attr(data-tooltip);
+    font-size: 0.7em;
+
+    /* positionnement */
     position: absolute;
     right: 16%;
-    font-size: 0.7em;
 }
 
 div.demarche_etape{
+    /* style */
+    /* positionnement */
     width: 2500px;
     flex-grow: 0;
 }
 
 div.demarches div.glass{
+    /* style */
+    /* positionnement */
     width: 100%;
 }
 /*---------------- MAIN BODY STYLES ----------------*/
 
 div#main_body{
-    flex-grow: 1;
+    /* style */
+    /* positionnement */
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-grow: 1;
 
     padding: 150px 0 100px;
 }
@@ -215,74 +284,93 @@ div#main_body{
 /*---------------- STYLES BARRE DE NAVIGATION ----------------*/
 
 nav#barre_navigation{
+    /* style */
     background-color: #a671b0;
     color: white;
-    padding: 15px;
-    position: fixed;
+
+    /* positionnement */
     width: 100%;
     max-width: 100%;
-    z-index: 2;
+    padding: 15px;
+
     display: flex;
+    position: fixed;
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
+    z-index: 2;
 }
 
 nav#barre_navigation img{
+    /* style */
+    /* positionnement */
     height: 35px;
 }
 
 nav#barre_navigation ul{
-    margin: 0;
-    padding: 0;
+    /* style */
+    list-style: none;
+
+    /* positionnement */
     display: flex;
     column-gap: 50px;
-    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 nav#barre_navigation p, nav#barre_navigation li{
+    /* style */
     font-size: 0.7em;
     text-align: right;
+
+    /* positionnement */
 }
 
 nav#barre_navigation div{
+    /* style */
+    /* positionnement */
     padding: 0;
 }
 
 nav#barre_navigation a{
+    /* style */
     color: white;
-}
 
-div#filtre_admin{
-    width: 50%;
-    padding: 20px;
-    display: flex;
-    margin-top: 150px;
-    gap: 20px;
+    /* positionnement */
 }
 
 select.petit_bouton2 {
+    /* style */
     font-size: 0.7em;
+
+    /* positionnement */
 }
   
 .choix{
-    padding: 20px;
-    width: 150px;
+    /* style */
+    background-color: #242f53;
+    border-radius: 30px;
 
     font-family: "Arimo", sans-serif;
-
-    border-radius: 30px;
-    background-color: #242f53;
-    color: white;
     text-align: left;
+    color: white;
+
+    /* positionnement */
+    width: 150px;
+    padding: 20px;
 }
 
 #soutenance{
+    /* style */
+    /* positionnement */
     width: 40%;
 }
 
 input#import_csv{
+    /* style */
     display: none;
+
+    /* positionnement */
 }
 
 
@@ -290,21 +378,21 @@ input#import_csv{
 
 
 select.combobox {
-    font-size: 1em;
-    padding: 10px 30px;
-    width: 300px;
-    height: 75px;
-    margin: 30px;
-
+    /* style */
+    background-color: #a671b0;
+    border-radius: 80px;
 
     font-family: "Arimo", sans-serif;
-
-
-    border-radius: 80px;
-    background-color: #a671b0;
-    color: white;
+    font-size: 1em;
     text-align: center;
-   
+    color: white;
+
+    /* positionnement */
+    width: 300px;
+    height: 75px;
+    padding: 10px 30px;
+    margin: 30px;
+
     display: flex;
     align-items: center;
 }
