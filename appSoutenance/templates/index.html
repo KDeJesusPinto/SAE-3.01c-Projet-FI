@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+
 {% block content %}
     <div id="connexion" class="glass">
         <h2>Bienvenue<br>connectez-vous en tant que...</h2>
@@ -8,5 +9,33 @@
             <a href="{{ url_for('accueil_admin', num_personne=1) }}">Administrateur</a>
             <a href="{{ url_for('accueil_etudiant', num_personne=1) }}">Étudiant</a>
         </div>
+
+
+        <form method="POST" action="{{ url_for('login') }}">
+            {{ form.hidden_tag() }}
+        <div class="boite_horizontale">
+            <label for="inputLogin" class="boite_verticale">{{ form.Login.label }}</label>
+            <div class="boite_verticale">
+                {{ form.Login(class_="form-control", id="login") }}
+            </div>
+
+
+        </div>
+        <div class="boite_horizontale">
+            <label for="inputPassword3" class="boite_verticale">{{ form.Password.label }}</label>
+            <div class="boite_verticale">
+            {{ form.Password(class_="form-control", id="password") }}
+            </div>
+            {% if error %}
+            <div class="">{{ error }}</div>
+            {% endif %}
+        </div>
+       
+        <button type="submit" class="button">Connexion</button>
+        </form>
+
+
     </div>
 {% endblock %}
+
+
