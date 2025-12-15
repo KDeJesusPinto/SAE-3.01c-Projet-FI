@@ -1,9 +1,7 @@
 from .app import app
-from flask import Flask, flash
-from flask import render_template, request, url_for, redirect
-from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, Admini, Compose
+from flask import render_template, request, url_for, redirect, flash
+from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer
 from sqlalchemy import desc
-from flask_wtf import FlaskForm
 from flask_login import login_user, logout_user, login_required, current_user
 from appSoutenance.forms import LoginForm
 

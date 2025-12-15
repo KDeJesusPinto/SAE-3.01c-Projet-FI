@@ -422,8 +422,8 @@ class Admini(db.Model, UserMixin):
     def __repr__(self):
         return f"<Admini : {self.id_admin} {self.nom_admin} {self.prenom_admin} {self.login_admin}>"
    
-class Compose(db.Model):
-    __tablename__ = 'COMPOSE'
+class Assembler(db.Model):
+    __tablename__ = 'ASSEMBLER'
 
 
     id_jury = db.Column(db.Integer,
