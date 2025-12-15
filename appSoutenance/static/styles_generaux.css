@@ -329,3 +329,21 @@ select.combobox {
     display: flex;
     align-items: center;
 }
+
+.form-group, .form-check {
+   padding-top: 1em;
+}
+
+
+.form-label {
+   color: #064a72;
+   margin-bottom: 0.3em;
+}
+
+
+.form-control,
+input.form-control,
+select.form-control,
+textarea.form-control {
+   border-radius: 50px;
+}

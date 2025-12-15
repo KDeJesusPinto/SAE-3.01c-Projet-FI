@@ -1,12 +1,54 @@
 {% extends "base.html" %}
 
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+%} {% for category, message in messages %}
+<div
+ class="alert alert-{{ category }} alert-dismissible fade show"
+ role="alert"
+ style="display: block"
+>
+ {{ message }}
+ <button
+   type="button"
+   class="btn-close"
+   data-bs-dismiss="alert"
+      aria-label="Close"
+ ></button>
+</div>
+{% endfor %} {% endif %} {% endwith %}
+
+
+
 {% block content %}
+    
     <div id="connexion" class="glass">
         <h2>Bienvenue<br>connectez-vous en tant que...</h2>
-        <div id="buttons">
-            <a href="{{ url_for('accueil_enseignant', num_personne=1) }}">Enseignant</a>
-            <a href="{{ url_for('accueil_admin', num_personne=1) }}">Administrateur</a>
-            <a href="{{ url_for('accueil_etudiant', num_personne=1) }}">Étudiant</a>
+
+        <form method="POST" action="{{ url_for('login') }}">
+            {{ form.hidden_tag() }}
+        <div class="boite_horizontale">
+            <label for="inputLogin" class="boite_verticale">{{ form.Login.label }}</label>
+            <div class="boite_verticale">
+                {{ form.Login(class_="form-control", id="login") }}
+            </div>
+
+
         </div>
+        <div class="boite_horizontale">
+            <label for="inputPassword3" class="boite_verticale">{{ form.Password.label }}</label>
+            <div class="boite_verticale">
+            {{ form.Password(class_="form-control", id="password") }}
+            </div>
+            {% if error %}
+            <div class="">{{ error }}</div>
+            {% endif %}
+        </div>
+       
+        <button type="submit" class="button">Connexion</button>
+        </form>
+
+
     </div>
 {% endblock %}
+
+
