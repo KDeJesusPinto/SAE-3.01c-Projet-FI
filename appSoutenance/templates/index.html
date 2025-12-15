@@ -2,11 +2,11 @@
 
 {% block content %}
     <div id="connexion" class="glass">
-        <h1>Bienvenue<br>connectez-vous en tant que...</h1>
+        <h2>Bienvenue<br>connectez-vous en tant que...</h2>
         <div id="buttons">
-            <a href="{{ url_for('accueil_enseignant') }}">Enseignant</a>
-            <a href="{{ url_for('accueil_admin') }}">Administrateur</a>
-            <a href="{{ url_for('accueil_etudiant') }}">Étudiant</a>
+            <a href="{{ url_for('accueil_enseignant', num_personne=1) }}">Enseignant</a>
+            <a href="{{ url_for('accueil_admin', num_personne=1) }}">Administrateur</a>
+            <a href="{{ url_for('accueil_etudiant', num_personne=1) }}">Étudiant</a>
         </div>
     </div>
 {% endblock %}
