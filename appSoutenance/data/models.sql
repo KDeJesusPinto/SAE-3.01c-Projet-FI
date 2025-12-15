@@ -36,8 +36,8 @@ CREATE TABLE ETUDIANT(
     civilite_etudiant VARCHAR(10),
     telephone_etudiant VARCHAR(15),
     email_etudiant VARCHAR(200),
-    login_etudiant VARCHAR(42),
-    pwd_etudiant VARCHAR(42)
+    login_etudiant VARCHAR(100),
+    pwd_etudiant VARCHAR(100)
 );
 
 CREATE TABLE DEMARCHE (
@@ -73,8 +73,8 @@ CREATE TABLE ENSEIGNANT (
   prenom_enseignant VARCHAR(100),
   civilite_enseignant VARCHAR(10),
   email_enseignant  VARCHAR(200),
-  login_enseignant VARCHAR(42),
-  pwd_enseignant VARCHAR(42)
+  login_enseignant VARCHAR(100),
+  pwd_enseignant VARCHAR(100)
 );
 
 CREATE TABLE STAGE (
@@ -146,10 +146,10 @@ CREATE TABLE APPARTENIR (
 CREATE TABLE ADMINI (
   PRIMARY KEY (id_admin),
   id_admin     VARCHAR(42) NOT NULL,
-  nom_admin    VARCHAR(42),
-  prenom_admin VARCHAR(42),
-  login_admin  VARCHAR(42),
-  pwd_admin    VARCHAR(42)
+  nom_admin    VARCHAR(100),
+  prenom_admin VARCHAR(100),
+  login_admin  VARCHAR(100),
+  pwd_admin    VARCHAR(100)
 );
 
 

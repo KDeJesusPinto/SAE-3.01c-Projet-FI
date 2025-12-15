@@ -1,5 +1,42 @@
-from .app import db
+from .app import db, login_manager
+from flask_login import UserMixin
 
+# @login_manager.user_loader
+# def load_user(user_id):
+#     user = Etudiant.query.get(int(user_id)).first()
+#     if user is not None:
+#         return user
+
+#     user = Enseignant.query.get(int(user_id)).first()
+#     if user is not None:
+#         return user
+    
+#     user = Admini.query.get(int(user_id)).first()
+#     if user is not None:
+#         return user
+
+#     return None
+
+@login_manager.user_loader
+def load_user(user_id):
+    try:
+        user_id = int(user_id)
+    except ValueError:
+        return None
+
+    user = Etudiant.query.get(user_id)
+    if user is not None:
+        return user
+
+    user = Enseignant.query.get(user_id)
+    if user is not None:
+        return user
+    
+    user = Admini.query.get(user_id)
+    if user is not None:
+        return user
+
+    return None
 
 class Entreprise(db.Model):
     id_entreprise = db.Column(db.Integer, primary_key=True)

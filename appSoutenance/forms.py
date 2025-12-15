@@ -28,15 +28,25 @@ class LoginForm(FlaskForm):
        enseignant = Enseignant.query.filter(Enseignant.login_enseignant == self.Login.data).first()
 
        if enseignant is None:
+           print(f"--- Enseignant non trouvé pour le login : {self.Login.data} ---")
            return None
       
        m = sha256()
        m.update(self.Password.data.encode())
+       passwd_hache_entree = m.hexdigest()
 
 
-       passwd = m.hexdigest()
-       if passwd != enseignant.pwd_etudiant:
-           return None
+        # >>> DIAGNOSTIC CLÉ : Imprimez les deux valeurs pour comparaison <<<
+       print("---------------------------------------------------------------------")
+       print(f"Login réussi (DB)      : {enseignant.login_enseignant}")
+       print(f"MDP Haché ENTRÉ        : {passwd_hache_entree}")
+       print(f"MDP Haché STOCKÉ (DB)  : {enseignant.pwd_enseignant}")
+       print("---------------------------------------------------------------------")
+        # >>> FIN DU DIAGNOSTIC <<<
+
+       if passwd_hache_entree != enseignant.pwd_enseignant:
+            # L'utilisateur existe, mais le mot de passe ne correspond pas.
+            return None
        return enseignant
     
     def get_authenticated_admin(self):
@@ -50,7 +60,7 @@ class LoginForm(FlaskForm):
 
 
        passwd = m.hexdigest()
-       if passwd != admin.pwd_etudiant:
+       if passwd != admin.pwd_admin:
            return None
        return admin
 
