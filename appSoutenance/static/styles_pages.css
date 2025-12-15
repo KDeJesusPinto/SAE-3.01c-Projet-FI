@@ -119,21 +119,8 @@ div#boutons_extreme_droite{
 }
 
 
-/*---------------- POUR LA PAGE D'ACCUEIL ADMIN ----------------*/
+/*---------------- POUR LES PAGES ADMIN ----------------*/
 
-
-.bouton_nav{
-    font-size: 1.4em;
-    padding: 10px 15px;
-
-
-    font-family: "Arimo", sans-serif;
-
-
-    border-radius: 20px;
-    color: white;
-    text-align: center;
-}
 
 i#user-icon {
     font-size: 5rem;
@@ -187,7 +174,7 @@ a#voir{
     text-align: center;
 }
 
-a#detail {
+a#detail{
     font-size: 1.2em;
     font-family: "Arimo", sans-serif;
     border-radius: 40px;
@@ -201,13 +188,15 @@ a#detail {
     margin-left: auto;
 }
 
-
-button#infos{
-    font-size: 1.2em;
+a#infos{
+    font-size: 0.7em;
     font-family: "Arimo", sans-serif;
     border-radius: 40px;
     width: 200px;
     height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 button#ajout_sout {
@@ -215,23 +204,8 @@ button#ajout_sout {
     font-family: "Arimo", sans-serif;
     border-radius: 40px;
     width: 200px;
-    height: auto;
-    /* margin-left: auto; */
+    height: auto; 
 }
-
-
-button#importer, button#exporter{
-    font-size: 1.4em;
-    padding: 40px;
-    margin: 20px;
-
-
-    font-family: "Arimo", sans-serif;
-
-
-    border-radius: 40px;
-}
-
 
 button#filtrer{
     font-size: 1em;
@@ -273,4 +247,3 @@ p.pliste {
     font-size: 4.5rem !important;    
     margin-left: auto;
 }
-

@@ -244,6 +244,10 @@ nav#barre_navigation p{
     text-align: right;
 }
 
+nav#barre_navigation a{
+    text-align: left;
+}
+
 nav#barre_navigation div{
     padding: 0;
 }
@@ -260,12 +264,30 @@ nav#barre_navigation div{
     text-align: left;
 }
 
+.bouton_nav{
+    font-size: 1.4em;
+    padding: 10px 15px;
+    font-family: "Arimo", sans-serif;
+    border-radius: 20px;
+    color: white;
+    text-align: center;
+}
+
 #soutenance{
     width: 40%;
 }
 
-input#import_csv{
+input#import_csv, input#export_csv{
     display: none;
+}
+
+label[for="import_csv"], label[for="export_csv"]{
+    width: 250px;
+    height: 100px;
+    display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* ---------------- STYLES DES COMBOBOX ----------------*/

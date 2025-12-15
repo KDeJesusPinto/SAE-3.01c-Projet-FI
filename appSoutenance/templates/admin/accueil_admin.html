@@ -30,12 +30,12 @@
             </div>
             <div class="boite_horizontale">
                 <div class="glass" id="boite">
-                    <p id="texte_admin">STAGE TROUVÉ :<br>{{ nb_stages_trouves }} / {{ nb_etudiants }}<br><button class="petit_bouton" id="infos">Infos</button></p>
+                    <p id="texte_admin">STAGE TROUVÉ :<br>{{ nb_stages_trouves }} / {{ nb_etudiants }}
+                    <a href="{{ url_for('liste_etu_admin') }}" class="petit_bouton" id="infos">Infos</a></p>
                 </div>
                 <div class="glass" id="boite">
-                    <p id="texte_admin">SOUTENANCE ALTERNANT PRÉVU :<br>{{ nb_soutenances_alternants }} / {{ nb_etudiants_alternants }}<br><button class="petit_bouton" id="infos">Infos</button>
-                    </p>
-                    
+                    <p id="texte_admin">SOUTENANCE ALTERNANT PRÉVU :<br>{{ nb_soutenances_alternants }} / {{ nb_etudiants_alternants }}
+                    <a href="{{ url_for('liste_etu_admin') }}" class="petit_bouton" id="infos">Infos</a></p>
                 </div>
             </div>
         </div>
@@ -53,10 +53,12 @@
             </div>
             <div class="boite_horizontale">
                 <div class="glass" id="boite">
-                    <p id="texte_admin">SOUTENANCES POSÉES PAR TUTEUR :<br>{{ nb_soutenances_posees }} / {{ nb_etudiants }}<br><button class="petit_bouton" id="infos">Infos</button></p>
+                    <p id="texte_admin">SOUTENANCES POSÉES PAR TUTEUR :<br>{{ nb_soutenances_posees }} / {{ nb_etudiants }}
+                    <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" id="infos">Infos</a></p>
                 </div>
                 <div class="glass" id="boite">
-                    <p id="texte_admin">SOUTENANCE EN ATTENTE DE CANDIDE :<br>/ {{ nb_soutenances_attente_candide }}<br><button class="petit_bouton" id="infos">Infos</button></p>
+                    <p id="texte_admin">SOUTENANCE EN ATTENTE DE CANDIDE :<br>/ {{ nb_soutenances_attente_candide }}
+                    <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" id="infos">Infos</a></p>
                 </div>
             </div>
         </div>
@@ -71,7 +73,6 @@
                 <span>Exporter CSV</span>
                 <input id="export_csv" type="file" name="btn_export_csv" accept=".csv">
             </label>
-
         </div>
     </div>
 {% endblock %}
