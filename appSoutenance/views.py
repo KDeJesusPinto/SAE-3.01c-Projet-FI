@@ -1,6 +1,6 @@
 from .app import app
 from flask import render_template, request, url_for, redirect, flash
-from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer
+from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, Admini
 from sqlalchemy import desc
 from flask_login import login_user, logout_user, login_required, current_user
 from appSoutenance.forms import LoginForm
@@ -53,6 +53,9 @@ def sort_id(demarche):
 @login_required
 def accueil_etudiant():
     etudiant = current_user
+    if not isinstance(etudiant, Etudiant):
+        flash("Accès réservé aux étudiants.", "warning")
+        return redirect(url_for("login"))
     lst_demarches = sorted(list(etudiant.demarches), key=sort_id)[:2]
     return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", personne=etudiant, title="Accueil", liste_dem=lst_demarches)
 
@@ -108,6 +111,9 @@ def resume_demarche_etudiant():
 @login_required
 def accueil_enseignant():
     enseignant = current_user
+    if not isinstance(enseignant, Enseignant):
+        flash("Accès réservé aux enseignants.", "warning")
+        return redirect(url_for("login"))
     return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil")
 
 @app.route('/enseignant/planning/')
@@ -165,6 +171,9 @@ def detail_etudiant_ens():
 @login_required
 def accueil_admin():
     admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
     nb_etudiants = Etudiant.query.count()
     nb_stages_trouves = Stage.query.count()
     nb_etudiants_alternants = Appartenir.query.filter_by(
