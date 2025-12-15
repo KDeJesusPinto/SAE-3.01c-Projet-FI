@@ -1,7 +1,11 @@
 from .app import app
+from flask import Flask
 from flask import render_template, request, url_for, redirect
 from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer
 from sqlalchemy import desc
+from flask_wtf import FlaskForm
+from flask_login import login_user, logout_user, login_required
+from appSoutenance.forms import LoginForm
 
 
 @app.route('/')
@@ -10,6 +14,32 @@ def index():
     return render_template("index.html",
                            title="Soutenance - Connexion",
                            accueil="index")
+
+@app.route("/login", methods=["GET","POST"])
+def login():
+    form = LoginForm()
+
+    if form.validate_on_submit():
+        user = Etudiant.query.filter_by(login_per=form.Login.data).first()
+
+        if user and user.mdp == form.Password.data:
+            login_user(user)
+            if user.metier.lower() == "chercheur":
+                return redirect(url_for("accueil_cher"))
+            elif user.metier.lower() == "administrateur":
+                return redirect(url_for("accueil_admin"))
+            elif user.metier.lower() == "technicien":
+                return redirect(url_for("accueil_tech"))
+
+        return("Login ou mot de passe incorrect")
+
+    return render_template("index.html", form=form, error="Login ou mot de passe incorrect")
+
+@app.route("/logout/")
+
+def logout():
+    logout_user()
+    return redirect(url_for("index"))
 
 
 ########################## POUR LES ÉTUDIANTS ##########################
