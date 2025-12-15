@@ -1,16 +1,48 @@
 from .app import app
-from flask import render_template, request, url_for, redirect
+from flask import render_template, request, url_for, redirect, flash
 from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer
 from sqlalchemy import desc
+from flask_login import login_user, logout_user, login_required, current_user
+from appSoutenance.forms import LoginForm
 
 
 @app.route('/')
 @app.route('/connexion/')
 def index():
+    form = LoginForm()
     return render_template("index.html",
                            title="Soutenance - Connexion",
-                           accueil="index")
+                           accueil="index",
+                           form =form)
 
+
+@app.route('/login/', methods=('GET', 'POST', ))
+def login():
+    """Redirection vers la page de connexion du site"""
+    form = LoginForm()
+    if not form.is_submitted():
+        form.next.data = request.args.get('next')
+    elif form.validate_on_submit():
+        etudiant = form.get_authenticated_etudiant()
+        enseignant = form.get_authenticated_enseignant()
+        admin = form.get_authenticated_admin()
+
+        if etudiant is not None:
+            login_user(etudiant)
+            return redirect(url_for("accueil_etudiant"))
+        
+        elif enseignant is not None:
+            login_user(enseignant)
+            return redirect(url_for("accueil_enseignant"))
+        
+        elif admin is not None:
+            login_user(admin)
+            return redirect(url_for("accueil_admin"))
+        
+        else:
+            flash("Login ou mot de passe incorrect", "warning")
+
+    return render_template("index.html", form=form)
 
 ########################## POUR LES ÉTUDIANTS ##########################
 
@@ -18,9 +50,9 @@ def sort_id(demarche):
     return demarche.id_demarche
 
 @app.route('/etudiant/')
+@login_required
 def accueil_etudiant():
-    num_personne = request.args.get('num_personne')
-    etudiant = Etudiant.query.get(num_personne)
+    etudiant = current_user
     lst_demarches = sorted(list(etudiant.demarches), key=sort_id)[:2]
     return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", personne=etudiant, title="Accueil", liste_dem=lst_demarches)
 
@@ -73,9 +105,9 @@ def resume_demarche_etudiant():
 
 
 @app.route('/enseignant/')
+@login_required
 def accueil_enseignant():
-    num_personne = request.args.get('num_personne')
-    enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
+    enseignant = current_user
     return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil")
 
 @app.route('/enseignant/planning/')
@@ -130,7 +162,9 @@ def detail_etudiant_ens():
 
 
 @app.route('/admin/')
+@login_required
 def accueil_admin():
+    admin = current_user
     nb_etudiants = Etudiant.query.count()
     nb_stages_trouves = Stage.query.count()
     nb_etudiants_alternants = Appartenir.query.filter_by(
@@ -142,6 +176,7 @@ def accueil_admin():
         "admin/accueil_admin.html",
         accueil="accueil_admin",
         title="Accueil",
+        personne=admin,
         nb_stages_trouves=nb_stages_trouves,
         nb_etudiants=nb_etudiants,
         nb_etudiants_alternants=nb_etudiants_alternants,
