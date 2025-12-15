@@ -224,19 +224,47 @@ def detail_etudiant_admin(id):
 @app.route('/admin/liste+enseignants/')
 @login_required
 def liste_ens_admin():
-    lesEnseignants = Enseignant.query.all()
+    # Récupération des filtres
+    annee = request.args.get('annee')
+    formation = request.args.get('formation')
+    situation = request.args.get('situation')
+
+    lesEnseignants = Enseignant.query
+
+    if annee or formation:
+        # On récupère les enseignants qui ont au moins une promo correspondant aux filtres
+        promo_query = Promo.query
+        if annee:
+            promo_query = promo_query.filter(Promo.annee_promo == (2 if annee == '2A' else 3))
+        if formation:
+            promo_query = promo_query.filter(Promo.formation_promo == formation)
+        
+        promos = promo_query.all()
+        id_enseignants = set([p.id_enseignant for p in promos if p.id_enseignant is not None])
+        lesEnseignants = lesEnseignants.filter(Enseignant.id_enseignant.in_(id_enseignants))
+
+    lesEnseignants = lesEnseignants.all()
     res = []
 
     for enseignant in lesEnseignants:
         nb_tutore = Tutorer.query.filter_by(
             id_enseignant=enseignant.id_enseignant).count()
-        nb_soutenances = Composer.query.filter_by(
+        nb_soutenances_total = Composer.query.filter_by(
             id_enseignant=enseignant.id_enseignant).count()
+        nb_soutenances_posees = Composer.query.join(Soutenance, Composer.id_soutenance == Soutenance.id_soutenance)
+        nb_soutenances_posees = nb_soutenances_posees.filter(Composer.id_enseignant == enseignant.id_enseignant)
+
+        if situation == 'Trouvé' and nb_soutenances_posees.count() == 0:
+            continue
+        if situation == 'En cours' and nb_soutenances_posees.count() > 0:
+            continue
+        nb_soutenances_posees = nb_soutenances_posees.count()
 
         res.append({
             "enseignant": enseignant,
             "nb_tutores": nb_tutore,
-            "nb_soutenances": nb_soutenances,
+            "nb_soutenances": nb_soutenances_total,
+            "nb_soutenances_posees": nb_soutenances_posees,
         })
 
     return render_template("admin/lst_enseignants.html",
