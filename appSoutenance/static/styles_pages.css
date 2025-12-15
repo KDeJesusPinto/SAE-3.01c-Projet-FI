@@ -238,7 +238,7 @@ a#detail{
     margin-left: auto;
 }
 
-a#infos{
+/* a#infos{
     font-size: 0.7em;
     font-family: "Arimo", sans-serif;
     border-radius: 40px;
@@ -247,7 +247,7 @@ a#infos{
     display: flex;
     justify-content: center;
     align-items: center;
-}
+} */
 
 button#ajout_sout {
     font-size: 0.8em;
@@ -289,9 +289,16 @@ p#texte_admin {
     margin-top: 20px;
 }
 
-#texte_admin button{
+#texte_admin a{
     margin-top: 15px;
-    font-size: 0.5em;
+    font-size: 0.7em;
+    font-family: "Arimo", sans-serif;
+    border-radius: 40px;
+    width: 200px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
