@@ -51,47 +51,70 @@ div#buttons{
 
 /*---------------- POUR LES DÉMARCHES ----------------*/
 
-div.demarches div.boite_horizontale:first-child{
-    /* style */
-    /* positionnement */
-    padding-left: 0;
+div.demarches{
+    div.boite_horizontale{
+        /* style */
+        /* positionnement */
+        box-sizing: content-box;
+        justify-content: space-between;
+    }
 
-    align-self: first baseline;
+    div.boite_horizontale:first-child{
+        /* style */
+        /* positionnement */
+        padding-left: 0;
+
+        align-self: first baseline;
+        
+    }
+    
+    div.glass{
+        /* style */
+        /* positionnement */
+        width: 100%;
+
+        h2{
+            /* style */
+            text-align: left;
+
+            /* positionnement */
+            width: 30%;
+        }
+    }
 }
 
-div.demarches div.boite_horizontale{
-    /* style */
-    /* positionnement */
-    box-sizing: content-box;
-    justify-content: space-between;
-}
-
-div.demarches div.glass{
+#boite_H_info_V{ /* pour voir les détails d'une démarche
     /* style */
     /* positionnement */
     width: 100%;
+
+    column-gap: 80px;
+    justify-content: space-between;
+
+    box-sizing: border-box;
+
+    p{
+        /* style */
+        text-align: left !important;
+
+        /* positionnement */
+        width: 100%;
+    }
 }
 
-div.demarches div.glass h2{
-    /* style */
-    text-align: left;
+/*---------------- POUR LES PAGES DE NOUVELLE DÉMARCHE ----------------*/
 
+.img_chargement{
+    /* style */
     /* positionnement */
-    width: 30%;
+    width: 75%;
+
+    display: flex;
+    justify-self: center;
 }
 
 /*---------------- POUR LA PAGE D'ACCUEIL ETUDIANT ----------------*/
 
-/*
-div#boutons_extreme_droite{
-    padding: 15px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    column-gap: 20px;
-    justify-content: flex-end;
-    box-sizing: border-box;
-}*/
 
 /*---------------- POUR LES PAGES ENSEIGNANT ----------------*/
 
@@ -134,81 +157,14 @@ div#boutons_extreme_droite{
     padding: 10px;
 }
 
-
 /*---------------- POUR LES PAGES ADMIN ----------------*/
-
-
-.bouton_nav{
-    /* style */
-    /*border-radius: 20px;
-
-    font-family: "Arimo", sans-serif;
-    font-size: 1.4em;
-    text-align: center;
-    color: var(--couleur_texte_clair);*/
-
-    /* positionnement */
-    /*padding: 10px 15px;*/
-}
-
-p.pliste {
-    /* style */
-    /*font-family: "Arimo", sans-serif;
-    font-size: 1em;*/
-
-    /* positionnement */
-    /*margin: 10px 0;*/
-}
-
-.fas.fa-user-circle,
-.fa-user-circle {
-    /* style */
-    font-size: 4.5rem !important;
-
-    /* positionnement */
-}
-
-.fas.fa-search,
-.fa-plus-circle {
-    /* style */
-    font-size: 4.5rem !important;
-
-    /* positionnement */    
-    margin-left: auto;
-}
-
-i#user-icon {
-    /* style */
-    font-size: 5rem;
-
-    /* positionnement */
-}
 
 div#filtre_admin{
     /* style */
     /* positionnement */
     margin-top: 150px;
     padding: 10px;
-
-    display: flex;
-    justify-content: center;
 }
-
-aside#filtre_liste_admin{
-    /* style */
-    /* positionnement */
-    align-items: center;
-}
-
-
-#nav_admin {
-    /* style */
-    /* positionnement */
-    margin-right: auto;
-
-    justify-content: flex-start;
-}
-
 
 button#voir{
     /* style */
@@ -238,7 +194,7 @@ div#boite{
 div#liste_etu{
     /* style */
     /* positionnement */
-    width: 2200px;
+    width: 100%;
     height: fit-content;
     min-height: 100px;
     margin: 10px 0; 
@@ -252,23 +208,10 @@ div#contenu_admin {
     align-items: center;
 }
 
-aside#filtre_liste_admin{
-    /* style */
-    /* positionnement */
-    align-items: center;
-}
-
 a#voir{
     /* style */
-    /*border-radius: 40px;
-
-    font-family: "Arimo", sans-serif;
-    font-size: 1.2em;
-    text-align: center;*/
-
     /* positionnement */
     width: 250px;
-    /*height: 100px;*/
 }
 
 a#detail {

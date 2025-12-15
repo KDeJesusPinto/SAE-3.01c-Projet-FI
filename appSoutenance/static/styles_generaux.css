@@ -74,22 +74,6 @@ a{
     /* positionnement */
 }
 
-.img_chargement{
-    /* style */
-    /* positionnement */
-    width: 75%;
-
-    display: flex;
-    justify-self: center;
-}
-
-div#connexion a{
-    /* style */
-    /* positionnement */
-    width: 70%;
-    padding: 40px 0;
-}
-
 /* ---------------- STYLES GÉNÉRAUX DES BOÎTES ----------------*/
 
 .glass{
@@ -126,38 +110,12 @@ div#connexion a{
 
 /* ---------------- STYLES DES TEXTES ----------------*/
 
-#titre_page {
-    /* style */
-    font-family: "Arimo", sans-serif;
-    font-size: 2em;
-
-    /* positionnement */
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
 div.boite_horizontale p{
     /* style */
     text-align: center;
 
     /* positionnement */
     margin: 0;
-}
-
-div.boite_H_info_V{
-    /* style */
-    /* positionnement */
-    width: 100%;
-
-    display: flex;
-    column-gap: 80px;
-    align-items: center;
-    justify-content: space-between;
-
-    box-sizing: border-box;
-
-    padding: 20px;
 }
 
 .short{
@@ -206,7 +164,7 @@ div.boite_H_info_V{
     width: 100%;
 }
 
-.petit_bouton_imp{
+.imp{
     /* style */
     background-color: var(--couleur_bouton_important);
     border-radius: 20px;
@@ -260,12 +218,7 @@ div.demarche_etape{
     flex-grow: 0;
 }
 
-div.demarches div.glass{
-    /* style */
-    /* positionnement */
-    width: 100%;
-}
-/*---------------- MAIN BODY STYLES ----------------*/
+/*---------------- STYLE DE LA BOITE CONTENANT TOUT LE CONTENU ----------------*/
 
 div#main_body{
     /* style */
@@ -296,52 +249,45 @@ nav#barre_navigation{
     justify-content: space-between;
     box-sizing: border-box;
     z-index: 2;
-}
 
-nav#barre_navigation img{
-    /* style */
-    /* positionnement */
-    height: 35px;
-}
+    img{
+        /* style */
+        /* positionnement */
+        height: 35px;
+    }
 
-nav#barre_navigation ul{
-    /* style */
-    list-style: none;
+    ul{
+        /* style */
+        list-style: none;
 
-    /* positionnement */
-    display: flex;
-    column-gap: 50px;
-    margin: 0;
-    padding: 0;
-}
+        /* positionnement */
+        display: flex;
+        column-gap: 50px;
+        margin: 0;
+        padding: 0;
+    }
 
-nav#barre_navigation p, nav#barre_navigation li{
-    /* style */
-    font-size: 0.7em;
-    text-align: right;
+    p, li{
+        /* style */
+        font-size: 0.7em;
+        text-align: right;
 
-    /* positionnement */
-}
+        /* positionnement */
+    }
 
-nav#barre_navigation div{
-    /* style */
-    /* positionnement */
-    padding: 0;
-}
+    div{
+        /* style */
+        /* positionnement */
+        padding: 0;
+    }
 
-nav#barre_navigation a{
-    /* style */
-    color:var(--couleur_texte_clair);
-    font-size: 1.3em;
+    a{
+        /* style */
+        color:var(--couleur_texte_clair);
+        font-size: 1.3em;
 
-    /* positionnement */
-}
-
-select.petit_bouton2 {
-    /* style */
-    font-size: 0.7em;
-
-    /* positionnement */
+        /* positionnement */
+    }
 }
   
 .choix{
@@ -356,12 +302,6 @@ select.petit_bouton2 {
     /* positionnement */
     width: 150px;
     padding: 20px;
-}
-
-#soutenance{
-    /* style */
-    /* positionnement */
-    width: 40%;
 }
 
 input#import_csv{

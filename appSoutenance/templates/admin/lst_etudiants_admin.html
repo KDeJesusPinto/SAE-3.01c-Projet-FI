@@ -3,7 +3,7 @@
 {% block content %}
     <div class="boite_horizontale">
         <form method="get" action="{{ url_for('liste_etu_admin') }}">
-            <aside id="filtre_liste_admin">
+            <aside>
                 <select class="combobox" name="Année" id="annee">
                     <option value="Année">Année</option>
                     <option value="2A">2ème année</option>
@@ -43,8 +43,8 @@
             {% endif %}
             {% for res in resultats %}
             <div class="glass" id="liste_etu">
-                <div class="boite_horizontale info-grid">
-                    <i id="user-icon" class="fas fa-user-circle"></i>
+                <div class="boite_horizontale">
+                    <i class="fas fa-user-circle grande_icone"></i>
                     <p class="pliste">{{ res.etudiant.nom_etudiant }} {{ res.etudiant.prenom_etudiant }} |</p>
                     <p class="pliste"> {{ res.formation }} |</p>
                     <p class="pliste"> {{ res.promo }} {{ res.annee }} |</p>
@@ -52,11 +52,11 @@
                     <p class="pliste">Dernière démarche : {{ res.situation }}</p>
                     <a id="detail" href="{{ url_for('detail_etudiant_admin', id=res.etudiant.id_etudiant) }}"><i class="fas fa-info"></i></a>
                     {% if res.situation == "Acceptée" %}
-                        <i class="fas fa-check-circle" style="color:green; font-size: 4.5rem !important; margin-left: auto;"></i>
+                        <i class="fas fa-check-circle grande_icone" style="color:green; font-size: 4.5rem !important; margin-left: auto;"></i>
                     {% elif res.situation == "En cours" %}
-                        <i class="fas fa-search" style="color:orange; font-size: 4.5rem !important; margin-left: auto;"></i>
+                        <i class="fas fa-search grande_icone" style="color:orange; font-size: 4.5rem !important; margin-left: auto;"></i>
                     {% else %}
-                        <i class="fas fa-times-circle" style="color:red; font-size: 4.5rem !important; margin-left: auto;"></i>
+                        <i class="fas fa-times-circle grande_icone" style="color:red; font-size: 4.5rem !important; margin-left: auto;"></i>
                     {% endif %}
                 </div>
             </div>
