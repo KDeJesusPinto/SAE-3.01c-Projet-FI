@@ -5,8 +5,8 @@
     <img class="img_chargement" src="{{ url_for('static', filename = 'images/demarche_etape2.png') }}" alt="icone de chargement des étapes de l'ajout de la démarche">
     <h1>Etape 2 : joindre le CV et la lettre de motivation</h1>
     <div class="bouton_horizontal">
-        <a href="{{ url_for('nouvelle_demarche1') }}" class="petit_bouton"><i class="fas fa-chevron-circle-left"></i></a>
-        <a href="{{ url_for('nouvelle_demarche3') }}" class="petit_bouton"><i class="fas fa-chevron-circle-right"></i></a>
+        <a href="{{ url_for('nouvelle_demarche1', num_personne=personne.id_etudiant) }}" class="petit_bouton"><i class="fas fa-chevron-circle-left"></i></a>
+        <a href="{{ url_for('nouvelle_demarche3', num_personne=personne.id_etudiant) }}" class="petit_bouton"><i class="fas fa-chevron-circle-right"></i></a>
     </div>
 </div>
 {% endblock %}

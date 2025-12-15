@@ -5,12 +5,12 @@
     <img class="img_chargement" src="{{ url_for('static', filename = 'images/demarche_etape1.png') }}" alt="icone de chargement des étapes de l'ajout de la démarche">
     <h1>Etape 1 : l'entreprise</h1>
     <div class="bouton_horizontal">
-        <a href="{{ url_for('demarches') }}" class="petit_bouton">Retour</a>
+        <a href="{{ url_for('demarches', num_personne=personne.id_etudiant) }}" class="petit_bouton">Retour</a>
         <label for="import_csv" class="petit_bouton">
             <span>Importer CSV</span>
             <input id="import_csv" type="file" name="btn_import_csv" accept=".csv">
         </label>
-        <a href="{{ url_for('nouvelle_demarche2') }}" class="petit_bouton"><i class="fas fa-chevron-circle-right"></i></a>
+        <a href="{{ url_for('nouvelle_demarche2', num_personne=personne.id_etudiant) }}" class="petit_bouton"><i class="fas fa-chevron-circle-right"></i></a>
     </div>
 </div>
 {% endblock %}
