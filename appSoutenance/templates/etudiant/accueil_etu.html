@@ -1,66 +1,69 @@
-{% extends "base.html" %}
+<!-- boite_horizontale, boite_verticale -->
+
+{% extends "etudiant/base_etu.html" %}
 
 {% block content %}
-    <div id="soutenance" class="glass">
-        <h1>Soutenance</h1>
-        <div class="info_horizontal">
-            <div class="info_horizontal">
+    <div class="glass">
+        <h2>Soutenance</h2>
+        <div class="boite_horizontale">
+            <div class="boite_horizontale">
                 <i class="fas fa-calendar-alt grande_icone"></i>
                 <p>25 juillet 2025<br>11:00</p>
             </div>
-            <div class="info_horizontal">
+            <div class="boite_horizontale">
                 <i class="fas fa-map-marker-alt grande_icone"></i>
                 <p>I202</p>
             </div>
-            <div class="info_horizontal">
+            <div class="boite_horizontale">
                 <i class="fas fa-users grande_icone"></i>
                 <p>Mr Arsouze (tuteur), Mr Lorem, Mme Ipsum</p>
             </div>
         </div>
     </div>
-    <div class="info_vertical" id="demarches">
-        <div class="info_horizontal">
+    <div class="glass">
+        <h2>Stage</h2>
+        <div class="boite_horizontale">
+            <div class="boite_horizontale">
+                <i class="fas fa-clock grande_icone"></i>
+                <p>8 semaines<br>Début : 17 avril</p>
+            </div>
+            <div class="boite_horizontale">
+                <i class="fas fa-building grande_icone"></i>
+                <p>Atos</p>
+            </div>
+            <div class="boite_horizontale">
+                <i class="fas fa-user grande_icone"></i>
+                <p>Tuteur : Mr Arsouze<br>Maître de stage : Mr David</p>
+            </div>
+        </div>
+    </div>
+    <div class="boite_verticale demarches">
+        <div class="boite_horizontale">
             <h1>Mes démarches</h1>
-            <a href=""><i class="fas fa-plus-circle grande_icone"></i></a>        
+            <a href="{{ url_for('nouvelle_demarche1', num_personne=personne.id_etudiant) }}"><i class="fas fa-plus-circle grande_icone"></i></a>        
         </div>
-        <div class="glass info_horizontal">
-            <h2>Démarche n°15</h2>
-            <div class="boite_verticale">
-                <i class="fas fa-building"></i>
-                <p class="short">Google</p>
+        
+        {% for demarche in liste_dem %}
+            <div class="glass boite_horizontale">
+                <h2>Démarche n°{{ demarche.id_demarche }}</h2>
+                <div class="boite_verticale">
+                    <i class="fas fa-building petite_icone"></i>
+                    <p class="short">{{ demarche.entreprise.nom_entreprise }}</p>
+                </div>
+                <div class="boite_verticale">
+                    <i class="fas fa-history petite_icone"></i>
+                    <p class="short">Date d'envoi :<br>{{ demarche.date_envoi }}</p>
+                </div>
+                <div class="boite_verticale">
+                    <i class="fas fa-clipboard-list petite_icone"></i>
+                    <span class="tooltip short" data-tooltip="État : {{ demarche.situation }}">État : {{ demarche.situation }}</span>
+                </div>
+                <div class="boite_verticale">
+                    <a href="{{ url_for('resume_demarche_etudiant', num_personne=personne.id_etudiant) }}" class="petit_bouton">Résumé</a>
+                    <a href="" class="petit_bouton">Modifier</a>
+                </div>
             </div>
-            <div class="boite_verticale">
-                <i class="fas fa-clock"></i>
-                <p class="short">2 semaines</p>
-            </div>
-            <div class="boite_verticale">
-                <i class="fas fa-clipboard-list"></i>
-                <span class="tooltip short" data-tooltip="État : refusé">État : refusé</span>
-            </div>
-            <div class="boite_verticale">
-                <a href="" class="petit_bouton">Résumé</a>
-                <a href="" class="petit_bouton">Modifier</a>
-            </div>
-        </div>
-        <div class="glass info_horizontal">
-            <h2>Démarche n°1</h2>
-            <div class="boite_verticale">
-                <i class="fas fa-building"></i>
-                <p class="short">Google</p>
-            </div>
-            <div class="boite_verticale">
-                <i class="fas fa-clock"></i>
-                <p class="short">2 semaines</p>
-            </div>
-            <div class="boite_verticale">
-                <i class="fas fa-clipboard-list"></i>
-                <span class="tooltip short" data-tooltip="État : refusé">État : refusé</span>
-            </div>
-            <div class="boite_verticale">
-                <a href="" class="petit_bouton">Résumé</a>
-                <a href="" class="petit_bouton">Modifier</a>
-            </div>
-        </div>
-        <a class="glass" href="">+ Voir plus...</a>
+        {% endfor %}
+        <a class="glass" href="{{ url_for('demarches', num_personne=personne.id_etudiant) }}">+ Voir plus...</a>
     </div>
 {% endblock %}
