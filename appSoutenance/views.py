@@ -193,6 +193,7 @@ def planning_admin():
 
 
 @app.route('/admin/liste+enseignants/<int:id>/')
+@login_required
 def detail_enseignant(id):
     enseignant = Enseignant.query.get(id)
     return render_template("admin/detail_enseignant.html",
@@ -202,6 +203,7 @@ def detail_enseignant(id):
 
 
 @app.route('/admin/liste+etudiants/<int:id>/')
+@login_required
 def detail_etudiant_admin(id):
     etudiant = Etudiant.query.get(id)
     return render_template("admin/detail_etudiant_admin.html",
@@ -211,6 +213,7 @@ def detail_etudiant_admin(id):
 
 
 @app.route('/admin/liste+enseignants/')
+@login_required
 def liste_ens_admin():
     lesEnseignants = Enseignant.query.all()
     res = []
@@ -234,6 +237,7 @@ def liste_ens_admin():
 
 
 @app.route('/admin/liste+etudiants/')
+@login_required
 def liste_etu_admin():
     lesEtudiants = Etudiant.query.all()
 

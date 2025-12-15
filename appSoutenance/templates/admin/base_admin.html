@@ -1,24 +1,20 @@
 {% extends "base.html" %}
 {% block navbar %}
+
+<nav id="barre_navigation">
+    <ul>
+        <img src="{{ url_for('static', filename = 'images/icone.png') }}" alt="">
+        <li><a href="{{ url_for('accueil_admin') }}" class="bouton_nav">Accueil</a></li>
+        <li><a href="{{ url_for('planning_admin') }}" class="bouton_nav">Planning</a></li>
+        <li><a href="{{ url_for('liste_etu_admin') }}" class="bouton_nav">Etudiants</a></li>
+        <li><a href="{{ url_for('liste_ens_admin') }}" class="bouton_nav">Enseignants</a></li>
+    </ul>
     <div class="boite_horizontale">
-        <a href="{{ url_for('accueil_admin') }}" class="bouton_nav">
-            <p>Accueil</p>
-        </a>
-        <a href="{{ url_for('planning_admin') }}" class="bouton_nav">
-            <p>Planning</p>
-        </a>
-        <a href="{{ url_for('liste_etu_admin') }}" class="bouton_nav">
-            <p>Etudiants</p>
-        </a>
-        <a href="{{ url_for('liste_ens_admin') }}" class="bouton_nav">
-            <p>Enseignants</p>
-        </a>
+        <div class="boite_horizontale">
+            <p>{{ current_user.prenom_admin }}<br>{{ current_user.nom_admin }}</p>
+            <i class="fas fa-user-circle petite_icone"></i>
+        </div>
+        <a href="{{ url_for('index') }}"><i class="fas fa-sign-out-alt petite_icone"></i></a>
     </div>
-    <div class="boite_horizontale">
-        <p>{{ prenom }}<br>{{ nom }}</p>
-        <i class="fas fa-user-circle petite_icone"></i>
-        <a href="{{ url_for('index') }}">
-            <i class="fas fa-sign-out-alt petite_icone"></i>
-        </a>
-    </div>
+</nav>
 {% endblock %}
