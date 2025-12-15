@@ -276,7 +276,7 @@ VALUES (
         3,
         'Salon',
         'Contact direct',
-        'En attente',
+        'En cours',
         '2024-09-20',
         NULL,
         NULL,
