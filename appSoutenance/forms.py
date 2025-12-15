@@ -9,17 +9,49 @@ class LoginForm(FlaskForm):
     Password = PasswordField("Mot de passe")
     next = HiddenField()
 
-    def get_authenticated_user(self):
-        user = Etudiant.query.filter_by(login_per=self.Login.data).first()
+    def get_authenticated_etudiant(self):
+       etudiant = Etudiant.query.filter(Etudiant.login_etudiant == self.Login.data).first()
 
-        if user is None:
-            return None
+       if etudiant is None:
+           return None
+      
+       m = sha256()
+       m.update(self.Password.data.encode())
 
-        m = sha256()
-        m.update(self.Password.data.encode())
 
-        if m.hexdigest() == user.mdp:
-            return user
-        return None
+       passwd = m.hexdigest()
+       if passwd != etudiant.pwd_etudiant:
+           return None
+       return etudiant
+    
+    def get_authenticated_enseignant(self):
+       enseignant = Enseignant.query.filter(Enseignant.login_enseignant == self.Login.data).first()
+
+       if enseignant is None:
+           return None
+      
+       m = sha256()
+       m.update(self.Password.data.encode())
+
+
+       passwd = m.hexdigest()
+       if passwd != enseignant.pwd_etudiant:
+           return None
+       return enseignant
+    
+    def get_authenticated_admin(self):
+       admin = Admini.query.filter(Admini.login_admin == self.Login.data).first()
+
+       if admin is None:
+           return None
+      
+       m = sha256()
+       m.update(self.Password.data.encode())
+
+
+       passwd = m.hexdigest()
+       if passwd != admin.pwd_etudiant:
+           return None
+       return admin
 
     

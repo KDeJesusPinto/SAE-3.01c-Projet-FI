@@ -15,25 +15,53 @@ def index():
                            title="Soutenance - Connexion",
                            accueil="index")
 
-@app.route("/login", methods=["GET","POST"])
+# @app.route("/login", methods=["GET","POST"])
+# def login():
+#     form = LoginForm()
+
+#     if form.validate_on_submit():
+#         user = Etudiant.query.filter_by(login_etudiant=form.Login.data).first()
+
+#         if user and user.pwd_etudiant == form.Password.data:
+#             login_user(user)
+#             if user.metier.lower() == "chercheur":
+#                 return redirect(url_for("accueil_cher"))
+#             elif user.metier.lower() == "administrateur":
+#                 return redirect(url_for("accueil_admin"))
+#             elif user.metier.lower() == "technicien":
+#                 return redirect(url_for("accueil_tech"))
+
+#         return("Login ou mot de passe incorrect")
+
+#     return render_template("index.html", form=form, error="Login ou mot de passe incorrect")
+
+@app.route('/login/', methods=('GET', 'POST', ))
 def login():
+    """Redirection vers la page de connexion du site"""
     form = LoginForm()
+    if not form.is_submitted():
+        form.next.data = request.args.get('next')
+    elif form.validate_on_submit():
+        etudiant = form.get_authenticated_etudiant()
+        enseignant = form.get_authenticated_enseignant()
+        admin = form.get_authenticated_admin()
 
-    if form.validate_on_submit():
-        user = Etudiant.query.filter_by(login_per=form.Login.data).first()
-
-        if user and user.mdp == form.Password.data:
-            login_user(user)
-            if user.metier.lower() == "chercheur":
-                return redirect(url_for("accueil_cher"))
-            elif user.metier.lower() == "administrateur":
-                return redirect(url_for("accueil_admin"))
-            elif user.metier.lower() == "technicien":
-                return redirect(url_for("accueil_tech"))
-
+        if etudiant is not None:
+            login_user(etudiant)
+            return redirect(url_for("accueil_etudiant"))
+        
+        elif enseignant is not None:
+            login_user(enseignant)
+            return redirect(url_for("accueil_enseignant"))
+        
+        elif admin is not None:
+            login_user(admin)
+            return redirect(url_for("accueil_admin"))
+        
         return("Login ou mot de passe incorrect")
+        
 
-    return render_template("index.html", form=form, error="Login ou mot de passe incorrect")
+    return render_template("login.html", form=form, error="Login ou mot de passe incorrect")
 
 @app.route("/logout/")
 
