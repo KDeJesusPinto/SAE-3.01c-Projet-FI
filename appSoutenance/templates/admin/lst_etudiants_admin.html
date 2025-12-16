@@ -2,8 +2,8 @@
 
 {% block content %}
     <div class="boite_horizontale">
-        <form method="get" action="{{ url_for('liste_etu_admin') }}">
-            <aside id="filtre_liste_admin">
+        <aside id="en_haut" id="filtre_liste_admin">
+            <form method="get" action="{{ url_for('liste_etu_admin') }}">
                 <select class="combobox" name="annee" id="annee">
                     <option value="">Année</option>
                     <option value="2A" {% if request.args.get('annee') == '2A' %}selected{% endif %}>2ème année</option>
@@ -27,8 +27,8 @@
                     <option value="Annee">Année</option>
                     <option value="NbDemarches">Nombre de démarches</option>
                 </select>
-            </aside>
-        </form>
+            </form>
+        </aside>
 
         <div class="boite_verticale">
             {% if resultats|length == 0 %}

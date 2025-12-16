@@ -241,22 +241,7 @@ a#detail {
     margin-left: auto;
 }
 
-#infos{
-    /* style */
-    font-size: 0.7em;
-    font-family: "Arimo", sans-serif;
-    border-radius: 40px;
 
-    font-family: "Arimo", sans-serif;
-    font-size: 1.2em;
-
-    /* positionnement */
-    width: 200px;
-    height: 70px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
 
 button#ajout_sout {
     /* style */
@@ -306,48 +291,6 @@ button#voir {
     height: 150px;
 }
 
-#texte_admin button{
-    /* style */
-    font-size: 0.5em;
-
-    /* positionnement */
-    margin-top: 15px;
-}
-
-h1#donnees_eleves, h1#donnees_professeurs {
-    /* style */
-    font-family: "Bebas Neue", sans-serif;
-    
-    /* positionnement */
-}
-
-
-p#texte_admin {
-    /* style */
-    font-family: "Bebas Neue", sans-serif;
-    font-size: 1.5em;
-
-    /* positionnement */
-    margin-top: 20px;
-}
-
-#texte_admin a{
-    /* style */
-    border-radius: 40px;
-  
-    font-size: 0.7em;
-
-    /* positionnement */
-    height: 70px;
-    width: 200px;
-    margin-top: 15px;
-  
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
 div#contenu_admin {
     /* style */
     font-size: 1em;
@@ -364,3 +307,38 @@ p.pliste {
     margin: 10px 0;
 }
 
+div#filtre_admin{
+    /* style */
+    /* positionnement */
+    width: 80%;
+    max-width: 1200px;
+    margin: 150px auto 20px auto;
+    padding: 20px;
+
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+label[for="import_csv"], label[for="export_csv"]{
+    /* style */
+    /* positionnement */
+    width: 250px;
+    padding: 40px 20px;
+
+    input{
+        display: none;
+    }
+}
+
+#bouton_info{
+    /* style */
+    /* positionnement */
+    width: 150px;
+    padding: 25px;
+}
+
+#en_haut{
+    align-self: baseline;
+}
