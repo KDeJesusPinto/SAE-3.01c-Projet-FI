@@ -1,5 +1,15 @@
-from .app import db
+from .app import db, login_manager
+from flask_login import UserMixin
 
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id.startswith("ETU_"):
+        return Etudiant.query.get(int(user_id.split("_")[1]))
+    elif user_id.startswith("ENS_"):
+        return Enseignant.query.get(int(user_id.split("_")[1]))
+    elif user_id.startswith("ADM_"):
+        return Admini.query.get(user_id.split("_")[1])
+    return None
 
 class Entreprise(db.Model):
     id_entreprise = db.Column(db.Integer, primary_key=True)
@@ -205,7 +215,7 @@ class Soutenance(db.Model):
         return f"<La soutenance a lieu le {self.date} à {self.h_debut} au batîment {self.nom_bat} {self.salle}>"
 
 
-class Etudiant(db.Model):
+class Etudiant(db.Model, UserMixin):
     id_etudiant = db.Column(db.Integer, primary_key=True)
     nom_etudiant = db.Column(db.String(100), nullable=False)
     prenom_etudiant = db.Column(db.String(100), nullable=False)
@@ -213,6 +223,11 @@ class Etudiant(db.Model):
     date_naissance = db.Column(db.Date, nullable=False)
     telephone_etudiant = db.Column(db.String(15))
     email_etudiant = db.Column(db.String(200))
+    login_etudiant = db.Column(db.String(100))
+    pwd_etudiant = db.Column(db.String(100))
+    
+    def get_id(self):
+        return f"ETU_{self.id_etudiant}"
 
     # 0,N
     promos = db.relationship('Promo',
@@ -225,13 +240,18 @@ class Etudiant(db.Model):
                  civilite_etudiant,
                  date_naissance,
                  telephone_etudiant=None,
-                 email_etudiant=None):
+                 email_etudiant=None,
+                 login_etudiant = None,
+                 pwd_etudiant = None
+                 ):
         self.nom_etudiant = nom_etudiant
         self.prenom_etudiant = prenom_etudiant
         self.civilite_etudiant = civilite_etudiant
         self.date_naissance = date_naissance
         self.telephone_etudiant = telephone_etudiant
         self.email_etudiant = email_etudiant
+        self.login_etudiant = login_etudiant
+        self.pwd_etudiant = pwd_etudiant
 
     def __repr__(self):
         return f"<Etudiant {self.nom_etudiant} {self.prenom_etudiant}>"
@@ -288,18 +308,25 @@ class Appartenir(db.Model):
         return f"<Etudiant : {self.id_etudiant} appartient a {self.nom_promo} en {self.annee_promo}>"
 
 
-class Enseignant(db.Model):
+class Enseignant(db.Model, UserMixin):
     id_enseignant = db.Column(db.Integer, primary_key=True)
     nom_enseignant = db.Column(db.String(100))
     prenom_enseignant = db.Column(db.String(100))
     civilite_enseignant = db.Column(db.String(10))
     email_enseignant = db.Column(db.String(200))
+    login_enseignant = db.Column(db.String(100))
+    pwd_enseignant = db.Column(db.String(100))
 
-    def __init__(self, nom, prenom, civilite, email):
+    def get_id(self):
+        return f"ENS_{self.id_enseignant}"
+
+    def __init__(self, nom, prenom, civilite, email, login_enseignant, pwd_enseignant):
         self.nom_enseignant = nom
         self.prenom_enseignant = prenom
         self.civilite_enseignant = civilite
         self.email_enseignant = email
+        self.login_enseignant = login_enseignant
+        self.pwd_enseignant = pwd_enseignant
 
     def __repr__(self):
         return f"<Enseignant : {self.id_enseignant} {self.civilite_enseignant} {self.nom_enseignant} {self.prenom_enseignant} {self.email_enseignant}>"
@@ -373,3 +400,45 @@ class Tutorer(db.Model):
         self.id_enseignant = id_enseignant
         self.id_etudiant = id_etudiant
         self.annee = annee
+
+class Admini(db.Model, UserMixin):
+    id_admin = db.Column(db.String(10), primary_key=True)
+    nom_admin = db.Column(db.String(100))
+    prenom_admin = db.Column(db.String(100))
+    login_admin = db.Column(db.String(100))
+    pwd_admin = db.Column(db.String(100))
+
+    def get_id(self):
+        return f"ADM_{self.id_admin}"
+
+    def __init__(self, id_admin,  nom_admin, prenom_admin, login_admin, pwd_admin):
+        self.id_admin = id_admin
+        self.nom_admin = nom_admin
+        self.prenom_admin = prenom_admin
+        self.login_admin = login_admin
+        self.pwd_admin = pwd_admin
+
+
+    def __repr__(self):
+        return f"<Admini : {self.id_admin} {self.nom_admin} {self.prenom_admin} {self.login_admin}>"
+   
+class Assembler(db.Model):
+    __tablename__ = 'ASSEMBLER'
+
+
+    id_jury = db.Column(db.Integer,
+                        db.ForeignKey("jury.id_jury"),
+                        primary_key=True)
+   
+    id_admin = db.Column(db.String(42),
+                         db.ForeignKey("admini.id_admin"),
+                         primary_key=True)
+
+
+    admini = db.relationship("Admini", backref=db.backref("jury_compositions", lazy="dynamic"))
+    jury = db.relationship("Jury", backref=db.backref("admin_compositions", lazy="dynamic"))
+
+
+    def __init__(self, id_jury, id_admin):
+        self.id_jury = id_jury
+        self.id_admin = id_admin

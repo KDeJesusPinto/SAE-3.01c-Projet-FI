@@ -1,3 +1,4 @@
+<<<<<< reorganisation_css
 @import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bebas+Neue&family=PT+Sans+Narrow:wght@400;700&display=swap');
 
 :root{
@@ -334,3 +335,350 @@ select.combobox {
     display: flex;
     align-items: center;
 }
+=======
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bebas+Neue&family=PT+Sans+Narrow:wght@400;700&display=swap');
+
+/*---------------- STYLES GÉNÉRAUX ----------------*/
+
+body{
+    background: url(images/fond.png) no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    font-family: "Arimo", sans-serif;
+    font-size: 30px;
+    /*font-size: 4em;*/
+}
+
+h1{
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-transform: uppercase;
+    font-size: 2.5em;
+    text-align: center;
+    letter-spacing: -0.04em;
+    margin: 0;
+}
+
+h2{
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    text-transform: uppercase;
+    font-size: 2em;
+    text-align: center;
+    letter-spacing: -0.04em;
+    margin: 0;
+    white-space: nowrap !important;
+}
+
+a{
+    color: black;
+    text-decoration: none;
+    cursor: url(images/cursor.png), pointer;
+}
+
+.img_chargement{
+    display: flex;
+    justify-self: center;
+    width: 75%;
+}
+
+div#connexion a{
+    padding: 40px 0;
+    width: 70%;
+}
+
+/* ---------------- STYLES GÉNÉRAUX DES BOÎTES ----------------*/
+
+.glass{
+    border-radius: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.55);
+
+    /*padding: 2% !important;*/
+}
+
+.boite_verticale{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    align-items: center;
+    row-gap: 20px;
+}
+
+.boite_horizontale{
+    display: flex;
+    flex-direction: row;
+    padding: 20px;
+    align-items: center;
+    column-gap: 20px;
+}
+
+/* ---------------- STYLES DES TEXTES ----------------*/
+
+#titre_page {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2em;
+    font-family: "Arimo", sans-serif;
+}
+
+div.boite_horizontale p{
+    margin: 0;
+    text-align: center;
+}
+
+div.boite_H_info_V{
+    display: flex;
+    column-gap: 80px;
+    padding: 20px;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.short{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 220px;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* ---------------- STYLES DES ICONES ----------------*/
+
+.grande_icone{
+    font-size: 2em !important;
+}
+
+.petite_icone{
+    font-size: 1.4em !important;
+}
+
+/* ---------------- STYLES DES ÉLÉMENTS CLIQUABLES ----------------*/
+
+.petit_bouton{
+    padding: 15px;
+    width: 100%;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 20px;
+    background-color: #242f53;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.petit_bouton_imp{
+    padding: 15px;
+    /*width: 300px;*/
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 20px;
+    background-color: #8f11bc;
+    color: white;
+    text-align: center;
+    text-wrap: nowrap;
+}
+
+.petit_bouton:hover{
+    background: #a671b0;
+}
+
+.bouton_nav{
+    padding: 30px;
+    width: 100%;
+    font-family: "Arimo", sans-serif;
+    border-radius: 30px;
+    background-color: #a671b0;
+    color: white;
+    text-align: center;
+}
+
+div.bouton_horizontal{
+    /*background-color: red;*/
+    display: flex;
+    column-gap: 100px;
+    padding: 20px;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end;
+    box-sizing: border-box;
+    /*border: 2px black solid;*/
+}
+
+
+.tooltip:hover::after{
+    content: attr(data-tooltip);
+    background-color: rgb(178, 185, 187);
+    position: absolute;
+    right: 16%;
+    font-size: 0.7em;
+}
+
+div.demarche_etape{
+    width: 2500px;
+    flex-grow: 0;
+}
+
+div.demarches div.glass{
+    width: 100%;
+}
+/*---------------- MAIN BODY STYLES ----------------*/
+
+div#main_body{
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 150px 0 100px;
+}
+
+/*---------------- STYLES BARRE DE NAVIGATION ----------------*/
+
+nav#barre_navigation{
+    background-color: #a671b0;
+    color: white;
+    padding: 15px;
+    position: fixed;
+    width: 100%;
+    max-width: 100%;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+nav#barre_navigation img{
+    height: 35px;
+}
+
+nav#barre_navigation ul{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    column-gap: 50px;
+    list-style: none;
+}
+
+nav#barre_navigation p, nav#barre_navigation li{
+    font-size: 0.7em;
+    text-align: right;
+}
+
+nav#barre_navigation a{
+    text-align: left;
+}
+
+nav#barre_navigation div{
+    padding: 0;
+}
+
+nav#barre_navigation a{
+    color: white;
+}
+
+div#filtre_admin{
+    width: 80%;
+    max-width: 1200px;
+    padding: 20px;
+    display: flex;
+    margin: 150px auto 20px auto;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
+select.petit_bouton2 {
+    font-size: 0.7em;
+}
+  
+.choix {
+    padding: 20px;
+    width: 150px;
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 80px; /* Harmonisation avec combobox */
+    background-color: #242f53;
+    color: white;
+    text-align: left;
+}
+
+.bouton_nav{
+    font-size: 1.4em;
+    padding: 10px 15px;
+    font-family: "Arimo", sans-serif;
+    border-radius: 20px;
+    color: white;
+    text-align: center;
+}
+
+#soutenance{
+    width: 40%;
+}
+
+input#import_csv, input#export_csv{
+    display: none;
+}
+
+label[for="import_csv"], label[for="export_csv"]{
+    width: 250px;
+    height: 100px;
+    display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ---------------- STYLES DES COMBOBOX ----------------*/
+
+
+select.combobox { /* Agrandissement des combobox */
+    font-size: 1.2em; /* Augmente la taille de la police */
+    padding: 15px 40px; /* Augmente le rembourrage */
+    min-width: 220px; /* Définit une largeur minimale */
+    margin: 15px; /* Ajuste la marge */
+    font-family: "Arimo", sans-serif;
+    border-radius: 80px;
+    background-color: #a671b0;
+    color: white;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.form-group, .form-check {
+   padding-top: 1em;
+}
+
+
+.form-label {
+   color: #064a72;
+   margin-bottom: 0.3em;
+}
+
+
+.form-control,
+input.form-control,
+select.form-control,
+textarea.form-control {
+   border-radius: 50px;
+}
+>>>>>> develop

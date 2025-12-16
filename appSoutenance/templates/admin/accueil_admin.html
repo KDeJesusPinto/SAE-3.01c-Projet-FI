@@ -1,19 +1,22 @@
 {% extends "admin/base_admin.html" %}
 
 {% block content %}
-    <div class="glass boite_horizontale" id="filtre_admin">
-        <select class="combobox" name="Formation" id="formation">
-            <option value="Formation">Formation</option>
-            <option value="Info">Informatique</option>
-            <option value="Chimie">Chimie</option>
-            <option value="GEA">GEA</option>
-        </select>
-        <select class="combobox" name="Année" id="annee">
-            <option value="Année">Année</option>
-            <option value="2A">2ème année</option>
-            <option value="3A">3ème année</option>
-        </select>
-    </div>
+    <form method="get" action="{{ url_for('accueil_admin') }}">
+        <div class="glass boite_horizontale" id="filtre_admin">
+            <select class="combobox" name="formation" id="formation">
+                <option value="">Formation</option>
+                <option value="Info" {% if request.args.get('formation') == 'Info' %}selected{% endif %}>Informatique</option>
+                <option value="Chimie" {% if request.args.get('formation') == 'Chimie' %}selected{% endif %}>Chimie</option>
+                <option value="GEA" {% if request.args.get('formation') == 'GEA' %}selected{% endif %}>GEA</option>
+            </select>
+            <select class="combobox" name="annee" id="annee">
+                <option value="">Année</option>
+                <option value="2A" {% if request.args.get('annee') == '2A' %}selected{% endif %}>2ème année</option>
+                <option value="3A" {% if request.args.get('annee') == '3A' %}selected{% endif %}>3ème année</option>
+            </select>
+            <button class="petit_bouton" id="filtrer" type="submit">Filtrer</button>
+        </div>
+    </form>
 
 
 
@@ -21,21 +24,16 @@
         <div class="boite_verticale">
             <div class="boite_horizontale">
                 <h1 id="donnees_eleves"><strong>DONNÉES ÉLÈVES</strong></h1>
-                <select class="combobox" name="Année" id="annee">
-                    <option value="Année">Année</option>
-                    <option value="2A">2ème année</option>
-                    <option value="3A">3ème année</option>
-                </select>
                 <a class="petit_bouton" id="voir" href="{{ url_for('liste_etu_admin') }}">Voir tous les étudiants</a>
             </div>
             <div class="boite_horizontale">
                 <div class="glass" id="boite">
-                    <p id="texte_admin">STAGE TROUVÉ :<br>{{ nb_stages_trouves }} / {{ nb_etudiants }}<br><button class="petit_bouton" id="infos">Infos</button></p>
+                    <p id="texte_admin">STAGE TROUVÉ :<br>{{ nb_stages_trouves }} / {{ nb_etudiants }}
+                    <a href="{{ url_for('liste_etu_admin') }}" class="petit_bouton" id="infos">Infos</a></p>
                 </div>
                 <div class="glass" id="boite">
-                    <p id="texte_admin">SOUTENANCE ALTERNANT PRÉVU :<br>{{ nb_soutenances_alternants }} / {{ nb_etudiants_alternants }}<br><button class="petit_bouton" id="infos">Infos</button>
-                    </p>
-                    
+                    <p id="texte_admin">SOUTENANCE ALTERNANT PRÉVU :<br>{{ nb_soutenances_alternants }} / {{ nb_etudiants_alternants }}
+                    <a href="{{ url_for('liste_etu_admin') }}" class="petit_bouton" id="infos">Infos</a></p>
                 </div>
             </div>
         </div>
@@ -44,19 +42,16 @@
         <div class="boite_verticale">
             <div class="boite_horizontale">
                 <h1 id="donnees_professeurs"><strong>DONNÉES PROFESSEURS</strong></h1>
-                <select class="combobox" name="Année" id="annee">
-                    <option value="Année">Année</option>
-                    <option value="2A">2ème année</option>
-                    <option value="3A">3ème année</option>
-                </select>
                 <a class="petit_bouton" id="voir" href="{{ url_for('liste_ens_admin') }}">Voir tous les enseignant</a>
             </div>
             <div class="boite_horizontale">
                 <div class="glass" id="boite">
-                    <p id="texte_admin">SOUTENANCES POSÉES PAR TUTEUR :<br>{{ nb_soutenances_posees }} / {{ nb_etudiants }}<br><button class="petit_bouton" id="infos">Infos</button></p>
+                    <p id="texte_admin">SOUTENANCES POSÉES PAR TUTEUR :<br>{{ nb_soutenances_posees }} / {{ nb_etudiants }}
+                    <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" id="infos">Infos</a></p>
                 </div>
                 <div class="glass" id="boite">
-                    <p id="texte_admin">SOUTENANCE EN ATTENTE DE CANDIDE :<br>/ {{ nb_soutenances_attente_candide }}<br><button class="petit_bouton" id="infos">Infos</button></p>
+                    <p id="texte_admin">SOUTENANCE EN ATTENTE DE CANDIDE :<br>/ {{ nb_soutenances_attente_candide }}
+                    <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" id="infos">Infos</a></p>
                 </div>
             </div>
         </div>
@@ -71,7 +66,6 @@
                 <span>Exporter CSV</span>
                 <input id="export_csv" type="file" name="btn_export_csv" accept=".csv">
             </label>
-
         </div>
     </div>
 {% endblock %}
