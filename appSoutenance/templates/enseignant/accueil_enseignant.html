@@ -9,23 +9,28 @@
                     <option value="Filtres">Filtres</option>
                 </select>
                 <i class="fas fa-search"></i>
-                <div class="boite_verticale">
-                </div>
             </div>
             <div class="boite_horizontale">
-                <div class="glass_tutoré_accueil">
+                {% if liste_tutore|length == 0 %}
+                    <p>Aucun étudiant trouvé.</p>
+                {% endif %}
+                {% for tutore in liste_tutore %}
+                    <div class="glass_tutoré_accueil">
                     <div class="boite_horizontale">
-                        <h2>john doe</h2>
+                        <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
                     </div>
                     <div class="boite_horizontale">
                         <i class="far fa-clipboard"></i>
-                        <p>état:</p>
+                        <p>état:{{tutore.etat}}</p>
                     </div>
                     <div class="boite_horizontale">
                         <i class="far fa-calendar-alt"></i>
-                        <p>8:15</p>
+                        <p>{{tutore.soutenance_tutore.dateS}} {{tutore.soutenance_tutore.h_debut}} {{tutore.soutenance_tutore.salle}}</p>
                     </div>
                 </div>
+                {% endfor %}
+
+                
                 <div class="glass_tutoré_accueil">
                     <div class="boite_horizontale">
                         <h2>john doe</h2>
@@ -77,25 +82,30 @@
                     </select>
                 </div>
                 <div class="boite_horizontale">
-                    <div class="glass_planning_accueil">
-                        <p>25/07</p>
-                        <div class="dark_planning_accueil">
-                            <div class="boite_horizontale">
-                               <div class="boite_verticale">
-                                    <p>8:00</p>
-                                    <p>9:00</p>
-                                </div>
-                                <i class="fas fa-map-marker-alt"></i>
-                                <p>I202</p> 
-                                </div>
+                    {% if liste_souteance|length == 0 %}
+                        <p>Aucune soutenance trouvé.</p>
+                    {% endif %}
+                    {% for date in date_soute %}
+                        <div class="glass_planning_accueil">
+                        <p>{{date.dateS}}</p>
+                        {% for soutenance in liste_souteance %}
+                            {%if soutenance.soutenance.dateS==date.dateS%}
+                                <div class="dark_planning_accueil">
+                                    <div class="boite_horizontale">
+                                        <div class="boite_verticale">
+                                            <p>{{soutenance.soutenance.h_debut}}</p>
+                                            <p>{{soutenance.soutenance.h_fin}}</p>
+                                        </div>
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <p>{{soutenance.soutenance.salle}}</p> 
+                                    </div>
+                                </div>   
+                            {%endif%}
                         </div>
-                    </div>
-                    <div class="glass_planning_accueil">
-                        <p>26/07</p>
-                    </div>
-                    <div class="glass_planning_accueil">
-                        <p>27/07</p>
-                    </div>
+                        {% endfor%}
+                        
+                    {% endfor %}
+                    
                 </div>
             </div>
             <div class="boite_verticale">

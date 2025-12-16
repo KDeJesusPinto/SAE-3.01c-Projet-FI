@@ -1,7 +1,10 @@
+from collections import defaultdict
 from .app import app
-from flask import render_template, request, url_for, redirect
+from flask import render_template, request, url_for, redirect, flash
 from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer
-from sqlalchemy import desc
+from sqlalchemy import desc, distinct
+from .models import db
+
 
 
 @app.route('/')
@@ -75,8 +78,25 @@ def resume_demarche_etudiant():
 @app.route('/enseignant/')
 def accueil_enseignant():
     num_personne = request.args.get('num_personne')
+
+
+    queryListeTutore=Etudiant.query.join(Tutorer,Etudiant.id_etudiant==Tutorer.id_etudiant).filter(Tutorer.id_enseignant==num_personne)
+    query_soutenance_prevue=Soutenance.query.join(Composer,Composer.id_soutenance==Soutenance.id_soutenance).filter(Composer.id_enseignant==num_personne).order_by(Soutenance.dateS,Soutenance.h_debut)
+
+    res_tutore = []
+    res_soutenance=[]
+
+    for etudiant in queryListeTutore:
+        derniere_demarche = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant).order_by(desc(Demarche.date_envoi)).first()
+        soutenance_prevue_tutore=Soutenance.query.join(Stage,Stage.id_stage==Soutenance.id_stage).join(Demarche,Demarche.id_demarche==Stage.id_demarche).join(Etudiant,Etudiant.id_etudiant==Demarche.id_etudiant).filter(Etudiant.id_etudiant==etudiant.id_etudiant).first()
+        res_tutore.append({'etudiant':etudiant,'etat':derniere_demarche.situation if derniere_demarche else "Aucune",'soutenance_tutore':soutenance_prevue_tutore})
+        
+    for soutenance in query_soutenance_prevue:
+        res_soutenance.append({'soutenance':soutenance})
+    res_date=query_soutenance_prevue.distinct(Soutenance.dateS)
     enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
-    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil")
+
+    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil",liste_tutore=res_tutore,liste_souteance=res_soutenance,date_soute=res_date)
 
 @app.route('/enseignant/planning/')
 def planning_enseignant():
