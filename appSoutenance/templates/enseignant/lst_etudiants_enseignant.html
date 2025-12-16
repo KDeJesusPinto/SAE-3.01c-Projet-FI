@@ -1,7 +1,7 @@
 {% extends "enseignant/base_enseignant.html" %}
 {% block content %}
     <div class="boite_horizontale">
-        <aside id="filtre_liste_admin">
+        <aside id="en_haut">
             <select class="combobox" name="Année" id="annee">
                 <option value="Année">Année</option>
                 <option value="2A">2ème année</option>
@@ -44,13 +44,13 @@
             {% endif %}
             {% for result in resultats %}
             <div class="glass" id="liste_etu">
-                <div class="boite_horizontale info-grid">
-                    <i id="user-icon" class="fas fa-user-circle"></i>
+                <div class="boite_horizontale">
+                    <i class="fas fa-user-circle grande_icone"></i>
                     <p id="nom_prenom_etudiant">{{ result.etudiant.nom_etudiant }} {{ result.etudiant.prenom_etudiant }} |</p>
                     <p id="formation_etudiant"> {{ result.formation }} |</p>
                     <p id="promo_etudiant"> {{ result.promo }} {{ result.annee }} |</p>
                     <p id="demarches_etudiant">Nombre de démarches : {{ result.nb_demarches }} |</p>
-                    <p id="situation_etudiant">Dérnière démarche : {{ result.situation }}</p>
+                    <p id="situation_etudiant">Dernière démarche : {{ result.situation }}</p>
                 </div>
             </div>
             {% endfor %}
