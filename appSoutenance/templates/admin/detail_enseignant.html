@@ -11,7 +11,7 @@
                 <p>Promo : {{ enseignant_promo.formation_promo }} {{ enseignant_promo.nom_promo }} {{ enseignant_promo.annee_promo }}</p>
             {% endif %}
             {% if jury_soutenances|length == 0 %}
-                <p>Jury des soutenances : Aucun</p>
+                <p>N'est jury d'aucune soutenance</p>
             {% else %}
                 <p>Jury des soutenances : {{ jury_soutenances }}</p>
             {% endif %}
