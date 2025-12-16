@@ -31,11 +31,10 @@
             {% endif %}
             {% for res in resultats %}
             <div class="glass" id="liste_etu">
-                <div class="boite_horizontale info-grid">
+                <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 50px 2fr 1.5fr 2fr 50px 180px; align-items: center; gap: 10px;">
                     <i id="user-icon" class="fas fa-user-circle"></i>
-                    <p class="pliste">{{ res.enseignant.nom_enseignant }} {{ res.enseignant.prenom_enseignant }} |</p>
-                    <p class="pliste"></p>
-                    <p class="pliste"> Tutorés : {{ res.nb_tutores }} |</p>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;">{{ res.enseignant.nom_enseignant }} {{ res.enseignant.prenom_enseignant }}</p>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;"> Tutorés : {{ res.nb_tutores }}</p>
                     <p class="pliste"> Assiste à soutenance : {{ res.nb_soutenances_posees }} / {{ res.nb_soutenances }} </p>
                     <a id="detail" href="{{ url_for('detail_enseignant', id=res.enseignant.id_enseignant) }}"><i class="fas fa-info"></i></a>
                     <button id="ajout_sout" class="petit_bouton">Ajouter soutenance</button>
