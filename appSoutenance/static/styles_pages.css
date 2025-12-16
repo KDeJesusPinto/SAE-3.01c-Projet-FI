@@ -10,43 +10,37 @@
 
 div#connexion{
     /* style */
+    font-size: 1em;
+
     /* positionnement */
     width: 60%;
     min-height: 60%;
     padding: 50px 150px;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: space-around;
     row-gap: 30px;
-}
 
-div#connexion a{
-    /* style */
-    background-color: var(--couleur_sombre_principale);
-    border-radius: 100px;
+    form{
+        width: 70%;
+        box-sizing: border-box;
+    }
 
-    font-family: "Arimo", sans-serif;
-    font-size: 1em;
-    color: var(--couleur_texte_clair);
-    text-align: center;
+    .petit_bouton{
+        font-size: 1em;
+        width: 60%;
+    }
 
-    /* positionnement */
-    width: 70%;
-    padding: 15px 0;
-}
+    label{
+        width: 100%;
+        text-align: left;
+    }
 
-div#buttons{
-    /* style */
-    /* positionnement */
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    justify-content: space-evenly;
-    row-gap: 40px;
+    input{
+        width: 100%;
+        margin: 0;
+        font-size: 0.7em;
+        padding: 20px;
+    }
 }
 
 /*---------------- POUR LES DÉMARCHES ----------------*/

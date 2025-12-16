@@ -21,30 +21,22 @@
 
 {% block content %}
     
-    <div id="connexion" class="glass">
+    <div id="connexion" class="glass boite_verticale">
         <h2>Bienvenue<br>connectez-vous en tant que...</h2>
 
-        <form method="POST" action="{{ url_for('login') }}">
+        <form method="POST" action="{{ url_for('login') }}" class="boite_verticale">
             {{ form.hidden_tag() }}
-        <div class="boite_horizontale">
-            <label for="inputLogin" class="boite_verticale">{{ form.Login.label }}</label>
-            <div class="boite_verticale">
-                {{ form.Login(class_="form-control", id="login") }}
-            </div>
+            {{ form.Login.label }}
+            {{ form.Login(class_="form-control") }}
+            
+            {{ form.Password.label }}
+            {{ form.Password(class_="form-control") }}
 
-
-        </div>
-        <div class="boite_horizontale">
-            <label for="inputPassword3" class="boite_verticale">{{ form.Password.label }}</label>
-            <div class="boite_verticale">
-            {{ form.Password(class_="form-control", id="password") }}
-            </div>
             {% if error %}
-            <div class="">{{ error }}</div>
+            <div>{{ error }}</div>
             {% endif %}
-        </div>
-       
-        <button type="submit" class="button">Connexion</button>
+        
+            <button type="submit" class="petit_bouton">Connexion</button>
         </form>
 
 
