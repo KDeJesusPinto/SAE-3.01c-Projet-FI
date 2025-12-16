@@ -1,7 +1,7 @@
-from .app import app
+from .app import app, db
 from flask import render_template, request, url_for, redirect, flash
 from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, Admini, MaitreStage, Entreprise
-from sqlalchemy import desc
+from sqlalchemy import desc, func, or_
 from flask_login import login_user, logout_user, login_required, current_user
 from appSoutenance.forms import LoginForm
 
@@ -179,42 +179,44 @@ def accueil_admin():
     annee_filter = request.args.get('annee')
     formation_filter = request.args.get('formation')
 
-    base_etudiant_query = Etudiant.query.join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).join(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
+    requete_base_etudiants = Etudiant.query.join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).join(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
 
     if annee_filter:
         niveau = "BUT2" if annee_filter == '2A' else "BUT3"
-        base_etudiant_query = base_etudiant_query.filter(Promo.nom_promo.like(f"%{niveau}%"))
+        requete_base_etudiants = requete_base_etudiants.filter(Promo.nom_promo.like(f"%{niveau}%"))
     if formation_filter:
         terme = "Informatique" if formation_filter == "Info" else formation_filter
-        base_etudiant_query = base_etudiant_query.filter(Promo.formation_promo.like(f"%{terme}%"))
+        requete_base_etudiants = requete_base_etudiants.filter(Promo.formation_promo.like(f"%{terme}%"))
 
     # Nombre total d'étudiants
-    nb_etudiants = base_etudiant_query.distinct().count()
+    nb_etudiants = requete_base_etudiants.distinct().count()
 
     # Nombre de stages trouvés
-    nb_stages_trouves_query = base_etudiant_query.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
+    requete_nb_stages_trouves = requete_base_etudiants.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
                                                 .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
                                                 .filter(Demarche.situation == 'Acceptée')
-    nb_stages_trouves = nb_stages_trouves_query.distinct(Stage.id_stage).count()
+    nb_stages_trouves = requete_nb_stages_trouves.with_entities(Stage.id_stage).distinct().count()
 
     # Nombre d'étudiants alternants
-    nb_etudiants_alternants_query = base_etudiant_query.filter(Appartenir.regime_etudiant == 'Formation apprentissage')
-    nb_etudiants_alternants = nb_etudiants_alternants_query.distinct().count()
+    requete_nb_etudiants_alternants = requete_base_etudiants.filter(Appartenir.regime_etudiant == 'Formation apprentissage')
+    nb_etudiants_alternants = requete_nb_etudiants_alternants.distinct().count()
 
     # Nombre de soutenances d'alternants prévues
-    nb_soutenances_alternants_query = nb_etudiants_alternants_query.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
+    requete_nb_soutenances_alternants = requete_nb_etudiants_alternants.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
                                                                     .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
                                                                     .join(Soutenance, Stage.id_stage == Soutenance.id_stage)
-    nb_soutenances_alternants = nb_soutenances_alternants_query.distinct(Soutenance.id_soutenance).count()
+    nb_soutenances_alternants = requete_nb_soutenances_alternants.with_entities(Soutenance.id_soutenance).distinct().count()
 
     # Nombre de soutenances posées par tuteur
-    nb_soutenances_posees_query = base_etudiant_query.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
-                                                    .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
-                                                    .join(Soutenance, Stage.id_stage == Soutenance.id_stage)
-    nb_soutenances_posees = nb_soutenances_posees_query.distinct(Soutenance.id_soutenance).count()
+    requete_soutenances = requete_base_etudiants.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
+                                                     .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
+                                                     .join(Soutenance, Stage.id_stage == Soutenance.id_stage)
+    nb_soutenances_posees = requete_soutenances.with_entities(Soutenance.id_soutenance).distinct().count()
 
-    # Nombre de soutenances en attente de candide (ceci n'est pas implémenté dans le code actuel)
-    nb_soutenances_attente_candide = 0
+    # Nombre de soutenances en attente de candide
+    requete_ids_soutenances_pertinentes = requete_soutenances.with_entities(Soutenance.id_soutenance).distinct()
+    soutenances_jury_complet_ids = db.session.query(Composer.id_soutenance).group_by(Composer.id_soutenance).having(func.count(Composer.id_enseignant) >= 2)
+    nb_soutenances_attente_candide = requete_ids_soutenances_pertinentes.filter(Soutenance.id_soutenance.notin_(soutenances_jury_complet_ids)).count()
 
     return render_template(
         "admin/accueil_admin.html",
@@ -348,17 +350,17 @@ def liste_etu_admin():
     situation_filter = request.args.get('situation')
     tri = request.args.get("trier", "Nom") # Par défaut, trié par nom
 
-    lesEtudiants_query = Etudiant.query.join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).join(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
+    requete_les_etudiants = Etudiant.query.join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).join(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
 
     # Les filtres
     if annee_filter:
         niveau = "BUT2" if annee_filter == '2A' else "BUT3"
-        lesEtudiants_query = lesEtudiants_query.filter(Promo.nom_promo.like(f"%{niveau}%"))
+        requete_les_etudiants = requete_les_etudiants.filter(Promo.nom_promo.like(f"%{niveau}%"))
     if formation_filter:
         terme = "Informatique" if formation_filter == "Info" else formation_filter
-        lesEtudiants_query = lesEtudiants_query.filter(Promo.formation_promo.like(f"%{terme}%"))
+        requete_les_etudiants = requete_les_etudiants.filter(Promo.formation_promo.like(f"%{terme}%"))
 
-    lesEtudiants = lesEtudiants_query.distinct().all()
+    lesEtudiants = requete_les_etudiants.distinct().all()
 
     res = []
 
