@@ -243,16 +243,17 @@ def liste_ens_admin():
     lesEnseignants = Enseignant.query
 
     if annee or formation:
-        # On récupère les enseignants qui ont au moins une promo correspondant aux filtres
-        promo_query = Promo.query
+        # On récupère les enseignants qui sont tuteurs d'au moins un étudiant correspondant aux filtres
+        lesEnseignants = lesEnseignants.join(Tutorer).join(Etudiant).join(Promo, Etudiant.promos)
+
         if annee:
-            promo_query = promo_query.filter(Promo.annee_promo == (2 if annee == '2A' else 3))
+            niveau = "BUT2" if annee == '2A' else "BUT3"
+            lesEnseignants = lesEnseignants.filter(Promo.nom_promo.like(f"%{niveau}%"))
         if formation:
-            promo_query = promo_query.filter(Promo.formation_promo == formation)
-        
-        promos = promo_query.all()
-        id_enseignants = set([p.id_enseignant for p in promos if p.id_enseignant is not None])
-        lesEnseignants = lesEnseignants.filter(Enseignant.id_enseignant.in_(id_enseignants))
+            terme = "Informatique" if formation == "Info" else formation
+            lesEnseignants = lesEnseignants.filter(Promo.formation_promo.like(f"%{terme}%"))
+
+        lesEnseignants = lesEnseignants.distinct()
 
     lesEnseignants = lesEnseignants.all()
     res = []
@@ -287,44 +288,61 @@ def liste_ens_admin():
 @app.route('/admin/liste+etudiants/')
 @login_required
 def liste_etu_admin():
-    lesEtudiants = Etudiant.query.all()
+    annee_filter = request.args.get('annee')
+    formation_filter = request.args.get('formation')
+    situation_filter = request.args.get('situation')
+    tri = request.args.get("trier", "Nom") # Par défaut, trié par nom
 
-    tri = request.args.get("trier", "Nom")
+    lesEtudiants_query = Etudiant.query.join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).join(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
+
+    # Les filtres
+    if annee_filter:
+        niveau = "BUT2" if annee_filter == '2A' else "BUT3"
+        lesEtudiants_query = lesEtudiants_query.filter(Promo.nom_promo.like(f"%{niveau}%"))
+    if formation_filter:
+        terme = "Informatique" if formation_filter == "Info" else formation_filter
+        lesEtudiants_query = lesEtudiants_query.filter(Promo.formation_promo.like(f"%{terme}%"))
+
+    lesEtudiants = lesEtudiants_query.distinct().all()
 
     res = []
 
     for etudiant in lesEtudiants:
         appartenance = Appartenir.query.filter_by(
             id_etudiant=etudiant.id_etudiant).first()
+        
         promo = Promo.query.filter_by(nom_promo=appartenance.nom_promo,
                                       annee_promo=appartenance.annee_promo
                                      ).first() if appartenance else None
-
+        
         nb_demarches = Demarche.query.filter_by(
             id_etudiant=etudiant.id_etudiant).count()
 
         derniere_demarche = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant)\
                                   .order_by(desc(Demarche.date_envoi)).first()
 
+        current_situation = derniere_demarche.situation if derniere_demarche else "Aucune"
+
+        if situation_filter:
+            if situation_filter == 'Trouvé' and current_situation != 'Acceptée':
+                continue
+            elif situation_filter == 'En cours' and current_situation != 'En attente':
+                continue
+
         res.append({
-            'etudiant':
-                etudiant,
-            'formation':
-                promo.formation_promo,
-            'annee':
-                promo.annee_promo,
-            'promo':
-                promo.nom_promo,
-            'nb_demarches':
-                nb_demarches,
-            'situation':
-                derniere_demarche.situation if derniere_demarche else "Aucune"
+            'etudiant': etudiant,
+            'formation': promo.formation_promo if promo else "Aucune trouvée",
+            'annee': promo.annee_promo if promo else "Aucune trouvée",
+            'promo': promo.nom_promo if promo else "Aucune trouvée",
+            'nb_demarches': nb_demarches,
+            'situation': current_situation
         })
 
+    # Le tri
     if tri == "Nom":
-        res = sorted(res, key=lambda x: x["etudiant"].nom_etudiant)
+        res = sorted(res, key=lambda x: x["etudiant"].nom_etudiant.lower())
     elif tri == "Annee":
-        res = sorted(res, key=lambda x: (x["annee"] is None, x["annee"]))
+        res = sorted(res, key=lambda x: (x["annee"] == "N/A", x["annee"]))
     elif tri == "NbDemarches":
         res = sorted(res, key=lambda x: x["nb_demarches"], reverse=True)
 
