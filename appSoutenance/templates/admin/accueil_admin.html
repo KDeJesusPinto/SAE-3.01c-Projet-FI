@@ -2,7 +2,7 @@
 
 {% block content %}
     <form method="get" action="{{ url_for('accueil_admin') }}">
-        <div class="glass" id="filtre_admin">
+        <div class="glass boite_horizontale" id="filtre_admin">
             <select class="combobox" name="formation" id="formation">
                 <option value="">Formation</option>
                 <option value="Info" {% if request.args.get('formation') == 'Info' %}selected{% endif %}>Informatique</option>
@@ -23,17 +23,17 @@
     <div class="boite_verticale" id="contenu_admin">
         <div class="boite_verticale">
             <div class="boite_horizontale">
-                <h1 id="donnees_eleves"><strong>DONNÉES ÉLÈVES</strong></h1>
+                <h1 id="donnees_eleves">DONNÉES ÉLÈVES</h1>
                 <a class="petit_bouton" id="voir" href="{{ url_for('liste_etu_admin') }}">Voir tous les étudiants</a>
             </div>
             <div class="boite_horizontale">
-                <div class="glass" id="boite">
-                    <p id="texte_admin">STAGE TROUVÉ :<br>{{ nb_stages_trouves }} / {{ nb_etudiants }}
-                    <a href="{{ url_for('liste_etu_admin') }}" class="petit_bouton" id="infos">Infos</a></p>
+                <div class="glass boite_verticale" id="boite">
+                    <h2>STAGE TROUVÉ :<br>{{ nb_stages_trouves }} / {{ nb_etudiants }}</h2>
+                    <a href="{{ url_for('liste_etu_admin') }}" class="petit_bouton" id="bouton_info">Infos</a>
                 </div>
-                <div class="glass" id="boite">
-                    <p id="texte_admin">SOUTENANCE ALTERNANT PRÉVU :<br>{{ nb_soutenances_alternants }} / {{ nb_etudiants_alternants }}
-                    <a href="{{ url_for('liste_etu_admin') }}" class="petit_bouton" id="infos">Infos</a></p>
+                <div class="glass boite_verticale" id="boite">
+                    <h2>SOUTENANCE ALTERNANT PRÉVU :<br>{{ nb_soutenances_alternants }} / {{ nb_etudiants_alternants }}</h2>
+                    <a href="{{ url_for('liste_etu_admin') }}" class="petit_bouton" id="bouton_info">Infos</a>
                 </div>
             </div>
         </div>
@@ -41,17 +41,17 @@
 
         <div class="boite_verticale">
             <div class="boite_horizontale">
-                <h1 id="donnees_professeurs"><strong>DONNÉES PROFESSEURS</strong></h1>
+                <h1 id="donnees_professeurs">DONNÉES PROFESSEURS</h1>
                 <a class="petit_bouton" id="voir" href="{{ url_for('liste_ens_admin') }}">Voir tous les enseignant</a>
             </div>
             <div class="boite_horizontale">
-                <div class="glass" id="boite">
-                    <p id="texte_admin">SOUTENANCES POSÉES PAR TUTEUR :<br>{{ nb_soutenances_posees }} / {{ nb_etudiants }}
-                    <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" id="infos">Infos</a></p>
+                <div class="glass boite_verticale" id="boite">
+                    <h2>SOUTENANCES POSÉES PAR TUTEUR :<br>{{ nb_soutenances_posees }} / {{ nb_etudiants }}</h2>
+                    <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" id="bouton_info">Infos</a>
                 </div>
-                <div class="glass" id="boite">
-                    <p id="texte_admin">SOUTENANCE EN ATTENTE DE CANDIDE :<br>/ {{ nb_soutenances_attente_candide }}
-                    <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" id="infos">Infos</a></p>
+                <div class="glass boite_verticale" id="boite">
+                    <h2>SOUTENANCE EN ATTENTE DE CANDIDE :<br>/ {{ nb_soutenances_attente_candide }}</h2>
+                    <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" id="bouton_info">Infos</a>
                 </div>
             </div>
         </div>

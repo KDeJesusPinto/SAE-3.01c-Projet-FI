@@ -1,12 +1,12 @@
-{% extends "base.html" %}
+{% extends "etudiant/base_etu.html" %}
 
 {% block content %}
 <section class="glass">
     <h1>Résumé démarche</h1>
     <div class="boite_verticale">
-        <div class="boite_H_info_V">
-            <div class="info_vertical">
-                <div class="info_horizontal">
+        <div id="boite_H_info_V" class="boite_horizontale">
+            <div class="boite_verticale">
+                <div class="boite_horizontale">
                     <i class="fas fa-building"></i>
                     <p><strong>Entreprise</strong></p>
                 </div>
@@ -14,7 +14,7 @@
                 <p>Secteur d'activité : {{typeE}}</p>
                 <p>Adresse : {{ville}} {{adresse}}</p>
             </div>
-            <div class="info_vertical">
+            <div class="boite_verticale">
                 <p>Date envoie : </p>
                 <p>CV : </p>
                 <p>Lettre de motivation :</p>
@@ -24,7 +24,7 @@
         <div class="bouton_horizontal">
                 <a href="{{ url_for('resume_demarche_etudiant', num_personne=personne.id_etudiant) }}" class="petit_bouton">Retour</a>
                 <a href="" class="petit_bouton">Modifier</a>
-                <a href="" class="petit_bouton_imp">Choisir ce stage</a>
+                <a href="" class="petit_bouton imp">Choisir ce stage</a>
                 </div>
             </div>
     </div>
