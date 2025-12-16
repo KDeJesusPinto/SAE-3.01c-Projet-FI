@@ -4,7 +4,8 @@
     <div class="boite_horizontale">
         <aside id="en_haut" id="filtre_liste_admin">
             <form method="get">
-                <a href="{{ url_for('accueil_admin') }}" class="petit_bouton" style="font-size: 0.7em; align-items: center; display: block; margin: 12px auto; margin-bottom:10%; width: 30%;">Retour</a>
+                <a href="{{ url_for('accueil_admin') }}" class="petit_bouton" style="font-size: 0.7em; align-items: center; display: block; margin: 12px auto; margin-bottom:10%; width: 30%;"><i class="fas fa-code"></i> Retour</a>
+                <p style="font-size: 0.7em;">Filtre des tutorés</p>
                 <select class="combobox" name="annee" id="annee">
                     <option value="">Année</option>
                     <option value="2A" {% if request.args.get('annee') == '2A' %}selected{% endif %}>2ème année</option>
