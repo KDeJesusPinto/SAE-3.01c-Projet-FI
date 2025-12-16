@@ -302,6 +302,7 @@ div#contenu_admin {
 p.pliste {
     /* style */
     font-family: "Arimo", sans-serif;
+    font-size: 0.7em;
 
     /* positionnement */
     margin: 10px 0;
