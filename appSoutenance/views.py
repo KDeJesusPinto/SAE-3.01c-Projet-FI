@@ -205,10 +205,21 @@ def planning_admin():
 @login_required
 def detail_enseignant(id):
     enseignant = Enseignant.query.get(id)
+    etudiants_suivis = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant)
+    liste_etudiants_suivis = []
+    for etudiant in etudiants_suivis:
+        liste_etudiants_suivis.append(Etudiant.query.get(etudiant.id_etudiant))
+    enseignant_promo = Promo.query.filter_by(id_enseignant=enseignant.id_enseignant).first()
+    jury_soutenances = Soutenance.query.join(Composer, Soutenance.id_soutenance == Composer.id_soutenance)\
+                        .filter(Composer.id_enseignant == enseignant.id_enseignant).all()
+    jury_soutenances = ', '.join([f"Soutenance ID {s.id_soutenance}" for s in jury_soutenances])
+
     return render_template("admin/detail_enseignant.html",
                            accueil="accueil_admin",
                            title="Detail de l'enseignant",
-                           enseignant=enseignant)
+                           enseignant=enseignant,
+                           etudiants_suivis=liste_etudiants_suivis,
+                           enseignant_promo=enseignant_promo)
 
 
 @app.route('/admin/liste+etudiants/<int:id>/')

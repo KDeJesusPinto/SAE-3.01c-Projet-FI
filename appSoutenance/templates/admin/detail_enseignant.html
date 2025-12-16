@@ -2,8 +2,19 @@
 
 {% block content %}
     <div class="glass" style="width: 90%; height: 90%;">
-        <div class="boite_horizontale">
-            <h1 style="justify-content: center;">{{ enseignant.civilite_enseignant }} {{ enseignant.nom_enseignant }} {{ enseignant.prenom_enseignant }}</h1>
+        <div class="boite_verticale">
+            <h1>{{ enseignant.civilite_enseignant }} {{ enseignant.nom_enseignant }} {{ enseignant.prenom_enseignant }}</h1>
+            <p>Login : {{ enseignant.login_enseignant }}</p>
+            <p>Mail : {{ enseignant.email_enseignant }}</p>
+            <p>Étudiants suivis ({{ etudiants_suivis|length }}) : {{ etudiants_suivis }}</p>
+            {% if enseignant_promo %}
+                <p>Promo : {{ enseignant_promo.formation_promo }} {{ enseignant_promo.nom_promo }} {{ enseignant_promo.annee_promo }}</p>
+            {% endif %}
+            {% if jury_soutenances|length == 0 %}
+                <p>Jury des soutenances : Aucun</p>
+            {% else %}
+                <p>Jury des soutenances : {{ jury_soutenances }}</p>
+            {% endif %}
         </div>
     </div>
 
