@@ -60,6 +60,16 @@ class LoginForm(FlaskForm):
 
 
        return None
+   
+class FormSoutenance(FlaskForm):
+    id_soutenance = HiddenField("ID:")
+    id_stage = HiddenField("ID du stage ")
+    h_debut = StringField("Heure de début: ")
+    dateS = StringField("Date de la soutenance: ", validators=[DataRequired()])
+    salle = StringField ("Salle de la soutenance: ")
+    prof_soutenance =  StringField("Liste prof")
+
+
 
 
    
