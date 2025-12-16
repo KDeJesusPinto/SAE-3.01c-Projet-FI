@@ -1,6 +1,6 @@
 from .app import app
 from flask import render_template, request, url_for, redirect, flash
-from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, Admini
+from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, Admini, MaitreStage, Entreprise
 from sqlalchemy import desc
 from flask_login import login_user, logout_user, login_required, current_user
 from appSoutenance.forms import LoginForm
@@ -261,10 +261,30 @@ def detail_enseignant(id):
 @login_required
 def detail_etudiant_admin(id):
     etudiant = Etudiant.query.get(id)
+    etudiant_promo = Appartenir.query.filter_by(id_etudiant=etudiant.id_etudiant).first()
+    demarches = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant).all()
+    
+    tuteur = Tutorer.query.filter_by(id_etudiant=etudiant.id_etudiant).first()
+    if tuteur:
+        tuteur = Enseignant.query.get(tuteur.id_enseignant)
+    else:
+        tuteur = None
+    stage_etudiant = Stage.query.join(Demarche, Stage.id_demarche == Demarche.id_demarche)\
+                        .filter(Demarche.id_etudiant == etudiant.id_etudiant).first()
+
+    maitre_stage = MaitreStage.query.get(stage_etudiant.id_maitre) if stage_etudiant else None
+    entreprise = Entreprise.query.get(maitre_stage.id_entreprise) if maitre_stage else None
+
     return render_template("admin/detail_etudiant_admin.html",
                            accueil="accueil_admin",
                            title="Detail de l'etudiant",
-                           etudiant=etudiant)
+                           etudiant=etudiant,
+                           etudiant_promo=etudiant_promo,
+                           demarches=demarches,
+                           tuteur=tuteur,
+                           stage_etudiant=stage_etudiant,
+                           maitre_stage=maitre_stage,
+                           entreprise=entreprise)
 
 
 @app.route('/admin/liste+enseignants/')
