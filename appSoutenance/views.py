@@ -174,13 +174,48 @@ def accueil_admin():
     if not isinstance(admin, Admini):
         flash("Accès réservé aux administrateurs.", "warning")
         return redirect(url_for("login"))
-    nb_etudiants = Etudiant.query.count()
-    nb_stages_trouves = Stage.query.count()
-    nb_etudiants_alternants = Appartenir.query.filter_by(
-        regime_etudiant='Alternance').count()
-    nb_soutenances_alternants = 0
-    nb_soutenances_posees = Soutenance.query.count()
+
+    # Filtres
+    annee_filter = request.args.get('annee')
+    formation_filter = request.args.get('formation')
+
+    base_etudiant_query = Etudiant.query.join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).join(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
+
+    if annee_filter:
+        niveau = "BUT2" if annee_filter == '2A' else "BUT3"
+        base_etudiant_query = base_etudiant_query.filter(Promo.nom_promo.like(f"%{niveau}%"))
+    if formation_filter:
+        terme = "Informatique" if formation_filter == "Info" else formation_filter
+        base_etudiant_query = base_etudiant_query.filter(Promo.formation_promo.like(f"%{terme}%"))
+
+    # Nombre total d'étudiants
+    nb_etudiants = base_etudiant_query.distinct().count()
+
+    # Nombre de stages trouvés
+    nb_stages_trouves_query = base_etudiant_query.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
+                                                .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
+                                                .filter(Demarche.situation == 'Acceptée')
+    nb_stages_trouves = nb_stages_trouves_query.distinct(Stage.id_stage).count()
+
+    # Nombre d'étudiants alternants
+    nb_etudiants_alternants_query = base_etudiant_query.filter(Appartenir.regime_etudiant == 'Formation apprentissage')
+    nb_etudiants_alternants = nb_etudiants_alternants_query.distinct().count()
+
+    # Nombre de soutenances d'alternants prévues
+    nb_soutenances_alternants_query = nb_etudiants_alternants_query.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
+                                                                    .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
+                                                                    .join(Soutenance, Stage.id_stage == Soutenance.id_stage)
+    nb_soutenances_alternants = nb_soutenances_alternants_query.distinct(Soutenance.id_soutenance).count()
+
+    # Nombre de soutenances posées par tuteur
+    nb_soutenances_posees_query = base_etudiant_query.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
+                                                    .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
+                                                    .join(Soutenance, Stage.id_stage == Soutenance.id_stage)
+    nb_soutenances_posees = nb_soutenances_posees_query.distinct(Soutenance.id_soutenance).count()
+
+    # Nombre de soutenances en attente de candide (ceci n'est pas implémenté dans le code actuel)
     nb_soutenances_attente_candide = 0
+
     return render_template(
         "admin/accueil_admin.html",
         accueil="accueil_admin",

@@ -149,13 +149,6 @@ i#user-icon {
     font-size: 5rem;
 }
 
-div#filtre_admin{
-    width: 30%;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-}
-
 aside#filtre_liste_admin{
     align-items: center;
 }
