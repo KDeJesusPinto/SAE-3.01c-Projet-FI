@@ -355,23 +355,34 @@ label[for="import_csv"], label[for="export_csv"]{
     white-space: nowrap;
 }
 
-#planning-boite .glass{
-    margin: 30px;
-
-    > *{
-        width: 100%;
-        justify-content: space-between;
-        text-align: center;
+#planning-boite{ 
+    > .boite_horizontale{
+        padding: 0;
     }
 
-    table{
-        border-collapse: collapse;
-        border: 2px solid white;
+    .glass{
+        padding: 20px;
+        margin: 30px 0;
 
-        th, td{
+        > *{
+            width: 100%;
+            justify-content: space-between;
+            text-align: center;
+        }
+
+        table{
+            border-collapse: collapse;
             border: 2px solid white;
-            text-align: left;
-            padding: 10px;
+
+            th, td{
+                border: 2px solid white;
+                text-align: left;
+                padding: 10px;
+            }
         }
     }
+}
+
+#planning-boite:first-child{
+    padding-left: 0;
 }
