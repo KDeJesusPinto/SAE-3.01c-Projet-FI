@@ -3,30 +3,25 @@
 {% block content %}
     <div class="boite_horizontale">
         <aside id="filtre_liste_admin">
-            <select class="combobox" name="Année" id="annee">
-                <option value="Année">Année</option>
-                <option value="2A">2ème année</option>
-                <option value="3A">3ème année</option>
-            </select>
-            <select class="combobox" name="Formation" id="formation">
-                <option value="Formation">Formation</option>
-                <option value="Info">Informatique</option>
-                <option value="Chimie">Chimie</option>
-                <option value="GEA">GEA</option>
-            </select>
-            <select class="combobox" name="Groupe" id="groupe">
-                <option value="Groupe">Groupe</option>
-                <option value="Groupe 1">Groupe 1</option>
-                <option value="Groupe 2">Groupe 2</option>
-                <option value="Groupe 3">Groupe 3</option>
-                <option value="Groupe 4">Groupe 4</option>
-            </select>
-            <select class="combobox" name="Situation" id="situation">
-                <option value="Situation">Situation</option>
-                <option value="Trouvé">Trouvé</option>
-                <option value="En cours">En cours</option>
-            </select>
-            <button class="petit_bouton" id="filtrer">Filtrer</button>
+            <form method="get">
+                <select class="combobox" name="annee" id="annee">
+                    <option value="">Année</option>
+                    <option value="2A" {% if request.args.get('annee') == '2A' %}selected{% endif %}>2ème année</option>
+                    <option value="3A" {% if request.args.get('annee') == '3A' %}selected{% endif %}>3ème année</option>
+                </select>
+                <select class="combobox" name="formation" id="formation">
+                    <option value="">Formation</option>
+                    <option value="Info" {% if request.args.get('formation') == 'Info' %}selected{% endif %}>Informatique</option>
+                    <option value="Chimie" {% if request.args.get('formation') == 'Chimie' %}selected{% endif %}>Chimie</option>
+                    <option value="GEA" {% if request.args.get('formation') == 'GEA' %}selected{% endif %}>GEA</option>
+                </select>
+                <select class="combobox" name="situation" id="situation">
+                    <option value="">Situation</option>
+                    <option value="Trouvé" {% if request.args.get('situation') == 'Trouvé' %}selected{% endif %}>Trouvé</option>
+                    <option value="En cours" {% if request.args.get('situation') == 'En cours' %}selected{% endif %}>En cours</option>
+                </select>
+                <button class="petit_bouton" id="filtrer" type="submit">Filtrer</button>
+            </form>
         </aside>
 
 
@@ -36,12 +31,11 @@
             {% endif %}
             {% for res in resultats %}
             <div class="glass" id="liste_etu">
-                <div class="boite_horizontale info-grid">
+                <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 50px 2fr 1.5fr 2fr 50px 180px; align-items: center; gap: 10px;">
                     <i id="user-icon" class="fas fa-user-circle"></i>
-                    <p class="pliste">{{ res.enseignant.nom_enseignant }} {{ res.enseignant.prenom_enseignant }} |</p>
-                    <p class="pliste"></p>
-                    <p class="pliste"> Tutorés : {{ res.nb_tutores }} |</p>
-                    <p class="pliste"> Assiste à soutenance : </p> <!--nombre de soutenances posées sur nombre de soutenances total -->
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;">{{ res.enseignant.nom_enseignant }} {{ res.enseignant.prenom_enseignant }}</p>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;"> Tutorés : {{ res.nb_tutores }}</p>
+                    <p class="pliste"> Assiste à soutenance : {{ res.nb_soutenances_posees }} / {{ res.nb_soutenances }} </p>
                     <a id="detail" href="{{ url_for('detail_enseignant', id=res.enseignant.id_enseignant) }}"><i class="fas fa-info"></i></a>
                     <button id="ajout_sout" class="petit_bouton">Ajouter soutenance</button>
                 </div>

@@ -149,23 +149,14 @@ i#user-icon {
     font-size: 5rem;
 }
 
-div#filtre_admin{
-    width: 30%;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-}
-
 aside#filtre_liste_admin{
     align-items: center;
 }
-
 
 #nav_admin {
     margin-right: auto;
     justify-content: flex-start;
 }
-
 
 button#voir{
     font-size: 1.2em;
@@ -226,7 +217,7 @@ a#voir{
     text-align: center;
 }
 
-a#detail {
+a#detail{
     font-size: 1.2em;
     font-family: "Arimo", sans-serif;
     border-radius: 40px;
@@ -240,31 +231,23 @@ a#detail {
     margin-left: auto;
 }
 
-button#infos{
-    font-size: 1.2em;
+/* a#infos{
+    font-size: 0.7em;
     font-family: "Arimo", sans-serif;
     border-radius: 40px;
     width: 200px;
-    height: 100px;
-}
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
 
 button#ajout_sout {
     font-size: 0.8em;
     font-family: "Arimo", sans-serif;
     border-radius: 40px;
     width: 200px;
-    height: auto;
-    /* margin-left: auto; */
-}
-
-button#importer, button#exporter{
-    font-size: 1.4em;
-    padding: 40px;
-    margin: 20px;
-
-    font-family: "Arimo", sans-serif;
-
-    border-radius: 40px;
+    height: auto; 
 }
 
 button#filtrer{
@@ -299,9 +282,16 @@ p#texte_admin {
     margin-top: 20px;
 }
 
-#texte_admin button{
+#texte_admin a{
     margin-top: 15px;
-    font-size: 0.5em;
+    font-size: 0.7em;
+    font-family: "Arimo", sans-serif;
+    border-radius: 40px;
+    width: 200px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
@@ -315,15 +305,3 @@ p.pliste {
     font-family: "Arimo", sans-serif;
     margin: 10px 0;
 }
-
-/*
-.fas.fa-user-circle,
-.fa-user-circle {
-    font-size: 4.5rem !important;
-}
-
-.fas.fa-search,
-.fa-plus-circle {
-    font-size: 4.5rem !important;    
-    margin-left: auto;
-}*/
