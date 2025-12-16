@@ -177,7 +177,7 @@ div#boite{
 }
 
 div#liste_etu{
-    width: 2200px;
+    width: 100%;
     height: 100px;
     min-height: 100px;
     height: fit-content;
@@ -251,7 +251,7 @@ button#ajout_sout {
 }
 
 button#filtrer{
-    font-size: 1em;
+    font-size: 0.7em;
     margin: 10px auto;
     width: 300px;
     display: block;
@@ -301,7 +301,7 @@ div#contenu_admin {
 }
 
 p.pliste {
-    font-size: 1em;
+    font-size: 0.7em;
     font-family: "Arimo", sans-serif;
     margin: 10px 0;
 }

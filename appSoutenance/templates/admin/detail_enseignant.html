@@ -2,18 +2,18 @@
 
 {% block content %}
     <div class="glass" style="width: 90%; height: 100%;">
-        <div class="boite_verticale">
-            <h1>{{ enseignant.civilite_enseignant }} {{ enseignant.nom_enseignant }} {{ enseignant.prenom_enseignant }}</h1>
-            <p>Login : {{ enseignant.login_enseignant }}</p>
-            <p>Mail : {{ enseignant.email_enseignant }}</p>
-            <p>Étudiants suivis ({{ etudiants_suivis|length }}) : {{ etudiants_suivis }}</p>
+        <h1>{{ enseignant.civilite_enseignant }} {{ enseignant.nom_enseignant }} {{ enseignant.prenom_enseignant }}</h1>
+        <div class="boite_verticale" style="display: flex; flex-direction: column; align-items: flex-start; gap: 12px;">
+            <p><strong>Login : </strong>{{ enseignant.login_enseignant }}</p>
+            <p><strong>Mail : </strong>{{ enseignant.email_enseignant }}</p>
+            <p><strong>Étudiants suivis ({{ etudiants_suivis|length }}) : </strong>{{ etudiants_suivis }}</p>
             {% if enseignant_promo %}
-                <p>Promo : {{ enseignant_promo.formation_promo }} {{ enseignant_promo.nom_promo }} {{ enseignant_promo.annee_promo }}</p>
+                <p><strong>Promo : </strong>{{ enseignant_promo.formation_promo }} {{ enseignant_promo.nom_promo }} {{ enseignant_promo.annee_promo }}</p>
             {% endif %}
             {% if jury_soutenances|length == 0 %}
-                <p>N'est jury d'aucune soutenance</p>
+                <p><strong>N'est jury d'aucune soutenance</strong></p>
             {% else %}
-                <p>Jury des soutenances : {{ jury_soutenances }}</p>
+                <p><strong>Jury des soutenances : </strong>{{ jury_soutenances }}</p>
             {% endif %}
         </div>
     </div>

@@ -313,7 +313,7 @@ label[for="import_csv"], label[for="export_csv"]{
 
 
 select.combobox { /* Agrandissement des combobox */
-    font-size: 1.2em; /* Augmente la taille de la police */
+    font-size: 0.7em; /* Augmente la taille de la police */
     padding: 15px 40px; /* Augmente le rembourrage */
     min-width: 220px; /* Définit une largeur minimale */
     margin: 15px; /* Ajuste la marge */
