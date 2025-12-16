@@ -190,7 +190,7 @@ div#boite{
     /* positionnement */
     width: 500px;
     height: 350px;
-    padding: 50px;
+    padding: 20px;
     margin: 30px;
     
     display: flex;
