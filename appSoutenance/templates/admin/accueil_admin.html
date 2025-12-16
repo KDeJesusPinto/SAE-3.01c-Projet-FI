@@ -19,7 +19,6 @@
     </form>
 
 
-
     <div class="boite_verticale" id="contenu_admin">
         <div class="boite_verticale">
             <div class="boite_horizontale">
@@ -29,11 +28,11 @@
             <div class="boite_horizontale">
                 <div class="glass boite_verticale" id="boite">
                     <h2>STAGE TROUVÉ :<br>{{ nb_stages_trouves }} / {{ nb_etudiants }}</h2>
-                    <a href="{{ url_for('liste_etu_admin') }}" class="petit_bouton" id="bouton_info">Infos</a>
+                    <a href="{{ url_for('liste_etu_admin', situation='Trouvé', **request.args) }}" class="petit_bouton" id="bouton_info">Infos</a>
                 </div>
                 <div class="glass boite_verticale" id="boite">
                     <h2>SOUTENANCE ALTERNANT PRÉVU :<br>{{ nb_soutenances_alternants }} / {{ nb_etudiants_alternants }}</h2>
-                    <a href="{{ url_for('liste_etu_admin') }}" class="petit_bouton" id="bouton_info">Infos</a>
+                    <a href="{{ url_for('liste_etu_admin', regime='Alternant', **request.args) }}" class="petit_bouton" id="bouton_info">Infos</a>
                 </div>
             </div>
         </div>

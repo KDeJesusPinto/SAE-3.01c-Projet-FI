@@ -21,6 +21,10 @@
                     <option value="Trouvé" {% if request.args.get('situation') == 'Trouvé' %}selected{% endif %}>Trouvé</option>
                     <option value="En cours" {% if request.args.get('situation') == 'En cours' %}selected{% endif %}>En cours</option>
                 </select>
+                <select class="combobox" name="regime" id="regime">
+                    <option value="">Régime</option>
+                    <option value="Alternant" {% if request.args.get('regime') == 'Alternant' %}selected{% endif %}>Alternant</option>
+                </select>
                 <button class="petit_bouton" id="filtrer" type="submit" style="display: block; margin: 12px auto;">Filtrer</button>
                 <select class="combobox" name="trier" id="trier">
                     <option value="">Trier par</option>

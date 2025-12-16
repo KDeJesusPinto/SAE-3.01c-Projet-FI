@@ -348,6 +348,7 @@ def liste_etu_admin():
     annee_filter = request.args.get('annee')
     formation_filter = request.args.get('formation')
     situation_filter = request.args.get('situation')
+    regime_filter = request.args.get('regime')
     tri = request.args.get("trier", "Nom") # Par défaut, trié par nom
 
     requete_les_etudiants = Etudiant.query.join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).join(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
@@ -359,6 +360,9 @@ def liste_etu_admin():
     if formation_filter:
         terme = "Informatique" if formation_filter == "Info" else formation_filter
         requete_les_etudiants = requete_les_etudiants.filter(Promo.formation_promo.like(f"%{terme}%"))
+
+    if regime_filter == 'Alternant':
+        requete_les_etudiants = requete_les_etudiants.filter(Appartenir.regime_etudiant == 'Formation apprentissage')
 
     lesEtudiants = requete_les_etudiants.distinct().all()
 
