@@ -241,6 +241,11 @@ def planning_admin():
 @app.route('/admin/liste+enseignants/<int:id>/')
 @login_required
 def detail_enseignant(id):
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
+    
     enseignant = Enseignant.query.get(id)
     etudiant_suivi = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant)
     etudiant_suivi = Etudiant.query.get(etudiant_suivi.first().id_etudiant)
@@ -265,6 +270,11 @@ def detail_enseignant(id):
 @app.route('/admin/liste+etudiants/<int:id>/')
 @login_required
 def detail_etudiant_admin(id):
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
+    
     etudiant = Etudiant.query.get(id)
     etudiant_promo = Appartenir.query.filter_by(id_etudiant=etudiant.id_etudiant).first()
     demarches = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant).all()
@@ -295,6 +305,11 @@ def detail_etudiant_admin(id):
 @app.route('/admin/liste+enseignants/')
 @login_required
 def liste_ens_admin():
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
+    
     # Récupération des filtres
     soutenance = request.args.get('soutenance')
     situation = request.args.get('situation')
@@ -357,6 +372,11 @@ def liste_ens_admin():
 @app.route('/admin/liste+etudiants/')
 @login_required
 def liste_etu_admin():
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
+    
     annee_filter = request.args.get('annee')
     formation_filter = request.args.get('formation')
     situation_filter = request.args.get('situation')
@@ -426,6 +446,51 @@ def liste_etu_admin():
                            accueil="accueil_admin",
                            title="Liste etudiants",
                            resultats=res)
+
+
+@app.route('/admin/liste+soutenances+candides/')
+@login_required
+def liste_soutenances_candides_admin():
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
+
+    soutenances_avec_un_membre_jury = db.session.query(Composer.id_soutenance)\
+        .group_by(Composer.id_soutenance)\
+        .having(func.count(Composer.id_enseignant) == 1)\
+        .subquery()
+
+    requete_soutenances_sans_candide = db.session.query(Soutenance)\
+        .join(Stage, Soutenance.id_stage == Stage.id_stage)\
+        .join(Demarche, Stage.id_demarche == Demarche.id_demarche)\
+        .join(Etudiant, Demarche.id_etudiant == Etudiant.id_etudiant)\
+        .join(Tutorer, Etudiant.id_etudiant == Tutorer.id_etudiant)\
+        .join(Composer, Soutenance.id_soutenance == Composer.id_soutenance)\
+        .filter(Soutenance.id_soutenance.in_(soutenances_avec_un_membre_jury))\
+        .filter(Composer.id_enseignant == Tutorer.id_enseignant)\
+        .all()
+
+    resultats = []
+    for soutenance in requete_soutenances_sans_candide:
+        stage = Stage.query.get(soutenance.id_stage)
+        demarche = Demarche.query.get(stage.id_demarche)
+        etudiant = Etudiant.query.get(demarche.id_etudiant)
+        tutorer = Tutorer.query.filter_by(id_etudiant=etudiant.id_etudiant).first()
+        tuteur = Enseignant.query.get(tutorer.id_enseignant) if tutorer else None
+
+        resultats.append({
+            'soutenance': soutenance,
+            'etudiant': etudiant,
+            'tuteur': tuteur,
+            'stage': stage
+        })
+
+    return render_template("admin/lst_soutenances_candides_admin.html",
+                           accueil="accueil_admin",
+                           title="Liste soutenances sans candide",
+                           personne=admin,
+                           resultats=resultats)
 
 
 if __name__ == "__main__":

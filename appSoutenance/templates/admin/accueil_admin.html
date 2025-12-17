@@ -50,7 +50,7 @@
                 </div>
                 <div class="glass boite_verticale" id="boite">
                     <h2>SOUTENANCE EN ATTENTE DE CANDIDE :<br>{{ nb_soutenances_attente_candide }} / {{ nb_soutenances_posees }}</h2>
-                    <a href="{{ url_for('liste_ens_admin', candide='NonCandide', **request.args) }}" class="petit_bouton" id="bouton_info">Infos</a>
+                    <a href="{{ url_for('liste_soutenances_candides_admin')}}" class="petit_bouton" id="bouton_info">Infos</a>
                 </div>
             </div>
         </div>

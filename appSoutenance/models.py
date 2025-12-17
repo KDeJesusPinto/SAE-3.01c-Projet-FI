@@ -212,7 +212,7 @@ class Soutenance(db.Model):
         self.id_stage = id_stage
 
     def __repr__(self):
-        return f"<La soutenance a lieu le {self.date} à {self.h_debut} au batîment {self.nom_bat} {self.salle}>"
+        return f"<La soutenance a lieu le {self.dateS} à {self.h_debut} au batîment {self.nom_bat} {self.salle}>"
 
 
 class Etudiant(db.Model, UserMixin):
