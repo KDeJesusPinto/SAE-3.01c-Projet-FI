@@ -250,7 +250,7 @@ def detail_enseignant(id):
     enseignant_promo = Promo.query.filter_by(id_enseignant=enseignant.id_enseignant).first()
     jury_soutenances = Soutenance.query.join(Composer, Soutenance.id_soutenance == Composer.id_soutenance)\
                         .filter(Composer.id_enseignant == enseignant.id_enseignant).all()
-    jury_soutenances = ', '.join([f"- Soutenance n°{s.id_soutenance} ({Stage.query.get(s.id_stage).titre_stage}). "
+    jury_soutenances = ', '.join([f"Soutenance n°{s.id_soutenance} ({Stage.query.get(s.id_stage).titre_stage}). "
                                   for s in jury_soutenances])
 
     return render_template("admin/detail_enseignant.html",
