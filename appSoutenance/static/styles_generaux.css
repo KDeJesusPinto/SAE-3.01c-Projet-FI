@@ -12,6 +12,8 @@
     --couleur_principale_site: #a671b0;
 
     --couleur_texte_clair: white;
+
+    font-size: 3vh;
 }
 
 /*---------------- STYLES GÉNÉRAUX ----------------*/
@@ -22,9 +24,10 @@ body{
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
+    overflow-x: hidden;
 
     font-family: "Arimo", sans-serif;
-    font-size: 30px;
+    /*font-size: 30px;
 
     /* positionnement */
     padding: 0;
@@ -42,7 +45,7 @@ h1{
     font-family: "Barlow Condensed", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 2.5em;
+    font-size: 3.5rem;
     letter-spacing: -0.04em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -58,7 +61,7 @@ h2{
     font-family: "Barlow Condensed", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 2em;
+    font-size: 2rem;
     letter-spacing: -0.04em;
     text-transform: uppercase;
 
@@ -163,7 +166,7 @@ div.boite_horizontale p{
     cursor: pointer;
 
     /* positionnement */
-    padding: 15px;
+    padding: 2%;
     width: 100%;
 }
 
