@@ -2,8 +2,8 @@ from collections import defaultdict
 from .app import app, db
 from flask import render_template, request, url_for, redirect, flash
 from appSoutenance.models import db,  Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, MaitreStage, Entreprise
-from sqlalchemy import desc, distinct
-from .importer_csv import importer_etudiants_stages, importer_entreprises, func
+from sqlalchemy import desc, distinct, func
+from .importer_csv import importer_etudiants_stages, importer_entreprises
 from flask_login import login_user, logout_user, login_required, current_user
 from appSoutenance.forms import *
 
@@ -200,7 +200,7 @@ def accueil_admin():
         flash("Accès réservé aux administrateurs.", "warning")
         return redirect(url_for("login"))
     
-        if unForm.validate_on_submit():
+    if unForm.validate_on_submit():
         file_storage = unForm.ficCSV.data
         type_import = unForm.type_import.data
        
@@ -265,6 +265,12 @@ def accueil_admin():
     requete_ids_soutenances_pertinentes = requete_soutenances.with_entities(Soutenance.id_soutenance).distinct()
     soutenances_jury_complet_ids = db.session.query(Composer.id_soutenance).group_by(Composer.id_soutenance).having(func.count(Composer.id_enseignant) >= 2)
     nb_soutenances_attente_candide = requete_ids_soutenances_pertinentes.filter(Soutenance.id_soutenance.notin_(soutenances_jury_complet_ids)).count()
+
+
+
+
+
+
 
     nb_etudiants = Etudiant.query.count()
     nb_stages_trouves = Stage.query.count()
@@ -432,6 +438,8 @@ def detail_enseignant(id):
                            jury_soutenances=jury_soutenances)
 
 
+
+
 @app.route('/admin/liste+etudiants/<int:id>/')
 def detail_etudiant_admin(id):
     admin = current_user
@@ -464,8 +472,6 @@ def detail_etudiant_admin(id):
                            stage_etudiant=stage_etudiant,
                            maitre_stage=maitre_stage,
                            entreprise=entreprise)
-
-
 
 
 @app.route('/admin/liste+enseignants/')
