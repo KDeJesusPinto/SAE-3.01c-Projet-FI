@@ -24,6 +24,7 @@
                 <select class="combobox" name="regime" id="regime">
                     <option value="">Régime</option>
                     <option value="Alternant" {% if request.args.get('regime') == 'Alternant' %}selected{% endif %}>Alternant</option>
+                    <option value="Formation Initiale" {% if request.args.get('regime') == 'Formation Initiale' %}selected{% endif %}>Formation Initiale</option>
                 </select>
                 <button class="petit_bouton" id="filtrer" type="submit" style="display: block; margin: 12px auto;">Filtrer</button>
                 <select class="combobox" name="trier" id="trier">
@@ -37,7 +38,7 @@
 
         <div class="boite_verticale">
             {% if resultats|length == 0 %}
-                <p>Aucun étudiant trouvé.</p>
+                <p>Aucun étudiant trouvé</p>
             {% endif %}
             {% for res in resultats %}
             <div class="glass" id="liste_etu">

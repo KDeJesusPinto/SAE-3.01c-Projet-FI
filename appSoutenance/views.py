@@ -1,7 +1,7 @@
 from .app import app, db
 from flask import render_template, request, url_for, redirect, flash
 from appSoutenance.models import Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, Admini, MaitreStage, Entreprise
-from sqlalchemy import desc, func, or_
+from sqlalchemy import desc, func
 from flask_login import login_user, logout_user, login_required, current_user
 from appSoutenance.forms import LoginForm
 
@@ -293,24 +293,33 @@ def detail_etudiant_admin(id):
 @login_required
 def liste_ens_admin():
     # Récupération des filtres
-    annee = request.args.get('annee')
-    formation = request.args.get('formation')
+    soutenance = request.args.get('soutenance')
     situation = request.args.get('situation')
+    candide = request.args.get('candide')
 
     lesEnseignants = Enseignant.query
+    if soutenance:
+        lesEnseignants = lesEnseignants.join(Tutorer, Tutorer.id_enseignant == Enseignant.id_enseignant).join(Etudiant, Tutorer.id_etudiant == Etudiant.id_etudiant).join(Promo, Etudiant.promos)
 
-    if annee or formation:
-        # On récupère les enseignants qui sont tuteurs d'au moins un étudiant correspondant aux filtres
-        lesEnseignants = lesEnseignants.join(Tutorer).join(Etudiant).join(Promo, Etudiant.promos)
+        if soutenance == "Soutenance":
+            lesEnseignants = lesEnseignants.join(Composer, Composer.id_enseignant == Enseignant.id_enseignant).join(Soutenance, Soutenance.id_soutenance == Composer.id_soutenance)
+        elif soutenance == "NonSoutenance":
+            lesEnseignants = lesEnseignants.outerjoin(Composer, Composer.id_enseignant == Enseignant.id_enseignant).outerjoin(Soutenance, Soutenance.id_soutenance == Composer.id_soutenance)
+            lesEnseignants = lesEnseignants.filter(Soutenance.id_soutenance.is_(None))
 
-        if annee:
-            niveau = "BUT2" if annee == '2A' else "BUT3"
-            lesEnseignants = lesEnseignants.filter(Promo.nom_promo.like(f"%{niveau}%"))
-        if formation:
-            terme = "Informatique" if formation == "Info" else formation
-            lesEnseignants = lesEnseignants.filter(Promo.formation_promo.like(f"%{terme}%"))
+    # Réccupérer soutenances avec jury non complet : Composer -> Soutenance -> Stage -> Demarche -> Etudiant -> Tutorer -> Enseignant
+    # id de l'étudiant =! de l'id de l'étudiant dont l'enseignant est tuteur
+    if candide == 'NonCandide':
+        sq = db.session.query(Enseignant.id_enseignant)\
+            .join(Composer, Composer.id_enseignant == Enseignant.id_enseignant)\
+            .join(Soutenance, Soutenance.id_soutenance == Composer.id_soutenance)\
+            .join(Stage, Stage.id_stage == Soutenance.id_stage)\
+            .join(Demarche, Demarche.id_demarche == Stage.id_demarche)\
+            .join(Etudiant, Etudiant.id_etudiant == Demarche.id_etudiant)\
+            .outerjoin(Tutorer, (Tutorer.id_enseignant == Enseignant.id_enseignant) & (Tutorer.id_etudiant == Etudiant.id_etudiant))\
+            .filter(Tutorer.id_enseignant.is_(None))
+        lesEnseignants = lesEnseignants.filter(Enseignant.id_enseignant.notin_(sq))
 
-        lesEnseignants = lesEnseignants.distinct()
 
     lesEnseignants = lesEnseignants.all()
     res = []
@@ -357,12 +366,14 @@ def liste_etu_admin():
     if annee_filter:
         niveau = "BUT2" if annee_filter == '2A' else "BUT3"
         requete_les_etudiants = requete_les_etudiants.filter(Promo.nom_promo.like(f"%{niveau}%"))
+
     if formation_filter:
         terme = "Informatique" if formation_filter == "Info" else formation_filter
         requete_les_etudiants = requete_les_etudiants.filter(Promo.formation_promo.like(f"%{terme}%"))
 
-    if regime_filter == 'Alternant':
-        requete_les_etudiants = requete_les_etudiants.filter(Appartenir.regime_etudiant == 'Formation apprentissage')
+    if regime_filter:
+        regime = "Formation initiale" if regime_filter == "Formation Initiale" else "Formation apprentissage"
+        requete_les_etudiants = requete_les_etudiants.filter(Appartenir.regime_etudiant == regime)
 
     lesEtudiants = requete_les_etudiants.distinct().all()
 
