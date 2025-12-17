@@ -67,7 +67,7 @@ class FormSoutenance(FlaskForm):
     h_debut = StringField("Heure de début: ")
     dateS = StringField("Date de la soutenance: ", validators=[DataRequired()])
     salle = StringField ("Salle de la soutenance: ")
-    prof_soutenance =  StringField("Liste prof")
+    nom_enseignant =  StringField("Liste prof")
 
 
 class ImportForm(FlaskForm):
