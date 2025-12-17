@@ -94,7 +94,7 @@
         {% if ens_ids[0] and ens_ids[1] and ens_ids[2] and etu_ids[0] and etu_ids[1] and etu_ids[2] %}
             <input type="submit" value="Ajouter" formmethod="POST" formaction="{{ url_for('valider_jury') }}">
         {% endif %}
-        <a href="{{ url_for('planning_admin') }}">Retour</a>
+        <a href="{{ url_for('planning_admin') }}" class="petit_bouton">Retour</a>
     </div>
 </form>
 {% endblock %}
