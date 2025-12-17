@@ -1,0 +1,54 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<h1 >Création d'une soutenance</h1>
+<form role="form" method="POST" action="{{ url_for ('creation_soutenance') }}">
+    {{ createForm.hidden_tag () }}
+    <div
+        {% if createForm.nom_enseignant.errors %}
+            class="form-group has-error"
+        {% else %}
+            class="form-group mb-3"
+        {% endif %}>
+
+            <div>
+                <label for="dateS">
+                    {{ createForm.dateS.label }}</label>
+
+                    <select name="dateS" id="dateS"
+                    aria-label=".form-select-lg">
+                        <option selected> Choisir une date </option>
+                        {% for date in dates %}
+                        <option value="{soutenance.dateS}">{{soutenance.dateS}}</option>
+                        {% endfor %}
+                    </select>
+            </div>
+        <div>
+            {{ createForm.salle.label }}
+            {{ createForm.salle(size =50, class_="form-control") }}
+        </div>
+
+        <div>
+            {{ createForm.h_debut.label }}
+            {{ createForm.h_debut(size =50, class_="form-control") }}
+        </div>
+
+        <div>
+            {{ createForm.nom_enseignant.label }}
+            {{ createForm.nom_enseignant(size =50, class_="form-control") }}
+        </div>
+
+    </div>
+    {% if createForm.nom_enseignant.errors %}
+        <ul class ="">
+        {% for e in createForm.nom_enseignant.errors %}
+            <li class ="" >{{ e }} </li >
+        {% endfor %}
+        </ul >
+    {% endif %}
+    <div>
+        <input class ="btn btn-success" type="submit" value ="Ajouter">
+        <a href="{{ url_for('planning_admin') }}" class="btn btn-secondary">Retour</a>
+    </div>
+</form >
+{% endblock %}
