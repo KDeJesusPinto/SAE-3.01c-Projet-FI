@@ -13,10 +13,11 @@ div#connexion{
     font-size: 1em;
 
     /* positionnement */
-    width: 60%;
-    min-height: 60%;
+    width: 60vw;
+    min-height: 60vh;
     padding: 50px 150px;
 
+    align-self: center;
     justify-content: space-around;
     row-gap: 30px;
 

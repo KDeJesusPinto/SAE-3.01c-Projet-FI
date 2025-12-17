@@ -246,7 +246,7 @@ div#main_body{
     justify-content: center;
     flex-grow: 1;
 
-    padding: 150px 0 100px;
+    /*padding: 150px 0 100px;*/
 }
 
 /*---------------- STYLES BARRE DE NAVIGATION ----------------*/
