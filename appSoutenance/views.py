@@ -242,21 +242,24 @@ def planning_admin():
 @login_required
 def detail_enseignant(id):
     enseignant = Enseignant.query.get(id)
-    etudiants_suivis = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant)
-    liste_etudiants_suivis = []
-    for etudiant in etudiants_suivis:
-        liste_etudiants_suivis.append(Etudiant.query.get(etudiant.id_etudiant))
+    etudiant_suivi = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant)
+    etudiant_suivi = Etudiant.query.get(etudiant_suivi.first().id_etudiant)
+    # liste_etudiants_suivis = []
+    # for etudiant in etudiants_suivis:
+    #     liste_etudiants_suivis.append(Etudiant.query.get(etudiant.id_etudiant))
     enseignant_promo = Promo.query.filter_by(id_enseignant=enseignant.id_enseignant).first()
     jury_soutenances = Soutenance.query.join(Composer, Soutenance.id_soutenance == Composer.id_soutenance)\
                         .filter(Composer.id_enseignant == enseignant.id_enseignant).all()
-    jury_soutenances = ', '.join([f"Soutenance ID {s.id_soutenance}" for s in jury_soutenances])
+    jury_soutenances = ', '.join([f"- Soutenance n°{s.id_soutenance} ({Stage.query.get(s.id_stage).titre_stage}). "
+                                  for s in jury_soutenances])
 
     return render_template("admin/detail_enseignant.html",
                            accueil="accueil_admin",
                            title="Detail de l'enseignant",
                            enseignant=enseignant,
-                           etudiants_suivis=liste_etudiants_suivis,
-                           enseignant_promo=enseignant_promo)
+                           etudiant_suivi=etudiant_suivi,
+                           enseignant_promo=enseignant_promo,
+                           jury_soutenances=jury_soutenances)
 
 
 @app.route('/admin/liste+etudiants/<int:id>/')
