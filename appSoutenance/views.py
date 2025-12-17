@@ -353,13 +353,80 @@ def planning_admin():
                            heures_disponibles = heures_disponibles,
                            enseignants_disponibles = enseignants_disponibles)
 
+HEURE= {
+    1: '08:00', 2: '09:00', 3: '10:00', 4: '11:00', 5: '12:00', 6: '13:00',
+    7: '14:00'
+}
+
+
+
 
 @app.route('/admin/planning/creation_soutenance/', methods =["GET", "POST"])
 #@login_required
 def creation_soutenance():
-    unForm= FormSoutenance()
-    return render_template("admin/creation_soutenance.html", createForm=unForm)
+    createForm = FormSoutenance()
+    date_sel = request.args.get('dateS')  # Format YYYY-MM-DD
+    heure_sel = request.args.get('h_debut') # Format HH:MM
 
+    ens_ids = [request.args.get(f'ens{i}', type=int) for i in range(1, 4)]
+    etu_ids = [request.args.get(f'etu{i}', type=int) for i in range(1, 4)]
+    salle_sel = request.args.get('salle')
+
+    enseignants_dispos = []
+    etudiants_par_tuteur = [None, None, None]
+    heures_pour_dropdown = list(HEURE.values())
+
+    if date_sel and heure_sel:
+        indisponibles = db.session.query(Composer.id_enseignant).join(Soutenance).filter(
+            Soutenance.dateS == date_sel,
+            Soutenance.h_debut == heure_sel
+        ).all()
+        indispo_ids = [i[0] for i in indisponibles]
+        deja_choisis_jury = [id for id in ens_ids if id]
+        enseignants_dispos = Enseignant.query.filter(
+            ~Enseignant.id_enseignant.in_(indispo_ids + deja_choisis_jury)
+        ).all()
+
+        for i in range(3):
+            if ens_ids[i]:
+                etudiants_par_tuteur[i] = db.session.query(Etudiant).join(Tutorer).filter(
+                    Tutorer.id_enseignant == ens_ids[i]
+                ).all()
+
+    return render_template("admin/creation_soutenance.html",
+                           createForm=createForm,
+                           heure=heures_pour_dropdown,
+                           date_sel=date_sel, heure_sel=heure_sel,
+                           ens_ids=ens_ids, etu_ids=etu_ids, salle_sel=salle_sel,
+                           enseignants_dispos=enseignants_dispos,
+                           etudiants_par_tuteur=etudiants_par_tuteur)
+
+
+@app.route('/soutenance/valider', methods=['POST'])
+def valider_jury():
+    date_f = request.form.get('dateS')
+    heure_f = request.form.get('h_debut')
+    salle_f = request.form.get('salle')
+    
+    try:
+        for i in range(1, 4):
+            id_ens = request.form.get(f'ens{i}')
+            id_etu = request.form.get(f'etu{i}')
+            stage = db.session.query(Stage).join(Demarche).filter(Demarche.id_etudiant == id_etu).first()
+            
+            if stage:
+                s = Soutenance(salle=salle_f, dateS=date_f, h_debut=heure_f, id_stage=stage.id_stage)
+                db.session.add(s)
+                db.session.flush()
+
+                c = Composer(id_enseignant=id_ens, id_soutenance=s.id_soutenance)
+                db.session.add(c)
+        
+        db.session.commit()
+    except:
+        db.session.rollback()
+    
+    return redirect(url_for('planning_admin'))
 
 
 @app.route('/admin/liste+enseignants/<int:id>/')

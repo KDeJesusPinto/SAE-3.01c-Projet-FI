@@ -1,54 +1,100 @@
 {% extends "admin/base_admin.html" %}
 
 {% block content %}
-<h1 >Création d'une soutenance</h1>
-<form role="form" method="POST" action="{{ url_for ('creation_soutenance') }}">
-    {{ createForm.hidden_tag () }}
-    <div
-        {% if createForm.nom_enseignant.errors %}
-            class="form-group has-error"
-        {% else %}
-            class="form-group mb-3"
-        {% endif %}>
+<h1>Création d'une soutenance</h1>
 
-            <div>
-                <label for="dateS">
-                    {{ createForm.dateS.label }}</label>
+<form role="form" method="GET" action="{{ url_for('creation_soutenance') }}">
+    {{ createForm.hidden_tag() }}
+    
+    <div {% if createForm.nom_enseignant.errors %} class="form-group has-error" {% else %} class="form-group mb-3" {% endif %}>
 
-                    <select name="dateS" id="dateS"
-                    aria-label=".form-select-lg">
-                        <option selected> Choisir une date </option>
-                        {% for date in dates %}
-                        <option value="{soutenance.dateS}">{{soutenance.dateS}}</option>
-                        {% endfor %}
-                    </select>
-            </div>
         <div>
-            {{ createForm.salle.label }}
-            {{ createForm.salle(size =50, class_="form-control") }}
+            {{ createForm.dateS.label }}
+            {{ createForm.dateS(class="form-control", type="date") }}
         </div>
 
         <div>
-            {{ createForm.h_debut.label }}
-            {{ createForm.h_debut(size =50, class_="form-control") }}
+            <label>Heure de début</label>
+            <select class="form-control" name="h_debut" id="h_debut">
+                <option value="">-- Choisir --</option>
+                {% for h in heure %}
+                    <option value="{{ h }}" {% if h == heure_sel %}selected{% endif %}>{{ h }}</option>
+                {% endfor %}
+            </select>
         </div>
 
-        <div>
-            {{ createForm.nom_enseignant.label }}
-            {{ createForm.nom_enseignant(size =50, class_="form-control") }}
-        </div>
+        <button type="submit">Vérifier disponibilités</button>
+        
+    </div> {% for i in range(1,4) %}
+        <input type="hidden" name="ens{{i}}" value="{{ ens_ids[i-1] or '' }}">
+        <input type="hidden" name="etu{{i}}" value="{{ etu_ids[i-1] or '' }}">
+    {% endfor %}
 
-    </div>
-    {% if createForm.nom_enseignant.errors %}
-        <ul class ="">
-        {% for e in createForm.nom_enseignant.errors %}
-            <li class ="" >{{ e }} </li >
-        {% endfor %}
-        </ul >
-    {% endif %}
+    {% if date_sel and heure_sel %}
+    <hr>
+    
+    {% for i in range(3) %}
     <div>
-        <input class ="btn btn-success" type="submit" value ="Ajouter">
-        <a href="{{ url_for('planning_admin') }}" class="btn btn-secondary">Retour</a>
+        <strong>Jury Membre {{ i+1 }}</strong>
+        <br>
+        <em>Enseignants disponibles :</em>
+        <ul>
+            {% for e in enseignants_dispos %}
+            <li>
+                <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel,
+                    ens1=e.id_enseignant if i==0 else ens_ids[0],
+                    ens2=e.id_enseignant if i==1 else ens_ids[1],
+                    ens3=e.id_enseignant if i==2 else ens_ids[2],
+                    etu1=etu_ids[0], etu2=etu_ids[1], etu3=etu_ids[2]) }}">
+                    {{ e.nom_enseignant }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        {% if ens_ids[i] %}
+            <strong>Étudiant de cet enseignant :</strong>
+            <ul>
+                {% if etudiants_par_tuteur[i] %}
+                    {% for etu in etudiants_par_tuteur[i] %}
+                    <li>
+                        <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel,
+                            ens1=ens_ids[0], ens2=ens_ids[1], ens3=ens_ids[2],
+                            etu1=etu.id_etudiant if i==0 else etu_ids[0],
+                            etu2=etu.id_etudiant if i==1 else etu_ids[1],
+                            etu3=etu.id_etudiant if i==2 else etu_ids[2]) }}">
+                            {{ etu.nom_etudiant }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                {% else %}
+                    <li>Aucun étudiant suivi.</li>
+                {% endif %}
+            </ul>
+        {% endif %}
     </div>
-</form >
+    <hr>
+    {% endfor %}
+
+    <div>
+        {{ createForm.salle.label }}
+        {{ createForm.salle(class="form-control") }}
+    </div>
+    {% endif %}
+
+    {% if createForm.nom_enseignant.errors %}
+        <ul>
+        {% for e in createForm.nom_enseignant.errors %}
+            <li>{{ e }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div>
+        {% if ens_ids[0] and ens_ids[1] and ens_ids[2] and etu_ids[0] and etu_ids[1] and etu_ids[2] %}
+            <input type="submit" value="Ajouter" formmethod="POST" formaction="{{ url_for('valider_jury') }}">
+        {% endif %}
+        <a href="{{ url_for('planning_admin') }}">Retour</a>
+    </div>
+</form>
 {% endblock %}
