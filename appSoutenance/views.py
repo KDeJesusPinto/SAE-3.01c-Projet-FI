@@ -214,9 +214,9 @@ def accueil_admin():
 
         # Affichage du message à l'utilisateur
         if success:
-            flash(f"✅ Importation réussie : {message}", 'success')
+            flash(f"Importation réussie : {message}", 'success')
         else:
-            flash(f"❌ Échec de l'importation : {message}", 'danger')
+            flash(f"Échec de l'importation : {message}", 'danger')
            
         # Redirection après POST pour empêcher la resoumission si l'utilisateur rafraîchit
         return redirect(url_for('accueil_admin'))
@@ -336,7 +336,7 @@ def planning_admin():
             cle_regroupement = f"{soutenance.dateS.strftime('%Y-%m-%d')}-{soutenance.h_debut}-{soutenance.salle}-{membres_jury_noms}"
            
             if cle_regroupement not in regroupement:
-                # 2. Si la clé n'existe pas, créer une nouvelle entrée (le "bloc")
+                # Si la clé n'existe pas, créer une nouvelle entrée (le "bloc")
                 regroupement[cle_regroupement] = {
                     'dateS': date_formatee,
                     'h_debut': soutenance.h_debut,
@@ -351,8 +351,6 @@ def planning_admin():
                 'titre_stage': stage.titre_stage if stage else "Titre de stage non trouvé"
             })
 
-
-    # Convertir le defaultdict en une liste de valeurs pour l'envoi au template
     resultats_regroupes = list(regroupement.values())
     return render_template("admin/planning_admin.html",
                            accueil="accueil_admin",

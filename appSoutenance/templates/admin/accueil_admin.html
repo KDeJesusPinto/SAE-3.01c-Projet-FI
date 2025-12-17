@@ -74,20 +74,22 @@
 
                     <div class="form-group" style="margin-top: 10px;">
                        
-                        <label for="ficCSV_input" class="petit_bouton">
+                        <label for="ficCSV_input" class="petit_bouton" style="cursor: pointer; display: inline-block;">
                             <span>Sélectionner le fichier CSV</span>
                         </label>
-                       
                         {{ createForm.ficCSV(id='ficCSV_input', style="display: none", accept=".csv") }}
-                       
-                        <p id="file-name-display" style="margin-top: 5px; font-size: 0.9em;">Aucun fichier sélectionné.</p>
-                       
+                        
+                        <p id="file-name-display" style="margin-top: 5px; font-size: 0.9em; color: #555;">Aucun fichier sélectionné.</p>
                         {% for error in createForm.ficCSV.errors %}
                             <p style="color: red; font-size: 0.8em;">[{{ error }}]</p>
                         {% endfor %}
                     </div>
+
+                <div style="margin-top: 15px;">
+                    {{ createForm.submit(class="petit_bouton") }}
+                </div>
                    
-                    {{ createForm.submit(class="petit_bouton", style="margin-top: 15px;") }}
+                      {{ createForm.submit(class="petit_bouton", style="margin-top: 15px;") }}
                 </form>
             </div>
 
