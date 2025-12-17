@@ -42,12 +42,13 @@
             {% endif %}
             {% for res in resultats %}
             <div class="glass" id="liste_etu">
-                <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 50px 2fr 1fr 1fr 1.5fr 2fr 50px 80px; align-items: center; gap: 10px;">
+                <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 10px 2fr 1fr 1fr 1.5fr 2fr 50px 50px; align-items: center; gap: 5px;">
                     <i class="fas fa-user-circle grande_icone"></i>
-                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;">{{ res.etudiant.nom_etudiant }} {{ res.etudiant.prenom_etudiant }}</p>
-                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;"> {{ res.formation }}</p>
-                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;"> {{ res.promo }} {{ res.annee }}</p>
-                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;">Nombre de démarches : {{ res.nb_demarches }}</p>
+                    <p class="pliste" style="border-right: 2px solid;">{{ res.etudiant.nom_etudiant }} {{ res.etudiant.prenom_etudiant }}</p>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 5px;"> {{ res.formation }}</p>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 5px;"> {{ res.promo }} {{ res.annee }}</p>
+                    <p class="pliste" style="border-right: 2px solid;"> {{ res.regime }}</p>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Nombre de démarches : {{ res.nb_demarches }}</p>
                     <p class="pliste">Dernière démarche : {{ res.situation }}</p>
                     <a id="detail" href="{{ url_for('detail_etudiant_admin', id=res.etudiant.id_etudiant) }}"><i class="fas fa-info"></i></a>
                     {% if res.situation == "Acceptée" %}

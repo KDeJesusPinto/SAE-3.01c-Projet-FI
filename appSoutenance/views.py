@@ -407,6 +407,7 @@ def liste_etu_admin():
         res.append({
             'etudiant': etudiant,
             'formation': promo.formation_promo if promo else "Aucune trouvée",
+            'regime': "FI" if appartenance.regime_etudiant == "Formation initiale" else "Apprenti",
             'annee': promo.annee_promo if promo else "Aucune trouvée",
             'promo': promo.nom_promo if promo else "Aucune trouvée",
             'nb_demarches': nb_demarches,
