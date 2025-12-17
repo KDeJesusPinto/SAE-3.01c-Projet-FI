@@ -401,7 +401,7 @@ def liste_etu_admin():
         if situation_filter:
             if situation_filter == 'Trouvé' and current_situation != 'Acceptée':
                 continue
-            elif situation_filter == 'En cours' and current_situation != 'En attente':
+            elif situation_filter == 'En cours' and current_situation != 'En cours':
                 continue
 
         res.append({
