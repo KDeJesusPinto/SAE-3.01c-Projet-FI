@@ -70,11 +70,6 @@ class FormSoutenance(FlaskForm):
     prof_soutenance =  StringField("Liste prof")
 
 
-
-
-   
-
-
 class ImportForm(FlaskForm):
     type_import = SelectField(
         "Les 2 types de fichier CSV à importer",

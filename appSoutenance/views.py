@@ -5,7 +5,7 @@ from appSoutenance.models import db,  Etudiant, Demarche, Promo, Appartenir, Sta
 from sqlalchemy import desc, distinct
 from .importer_csv import importer_etudiants_stages, importer_entreprises
 from flask_login import login_user, logout_user, login_required, current_user
-from appSoutenance.forms import LoginForm, ImportForm
+from appSoutenance.forms import *
 
 
 
@@ -303,13 +303,8 @@ def planning_admin():
 
         query = query.filter(Soutenance.id_stage.in_(subquery_stages))
 
-
-   
-
-
     lesSoutenances = query.all()
     regroupement = {}
-
 
     for soutenance in lesSoutenances:
         stage = Stage.query.get(soutenance.id_stage)
@@ -361,39 +356,11 @@ def planning_admin():
                            enseignants_disponibles = enseignants_disponibles)
 
 
-@app.route('/admin/planning/creation_soutenance/')
+@app.route('/admin/planning/creation_soutenance/', methods =["GET", "POST"])
+#@login_required
 def creation_soutenance():
     unForm= FormSoutenance()
     return render_template("admin/creation_soutenance.html", createForm=unForm)
-
-
-@app.route ('/admin/insert/', methods =("POST" ,))
-#@login_required
-def insert():
-    les_plateformes = Plateforme.query.all()
-    unForm = FormSoutenance()
-    unForm.id_pf.choices = [(plateforme.id_pf, plateforme.nom_pf) for plateforme in les_plateformes]
-    id_pf = request.form.get("id_pf", type=int)
-
-
-    if unForm.validate_on_submit():
-        insertedEquipement = Equipement(nom_equipement=unForm.nom_equipement.data)
-        db.session.add(insertedEquipement)
-        db.session.commit()
-
-
-        #Association avec la plateforme
-        asso = Utiliser(id_pf=id_pf,
-                        id_equipement=insertedEquipement.id_equipement,
-                        qte=unForm.qte.data)
-        db.session.add(asso)
-        db.session.commit()
-
-
-        return redirect(url_for('materiel_gestion'))
-    return render_template("technicien/materiel_ajout.html", title="Technicien - Ajouter matériel",
-                           createForm=unForm, plateformes=les_plateformes)
-
 
 
 

@@ -49,11 +49,9 @@
 </form>
 <div id="planning-boite">
     <h1> Planning des Soutenances</h1>
-    <a href="{{ url_for('creation_soutenance') }}" class="btn btn-warning">Ajouter une soutenance <i class="fas fa-pen"></i></a>
+
     {% if resultats|length == 0 %}
-        <div class="no-bloc">
-            <p>Aucune soutenance n'a été planifiée pour le moment.</p>
-        </div>
+
     {% else %}
         {% for bloc in resultats %}
         <div class="glass boite_verticale">
