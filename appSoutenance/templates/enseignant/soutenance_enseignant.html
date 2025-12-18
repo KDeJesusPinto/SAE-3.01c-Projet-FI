@@ -1,0 +1,11 @@
+{% extends "enseignant/base_enseignant.html" %}
+{% block content %}
+    {% for soutenance in liste_soutenances %}
+        <div class="glass" id="liste_etu">
+            <div class="boite_horizontale info-grid">
+                <p>{{soutenance.soutenance.id_soutenance}}</p>
+                <P>{{soutenance.etudiant.nom_etudiant}}</P>
+            </div>
+        </div>    
+    {% endfor %}
+{% endblock %}

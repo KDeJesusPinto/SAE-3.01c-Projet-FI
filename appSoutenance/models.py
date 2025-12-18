@@ -205,6 +205,7 @@ class Soutenance(db.Model):
         return f"<La soutenance a lieu le {self.dateS} à {self.h_debut} au batîment {self.nom_bat} {self.salle}>"
 
 
+
 class Etudiant(db.Model):
     id_etudiant = db.Column(db.Integer, primary_key=True)
     nom_etudiant = db.Column(db.String(100), nullable=False)

@@ -95,8 +95,10 @@ def accueil_enseignant():
         res_soutenance.append({'soutenance':soutenance})
     res_date=query_soutenance_prevue.distinct(Soutenance.dateS)
     enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
+    nb_soutenance_place=query_soutenance_prevue.count()
+    nb_soutenance_place_tutore=queryListeTutore.count()
 
-    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil",liste_tutore=res_tutore,liste_souteance=res_soutenance,date_soute=res_date)
+    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil",liste_tutore=res_tutore,liste_souteance=res_soutenance,date_soute=res_date,nb_sout_place=nb_soutenance_place)
 
 @app.route('/enseignant/planning/')
 def planning_enseignant():
@@ -145,6 +147,20 @@ def detail_etudiant_ens():
     num_personne = request.args.get('num_personne')
     enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
     return render_template("admin/detail_etudiant_ens.html", accueil="accueil_enseignant", personne=enseignant, title="Detail de l'etudiant")
+
+@app.route('/enseignant/soutenances/')
+def liste_soutenance_ens():
+
+    num_personne = request.args.get('num_personne')
+    enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
+    soutenanceInscrit=Soutenance.query.join(Composer,Composer.id_soutenance==Soutenance.id_soutenance).filter(Composer.id_enseignant==num_personne).order_by(Soutenance.dateS,Soutenance.h_debut)
+    soutenances=Soutenance.query.join(Composer,Composer.id_soutenance==Soutenance.id_soutenance).join(Enseignant,Composer.id_enseignant==Enseignant.id_enseignant).all()
+    res_soutenance=[]
+    for soutenance in soutenances:
+        etudiant=Etudiant.query.join(Demarche,Etudiant.id_etudiant==Demarche.id_etudiant).join(Stage,Demarche.id_demarche==Stage.id_demarche).join(Soutenance,Soutenance.id_stage==Stage.id_stage).filter(Soutenance.id_soutenance==soutenance)
+        res_soutenance.append({'soutenance':soutenance,'etudiant':etudiant})
+
+    return render_template("enseignant/soutenance_enseignant.html",accueil="accueil_enseignant",personne=enseignant,liste_soutenances=res_soutenance)
 
 ########################## POUR LES ADMINISTRATEURS ##########################
 
