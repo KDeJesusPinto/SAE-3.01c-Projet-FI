@@ -166,7 +166,7 @@ def liste_etu_enseignant():
             'etudiant':
                 etudiant,
             'formation':
-                promo.formation_promo if promo else "None",
+                promo.formatio if promo else "None",
             'annee':
                 promo.annee_promo if promo else "None",
             'promo':
@@ -255,6 +255,8 @@ def planning_admin():
 
     ##Filtre:
     args = request.args
+    nom_promo = args.get('nom_promo', '')  # BUT2 or BUT3
+    regime = args.get('regime', '')
     annee_promo = args.get('annee_promo', '')
     formation_promo = args.get('formation_promo', '')
     date_soutenance = args.get('date_soutenance', '')
@@ -287,17 +289,19 @@ def planning_admin():
         query = query.join(Composer, Soutenance.id_soutenance == Composer.id_soutenance) \
                      .filter(Composer.id_enseignant == jury_enseignant_id)
        
-    if annee_promo or formation_promo:
- 
+    if nom_promo or formation_promo or regime:
         subquery_stages = db.session.query(Stage.id_stage) \
-                              .join(Demarche, Stage.id_demarche == Demarche.id_demarche) \
-                              .join(Etudiant, Demarche.id_etudiant == Etudiant.id_etudiant) \
-                              .join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant)
-        if annee_promo:
-            subquery_stages = subquery_stages.filter(Appartenir.nom_promo == annee_promo)
+                                .join(Demarche, Stage.id_demarche == Demarche.id_demarche) \
+                                .join(Etudiant, Demarche.id_etudiant == Etudiant.id_etudiant) \
+                                .join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant)\
+                                .join(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo)) 
+        
+        if nom_promo:
+            subquery_stages = subquery_stages.filter(Appartenir.nom_promo == nom_promo)
         if formation_promo:
-            subquery_stages = subquery_stages.filter(Appartenir.formation_promo == formation_promo)
-
+            subquery_stages = subquery_stages.filter(Promo.formation_promo == formation_promo)
+        if regime:
+            subquery_stages = subquery_stages.filter(Appartenir.regime_etudiant == regime)
 
         query = query.filter(Soutenance.id_stage.in_(subquery_stages))
 
@@ -307,7 +311,7 @@ def planning_admin():
     for soutenance in lesSoutenances:
         stage = Stage.query.get(soutenance.id_stage)
 
-
+        
         etudiant_lie = None
         if stage and stage.demarche:
             etudiant_lie = stage.demarche.etudiant
@@ -315,6 +319,11 @@ def planning_admin():
         enseignants_jury = db.session.query(Enseignant).join(Composer).filter(Composer.id_soutenance == soutenance.id_soutenance).all()
         membres_jury_noms =', '.join( [f"{e.nom_enseignant} {e.prenom_enseignant}" for e in enseignants_jury])
 
+        promo_etudiant = "N/C"
+        if etudiant_lie:
+            appartenance = Appartenir.query.filter_by(id_etudiant=etudiant_lie.id_etudiant).first()
+            if appartenance:
+                promo_etudiant = appartenance.nom_promo
 
         if not membres_jury_noms:
             membres_jury_noms = "Jury non assigné"
@@ -335,6 +344,7 @@ def planning_admin():
                     'h_debut': soutenance.h_debut,
                     'salle': soutenance.salle,
                     'jury_noms': membres_jury_noms,
+                    'nom_promo': promo_etudiant,
                     'stages': []  # Initialiser la liste des stages/étudiants
                 }
             # Ajouter l'étudiant/stage à la liste 'stages' de ce bloc
