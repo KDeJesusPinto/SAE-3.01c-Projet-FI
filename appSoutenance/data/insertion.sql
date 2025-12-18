@@ -282,10 +282,9 @@ INSERT INTO PROMO (
         formation_promo,
         id_enseignant
     )
-VALUES ('BUT2', 2024, 'BUT Informatique', 1),
+VALUES ('BUT2', 2025, 'BUT Informatique', 1),
     ('BUT3', 2025, 'BUT Informatique', 2),
-    ('BUT1', 2023, 'BUT Informatique', 3),
-    ('BUT2', 2025, 'BUT Informatique', 4);
+    ('BUT1', 2025, 'BUT Informatique', 3);
 
 INSERT INTO APPARTENIR (
         id_etudiant,
@@ -293,19 +292,19 @@ INSERT INTO APPARTENIR (
         annee_promo,
         regime_etudiant
     )
-VALUES (1, 'BUT2', 2024, 'Formation initiale'),
-    (2, 'BUT2', 2024, 'Formation initiale'),
-    (3, 'BUT1', 2023, 'Formation initiale'),
+VALUES (1, 'BUT2', 2025, 'Formation initiale'),
+    (2, 'BUT2', 2025, 'Formation initiale'),
+    (3, 'BUT1', 2025, 'Formation initiale'),
     (4, 'BUT3', 2025, 'Formation apprentissage');
 
 INSERT INTO TUTORER (id_enseignant, id_etudiant, annee)
-VALUES (1, 1, 2024),
-    (2, 2, 2024),
-    (3, 3, 2023),
+VALUES (1, 1, 2025),
+    (2, 2, 2025),
+    (3, 3, 2025),
     (4, 4, 2025),
-    (5, 5, 2024),
-    (6, 6, 2024),
-    (7, 10, 2023),
+    (5, 5, 2025),
+    (6, 6, 2025),
+    (7, 10, 2025),
     (8, 4, 2025);
 
 INSERT INTO MAITRE_STAGE (
@@ -373,7 +372,7 @@ VALUES (
         'Site entreprise',
         'Candidature spontanée',
         'Acceptée',
-        '2024-09-15',
+        '2025-09-15',
         NULL,
         'Stage obtenu',
         NULL,
@@ -387,8 +386,8 @@ VALUES (
         'LinkedIn',
         'Réponse à offre',
         'Refusée',
-        '2024-09-10',
-        '2024-09-25',
+        '2025-09-10',
+        '2025-09-25',
         'Refusé',
         'Profil junior',
         'cv_doe.pdf',
@@ -401,7 +400,7 @@ VALUES (
         'Salon',
         'Contact direct',
         'En cours',
-        '2024-09-20',
+        '2025-09-20',
         NULL,
         NULL,
         NULL,
@@ -415,7 +414,7 @@ VALUES (
         'Indeed',
         'Réponse à offre',
         'Acceptée',
-        '2024-09-12',
+        '2025-09-12',
         NULL,
         'Stage obtenu',
         NULL,
@@ -423,6 +422,20 @@ VALUES (
         'lm_brown.pdf',
         4,
         3
+    ),
+    (
+        5,
+        'Entreprise',
+        'Candidature spontanée',
+        'Acceptée',
+        '2025-09-01',
+        NULL,
+        'Stage obtenu',
+        NULL,
+        'cv_unknown.pdf',
+        'lm_unknown.pdf',
+        1,
+        7
     );
 
 INSERT INTO STAGE (
@@ -440,7 +453,7 @@ INSERT INTO STAGE (
 VALUES (
         1,
         'Stage de fin études',
-        '2024-10-01',
+        '2025-10-01',
         '2025-03-31',
         6,
         'mois',
@@ -452,7 +465,7 @@ VALUES (
     (
         2,
         'Stage de deuxième année',
-        '2024-10-15',
+        '2025-10-15',
         '2025-04-15',
         6,
         'mois',
@@ -464,8 +477,8 @@ VALUES (
     (
         3,
         'Stage initiation',
-        '2023-05-01',
-        '2023-07-31',
+        '2025-05-01',
+        '2025-07-31',
         3,
         'mois',
         'Découverte du développement front-end',
@@ -484,6 +497,18 @@ VALUES (
         'IA & NLP',
         4,
         3
+    ),
+    (
+        5,
+        'Stage professionnel',
+        '2025-04-01',
+        '2025-06-30',
+        3,
+        'mois',
+        'Projet spécial',
+        'Développement',
+        NULL,
+        5
     );
 
 INSERT INTO SOUTENANCE (
@@ -506,20 +531,20 @@ VALUES (
     ),
     (
         2,
-        102,
+        101,
         'Bâtiment A',
-        '2025-04-10',
-        '10:00',
-        '10:45',
+        '2025-03-25',
+        '09:00',
+        '09:45',
         2
     ),
     (
         3,
-        103,
-        'Bâtiment B',
-        '2023-07-15',
-        '14:00',
-        '14:45',
+        101,
+        'Bâtiment A',
+        '2025-03-25',
+        '09:00',
+        '09:45',
         3
     ),
     (
@@ -530,6 +555,15 @@ VALUES (
         '11:00',
         '11:45',
         4
+    ),
+    (
+        5,
+        102,
+        'Bâtiment B',
+        '2025-03-25',
+        '09:00',
+        '09:45',
+        5
     );
 
 INSERT INTO JURY (
@@ -540,15 +574,21 @@ INSERT INTO JURY (
         id_soutenance
     )
 VALUES (1, '2025-03-25', '09:00', 45, 1),
-    (2, '2025-04-10', '10:00', 45, 2),
-    (3, '2023-07-15', '14:00', 45, 3),
-    (4, '2025-06-20', '11:00', 45, 4);
+    (2, '2025-03-25', '09:00', 45, 2),
+    (3, '2025-03-25', '09:00', 45, 3),
+    (4, '2025-06-20', '11:00', 45, 4),
+    (5, '2025-03-25', '09:00', 45, 5);
 
 INSERT INTO COMPOSER (id_enseignant, id_soutenance)
-VALUES (1, 1),
-    (2, 2),
-    (3, 3),
-    (4, 4);
+VALUES
+    -- Jury (profs 1,2,3) assigned to soutenances 1,2,3 (same jury for these sessions)
+    (1, 1), (2, 1), (3, 1),
+    (1, 2), (2, 2), (3, 2),
+    (1, 3), (2, 3), (3, 3),
+    -- jury for soutenance 4 (single prof)
+    (4, 4),
+    -- jury for soutenance 5 (different jury, same day/time as 1-3)
+    (4, 5), (5, 5);
 
 INSERT INTO ADMINI (
         id_admin,
