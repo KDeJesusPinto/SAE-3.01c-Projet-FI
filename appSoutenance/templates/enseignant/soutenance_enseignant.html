@@ -1,11 +1,44 @@
 {% extends "enseignant/base_enseignant.html" %}
 {% block content %}
-    {% for soutenance in liste_soutenances %}
-        <div class="glass" id="liste_etu">
-            <div class="boite_horizontale info-grid">
-                <p>{{soutenance.soutenance.id_soutenance}}</p>
-                <P>{{soutenance.etudiant.nom_etudiant}}</P>
+    {% if resultats|length == 0 %}
+        <div class="no-bloc">
+            <p>Aucune soutenance n'a été planifiée pour le moment.</p>
+        </div>
+    {% else %}
+        {% for bloc in resultats %}
+        <div class="glass boite_verticale">
+            <div class="boite_horizontale">
+                <span id="date">{{ bloc.dateS }}</span>
+                <div class="boite_horizontale">
+                    <span class="texte_header" bloc-label="Créneau">{{ bloc.h_debut }}</span>
+                    <span class="texte_header" bloc-label="salle">Salle: {{ bloc.salle }}</span>
+                </div>
             </div>
-        </div>    
-    {% endfor %}
+           
+            <p>
+                Jury: {{ bloc.jury_noms }}
+            </p>
+
+
+            <table >
+                <thead>
+                    <tr>
+                        <th>Étudiants</th>
+                        <th>Intitulé du stage</th>
+                        <th>Entreprise</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stage_info in bloc.stages %}
+                        <tr>
+                            <td>{{ stage_info.nom_etudiant }} {{ stage_info.prenom_etudiant }}</td>
+                            <td>{{ stage_info.titre_stage }}</td>
+                            <td>{{ stage_info.nom_entreprise }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+    {% endif %}
 {% endblock %}
