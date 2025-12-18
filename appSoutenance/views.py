@@ -344,6 +344,8 @@ def planning_admin():
     # Tri
     if tri == "Nom":
         query = query.order_by(Etudiant.nom_etudiant, Etudiant.prenom_etudiant)
+    elif tri == "DateDesc":
+        query = query.order_by(desc(Soutenance.dateS), desc(Soutenance.h_debut))
     else:
         query = query.order_by(asc(Soutenance.dateS), asc(Soutenance.h_debut))
 
