@@ -6,6 +6,9 @@ from sqlalchemy import desc, asc, distinct, func
 from .importer_csv import importer_etudiants_stages, importer_entreprises
 from flask_login import login_user, logout_user, login_required, current_user
 from appSoutenance.forms import *
+from sqlalchemy import extract
+from flask import request, render_template, redirect, url_for
+from datetime import datetime, timedelta
 
 
 
@@ -217,7 +220,6 @@ def accueil_admin():
             flash(f"Importation réussie : {message}", 'success')
         else:
             flash(f"Échec de l'importation : {message}", 'danger')
-
         return redirect(url_for('accueil_admin'))
 
     # Filtres
@@ -303,16 +305,12 @@ def planning_admin():
     jury_enseignant_id = args.get('jury_enseignant_id')
     tri = args.get('trier')
 
-
     dates_disponibles_dt = db.session.query(distinct(Soutenance.dateS)).order_by(Soutenance.dateS).all()
     dates_disponibles = [(d[0].strftime('%Y-%m-%d'), f"{d[0].day} {MOIS[d[0].month]}") for d in dates_disponibles_dt]
 
 
     heures_disponibles = db.session.query(distinct(Soutenance.h_debut)).order_by(Soutenance.h_debut).all()
     heures_disponibles = [h[0] for h in heures_disponibles]
-
-
-    # Enseignants (Jury)
     enseignants_disponibles = Enseignant.query.order_by(Enseignant.nom_enseignant).all()
 
 
@@ -403,14 +401,137 @@ def planning_admin():
                            enseignants_disponibles = enseignants_disponibles,
                            dates_disponibles = dates_disponibles)
 
+HEURE= {
+    1: '08:00', 2: '09:00', 3: '10:00', 4: '11:00', 5: '12:00', 6: '13:00',
+    7: '14:00'
+}
 
 @app.route('/admin/planning/creation_soutenance/', methods =["GET", "POST"])
 @login_required
 def creation_soutenance():
-    unForm= FormSoutenance()
-    return render_template("admin/creation_soutenance.html", createForm=unForm)
+
+    createForm = FormSoutenance()
+
+    date_sel = request.args.get('dateS')
+    heure_sel = request.args.get('h_debut')
+    salle_sel = request.args.get('salle')
+
+    ens_ids = [request.args.get(f'ens{i}') for i in range(1, 4)]
+    etu_ids = [request.args.get(f'etu{i}') for i in range(1, 4)]
+
+    etudiants_par_tuteur = [[] for _ in range(3)]
+    ens_sel = [None] * 3
+    etu_sel = [None] * 3 #COMMENT PK ETU_SEL*3
+
+    if date_sel:
+        try:
+            annee_sout = int(date_sel.split('-')[0])
+            deja_planifies = db.session.query(Demarche.id_etudiant).join(
+                Stage, Stage.id_demarche == Demarche.id_demarche
+            ).join(
+                Soutenance, Soutenance.id_stage == Stage.id_stage
+            ).filter(extract('year', Soutenance.dateS) == annee_sout).all()
+            
+            ids_exclus = [r[0] for r in deja_planifies]
+            
+            for i in range(3):
+                if ens_ids[i] and ens_ids[i].strip():
+                    ens_sel[i] = Enseignant.query.get(int(ens_ids[i]))
+                    
+                    query = db.session.query(Etudiant).join(Tutorer).filter(
+                        Tutorer.id_enseignant == int(ens_ids[i])
+                    )
+                    if ids_exclus:
+                        query = query.filter(~Etudiant.id_etudiant.in_(ids_exclus))
+                    etudiants_par_tuteur[i] = query.all()
+
+                if etu_ids[i] and etu_ids[i].strip():
+                    etu_sel[i] = Etudiant.query.get(int(etu_ids[i]))
+                    
+        except Exception as e:
+            print(f"Erreur de traitement : {e}")
+
+    tous_les_enseignants = Enseignant.query.all()
 
 
+    return render_template(
+        'admin/creation_soutenance.html',
+        createForm=createForm,
+        heure=HEURE.values(),
+        enseignants_dispos=tous_les_enseignants,
+        etudiants_par_tuteur=etudiants_par_tuteur,
+        dateS=date_sel,
+        h_debut=heure_sel,
+        salle=salle_sel,
+        date_sel=date_sel,
+        heure_sel=heure_sel,
+        ens_ids=ens_ids,
+        etu_ids=etu_ids,
+        ens_sel=ens_sel,
+        etu_sel=etu_sel
+    )
+
+@app.route('/soutenance/valider', methods=['POST'])
+def valider_jury():
+    dateS = request.form.get('dateS')
+    heure_sel = request.form.get('h_debut')
+    salle_sel = request.form.get('salle')
+    h_fin_calc = ""
+    if heure_sel:
+        try:
+            start_dt = datetime.strptime(heure_sel, '%H:%M')
+            h_fin_calc = (start_dt + timedelta(minutes=45)).strftime('%H:%M')
+        except:
+            h_fin_calc = "12:00"
+
+    try:
+        id_etu_principal = None
+        for i in range(1, 4):
+            val = request.form.get(f'etu{i}')
+            if val and val.strip():
+                id_etu_principal = val
+                break
+        
+        if id_etu_principal:
+            stage = db.session.query(Stage).join(Demarche).filter(
+                Demarche.id_etudiant == id_etu_principal
+            ).first()
+            
+            if stage:
+                existante = Soutenance.query.filter_by(id_stage=stage.id_stage).first()
+                if existante:
+                    print(f"Le stage {stage.id_stage} a déjà une soutenance !")
+                    return redirect(url_for('planning_admin'))
+                
+                date_obj = datetime.strptime(dateS, '%Y-%m-%d').date()
+                nouvelle_sout = Soutenance(
+                    salle=int(salle_sel) if salle_sel else 0, 
+                    dateS=date_obj, 
+                    h_debut=heure_sel, 
+                    h_fin=h_fin_calc, 
+                    id_stage=stage.id_stage,
+                    nom_bat="" 
+                )
+                db.session.add(nouvelle_sout)
+                db.session.flush()
+
+                for i in range(1, 4):
+                    id_ens = request.form.get(f'ens{i}')
+                    if id_ens and id_ens.strip():
+                        jury = Composer(
+                            id_enseignant=int(id_ens), 
+                            id_soutenance=nouvelle_sout.id_soutenance
+                        )
+                        db.session.add(jury)
+                
+                db.session.commit()
+                print("Insertion réussie !")
+                
+    except Exception as e:
+        db.session.rollback()
+        print(f"Erreur lors de la validation : {e}")
+    
+    return redirect(url_for('planning_admin'))
 
 @app.route('/admin/liste+enseignants/<int:id>/')
 @login_required
