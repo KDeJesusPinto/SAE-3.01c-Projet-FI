@@ -289,19 +289,21 @@ def planning_admin():
         query = query.join(Composer, Soutenance.id_soutenance == Composer.id_soutenance) \
                      .filter(Composer.id_enseignant == jury_enseignant_id)
        
-    if nom_promo or formation_promo or regime:
-        subquery_stages = db.session.query(Stage.id_stage) \
-                                .join(Demarche, Stage.id_demarche == Demarche.id_demarche) \
-                                .join(Etudiant, Demarche.id_etudiant == Etudiant.id_etudiant) \
-                                .join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant)\
-                                .join(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo)) 
+    if nom_promo == "BUT2":
+        subquery_stages = subquery_stages.filter((Promo.nom_promo.like("%BUT2%")) | (Promo.nom_promo.like("%BUT 2%")))
+
+    if nom_promo == "BUT3":
+        subquery_stages = subquery_stages.filter((Promo.nom_promo.like("%BUT3")) | (Promo.nom_promo.like("%BUT 3%")))
+
+    if regime:
+        regime = "Initiale" if regime == "Initiale" else "Alternance"
+        subquery_stages = subquery_stages.filter(Appartenir.regime_etudiant == regime)
         
-        if nom_promo:
-            subquery_stages = subquery_stages.filter(Appartenir.nom_promo == nom_promo)
-        if formation_promo:
-            subquery_stages = subquery_stages.filter(Promo.formation_promo == formation_promo)
-        if regime:
-            subquery_stages = subquery_stages.filter(Appartenir.regime_etudiant == regime)
+    if nom_promo:
+        subquery_stages = subquery_stages.filter(Appartenir.nom_promo == nom_promo)
+
+    if formation_promo:
+        subquery_stages = subquery_stages.filter(Promo.formation_promo == formation_promo)
 
         query = query.filter(Soutenance.id_stage.in_(subquery_stages))
 
