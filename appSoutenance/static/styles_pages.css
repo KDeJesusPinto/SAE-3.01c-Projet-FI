@@ -10,7 +10,7 @@
 
 div#connexion{
     /* style */
-    font-size: 1em;
+    font-size: 1rem;
 
     /* positionnement */
     width: 60vw;
@@ -26,7 +26,7 @@ div#connexion{
     }
 
     .petit_bouton{
-        font-size: 1em;
+        font-size: 1rem;
         width: 60%;
     }
 
@@ -38,8 +38,8 @@ div#connexion{
     input{
         width: 100%;
         margin: 0;
-        font-size: 0.7em;
-        padding: 0.7em;
+        font-size: 0.7rem;
+        padding: 0.7rem;
     }
 }
 
@@ -74,6 +74,11 @@ div.demarches{
             /* positionnement */
             width: 30%;
         }
+    }
+
+    .petit_bouton{
+        padding: 10%;
+        width: 10vw;
     }
 }
 
@@ -112,6 +117,18 @@ div.demarches{
 
 /*---------------- POUR LES PAGES ENSEIGNANT ----------------*/
 
+#accueil_enseignant{
+    width: 100%;
+
+    > div{
+        width: 100%;
+
+        div{
+            width: 100%;
+        }
+    }
+}
+
 #glass_fleche_nav{
     /* style */
     /* positionnement */
@@ -123,21 +140,21 @@ div.demarches{
 .tutore_accueil{
     /* style */
     /* positionnement */
-    width: 400px;
+    /*width: 400px;
 }
 
 .soutBUT3_accueil{
     /* style */
     /* positionnement */
-    width: 400px;
+    /*width: 400px;
     padding: 10px;
 }
 
 .planning_accueil{
     /* style */
     /* positionnement */
-    width: 270px;
-    padding: 10px;
+    /*width: 270px;
+    padding: 10px;*/
 }
 
 .dark_planning_accueil{
@@ -209,7 +226,7 @@ div#liste_etu{
 
 div#contenu_admin {
     /* style */
-    font-size: 1em;
+    font-size: 1rem;
 
     /* positionnement */
     align-items: center;
@@ -223,7 +240,7 @@ a#voir{
 
 a#detail {
     /* style */
-    font-size: 1.2em;
+    font-size: 1.2rem;
     color: var(--couleur_sombre_principale);
     text-align: center;
 
@@ -242,7 +259,7 @@ button#ajout_sout {
     border-radius: 40px;
 
     font-family: "Arimo", sans-serif;
-    font-size: 0.8em;
+    font-size: 0.8rem;
 
     /* positionnement */
     width: 200px;
@@ -254,7 +271,7 @@ button#importer, button#exporter{
     border-radius: 40px;
 
     font-family: "Arimo", sans-serif;
-    font-size: 1.4em;
+    font-size: 1.4rem;
 
     /* positionnement */
     padding: 40px;
@@ -264,7 +281,7 @@ button#importer, button#exporter{
 
 button#filtrer{
     /* style */
-    font-size: 1em;
+    font-size: 1rem;
 
     /* positionnement */
     width: 300px;
@@ -278,7 +295,7 @@ button#voir {
     border-radius: 40px;
 
     font-family: "Arimo", sans-serif;
-    font-size: 1.2em;
+    font-size: 1.2rem;
 
     /* positionnement */
     width: 300px;
@@ -287,7 +304,7 @@ button#voir {
 
 div#contenu_admin {
     /* style */
-    font-size: 1em;
+    font-size: 1rem;
 
     /* positionnement */
     align-items: center;

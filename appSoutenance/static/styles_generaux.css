@@ -46,7 +46,7 @@ h1{
     font-weight: 400;
     font-style: normal;
     font-size: 3.5rem;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.04rem;
     text-transform: uppercase;
     white-space: nowrap;
     
@@ -62,7 +62,7 @@ h2{
     font-weight: 400;
     font-style: normal;
     font-size: 2rem;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.04rem;
     text-transform: uppercase;
 
     /* positionnement */
@@ -140,14 +140,14 @@ div.boite_horizontale p{
 
 .grande_icone{
     /* style */
-    font-size: 2em !important;
+    font-size: 2rem !important;
 
     /* positionnement */
 }
 
 .petite_icone{
     /* style */
-    font-size: 1.4em !important;
+    font-size: 1.4rem !important;
 
     /* positionnement */
 }
@@ -199,7 +199,7 @@ div.boite_horizontale p{
 
     border-radius: 20px;
     
-    font-size: 1.4em;
+    font-size: 1.4rem;
     text-align: center;
 
     /* positionnement */
@@ -225,7 +225,7 @@ div.bouton_horizontal{
     /* style */
     background-color: rgb(178, 185, 187);
     content: attr(data-tooltip);
-    font-size: 0.7em;
+    font-size: 0.7rem;
 
     /* positionnement */
     position: absolute;
@@ -249,7 +249,7 @@ div#main_body{
     justify-content: center;
     flex-grow: 1;
 
-    /*padding: 150px 0 100px;*/
+    padding: 150px 0 100px;
 }
 
 /*---------------- STYLES BARRE DE NAVIGATION ----------------*/
@@ -290,7 +290,7 @@ nav#barre_navigation{
 
     p, li{
         /* style */
-        font-size: 0.7em;
+        font-size: 0.7rem;
         text-align: right;
 
         /* positionnement */
@@ -305,7 +305,7 @@ nav#barre_navigation{
     a{
         /* style */
         color:var(--couleur_texte_clair);
-        font-size: 1.3em;
+        font-size: 1.3rem;
 
         /* positionnement */
     }
@@ -341,7 +341,7 @@ select.combobox { /* Agrandissement des combobox */
     border-radius: 80px;
 
     font-family: "Arimo", sans-serif;
-    font-size: 1.2em; /* Augmente la taille de la police */
+    font-size: 1.2rem; /* Augmente la taille de la police */
     text-align: center;
     color:var(--couleur_texte_clair);
 
@@ -359,13 +359,13 @@ select.combobox { /* Agrandissement des combobox */
 /* ---------------- STYLES DES FORMULAIRES ----------------*/
 
 .form-group, .form-check {
-   padding-top: 1em;
+   padding-top: 1rem;
 }
 
 
 .form-label {
    color: #064a72;
-   margin-bottom: 0.3em;
+   margin-bottom: 0.3rem;
 }
 
 
