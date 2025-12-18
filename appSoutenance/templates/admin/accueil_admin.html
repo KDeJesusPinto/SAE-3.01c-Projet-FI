@@ -1,5 +1,14 @@
 {% extends "admin/base_admin.html" %}
-
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div style="padding: 10px; margin: 10px; border-radius: 5px; 
+                  background-color: {{ 'lightgreen' if category == 'success' else 'lightcoral' }};">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 
 {% block content %}
     <form method="get" action="{{ url_for('accueil_admin') }}">
@@ -59,7 +68,7 @@
         <div class="boite_horizontale">
            
             <div class="glass" id="import_form_container">
-                <h3 style="margin-top: 0;">Importer un fichier CSV</h3>
+                <h3> Importer un fichier CSV</h3>
 
 
                 <form method="POST" action="{{ url_for('accueil_admin') }}" enctype="multipart/form-data">
@@ -88,8 +97,6 @@
                 <div style="margin-top: 15px;">
                     {{ createForm.submit(class="petit_bouton") }}
                 </div>
-                   
-                      {{ createForm.submit(class="petit_bouton", style="margin-top: 15px;") }}
                 </form>
             </div>
 
@@ -117,5 +124,17 @@
                 }
             });
         </script>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category if category != 'danger' else 'error' }}" 
+                style="padding: 10px; margin-bottom: 20px; border: 1px solid; border-radius: 5px; 
+                        background-color: {% if category == 'success' %}#d4edda{% else %}#f8d7da{% endif %};">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
     </div>
 {% endblock %}

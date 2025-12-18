@@ -196,33 +196,30 @@ def detail_etudiant_ens():
 def accueil_admin():
     unForm = ImportForm()
     admin = current_user
-
-
+    
     if unForm.validate_on_submit():
+        print("c'est bon")
         file_storage = unForm.ficCSV.data
         type_import = unForm.type_import.data
-       
+
+        success = False
+        message = ""
+    
         if type_import == 'etudiants_stages':
             success, message = importer_etudiants_stages(file_storage)
         elif type_import == 'entreprises':
             success, message = importer_entreprises(file_storage)
-        else:
-            # Ce cas ne devrait pas arriver grâce à DataRequired sur SelectField
-            success = False
-            message = "Type d'importation inconnu."
-
-
-        # Affichage du message à l'utilisateur
+    
         if success:
             flash(f"Importation réussie : {message}", 'success')
         else:
             flash(f"Échec de l'importation : {message}", 'danger')
-           
-        # Redirection après POST pour empêcher la resoumission si l'utilisateur rafraîchit
+
         return redirect(url_for('accueil_admin'))
-
-
-
+    
+    if request.method == 'POST' :
+        print("formulaire non valide", unForm.errors)
+        flash("Erreur dans le formulaire. Vérifiez le fichier sélectionné.", "danger")
 
     nb_etudiants = Etudiant.query.count()
     nb_stages_trouves = Stage.query.count()
@@ -231,6 +228,7 @@ def accueil_admin():
     nb_soutenances_alternants = 0
     nb_soutenances_posees = Soutenance.query.count()
     nb_soutenances_attente_candide = 0
+
     return render_template(
         "admin/accueil_admin.html",
         accueil="accueil_admin",
@@ -476,11 +474,11 @@ def liste_etu_admin():
             'etudiant':
                 etudiant,
             'formation':
-                promo.formation_promo,
+                promo.formation_promo if promo else "NC",
             'annee':
-                promo.annee_promo,
+                promo.annee_promo if promo else None,
             'promo':
-                promo.nom_promo,
+                promo.nom_promo if promo else "Promo inconnue",
             'nb_demarches':
                 nb_demarches,
             'situation':

@@ -121,7 +121,6 @@ class Stage(db.Model):
     # 0,1
     id_maitre = db.Column(db.Integer,
                           db.ForeignKey("maitre_stage.id_maitre"),
-                          unique=True,
                           nullable=True)
     maitre_stage = db.relationship("MaitreStage",
                                    backref=db.backref("stage",
