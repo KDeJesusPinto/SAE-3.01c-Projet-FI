@@ -140,6 +140,13 @@ def soutenance_enseignant():
     enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
 
     query = Soutenance.query.order_by(Soutenance.dateS, Soutenance.h_debut)
+    dates_disponibles_dt = db.session.query(distinct(Soutenance.dateS)).order_by(Soutenance.dateS).all()
+    # Conversion au format string lisible (ex: 25 Mar)
+    dates_disponibles = [f"{d[0].day} {MOIS[d[0].month]}" for d in dates_disponibles_dt]
+
+
+    heures_disponibles = db.session.query(distinct(Soutenance.h_debut)).order_by(Soutenance.h_debut).all()
+    heures_disponibles = [h[0] for h in heures_disponibles]
 
 
     # 1. Filtrer par Jour (date)
@@ -220,6 +227,7 @@ def soutenance_enseignant():
     resultats_regroupes = list(regroupement.values())
     return render_template("enseignant/soutenance_enseignant.html",
                            accueil="accueil_enseignant",personne=enseignant,
+                           heures_disponibles = heures_disponibles,
                            title="soutenance", resultats = resultats_regroupes)
 
 
