@@ -235,20 +235,6 @@ a#detail {
     margin-left: auto;
 }
 
-
-
-button#ajout_sout {
-    /* style */
-    border-radius: 40px;
-
-    font-family: "Arimo", sans-serif;
-    font-size: 0.8em;
-
-    /* positionnement */
-    width: 200px;
-    height: auto;
-}
-
 button#importer, button#exporter{
     /* style */
     border-radius: 40px;

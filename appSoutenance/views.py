@@ -545,22 +545,31 @@ def detail_enseignant(id):
         return redirect(url_for("login"))
     
     enseignant = Enseignant.query.get(id)
-    etudiant_suivi = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant)
-    etudiant_suivi = Etudiant.query.get(etudiant_suivi.first().id_etudiant)
-    # liste_etudiants_suivis = []
-    # for etudiant in etudiants_suivis:
-    #     liste_etudiants_suivis.append(Etudiant.query.get(etudiant.id_etudiant))
+    tutorats = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant).all()
+    etudiants_suivis = [t.etudiant for t in tutorats]
     enseignant_promo = Promo.query.filter_by(id_enseignant=enseignant.id_enseignant).first()
-    jury_soutenances = Soutenance.query.join(Composer, Soutenance.id_soutenance == Composer.id_soutenance)\
-                        .filter(Composer.id_enseignant == enseignant.id_enseignant).all()
-    jury_soutenances = ', '.join([f"Soutenance n°{s.id_soutenance} ({Stage.query.get(s.id_stage).titre_stage}). "
-                                  for s in jury_soutenances])
+    soutenances_jury = Soutenance.query.outerjoin(Composer)\
+                        .outerjoin(Stage)\
+                        .outerjoin(Demarche)\
+                        .outerjoin(Etudiant)\
+                        .outerjoin(Tutorer)\
+                        .filter((Composer.id_enseignant == enseignant.id_enseignant) | (Tutorer.id_enseignant == enseignant.id_enseignant)).distinct().all()
+
+    liste_soutenances = []
+    for s in soutenances_jury:
+        stage = Stage.query.get(s.id_stage)
+        etudiant = stage.demarche.etudiant
+        est_tuteur = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant, id_etudiant=etudiant.id_etudiant).first() is not None
+        role = "(Tuteur)" if est_tuteur else "(Candide)"
+        liste_soutenances.append(f"Soutenance n°{s.id_soutenance} {stage.titre_stage} {role}")
+
+    jury_soutenances = '. '.join(liste_soutenances)
 
     return render_template("admin/detail_enseignant.html",
                            accueil="accueil_admin",
                            title="Detail de l'enseignant",
                            enseignant=enseignant,
-                           etudiant_suivi=etudiant_suivi,
+                           etudiants_suivis=etudiants_suivis,
                            enseignant_promo=enseignant_promo,
                            jury_soutenances=jury_soutenances)
 
@@ -617,13 +626,22 @@ def liste_ens_admin():
 
     lesEnseignants = Enseignant.query
     if soutenance:
-        lesEnseignants = lesEnseignants.join(Tutorer, Tutorer.id_enseignant == Enseignant.id_enseignant).join(Etudiant, Tutorer.id_etudiant == Etudiant.id_etudiant).join(Promo, Etudiant.promos)
-
         if soutenance == "Soutenance":
-            lesEnseignants = lesEnseignants.join(Composer, Composer.id_enseignant == Enseignant.id_enseignant).join(Soutenance, Soutenance.id_soutenance == Composer.id_soutenance)
+            lesEnseignants = lesEnseignants.join(Tutorer)\
+                                           .join(Etudiant)\
+                                           .join(Demarche)\
+                                           .join(Stage)\
+                                           .join(Soutenance, Stage.id_stage == Soutenance.id_stage)\
+                                           .join(Composer, (Composer.id_enseignant == Enseignant.id_enseignant) & (Composer.id_soutenance == Soutenance.id_soutenance))\
+                                           .distinct()
         elif soutenance == "NonSoutenance":
-            lesEnseignants = lesEnseignants.outerjoin(Composer, Composer.id_enseignant == Enseignant.id_enseignant).outerjoin(Soutenance, Soutenance.id_soutenance == Composer.id_soutenance)
-            lesEnseignants = lesEnseignants.filter(Soutenance.id_soutenance.is_(None))
+            sq_soutenance = db.session.query(Tutorer.id_enseignant)\
+                                      .join(Etudiant)\
+                                      .join(Demarche)\
+                                      .join(Stage)\
+                                      .join(Soutenance, Stage.id_stage == Soutenance.id_stage)\
+                                      .join(Composer, (Composer.id_enseignant == Tutorer.id_enseignant) & (Composer.id_soutenance == Soutenance.id_soutenance))
+            lesEnseignants = lesEnseignants.join(Tutorer).filter(Enseignant.id_enseignant.notin_(sq_soutenance)).distinct()
 
     # Réccupérer soutenances avec jury non complet : Composer -> Soutenance -> Stage -> Demarche -> Etudiant -> Tutorer -> Enseignant
     # id de l'étudiant =! de l'id de l'étudiant dont l'enseignant est tuteur
@@ -646,14 +664,29 @@ def liste_ens_admin():
     for enseignant in lesEnseignants:
         nb_tutore = Tutorer.query.filter_by(
             id_enseignant=enseignant.id_enseignant).count()
+
         nb_soutenances = Composer.query.filter_by(
             id_enseignant=enseignant.id_enseignant).count()
+        
+        nb_soutenances_en_tuteur = Soutenance.query.join(Stage, Soutenance.id_stage == Stage.id_stage) \
+            .join(Demarche, Stage.id_demarche == Demarche.id_demarche) \
+            .join(Etudiant, Demarche.id_etudiant == Etudiant.id_etudiant) \
+            .join(Tutorer, (Etudiant.id_etudiant == Tutorer.id_etudiant) & (Tutorer.id_enseignant == enseignant.id_enseignant)) \
+            .filter(Soutenance.id_stage == Stage.id_stage) \
+            .count()
 
+        nb_candide = db.session.query(Soutenance).join(Composer, Soutenance.id_soutenance == Composer.id_soutenance)\
+                                                .join(Stage, Soutenance.id_stage == Stage.id_stage)\
+                                                .join(Demarche, Stage.id_demarche == Demarche.id_demarche)\
+                                                .join(Etudiant, Demarche.id_etudiant == Etudiant.id_etudiant)\
+                                                .filter(Composer.id_enseignant == enseignant.id_enseignant, ~Etudiant.tutorats.any(Tutorer.id_enseignant == enseignant.id_enseignant)).count()
 
         res.append({
             "enseignant": enseignant,
             "nb_tutores": nb_tutore,
             "nb_soutenances": nb_soutenances,
+            "nb_soutenances_en_tuteur": nb_soutenances_en_tuteur,
+            "nb_candide": nb_candide
         })
 
 

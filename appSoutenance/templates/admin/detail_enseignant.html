@@ -9,9 +9,17 @@
         <div class="boite_verticale" style="display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-left:2%;">
             <p><strong>Login : </strong>{{ enseignant.login_enseignant }}</p>
             <p><strong>Mail : </strong>{{ enseignant.email_enseignant }}</p>
-            <p><strong>Étudiant suivi : </strong><a href="{{url_for('detail_etudiant_admin', id=etudiant_suivi.id_etudiant)}}" style="text-decoration: underline;">{{etudiant_suivi.civilite_etudiant}} {{ etudiant_suivi.prenom_etudiant }} {{ etudiant_suivi.nom_etudiant }}</a></p>
+            {% if etudiants_suivis %}
+                <p><strong>Étudiants suivis : </strong>
+                    {% for etudiant in etudiants_suivis %}
+                        <a href="{{url_for('detail_etudiant_admin', id=etudiant.id_etudiant)}}" style="text-decoration: underline;">{{etudiant.civilite_etudiant}} {{ etudiant.prenom_etudiant }} {{ etudiant.nom_etudiant }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </p>
+            {% else %}
+                <p><strong>Aucun étudiant suivi</strong></p>
+            {% endif %}
             {% if enseignant_promo %}
-                <p><strong>Promo : </strong>{{ enseignant_promo.formation_promo }} {{ enseignant_promo.nom_promo }} {{ enseignant_promo.annee_promo }}</p>
+                <p><strong>Directeur d'études : </strong>{{ enseignant_promo.formation_promo }} {{ enseignant_promo.nom_promo }} {{ enseignant_promo.annee_promo }}</p>
             {% endif %}
             {% if jury_soutenances|length == 0 %}
                 <p><strong>N'est jury d'aucune soutenance</strong></p>

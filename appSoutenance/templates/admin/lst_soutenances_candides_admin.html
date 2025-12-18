@@ -9,11 +9,12 @@
                 {% endif %}
                 {% for res in resultats %}
                 <div class="glass" id="liste_etu">
-                    <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 0.5fr 0.3fr 0.3fr 0.5fr; align-items: center;">
+                    <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 0.5fr 0.3fr 0.3fr 0.5fr 0.5fr; align-items: center;">
                         <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Soutenance n°{{ res.soutenance.id_soutenance }}</p>
                         <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Etudiant : {{ res.etudiant.civilite_etudiant }} {{ res.etudiant.prenom_etudiant }} {{ res.etudiant.nom_etudiant }}</p>
                         <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Tuteur : {{ res.tuteur.civilite_enseignant}} {{ res.tuteur.prenom_enseignant }} {{ res.tuteur.nom_enseignant }}</p>
-                        <p class="pliste" style="padding-right: 5px;">Stage : {{ res.stage.titre_stage }}</p>
+                        <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Stage : {{ res.stage.titre_stage }}</p>
+                        <button class="petit_bouton">Ajouter enseignant</button>
                     </div>
                 </div>
                 {% endfor %}

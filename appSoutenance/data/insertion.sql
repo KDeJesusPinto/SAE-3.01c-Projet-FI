@@ -393,7 +393,7 @@ VALUES (
         'cv_doe.pdf',
         'lm_doe2.pdf',
         2,
-        1
+        5
     ),
     (
         3,
@@ -580,15 +580,21 @@ VALUES (1, '2025-03-25', '09:00', 45, 1),
     (5, '2025-03-25', '09:00', 45, 5);
 
 INSERT INTO COMPOSER (id_enseignant, id_soutenance)
-VALUES
-    -- Jury (profs 1,2,3) assigned to soutenances 1,2,3 (same jury for these sessions)
-    (1, 1), (2, 1), (3, 1),
-    (1, 2), (2, 2), (3, 2),
-    (1, 3), (2, 3), (3, 3),
+VALUES -- Jury (profs 1,2,3) assigned to soutenances 1,2,3 (same jury for these sessions)
+    (1, 1),
+    (2, 1),
+    (3, 1),
+    (1, 2),
+    (2, 2),
+    (3, 2),
+    (1, 3),
+    (2, 3),
+    (3, 3),
     -- jury for soutenance 4 (single prof)
     (4, 4),
     -- jury for soutenance 5 (different jury, same day/time as 1-3)
-    (4, 5), (5, 5);
+    (4, 5),
+    (5, 5);
 
 INSERT INTO ADMINI (
         id_admin,
