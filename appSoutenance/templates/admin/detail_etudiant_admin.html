@@ -2,16 +2,23 @@
 
 {% block content %}
     <div class="glass" style="width: 90%; height: 100%;">
-        <h1>{{ etudiant.civilite_etudiant }} {{ etudiant.prenom_etudiant }} {{ etudiant.nom_etudiant }}</h1>
+        <div class="boite_horizontale" style="justify-content: center; position: relative; margin-top: 2%; width: 100%;">
+            <a href="{{ url_for('liste_etu_admin') }}" class="petit_bouton" style="position: absolute; left: 20px; width: fit-content; font-size: 0.7em; padding: 10px 20px; margin: 0;"><i class="fas fa-arrow-left"></i> Retour</a>
+            <h1 style="margin: 0;">{{ etudiant.civilite_etudiant }} {{ etudiant.prenom_etudiant }} {{ etudiant.nom_etudiant }}</h1>
+        </div>
         <div class="boite_horizontale">
-            <div class="boite_verticale" style="width: 50%; display: flex; flex-direction: column; align-items: flex-start; gap: 2em; margin-top: 2%;">
+            <div class="boite_verticale" style="width: 50%; display: flex; flex-direction: column; align-items: flex-start; gap: 2em;">
                 <p style="text-align: left;"><strong>Date de naissance : </strong>{{ etudiant.date_naissance }}</p>
                 {% if etudiant.login %}
                     <p style="text-align: left;"><strong>Login : </strong>{{ etudiant.login_etudiant }}</p>
                     {% endif %}
                 <p style="text-align: left;"><strong>Mail : </strong>{{ etudiant.email_etudiant }}</p>
-                <p style="text-align: left;"><strong>Promo : </strong>{{ etudiant_promo.formation_promo }} {{ etudiant_promo.nom_promo }} {{ etudiant_promo.annee_promo }} {{etudiant_promo.regime_etudiant}}</p>
-                {% if tuteur %}
+                {% if etudiant_promo %}
+                    <p style="text-align: left;"><strong>Promo : </strong>{{ etudiant_promo.formation_promo }} {{ etudiant_promo.nom_promo }} {{ etudiant_promo.annee_promo }} {{etudiant_promo.regime_etudiant}}</p>
+                {% else %}
+                    <p style="text-align: left;"><strong>Promo : </strong>Aucune trouvée</p>
+                {% endif %}
+                    {% if tuteur %}
                     <p><strong>Tuteur : </strong>{{ tuteur.civilite_enseignant }} {{ tuteur.nom_enseignant }} {{ tuteur.prenom_enseignant }}</p>
                 {% endif %}
             </div>

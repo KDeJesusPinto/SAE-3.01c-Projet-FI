@@ -226,7 +226,7 @@ def accueil_admin():
     annee_filter = request.args.get('annee')
     formation_filter = request.args.get('formation')
 
-    requete_les_etudiants = Etudiant.query.join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).join(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
+    requete_les_etudiants = Etudiant.query.outerjoin(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).outerjoin(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
 
     if annee_filter == "2A":
         requete_les_etudiants = requete_les_etudiants.filter((Promo.nom_promo.like("%BUT2%")) | (Promo.nom_promo.like("%BUT 2%")))
@@ -677,7 +677,7 @@ def liste_etu_admin():
     regime_filter = request.args.get('regime')
     tri = request.args.get("trier", "Nom") # Par défaut, trié par nom
 
-    requete_les_etudiants = Etudiant.query.join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).join(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
+    requete_les_etudiants = Etudiant.query.outerjoin(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).outerjoin(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
 
     # Les filtres
     if annee_filter == "2A":
@@ -723,7 +723,7 @@ def liste_etu_admin():
         res.append({
             'etudiant': etudiant,
             'formation': promo.formation_promo if promo else "Aucune trouvée",
-            'regime': "FI" if appartenance.regime_etudiant == "Formation initiale" else "Apprenti",
+            'regime': "FI" if appartenance and appartenance.regime_etudiant == "Formation initiale" else ("Apprenti" if appartenance else "N/C"),
             'annee': promo.annee_promo if promo else "Aucune trouvée",
             'promo': promo.nom_promo if promo else "Aucune trouvée",
             'nb_demarches': nb_demarches,
