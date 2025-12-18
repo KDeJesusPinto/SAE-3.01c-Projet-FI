@@ -1,7 +1,7 @@
 from collections import defaultdict
 from .app import app, db
 from flask import render_template, request, url_for, redirect, flash
-from appSoutenance.models import db,  Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, MaitreStage, Entreprise
+from appSoutenance.models import db,  Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, MaitreStage, Entreprise, Admini
 from sqlalchemy import desc, distinct, func
 from .importer_csv import importer_etudiants_stages, importer_entreprises
 from flask_login import login_user, logout_user, login_required, current_user
@@ -209,7 +209,6 @@ def accueil_admin():
         elif type_import == 'entreprises':
             success, message = importer_entreprises(file_storage)
         else:
-            # Ce cas ne devrait pas arriver grâce à DataRequired sur SelectField
             success = False
             message = "Type d'importation inconnu."
 
@@ -220,7 +219,6 @@ def accueil_admin():
         else:
             flash(f"Échec de l'importation : {message}", 'danger')
            
-        # Redirection après POST pour empêcher la resoumission si l'utilisateur rafraîchit
         return redirect(url_for('accueil_admin'))
 
     # Filtres
