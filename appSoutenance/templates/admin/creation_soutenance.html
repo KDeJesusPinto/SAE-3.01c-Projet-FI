@@ -31,34 +31,36 @@
     {% endfor %}
 
     {% if date_sel and heure_sel %}
+    <input type="hidden" name="dateS" value="{{ date_sel }}">
+    <input type="hidden" name="h_debut" value="{{ heure_sel }}">
     <hr>
     
     {% for i in range(3) %}
     <div>
         <strong>Jury Membre {{ i+1 }}</strong>
         <br>
-        <em>Enseignants disponibles :</em>
-        <ul>
-            {% for e in enseignants_dispos %}
-            <li>
-                <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel,
-                    ens1=e.id_enseignant if i==0 else ens_ids[0],
-                    ens2=e.id_enseignant if i==1 else ens_ids[1],
-                    ens3=e.id_enseignant if i==2 else ens_ids[2],
-                    etu1=etu_ids[0], etu2=etu_ids[1], etu3=etu_ids[2]) }}">
-                    {{ e.nom_enseignant }}
-                </a>
-            </li>
-            {% endfor %}
-        </ul>
 
         {% if ens_ids[i] %}
-            <strong>Étudiant de cet enseignant :</strong>
-            <ul>
-                {% if etudiants_par_tuteur[i] %}
-                    {% for etu in etudiants_par_tuteur[i] %}
-                    <li>
-                        <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel,
+        <div>
+            <b>Enseignant sélectionné : </b> {{ens_sel[i].nom_enseignant }}
+            <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel,
+                ens1='' if i==0 else ens_ids[0], 
+                ens2='' if i==1 else ens_ids[1], 
+                ens3='' if i==2 else ens_ids[2]) }}"></a>
+                <br>
+                Étudiant sélectionné : {{ etu_sel[i].nom_etudiant }} {{ etu_sel[i].prenom_etudiant }}
+                    <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel,
+                        ens1=ens_ids[0], ens2=ens_ids[1], ens3=ens_ids[2],
+                        etu1='' if i==0 else etu_ids[0],
+                        etu2='' if i==1 else etu_ids[1],
+                        etu3='' if i==2 else etu_ids[2])}}"></a>
+        </div>
+
+        <p>Ses étudiants suivis : </p>
+        <ul>
+            {% if etudiants_par_tuteur[i] %}
+                {% for etu in etudiants_par_tuteur[i] %}
+                    <li><a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel,
                             ens1=ens_ids[0], ens2=ens_ids[1], ens3=ens_ids[2],
                             etu1=etu.id_etudiant if i==0 else etu_ids[0],
                             etu2=etu.id_etudiant if i==1 else etu_ids[1],
@@ -66,13 +68,28 @@
                             {{ etu.nom_etudiant }}
                         </a>
                     </li>
-                    {% endfor %}
-                {% else %}
-                    <li>Aucun étudiant suivi.</li>
-                {% endif %}
+                {% endfor %}
+            {% endif %}
+        </ul>
+
+    {% else %}
+        <p>Choisir un enseignant disponible :</p>
+        <div>
+            <ul>
+                {% for e in enseignants_dispos %}
+                <li>
+                    <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel,
+                        ens1=e.id_enseignant if i==0 else ens_ids[0],
+                        ens2=e.id_enseignant if i==1 else ens_ids[1],
+                        ens3=e.id_enseignant if i==2 else ens_ids[2]) }}">
+                        {{ e.nom_enseignant }}
+                    </a>
+                </li>
+                {% endfor %}
             </ul>
-        {% endif %}
-    </div>
+    {% endif %}
+
+        </div>
     <hr>
     {% endfor %}
 
@@ -91,9 +108,11 @@
     {% endif %}
 
     <div>
-        {% if ens_ids[0] and ens_ids[1] and ens_ids[2] and etu_ids[0] and etu_ids[1] and etu_ids[2] %}
+        {% if date_sel and heure_sel%}
             <input type="submit" value="Ajouter" formmethod="POST" formaction="{{ url_for('valider_jury') }}">
         {% endif %}
+        <br>
+        <br>
         <a href="{{ url_for('planning_admin') }}" class="petit_bouton">Retour</a>
     </div>
 </form>
