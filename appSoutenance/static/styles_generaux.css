@@ -335,7 +335,7 @@ select.combobox { /* Agrandissement des combobox */
     border-radius: 80px;
 
     font-family: "Arimo", sans-serif;
-    font-size: 1.2em; /* Augmente la taille de la police */
+    font-size: 0.7em; /* Augmente la taille de la police */
     text-align: center;
     color:var(--couleur_texte_clair);
 
