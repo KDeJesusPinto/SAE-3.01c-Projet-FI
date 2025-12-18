@@ -2,14 +2,18 @@
 
 {% block content %}
     <div class="glass" style="width: 90%; height: 100%;">
-        <h1>{{ etudiant.civilite_etudiant }} {{ etudiant.nom_etudiant }} {{ etudiant.prenom_etudiant }}</h1>
+        <h1>{{ etudiant.civilite_etudiant }} {{ etudiant.prenom_etudiant }} {{ etudiant.nom_etudiant }}</h1>
         <div class="boite_horizontale">
             <div class="boite_verticale" style="width: 50%; display: flex; flex-direction: column; align-items: flex-start; gap: 2em; margin-top: 2%;">
-                <p style="height: 50%; text-align: left;"><strong>Date de naissance : </strong>{{ etudiant.date_naissance }}</p>
-                <p><strong>Login : </strong>{{ etudiant.login_etudiant }}</p>
-                <p><strong>Mail : </strong>{{ etudiant.email_etudiant }}</p>
-                <p><strong>Promo : </strong>{{ etudiant_promo.formation_promo }} {{ etudiant_promo.nom_promo }} {{ etudiant_promo.annee_promo }} {{etudiant_promo.regime_etudiant}}</p>
-                <p><strong>Tuteur : </strong>{{ tuteur.civilite_enseignant }} {{ tuteur.nom_enseignant }} {{ tuteur.prenom_enseignant }}</p>
+                <p style="text-align: left;"><strong>Date de naissance : </strong>{{ etudiant.date_naissance }}</p>
+                {% if etudiant.login %}
+                    <p style="text-align: left;"><strong>Login : </strong>{{ etudiant.login_etudiant }}</p>
+                    {% endif %}
+                <p style="text-align: left;"><strong>Mail : </strong>{{ etudiant.email_etudiant }}</p>
+                <p style="text-align: left;"><strong>Promo : </strong>{{ etudiant_promo.formation_promo }} {{ etudiant_promo.nom_promo }} {{ etudiant_promo.annee_promo }} {{etudiant_promo.regime_etudiant}}</p>
+                {% if tuteur %}
+                    <p><strong>Tuteur : </strong>{{ tuteur.civilite_enseignant }} {{ tuteur.nom_enseignant }} {{ tuteur.prenom_enseignant }}</p>
+                {% endif %}
             </div>
             <div class="boite_verticale" style="display: flex; flex-direction: column; align-items: flex-start; gap: 1.5em; margin-top: 3%;">
                 {% if demarches|length == 0 %}
@@ -18,22 +22,27 @@
                     <p><strong>Démarches enregistrées ({{ demarches|length }}) :</strong></p>
                     <ul style="margin: 0 0 0 20px;">
                         {% for demarche in demarches %}
-                            <li>Type : {{ demarche.typeD }} | Source : {{ demarche.source }} | Situation : {{demarche.situation}} - {{ demarche.resultat }}</li>
+                            <li>Type : {{ demarche.typeD }} | Source : {{ demarche.source }} | Situation : {{demarche.situation}}
+                            {% if demarche.resulat %}
+                                Résultat : {{ demarche.resultat }}
+                            {% endif%}
+                        </li>
                         {% endfor %}
                     </ul>
                 {% endif %}
 
                 {% if stage_etudiant %}
                     <p style="text-align: left;"><strong>Stage : </strong>{{stage_etudiant.typeS}} - {{stage_etudiant.titre_stage}}</p>
-                    <p><strong>Durée : </strong>du {{stage_etudiant.date_debut}} au {{stage_etudiant.date_fin}} ({{stage_etudiant.duree_stage}} semaines)</p>
-                    <p><strong>Entreprise : </strong>{{entreprise.nom_entreprise}}</p>
-                    <p><strong>Maître : </strong> {{maitre_stage.civilite_maitre}} {{maitre_stage.nom_maitre}} {{maitre_stage.prenom_maitre}}</p>
-                    {% else %}
+                    <p style="text-align: left;"><strong>Durée : </strong>du {{stage_etudiant.date_debut}} au {{stage_etudiant.date_fin}} 
+                        {% if stage_etudiant.duree_stage %}
+                            ({{stage_etudiant.duree_stage}} semaines)
+                        {% endif %}
+                    </p>
+                    <p style="text-align: left;"><strong>Entreprise : </strong>{{entreprise.nom_entreprise}} <strong>Maître : </strong> {{maitre_stage.civilite_maitre}} {{maitre_stage.prenom_maitre}} {{maitre_stage.nom_maitre}} </p>
+                {% else %}
                     <p>Aucun stage enregistré</p>
                 {% endif %}
             </div>
         </div>
-        
     </div>
-
 {% endblock %}
