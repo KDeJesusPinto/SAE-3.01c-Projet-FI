@@ -108,6 +108,72 @@ VALUES (
         'lucas.martin@gmail.com',
         'lucasmartin',
         'pass4'
+    ),
+    (
+        5,
+        'Wilson',
+        'Emma',
+        '2002-07-19',
+        'Mme',
+        '0616171819',
+        'emma.wilson@gmail.com',
+        'emmawilson',
+        'pass5'
+    ),
+    (
+        6,
+        'Taylor',
+        'Olivia',
+        '2003-12-30',
+        'Mme',
+        '0620212223',
+        'olivia.taylor@gmail.com',
+        'oliviataylor',
+        'pass6'
+    ),
+    (
+        7,
+        'Anderson',
+        'Liam',
+        '2004-09-25',
+        'M.',
+        '0624252627',
+        'liam.anderson@gmail.com',
+        'liamanderson',
+        'pass7'
+    ),
+    (
+        8,
+        'Thomas',
+        'Sophia',
+        '2002-04-18',
+        'Mme',
+        '0628293031',
+        'sophia.thomas@gmail.com',
+        'sophiathomas',
+        'pass8'
+    ),
+    (
+        9,
+        'Jackson',
+        'Mia',
+        '2003-08-09',
+        'Mme',
+        '0632333435',
+        'mia.jackson@gmail.com',
+        'miamjackson',
+        'pass9'
+    ),
+    (
+        10,
+        'White',
+        'Noah',
+        '2004-01-12',
+        'M.',
+        '0636373839',
+        'noah.white@gmail.com',
+        'noahwhite',
+        'pass10'
     );
 
 INSERT INTO ENSEIGNANT (
@@ -154,6 +220,60 @@ VALUES (
         'camille.durand@univ.fr',
         'cdurand',
         'prof4'
+    ),
+    (
+        5,
+        'Moreau',
+        'Luc',
+        'M.',
+        'luc.moreau@univ.fr',
+        'lmoreau',
+        'prof5'
+    ),
+    (
+        6,
+        'Girard',
+        'Isabelle',
+        'Mme',
+        'isabelle.girard@univ.fr',
+        'igirard',
+        'prof6'
+    ),
+    (
+        7,
+        'Roux',
+        'Antoine',
+        'M.',
+        'antoine.roux@univ.fr',
+        'aroux',
+        'prof7'
+    ),
+    (
+        8,
+        'Fontaine',
+        'Elise',
+        'Mme',
+        'elise.fontaine@univ.fr',
+        'efontaine',
+        'prof8'
+    ),
+    (
+        9,
+        'Blanc',
+        'Marc',
+        'M.',
+        'marc.blanc@univ.fr',
+        'mblanc',
+        'prof9'
+    ),
+    (
+        10,
+        'Garnier',
+        'Nathalie',
+        'Mme',
+        'nathalie.garnier@univ.fr',
+        'ngarnier',
+        'prof10'
     );
 
 INSERT INTO PROMO (
@@ -182,7 +302,11 @@ INSERT INTO TUTORER (id_enseignant, id_etudiant, annee)
 VALUES (1, 1, 2024),
     (2, 2, 2024),
     (3, 3, 2023),
-    (4, 4, 2025);
+    (4, 4, 2025),
+    (5, 5, 2024),
+    (6, 6, 2024),
+    (7, 10, 2023),
+    (8, 4, 2025);
 
 INSERT INTO MAITRE_STAGE (
         id_maitre,

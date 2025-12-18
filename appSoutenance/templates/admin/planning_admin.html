@@ -5,16 +5,22 @@
 <div class="boite_horizontale">
 <form id="filtres" method="get" action="{{ url_for('planning_admin') }}">
     <aside id="filtre_liste_admin">
-        <select class="combobox" name="Année" id="annee">
-            <option value="Année">Année</option>
-            <option value="2A">2ème année</option>
-            <option value="3A">3ème année</option>
+        <select class="combobox" name="nom_promo" id="nom_promo">
+            <option value="">Niveau</option>
+            <option value="BUT2" {% if request.args.get('nom_promo') == 'BUT2' %}selected{% endif %}>BUT 2</option>
+            <option value="BUT3" {% if request.args.get('nom_promo') == 'BUT3' %}selected{% endif %}>BUT 3</option>
         </select>
-        <select class="combobox" name="Formation" id="formation">
-            <option value="Formation">Formation</option>
-            <option value="Info">Informatique</option>
-            <option value="Chimie">Chimie</option>
-            <option value="GEA">GEA</option>
+
+        <select class="combobox" name="regime" id="regime">
+            <option value="">Régime</option>
+            <option value="Initial" {% if request.args.get('regime') == 'Initial' %}selected{% endif %}>Initial</option>
+            <option value="Alternance" {% if request.args.get('regime') == 'Alternance' %}selected{% endif %}>Alternance</option>
+        </select>
+        <select class="combobox" name="formation_promo" id="formation">
+            <option value="">Formation</option>
+            <option value="Info" {% if request.args.get('formation_promo') == 'Info' %}selected{% endif %}>Informatique</option>
+            <option value="Chimie" {% if request.args.get('formation_promo') == 'Chimie' %}selected{% endif %}>Chimie</option>
+            <option value="GEA" {% if request.args.get('formation_promo') == 'GEA' %}selected{% endif %}>GEA</option>
         </select>
         <select class="combobox" name="date_soutenance" id="jour">
         <option value="">Jour</option>
@@ -62,6 +68,7 @@
             <div class="boite_horizontale">
                 <span id="date">{{ bloc.dateS }}</span>
                 <div class="boite_horizontale">
+                    <span class="badge_promo">{{ bloc.nom_promo }}</span>
                     <span class="texte_header" bloc-label="Créneau">{{ bloc.h_debut }}</span>
                     <span class="texte_header" bloc-label="salle">Salle: {{ bloc.salle }}</span>
                 </div>
