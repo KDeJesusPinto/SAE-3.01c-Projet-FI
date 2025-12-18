@@ -6,7 +6,7 @@
 
     --couleur_bouton_important: #8f11bc;
 
-    --couleur_principale_site: #a671b0;
+    --couleur_principale_site: #51a1a2;
 
     --couleur_texte_clair: white;
 }
@@ -15,7 +15,7 @@
 
 body{
     /* style */
-    background: url(images/fond.png) no-repeat;
+    background: url(images/fond.jpg) no-repeat;
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
