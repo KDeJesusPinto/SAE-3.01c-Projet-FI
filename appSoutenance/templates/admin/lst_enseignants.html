@@ -1,5 +1,21 @@
 {% extends "admin/base_admin.html" %}
 
+{% with messages = get_flashed_messages(with_categories=true) %} 
+        {% if messages%} 
+            <div class="boite_verticale" style="width: 100%; padding: 0;">
+                {% for category, message in messages %}
+                    <div class="glass alert alert-{{ category }} alert-dismissible fade show custom-alert" role="alert">
+                        <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} grande_icone" style="font-size: 1.2em !important;"></i>
+                        <span style="flex-grow: 1;">{{ message }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                {% endfor %} 
+            </div>
+        {% endif %} 
+    {% endwith %}
+
 {% block content %}
     <div class="boite_horizontale">
         <aside id="en_haut" id="filtre_liste_admin">
@@ -27,7 +43,7 @@
             <div class="glass" id="liste_etu">
             <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 50px 1.2fr 0.7fr 2fr 1.5fr 50px 1fr; align-items: center; gap: 10px;">
                     <i class="fas fa-user-circle grande_icone"></i>
-                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;">{{ res.enseignant.nom_enseignant }} {{ res.enseignant.prenom_enseignant }}</p>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;">{{ res.enseignant.prenom_enseignant }} {{ res.enseignant.nom_enseignant }}</p>
                     <p class="pliste" style="border-right: 2px solid; padding-right: 10px;"> Tutorés : {{ res.nb_tutores }}</p>
                     <p class="pliste" style="border-right: 2px solid; padding-right: 10px;"> Soutenances de tutorés posées : {{ res.nb_soutenances_en_tuteur }} / {{ res.nb_tutores }} </p>
                     <p class="pliste"> Soutenances en candide : {{ res.nb_candide }} </p>

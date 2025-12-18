@@ -781,8 +781,9 @@ def liste_etu_admin():
 
 
 @app.route('/admin/liste+soutenances+candides/')
+@app.route('/admin/liste+soutenances+candides/<int:id>/')
 @login_required
-def liste_soutenances_candides_admin():
+def liste_soutenances_candides_admin(id=None):
     admin = current_user
     if not isinstance(admin, Admini):
         flash("Accès réservé aux administrateurs.", "warning")
@@ -816,7 +817,32 @@ def liste_soutenances_candides_admin():
                            accueil="accueil_admin",
                            title="Liste soutenances sans candide",
                            personne=admin,
-                           resultats=resultats)
+                           resultats=resultats,
+                           id_enseignant=id)
+
+@app.route('/admin/ajouter_candide/<int:id_ens>/<int:id_sout>/')
+@login_required
+def ajouter_candide_admin(id_ens, id_sout):
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
+    
+    existe = Composer.query.filter_by(id_enseignant=id_ens, id_soutenance=id_sout).first()
+    
+    if not existe:
+        try:
+            nouveau_candide = Composer(id_enseignant=id_ens, id_soutenance=id_sout)
+            db.session.add(nouveau_candide)
+            db.session.commit()
+            flash("Enseignant ajouté au jury avec succès", "success")
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Erreur lors de l'ajout : {e}", "danger")
+    else:
+        flash("Cet enseignant fait déjà partie du jury", "info")
+    
+    return redirect(url_for('liste_ens_admin'))
 
 
 if __name__ == "__main__":
