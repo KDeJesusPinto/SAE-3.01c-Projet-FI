@@ -190,10 +190,10 @@ class MaitreStage(db.Model):
 class Soutenance(db.Model):
     id_soutenance = db.Column(db.Integer, primary_key=True)
     salle = db.Column(db.Integer, nullable=False)
-    nom_bat = db.Column(db.String(50), nullable=False)
+    nom_bat = db.Column(db.String(50), nullable=True)
     dateS = db.Column(db.Date, nullable=False)
     h_debut = db.Column(db.String(5), nullable=False)
-    h_fin = db.Column(db.String(5), nullable=False)
+    h_fin = db.Column(db.String(5), nullable=True)
 
     # 1,1
     id_stage = db.Column(db.Integer,
@@ -201,7 +201,7 @@ class Soutenance(db.Model):
                          unique=True,
                          nullable=False)
 
-    def __init__(self, salle, nom_bat, dateS, h_debut, h_fin, id_stage):
+    def __init__(self, salle, dateS, h_debut, id_stage, h_fin=None, nom_bat=""):
         self.salle = salle
         self.nom_bat = nom_bat
         self.dateS = dateS
@@ -210,7 +210,7 @@ class Soutenance(db.Model):
         self.id_stage = id_stage
 
     def __repr__(self):
-        return f"<La soutenance a lieu le {self.dateS} à {self.h_debut} au batîment {self.nom_bat} {self.salle}>"
+        return f"<La soutenance a lieu le {self.dateS} à {self.h_debut} dans la salle {self.salle}>"
 
 
 class Etudiant(db.Model, UserMixin):

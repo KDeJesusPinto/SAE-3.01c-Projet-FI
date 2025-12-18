@@ -127,10 +127,10 @@ CREATE TABLE SOUTENANCE (
   PRIMARY KEY (id_soutenance),
   id_soutenance INT NOT NULL,
   salle INT,
-  nom_bat VARCHAR(50),
+  nom_bat VARCHAR(50) NULL,
   dateS DATE,
   h_debut VARCHAR(5),
-  h_fin VARCHAR(5),
+  h_fin VARCHAR(5) NULL,
   id_stage INT NOT NULL,
   UNIQUE (id_stage)
 );
