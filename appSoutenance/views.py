@@ -2,7 +2,7 @@ from collections import defaultdict
 from .app import app, db
 from flask import render_template, request, url_for, redirect, flash
 from appSoutenance.models import db,  Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, MaitreStage, Entreprise, Admini
-from sqlalchemy import desc, distinct, func
+from sqlalchemy import desc, asc, distinct, func
 from .importer_csv import importer_etudiants_stages, importer_entreprises
 from flask_login import login_user, logout_user, login_required, current_user
 from appSoutenance.forms import *
@@ -289,51 +289,64 @@ MOIS = {
 
 
 @app.route('/admin/planning/')
+@login_required
 def planning_admin():
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
 
     args = request.args
-    nom_promo = args.get('nom_promo', '')  # BUT2 or BUT3
-    regime = args.get('regime', '')
-    annee_promo = args.get('annee_promo', '')
-    formation_promo = args.get('formation_promo', '')
-    date_soutenance = args.get('date_soutenance', '')
-    heure_soutenance = args.get('heure_soutenance', '')
-    jury_enseignant_id = args.get('jury_enseignant_id', '')
+    nom_promo = args.get('nom_promo')
+    regime = args.get('regime')
+    formation_promo = args.get('formation_promo')
+    date_soutenance = args.get('date_soutenance')
+    heure_soutenance = args.get('heure_soutenance')
+    jury_enseignant_id = args.get('jury_enseignant_id')
+    tri = args.get('trier')
 
     dates_disponibles_dt = db.session.query(distinct(Soutenance.dateS)).order_by(Soutenance.dateS).all()
-    dates_disponibles = [f"{d[0].day} {MOIS[d[0].month]}" for d in dates_disponibles_dt]
+    dates_disponibles = [(d[0].strftime('%Y-%m-%d'), f"{d[0].day} {MOIS[d[0].month]}") for d in dates_disponibles_dt]
+
+
     heures_disponibles = db.session.query(distinct(Soutenance.h_debut)).order_by(Soutenance.h_debut).all()
     heures_disponibles = [h[0] for h in heures_disponibles]
     enseignants_disponibles = Enseignant.query.order_by(Enseignant.nom_enseignant).all()
-    query = Soutenance.query.order_by(Soutenance.dateS, Soutenance.h_debut)
+
+
+    query = Soutenance.query.join(Stage).join(Demarche).join(Etudiant).join(Appartenir).join(Promo)
+
+    # Filtres
+    if nom_promo == "2A":
+        query = query.filter((Promo.nom_promo.like("%BUT2%")) | (Promo.nom_promo.like("%BUT 2%")))
+    if nom_promo == "3A":
+        query = query.filter((Promo.nom_promo.like("%BUT3%")) | (Promo.nom_promo.like("%BUT 3%")))
+
+    if formation_promo:
+        terme = "Informatique" if formation_promo == "Info" else formation_promo
+        query = query.filter(Promo.formation_promo.like(f"%{terme}%"))
+
+    if regime:
+        regime_val = "Formation initiale" if regime == "Initial" else "Formation apprentissage"
+        query = query.filter(Appartenir.regime_etudiant == regime_val)
 
     if date_soutenance:
-        pass
+        query = query.filter(Soutenance.dateS == date_soutenance)
+
     if heure_soutenance:
         query = query.filter(Soutenance.h_debut == heure_soutenance)
+
     if jury_enseignant_id:
         query = query.join(Composer, Soutenance.id_soutenance == Composer.id_soutenance) \
                      .filter(Composer.id_enseignant == jury_enseignant_id)
-       
-    if nom_promo == "BUT2":
-        subquery_stages = subquery_stages.filter((Promo.nom_promo.like("%BUT2%")) | (Promo.nom_promo.like("%BUT 2%")))
 
-    if nom_promo == "BUT3":
-        subquery_stages = subquery_stages.filter((Promo.nom_promo.like("%BUT3")) | (Promo.nom_promo.like("%BUT 3%")))
+    # Tri
+    if tri == "Nom":
+        query = query.order_by(Etudiant.nom_etudiant, Etudiant.prenom_etudiant)
+    else:
+        query = query.order_by(asc(Soutenance.dateS), asc(Soutenance.h_debut))
 
-    if regime:
-        regime = "Initiale" if regime == "Initiale" else "Alternance"
-        subquery_stages = subquery_stages.filter(Appartenir.regime_etudiant == regime)
-        
-    if nom_promo:
-        subquery_stages = subquery_stages.filter(Appartenir.nom_promo == nom_promo)
-
-    if formation_promo:
-        subquery_stages = subquery_stages.filter(Promo.formation_promo == formation_promo)
-
-        query = query.filter(Soutenance.id_stage.in_(subquery_stages))
-
-    lesSoutenances = query.all()
+    lesSoutenances = query.distinct().all()
     regroupement = {}
 
     for soutenance in lesSoutenances:
@@ -360,7 +373,7 @@ def planning_admin():
         if etudiant_lie:
             jour_mois = soutenance.dateS.day
             mois_francais = MOIS[soutenance.dateS.month]
-            date_formatee = f"{jour_mois} {mois_francais}"
+            date_formatee = f"{jour_mois} {mois_francais} {soutenance.dateS.year}"
 
 
             cle_regroupement = f"{soutenance.dateS.strftime('%Y-%m-%d')}-{soutenance.h_debut}-{soutenance.salle}-{membres_jury_noms}"
@@ -372,7 +385,7 @@ def planning_admin():
                     'salle': soutenance.salle,
                     'jury_noms': membres_jury_noms,
                     'nom_promo': promo_etudiant,
-                    'stages': []  # Initialiser la liste des stages/étudiants
+                    'stages': []
                 }
             regroupement[cle_regroupement]['stages'].append({
                 'nom_etudiant': etudiant_lie.nom_etudiant,
@@ -385,14 +398,16 @@ def planning_admin():
                            accueil="accueil_admin",
                            title="Planning", resultats = resultats_regroupes,
                            heures_disponibles = heures_disponibles,
-                           enseignants_disponibles = enseignants_disponibles)
+                           enseignants_disponibles = enseignants_disponibles,
+                           dates_disponibles = dates_disponibles)
 
 HEURE= {
     1: '08:00', 2: '09:00', 3: '10:00', 4: '11:00', 5: '12:00', 6: '13:00',
     7: '14:00'
 }
 
-@app.route('/admin/planning/creation_soutenance/', methods=['GET'])
+@app.route('/admin/planning/creation_soutenance/', methods =["GET", "POST"])
+@login_required
 def creation_soutenance():
 
     createForm = FormSoutenance()
@@ -519,6 +534,7 @@ def valider_jury():
     return redirect(url_for('planning_admin'))
 
 @app.route('/admin/liste+enseignants/<int:id>/')
+@login_required
 def detail_enseignant(id):
     admin = current_user
     if not isinstance(admin, Admini):
@@ -549,6 +565,7 @@ def detail_enseignant(id):
 
 
 @app.route('/admin/liste+etudiants/<int:id>/')
+@login_required
 def detail_etudiant_admin(id):
     admin = current_user
     if not isinstance(admin, Admini):
@@ -583,6 +600,7 @@ def detail_etudiant_admin(id):
 
 
 @app.route('/admin/liste+enseignants/')
+@login_required
 def liste_ens_admin():
     admin = current_user
     if not isinstance(admin, Admini):
@@ -645,6 +663,7 @@ def liste_ens_admin():
 
 
 @app.route('/admin/liste+etudiants/')
+@login_required
 def liste_etu_admin():
     admin = current_user
     if not isinstance(admin, Admini):

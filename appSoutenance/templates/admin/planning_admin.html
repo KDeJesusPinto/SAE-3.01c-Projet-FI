@@ -7,10 +7,9 @@
     <aside id="filtre_liste_admin">
         <select class="combobox" name="nom_promo" id="nom_promo">
             <option value="">Niveau</option>
-            <option value="BUT2" {% if request.args.get('nom_promo') == 'BUT2' %}selected{% endif %}>BUT 2</option>
-            <option value="BUT3" {% if request.args.get('nom_promo') == 'BUT3' %}selected{% endif %}>BUT 3</option>
+            <option value="2A" {% if request.args.get('nom_promo') == '2A' %}selected{% endif %}>2ème année</option>
+            <option value="3A" {% if request.args.get('nom_promo') == '3A' %}selected{% endif %}>3ème année</option>
         </select>
-
         <select class="combobox" name="regime" id="regime">
             <option value="">Régime</option>
             <option value="Initial" {% if request.args.get('regime') == 'Initial' %}selected{% endif %}>Initial</option>
@@ -24,8 +23,8 @@
         </select>
         <select class="combobox" name="date_soutenance" id="jour">
         <option value="">Jour</option>
-        {% for dateS in dates_disponibles %}
-            <option value="{{ dateS }}">{{ dateS }}</option>
+        {% for val, label in dates_disponibles %}
+            <option value="{{ val }}" {% if request.args.get('date_soutenance') == val %}selected{% endif %}>{{ label }}</option>
         {% endfor %}
         </select>
 
@@ -33,7 +32,7 @@
         <select class="combobox" name="heure_soutenance" id="heure">
         <option value="">Heure</option>
         {% for heure_s in heures_disponibles %}
-            <option value="{{ heure_s }}">{{ heure_s }}</option>
+            <option value="{{ heure_s }}" {% if request.args.get('heure_soutenance') == heure_s %}selected{% endif %}>{{ heure_s }}</option>
         {% endfor %}
         </select>
 
@@ -41,15 +40,13 @@
         <select class="combobox" name="jury_enseignant_id" id="jury">
             <option value="">Jury (Enseignant)</option>
             {% for enseignant in enseignants_disponibles %}
-                <option value="{{ enseignant.id_enseignant }}">{{ enseignant.nom_enseignant }} {{ enseignant.prenom_enseignant }}</option>
+                <option value="{{ enseignant.id_enseignant }}" {% if request.args.get('jury_enseignant_id') == enseignant.id_enseignant|string %}selected{% endif %}>{{ enseignant.nom_enseignant }} {{ enseignant.prenom_enseignant }}</option>
             {% endfor %}
         </select>
         <button class="petit_bouton" id="filtrer" type="submit">Filtrer</button>
         <select class="combobox" name="trier" id="trier">
             <option value="">Trier par</option>
-            <option value="Nom">Nom</option>
-            <option value="Annee">Année</option>
-            <option value="Jour">Jour</option>
+            <option value="Nom" {% if request.args.get('trier') == 'Nom' %}selected{% endif %}>Nom</option>
         </select>
     </aside>
 </form>
