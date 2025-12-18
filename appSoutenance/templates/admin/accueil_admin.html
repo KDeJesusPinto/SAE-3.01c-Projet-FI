@@ -1,14 +1,4 @@
 {% extends "admin/base_admin.html" %}
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div style="padding: 10px; margin: 10px; border-radius: 5px; 
-                  background-color: {{ 'lightgreen' if category == 'success' else 'lightcoral' }};">
-        {{ message }}
-      </div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
 
 {% block content %}
     <form method="get" action="{{ url_for('accueil_admin') }}">
@@ -28,6 +18,21 @@
         </div>
     </form>
 
+    {% with messages = get_flashed_messages(with_categories=true) %} 
+        {% if messages%} 
+            <div class="boite_verticale" style="width: 100%; padding: 0;">
+                {% for category, message in messages %}
+                    <div class="glass alert alert-{{ category }} alert-dismissible fade show custom-alert" role="alert">
+                        <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} grande_icone" style="font-size: 1.2em !important;"></i>
+                        <span style="flex-grow: 1;">{{ message }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                {% endfor %} 
+            </div>
+        {% endif %} 
+    {% endwith %}
 
     <div class="boite_verticale" id="contenu_admin">
         <div class="boite_verticale">
@@ -38,11 +43,11 @@
             <div class="boite_horizontale">
                 <div class="glass boite_verticale" id="boite">
                     <h2>STAGE TROUVÉ :<br>{{ nb_stages_trouves }} / {{ nb_etudiants }}</h2>
-                    <a href="{{ url_for('liste_etu_admin') }}" class="petit_bouton" id="bouton_info">Infos</a>
+                    <a href="{{ url_for('liste_etu_admin', situation='Trouvé', **request.args) }}" class="petit_bouton" id="bouton_info">Infos</a>
                 </div>
                 <div class="glass boite_verticale" id="boite">
                     <h2>SOUTENANCE ALTERNANT PRÉVU :<br>{{ nb_soutenances_alternants }} / {{ nb_etudiants_alternants }}</h2>
-                    <a href="{{ url_for('liste_etu_admin') }}" class="petit_bouton" id="bouton_info">Infos</a>
+                    <a href="{{ url_for('liste_etu_admin', regime='Alternant', **request.args) }}" class="petit_bouton" id="bouton_info">Infos</a>
                 </div>
             </div>
         </div>
@@ -56,17 +61,16 @@
             <div class="boite_horizontale">
                 <div class="glass boite_verticale" id="boite">
                     <h2>SOUTENANCES POSÉES PAR TUTEUR :<br>{{ nb_soutenances_posees }} / {{ nb_etudiants }}</h2>
-                    <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" id="bouton_info">Infos</a>
+                    <a href="{{ url_for('liste_ens_admin', soutenance='Soutenance', **request.args) }}" class="petit_bouton" id="bouton_info">Infos</a>
                 </div>
                 <div class="glass boite_verticale" id="boite">
-                    <h2>SOUTENANCE EN ATTENTE DE CANDIDE :<br>/ {{ nb_soutenances_attente_candide }}</h2>
-                    <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" id="bouton_info">Infos</a>
+                    <h2>SOUTENANCE EN ATTENTE DE CANDIDE :<br>{{ nb_soutenances_attente_candide }} / {{ nb_soutenances_posees }}</h2>
+                    <a href="{{ url_for('liste_soutenances_candides_admin')}}" class="petit_bouton" id="bouton_info">Infos</a>
                 </div>
             </div>
         </div>
         
         <div class="boite_horizontale">
-           
             <div class="glass" id="import_form_container">
                 <h3> Importer un fichier CSV</h3>
 
@@ -122,19 +126,14 @@
                         fileNameDisplay.textContent = 'Fichier : ' + fileName;
                     });
                 }
+
+                // Fermeture manuelle des alertes si le JS de Bootstrap n'est pas chargé
+                document.querySelectorAll('.btn-close').forEach(button => {
+                    button.addEventListener('click', function() {
+                        this.closest('.alert').style.display = 'none';
+                    });
+                });
             });
         </script>
-
-        {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-            <div class="alert alert-{{ category if category != 'danger' else 'error' }}" 
-                style="padding: 10px; margin-bottom: 20px; border: 1px solid; border-radius: 5px; 
-                        background-color: {% if category == 'success' %}#d4edda{% else %}#f8d7da{% endif %};">
-                {{ message }}
-            </div>
-            {% endfor %}
-        {% endif %}
-        {% endwith %}
     </div>
 {% endblock %}

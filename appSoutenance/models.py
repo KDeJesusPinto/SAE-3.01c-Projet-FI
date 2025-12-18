@@ -123,9 +123,8 @@ class Stage(db.Model):
                           db.ForeignKey("maitre_stage.id_maitre"),
                           nullable=True)
     maitre_stage = db.relationship("MaitreStage",
-                                   backref=db.backref("stage",
-                                                      lazy="select",
-                                                      uselist=False))
+                                   backref=db.backref("stages",
+                                                      lazy="select"))
 
     # 0,1
     # id_soutenance = db.Column(db.Integer, db.ForeignKey("soutenance.id_soutenance"), unique = True, nullable = True)
@@ -211,7 +210,7 @@ class Soutenance(db.Model):
         self.id_stage = id_stage
 
     def __repr__(self):
-        return f"<La soutenance a lieu le {self.date} à {self.h_debut} au batîment {self.nom_bat} {self.salle}>"
+        return f"<La soutenance a lieu le {self.dateS} à {self.h_debut} au batîment {self.nom_bat} {self.salle}>"
 
 
 class Etudiant(db.Model, UserMixin):
