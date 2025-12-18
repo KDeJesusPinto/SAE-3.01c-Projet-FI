@@ -1,16 +1,14 @@
 {% extends "enseignant/base_enseignant.html" %}
 
 {% block content %}
-    <div class="boite_verticale">
+    <div class="boite_verticale" id="accueil_enseignant">
         <div class="boite_verticale">
             <div class="boite_horizontale">
                 <h1>Tutorés</h1>
                 <select name="filtre" id="filtre_accueil_enseignant" class="choix">
                     <option value="Filtres">Filtres</option>
                 </select>
-                <i class="fas fa-search petite_icone"></i>
-                <div class="boite_verticale">
-                </div>
+                <i class="fas fa-search grande_icone"></i>
             </div>
             <div class="boite_horizontale">
                 <div class="glass tutore_accueil">
@@ -18,11 +16,11 @@
                         <h2>john doe</h2>
                     </div>
                     <div class="boite_horizontale">
-                        <i class="far fa-clipboard"></i>
-                        <p>état:</p>
+                        <i class="fas fa-clipboard petite_icone"></i>
+                        <p>État:</p>
                     </div>
                     <div class="boite_horizontale">
-                        <i class="far fa-calendar-alt"></i>
+                        <i class="fas fa-calendar-alt petite_icone"></i>
                         <p>8:15</p>
                     </div>
                 </div>
@@ -31,11 +29,11 @@
                         <h2>john doe</h2>
                     </div>
                     <div class="boite_horizontale">
-                        <i class="far fa-clipboard"></i>
-                        <p>état:</p>
+                        <i class="fas fa-clipboard petite_icone"></i>
+                        <p>État:</p>
                     </div>
                     <div class="boite_horizontale">
-                        <i class="far fa-calendar-alt"></i>
+                        <i class="fas fa-calendar-alt petite_icone"></i>
                         <p>8:15</p>
                     </div>
                 </div>
@@ -44,11 +42,11 @@
                         <h2>john doe</h2>
                     </div>
                     <div class="boite_horizontale">
-                        <i class="far fa-clipboard"></i>
-                        <p>état:</p>
+                        <i class="fas fa-clipboard petite_icone"></i>
+                        <p>État:</p>
                     </div>
                     <div class="boite_horizontale">
-                        <i class="far fa-calendar-alt"></i>
+                        <i class="fas fa-calendar-alt petite_icone"></i>
                         <p>8:15</p>
                     </div>
                 </div>
@@ -57,11 +55,11 @@
                         <h2>john doe</h2>
                     </div>
                     <div class="boite_horizontale">
-                        <i class="far fa-clipboard"></i>
-                        <p>état:</p>
+                        <i class="fas fa-clipboard petite_icone"></i>
+                        <p>État:</p>
                     </div>
                     <div class="boite_horizontale">
-                        <i class="far fa-calendar-alt"></i>
+                        <i class="fas fa-calendar-alt petite_icone"></i>
                         <p>8:15</p>
                     </div>
                 </div>
@@ -76,10 +74,30 @@
                         <option value="2éme année">2éme année</option>
                     </select>
                 </div>
-                <div class="boite_horizontale">
-                    <div class="glass planning_accueil">
+                <div class="boite_horizontale" id="planning_accueil">
+                    <div class="glass">
                         <p>25/07</p>
-                        <div class="dark_planning_accueil">
+                        <div class="petit_bouton">
+                            <div class="boite_horizontale">
+                               <div class="boite_verticale">
+                                    <p>8:00</p>
+                                    <p>9:00</p>
+                                </div>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <p>I202</p> 
+                                </div>
+                        </div>
+                        <div class="petit_bouton">
+                            <div class="boite_horizontale">
+                               <div class="boite_verticale">
+                                    <p>8:00</p>
+                                    <p>9:00</p>
+                                </div>
+                                <i class="fas fa-map-marker-alt"></i>
+                                <p>I202</p> 
+                                </div>
+                        </div>
+                        <div class="petit_bouton">
                             <div class="boite_horizontale">
                                <div class="boite_verticale">
                                     <p>8:00</p>
@@ -90,10 +108,13 @@
                                 </div>
                         </div>
                     </div>
-                    <div class="glass planning_accueil">
+                    <div class="glass">
                         <p>26/07</p>
+                        <p>
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Est dolor enim odit tempora, suscipit officia. Nostrum, iusto delectus quod sapiente expedita blanditiis. Qui corporis repellat similique deleniti est. Nobis veniam voluptate quasi totam fuga facere architecto! Magnam odit eveniet numquam, ipsa cumque, impedit recusandae voluptates tempora nulla dolore et repellat ipsum facilis quasi! Quia recusandae illum ullam ea, quis quidem. Voluptas assumenda laudantium neque? Molestias alias hic nemo, aspernatur culpa amet modi, perferendis facere saepe odit asperiores velit? Sed provident culpa, repudiandae repellat aperiam consequuntur! Beatae odit consequatur quasi voluptates? Quae ut eius vitae cum eos possimus numquam dicta totam quo, beatae asperiores delectus, culpa illo inventore ad eveniet facilis illum accusamus saepe voluptatibus sint atque quam? Magnam quae ab rem eveniet ex! Neque cumque magnam provident amet nihil voluptatibus reiciendis sed doloremque, excepturi repudiandae. Excepturi ipsam deserunt quas consequatur dolor dolorem est recusandae, at quod culpa enim. Dicta sit fugit qui minus quis dignissimos eaque incidunt dolore iusto vitae, aspernatur nihil expedita magni distinctio nostrum ipsum rem dolorum praesentium saepe iste. Cum esse architecto sit culpa soluta aspernatur, iure eum delectus, facilis laborum vitae quam natus consequatur ad itaque. Totam enim sed quidem dignissimos aut, blanditiis non est dolore.
+                        </p>
                     </div>
-                    <div class="glass planning_accueil">
+                    <div class="glass">
                         <p>27/07</p>
                     </div>
                 </div>
@@ -103,23 +124,19 @@
                     <h1>soutenance des BUT3</h1>
                 </div>
                 <div class="boite_horizontale">
-                    <div class="glass soutBUT3_accueil">
-                    <h2>soutenance posées</h2>
-                    <h2>/</h2>
-                        <div class="boite_verticale">
-                            <a href="{{ url_for(accueil) }}" id="glass_fleche_nav">
-                              <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
+                    <div class="glass soutBUT3_accueil boite_verticale">
+                    <h2>Soutenance posées</h2>
+                    <h2>{{ 0 }}/{{ 0 }}</h2>
+                        <a href="{{ url_for(accueil) }}" id="glass_fleche_nav">
+                            <i class="fas fa-arrow-circle-right petite_icone"></i>
+                        </a>
                     </div>
-                    <div class="glass soutBUT3_accueil">
-                        <div class="boite_verticale">
-                            <h2>soutenance en<br />candide choisies</h2>
-                            <h2>/</h2>
-                            <a href="{{ url_for(accueil) }}" id="glass_fleche_nav">
-                              <i class="fas fa-arrow-right"></i>  
-                            </a>
-                        </div>
+                    <div class="glass soutBUT3_accueil boite_verticale">
+                    <h2>Soutenance en candide choisies</h2>
+                    <h2>{{ 0 }}/{{ 0 }}</h2> 
+                    <a href="{{ url_for(accueil) }}" id="glass_fleche_nav">
+                        <i class="fas fa-arrow-circle-right petite_icone"></i>
+                    </a>
                     </div>
                 </div>
             </div>
