@@ -356,7 +356,7 @@ def creation_soutenance():
 
     etudiants_par_tuteur = [[] for _ in range(3)]
     ens_sel = [None] * 3
-    etu_sel = [None] * 3 #COMMENT PK ETU_SEL*3
+    etu_sel = [None] * 3
 
     if date_sel:
         try:
