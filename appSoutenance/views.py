@@ -613,29 +613,23 @@ def liste_soutenances_candides_admin():
         flash("Accès réservé aux administrateurs.", "warning")
         return redirect(url_for("login"))
 
-    soutenances_avec_un_membre_jury = db.session.query(Composer.id_soutenance)\
+    # IDs des soutenances qui ont un jury complet (>= 2 membres)
+    soutenances_jury_complet_ids = db.session.query(Composer.id_soutenance)\
         .group_by(Composer.id_soutenance)\
-        .having(func.count(Composer.id_enseignant) == 1)\
-        .subquery()
+        .having(func.count(Composer.id_enseignant) >= 2)
 
-    requete_soutenances_sans_candide = db.session.query(Soutenance)\
+    # n récupère toutes les soutenances dont l'ID n'est pas dans la liste des complets
+    requete_soutenances_sans_candide = db.session.query(Soutenance, Etudiant, Enseignant, Stage)\
         .join(Stage, Soutenance.id_stage == Stage.id_stage)\
         .join(Demarche, Stage.id_demarche == Demarche.id_demarche)\
         .join(Etudiant, Demarche.id_etudiant == Etudiant.id_etudiant)\
-        .join(Tutorer, Etudiant.id_etudiant == Tutorer.id_etudiant)\
-        .join(Composer, Soutenance.id_soutenance == Composer.id_soutenance)\
-        .filter(Soutenance.id_soutenance.in_(soutenances_avec_un_membre_jury))\
-        .filter(Composer.id_enseignant == Tutorer.id_enseignant)\
+        .outerjoin(Tutorer, Etudiant.id_etudiant == Tutorer.id_etudiant)\
+        .outerjoin(Enseignant, Tutorer.id_enseignant == Enseignant.id_enseignant)\
+        .filter(Soutenance.id_soutenance.notin_(soutenances_jury_complet_ids))\
         .all()
-
+    
     resultats = []
-    for soutenance in requete_soutenances_sans_candide:
-        stage = Stage.query.get(soutenance.id_stage)
-        demarche = Demarche.query.get(stage.id_demarche)
-        etudiant = Etudiant.query.get(demarche.id_etudiant)
-        tutorer = Tutorer.query.filter_by(id_etudiant=etudiant.id_etudiant).first()
-        tuteur = Enseignant.query.get(tutorer.id_enseignant) if tutorer else None
-
+    for soutenance, etudiant, tuteur, stage in requete_soutenances_sans_candide:
         resultats.append({
             'soutenance': soutenance,
             'etudiant': etudiant,

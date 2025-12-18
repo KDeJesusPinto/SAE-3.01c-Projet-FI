@@ -2,17 +2,18 @@
 
 {% block content %}
     <div class="boite_verticale">
+        <h1 id="donnees_soutenances">LISTE DES SOUTENANCES SANS CANDIDE</h1>
+            <div class="boite_verticale" id="contenu_admin">
                 {% if resultats|length == 0 %}
                     <p>Aucune soutenance trouvée</p>
                 {% endif %}
                 {% for res in resultats %}
                 <div class="glass" id="liste_etu">
-                    <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 0.5fr 0.3fr 0.3fr 0.5fr 0.1fr; align-items: center;">
-                        <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.soutenance }}</p>
+                    <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 0.5fr 0.3fr 0.3fr 0.5fr; align-items: center;">
+                        <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Soutenance n°{{ res.soutenance.id_soutenance }}</p>
                         <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Etudiant : {{ res.etudiant.civilite_etudiant }} {{ res.etudiant.prenom_etudiant }} {{ res.etudiant.nom_etudiant }}</p>
                         <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Tuteur : {{ res.tuteur.civilite_enseignant}} {{ res.tuteur.prenom_enseignant }} {{ res.tuteur.nom_enseignant }}</p>
                         <p class="pliste" style="padding-right: 5px;">Stage : {{ res.stage.titre_stage }}</p>
-                        <a id="detail" href="{{ url_for('detail_etudiant_admin', id=res.etudiant.id_etudiant) }}"><i class="fas fa-info"></i></a>
                     </div>
                 </div>
                 {% endfor %}
