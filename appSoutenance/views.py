@@ -79,6 +79,7 @@ def accueil_etudiant():
 
 
 @app.route('/etudiant/demarches/')
+@login_required
 def demarches():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
@@ -100,6 +101,7 @@ def demarches():
 
 
 @app.route('/etudiant/stage/')
+@login_required
 def info_stage():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
@@ -112,6 +114,7 @@ def info_stage():
 
 
 @app.route('/etudiant/demarches/new1/')
+@login_required
 def nouvelle_demarche1():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
@@ -124,6 +127,7 @@ def nouvelle_demarche1():
 
 
 @app.route('/etudiant/demarches/new2/')
+@login_required
 def nouvelle_demarche2():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
@@ -136,6 +140,7 @@ def nouvelle_demarche2():
 
 
 @app.route('/etudiant/demarches/new3/')
+@login_required
 def nouvelle_demarche3():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
@@ -148,6 +153,7 @@ def nouvelle_demarche3():
 
 
 @app.route('/etudiant/demarches/resume/')
+@login_required
 def resume_demarche_etudiant():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
@@ -195,6 +201,7 @@ def accueil_enseignant():
 
 
 @app.route('/enseignant/planning/')
+@login_required
 def planning_enseignant():
     enseignant=current_user
     if not isinstance(enseignant, Enseignant):
@@ -211,6 +218,7 @@ MOIS = {
 
 
 @app.route('/enseignant/soutenances/')
+@login_required
 def soutenance_enseignant():
     enseignant=current_user
     if not isinstance(enseignant, Enseignant):
@@ -324,6 +332,7 @@ def soutenance_enseignant():
 
 
 @app.route('/enseignant/liste+etu/')
+@login_required
 def liste_etu_enseignant():
     num_personne = request.args.get('num_personne')
     enseignant=current_user
@@ -611,6 +620,10 @@ def creation_soutenance():
     """Page de création de soutenance pour les administrateurs"""
 
     createForm = FormSoutenance()
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
 
     date_sel = request.args.get('dateS')
     heure_sel = request.args.get('h_debut')
@@ -673,8 +686,13 @@ def creation_soutenance():
     )
 
 @app.route('/soutenance/valider', methods=['POST'])
+@login_required
 def valider_jury():
     """Valider le jury d'une soutenance et l'insérer en base de données"""
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
 
     print("--- TENTATIVE D'INSERTION ---")
     print(f"Formulaire reçu : {request.form}")
@@ -801,7 +819,7 @@ def detail_enseignant(id):
 
 @app.route('/admin/liste+etudiants/<int:id>/')
 @login_required
-def detail_etudiant_admin(id) -> str:
+def detail_etudiant_admin(id):
     """Page de détail d'un étudiant pour les administrateurs
 
     Args:
