@@ -1,0 +1,12 @@
+[run]
+source = appSoutenance
+branch = True
+omit =
+    appSoutenance/data/*
+    appSoutenance/commands.py
+    appSoutenance/tests/*
+    appSoutenance/__init__.py
+
+[report]
+show_missing = True
+ignore_errors = True
