@@ -1,5 +1,15 @@
-from .app import db
+from .app import db, login_manager
+from flask_login import UserMixin
 
+@login_manager.user_loader
+def load_user(user_id):
+    if user_id.startswith("ETU_"):
+        return Etudiant.query.get(int(user_id.split("_")[1]))
+    elif user_id.startswith("ENS_"):
+        return Enseignant.query.get(int(user_id.split("_")[1]))
+    elif user_id.startswith("ADM_"):
+        return Admini.query.get(user_id.split("_")[1])
+    return None
 
 class Entreprise(db.Model):
     id_entreprise = db.Column(db.Integer, primary_key=True)
@@ -111,12 +121,10 @@ class Stage(db.Model):
     # 0,1
     id_maitre = db.Column(db.Integer,
                           db.ForeignKey("maitre_stage.id_maitre"),
-                          unique=True,
                           nullable=True)
     maitre_stage = db.relationship("MaitreStage",
-                                   backref=db.backref("stage",
-                                                      lazy="select",
-                                                      uselist=False))
+                                   backref=db.backref("stages",
+                                                      lazy="select"))
 
     # 0,1
     # id_soutenance = db.Column(db.Integer, db.ForeignKey("soutenance.id_soutenance"), unique = True, nullable = True)
@@ -182,10 +190,10 @@ class MaitreStage(db.Model):
 class Soutenance(db.Model):
     id_soutenance = db.Column(db.Integer, primary_key=True)
     salle = db.Column(db.Integer, nullable=False)
-    nom_bat = db.Column(db.String(50), nullable=False)
+    nom_bat = db.Column(db.String(50), nullable=True)
     dateS = db.Column(db.Date, nullable=False)
     h_debut = db.Column(db.String(5), nullable=False)
-    h_fin = db.Column(db.String(5), nullable=False)
+    h_fin = db.Column(db.String(5), nullable=True)
 
     # 1,1
     id_stage = db.Column(db.Integer,
@@ -193,7 +201,7 @@ class Soutenance(db.Model):
                          unique=True,
                          nullable=False)
 
-    def __init__(self, salle, nom_bat, dateS, h_debut, h_fin, id_stage):
+    def __init__(self, salle, dateS, h_debut, id_stage, h_fin=None, nom_bat=""):
         self.salle = salle
         self.nom_bat = nom_bat
         self.dateS = dateS
@@ -206,7 +214,7 @@ class Soutenance(db.Model):
 
 
 
-class Etudiant(db.Model):
+class Etudiant(db.Model, UserMixin):
     id_etudiant = db.Column(db.Integer, primary_key=True)
     nom_etudiant = db.Column(db.String(100), nullable=False)
     prenom_etudiant = db.Column(db.String(100), nullable=False)
@@ -214,6 +222,11 @@ class Etudiant(db.Model):
     date_naissance = db.Column(db.Date, nullable=False)
     telephone_etudiant = db.Column(db.String(15))
     email_etudiant = db.Column(db.String(200))
+    login_etudiant = db.Column(db.String(100))
+    pwd_etudiant = db.Column(db.String(100))
+    
+    def get_id(self):
+        return f"ETU_{self.id_etudiant}"
 
     # 0,N
     promos = db.relationship('Promo',
@@ -226,13 +239,18 @@ class Etudiant(db.Model):
                  civilite_etudiant,
                  date_naissance,
                  telephone_etudiant=None,
-                 email_etudiant=None):
+                 email_etudiant=None,
+                 login_etudiant = None,
+                 pwd_etudiant = None
+                 ):
         self.nom_etudiant = nom_etudiant
         self.prenom_etudiant = prenom_etudiant
         self.civilite_etudiant = civilite_etudiant
         self.date_naissance = date_naissance
         self.telephone_etudiant = telephone_etudiant
         self.email_etudiant = email_etudiant
+        self.login_etudiant = login_etudiant
+        self.pwd_etudiant = pwd_etudiant
 
     def __repr__(self):
         return f"<Etudiant {self.nom_etudiant} {self.prenom_etudiant}>"
@@ -241,7 +259,7 @@ class Etudiant(db.Model):
 class Promo(db.Model):
     nom_promo = db.Column(db.String(100), primary_key=True)
     annee_promo = db.Column(db.Integer, primary_key=True)
-    formation_promo = db.Column(db.String(100), nullable=False)
+    formation_promo = db.Column(db.String(100), primary_key=True)
 
     # 0,1
     id_enseignant = db.Column(db.Integer,
@@ -289,18 +307,25 @@ class Appartenir(db.Model):
         return f"<Etudiant : {self.id_etudiant} appartient a {self.nom_promo} en {self.annee_promo}>"
 
 
-class Enseignant(db.Model):
+class Enseignant(db.Model, UserMixin):
     id_enseignant = db.Column(db.Integer, primary_key=True)
     nom_enseignant = db.Column(db.String(100))
     prenom_enseignant = db.Column(db.String(100))
     civilite_enseignant = db.Column(db.String(10))
     email_enseignant = db.Column(db.String(200))
+    login_enseignant = db.Column(db.String(100))
+    pwd_enseignant = db.Column(db.String(100))
 
-    def __init__(self, nom, prenom, civilite, email):
+    def get_id(self):
+        return f"ENS_{self.id_enseignant}"
+
+    def __init__(self, nom, prenom, civilite, email, login_enseignant, pwd_enseignant):
         self.nom_enseignant = nom
         self.prenom_enseignant = prenom
         self.civilite_enseignant = civilite
         self.email_enseignant = email
+        self.login_enseignant = login_enseignant
+        self.pwd_enseignant = pwd_enseignant
 
     def __repr__(self):
         return f"<Enseignant : {self.id_enseignant} {self.civilite_enseignant} {self.nom_enseignant} {self.prenom_enseignant} {self.email_enseignant}>"
@@ -329,7 +354,7 @@ class Jury(db.Model):
         self.id_soutenance = id_soutenance
 
     def __repr__(self):
-        return f"<Le jury pour la soutenance {self.id_soutenance} le {self.date_jury} a {self.heure_jury} pendant {self.duree_jury} minutes>"
+        return f"<Le jury pour la soutenance {self.id_soutenance} le {self.date_jury} a {self.h_jury} pendant {self.duree_jury} minutes>"
 
 
 class Composer(db.Model):
@@ -374,3 +399,45 @@ class Tutorer(db.Model):
         self.id_enseignant = id_enseignant
         self.id_etudiant = id_etudiant
         self.annee = annee
+
+class Admini(db.Model, UserMixin):
+    id_admin = db.Column(db.String(10), primary_key=True)
+    nom_admin = db.Column(db.String(100))
+    prenom_admin = db.Column(db.String(100))
+    login_admin = db.Column(db.String(100))
+    pwd_admin = db.Column(db.String(100))
+
+    def get_id(self):
+        return f"ADM_{self.id_admin}"
+
+    def __init__(self, id_admin,  nom_admin, prenom_admin, login_admin, pwd_admin):
+        self.id_admin = id_admin
+        self.nom_admin = nom_admin
+        self.prenom_admin = prenom_admin
+        self.login_admin = login_admin
+        self.pwd_admin = pwd_admin
+
+
+    def __repr__(self):
+        return f"<Admini : {self.id_admin} {self.nom_admin} {self.prenom_admin} {self.login_admin}>"
+   
+class Assembler(db.Model):
+    __tablename__ = 'ASSEMBLER'
+
+
+    id_jury = db.Column(db.Integer,
+                        db.ForeignKey("jury.id_jury"),
+                        primary_key=True)
+   
+    id_admin = db.Column(db.String(42),
+                         db.ForeignKey("admini.id_admin"),
+                         primary_key=True)
+
+
+    admini = db.relationship("Admini", backref=db.backref("jury_compositions", lazy="dynamic"))
+    jury = db.relationship("Jury", backref=db.backref("admin_compositions", lazy="dynamic"))
+
+
+    def __init__(self, id_jury, id_admin):
+        self.id_jury = id_jury
+        self.id_admin = id_admin

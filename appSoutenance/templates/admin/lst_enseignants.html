@@ -1,34 +1,39 @@
 {% extends "admin/base_admin.html" %}
 
+{% with messages = get_flashed_messages(with_categories=true) %} 
+        {% if messages%} 
+            <div class="boite_verticale" style="width: 100%; padding: 0;">
+                {% for category, message in messages %}
+                    <div class="glass alert alert-{{ category }} alert-dismissible fade show custom-alert" role="alert">
+                        <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} grande_icone" style="font-size: 1.2em !important;"></i>
+                        <span style="flex-grow: 1;">{{ message }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                {% endfor %} 
+            </div>
+        {% endif %} 
+    {% endwith %}
+
 {% block content %}
     <div class="boite_horizontale">
-        <aside id="filtre_liste_admin">
-            <select class="combobox" name="Année" id="annee">
-                <option value="Année">Année</option>
-                <option value="2A">2ème année</option>
-                <option value="3A">3ème année</option>
-            </select>
-            <select class="combobox" name="Formation" id="formation">
-                <option value="Formation">Formation</option>
-                <option value="Info">Informatique</option>
-                <option value="Chimie">Chimie</option>
-                <option value="GEA">GEA</option>
-            </select>
-            <select class="combobox" name="Groupe" id="groupe">
-                <option value="Groupe">Groupe</option>
-                <option value="Groupe 1">Groupe 1</option>
-                <option value="Groupe 2">Groupe 2</option>
-                <option value="Groupe 3">Groupe 3</option>
-                <option value="Groupe 4">Groupe 4</option>
-            </select>
-            <select class="combobox" name="Situation" id="situation">
-                <option value="Situation">Situation</option>
-                <option value="Trouvé">Trouvé</option>
-                <option value="En cours">En cours</option>
-            </select>
-            <button class="petit_bouton" id="filtrer">Filtrer</button>
+        <aside id="en_haut" id="filtre_liste_admin">
+            <form method="get">
+                <a href="{{ url_for('accueil_admin') }}" class="petit_bouton" style="font-size: 0.7em; align-items: center; display: block; margin: 12px auto; margin-bottom:10%; width: 30%;"><i class="fas fa-code"></i> Retour</a>
+                <select class="combobox" name="soutenance" id="soutenance">
+                    <option value="">Soutenance</option>
+                    <option value="Soutenance" {{ 'selected' if request.args.get('soutenance') == 'Soutenance' else '' }}>Soutenance posées</option>
+                    <option value="NonSoutenance" {{ 'selected' if request.args.get('soutenance') == 'NonSoutenance' else '' }}>Soutenance non posées</option>
+                </select>
+                <select class="combobox" name="candide" id="candide">
+                    <option value="">Candide</option>
+                    <option value="Candide" {{ 'selected' if request.args.get('candide') == 'Candide' else '' }}>Soutenance candide posées</option>
+                    <option value="NonCandide" {{ 'selected' if request.args.get('candide') == 'NonCandide' else '' }}>Soutenances candide non posées</option>
+                </select>
+                <button class="petit_bouton" id="filtrer" type="submit">Appliquer</button>
+            </form>
         </aside>
-
 
         <div class="boite_verticale">
             {% if resultats|length == 0 %}
@@ -36,14 +41,14 @@
             {% endif %}
             {% for res in resultats %}
             <div class="glass" id="liste_etu">
-                <div class="boite_horizontale info-grid">
-                    <i id="user-icon" class="fas fa-user-circle"></i>
-                    <p class="pliste">{{ res.enseignant.nom_enseignant }} {{ res.enseignant.prenom_enseignant }} |</p>
-                    <p class="pliste"></p>
-                    <p class="pliste"> Tutorés : {{ res.nb_tutores }} |</p>
-                    <p class="pliste"> Assiste à soutenance : </p> <!--nombre de soutenances posées sur nombre de soutenances total -->
+            <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 50px 1.2fr 0.7fr 2fr 1.5fr 50px 1fr; align-items: center; gap: 10px;">
+                    <i class="fas fa-user-circle grande_icone"></i>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;">{{ res.enseignant.prenom_enseignant }} {{ res.enseignant.nom_enseignant }}</p>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;"> Tutorés : {{ res.nb_tutores }}</p>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;"> Soutenances de tutorés posées : {{ res.nb_soutenances_en_tuteur }} / {{ res.nb_tutores }} </p>
+                    <p class="pliste"> Soutenances en candide : {{ res.nb_candide }} </p>
                     <a id="detail" href="{{ url_for('detail_enseignant', id=res.enseignant.id_enseignant) }}"><i class="fas fa-info"></i></a>
-                    <button id="ajout_sout" class="petit_bouton">Ajouter soutenance</button>
+                    <a href="{{ url_for('liste_soutenances_candides_admin', id=res.enseignant.id_enseignant)}}" class="petit_bouton" style="font-size: 0.7em; width: 100%;">Ajouter soutenance</a>
                 </div>
             </div>
             {% endfor %}

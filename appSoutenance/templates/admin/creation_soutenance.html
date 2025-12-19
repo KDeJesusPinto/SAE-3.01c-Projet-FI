@@ -1,0 +1,153 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<h1>Création d'une soutenance</h1>
+<div class="boite_verticale">
+<form role="form" method="GET" action="{{ url_for('creation_soutenance') }}">
+    {{ createForm.hidden_tag() }}
+    
+    <div {% if createForm.nom_enseignant.errors %} class="form-group has-error" {% else %} class="form-group mb-3" {% endif %}>
+
+        <div>
+            {{ createForm.dateS.label }}
+            {{ createForm.dateS(class="form-control", type="date") }}
+        </div>
+
+        <div>
+            <label>Heure de début</label>
+            <select class="form-control" name="h_debut" id="h_debut">
+                <option value="">-- Choisir --</option>
+                {% for h in heure %}
+                    <option value="{{ h }}" {% if h == heure_sel %}selected{% endif %}>{{ h }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit">Vérifier disponibilités</button>
+        
+    </div> 
+    <input type="hidden" name="ens1" value="{{ ens_ids[0] or '' }}">
+    <input type="hidden" name="ens2" value="{{ ens_ids[1] or '' }}">
+    <input type="hidden" name="ens3" value="{{ ens_ids[2] or '' }}">
+    <input type="hidden" name="etu1" value="{{ etu_ids[0] or '' }}">
+    <input type="hidden" name="etu2" value="{{ etu_ids[1] or '' }}">
+    <input type="hidden" name="etu3" value="{{ etu_ids[2] or '' }}">
+
+    {% if date_sel and heure_sel %}
+    <input type="text" name="dateS" value="{{ date_sel }}">
+    <input type="text" name="h_debut" value="{{ heure_sel }}">
+    <input type="submit" value="Confirmer l'ajout de la soutenance" 
+               class="btn btn-success"
+               formmethod="POST" 
+               formaction="{{ url_for('valider_jury') }}">
+    
+    {% for i in range(3) %}
+    <div>
+        <strong>Jury Membre {{ i+1 }}</strong>
+        <br>
+
+        {% if ens_ids[i] %}
+        <div class="alert alert-info">
+        <div style="margin-bottom: 10px;">
+            <strong>Enseignant {{ i+1 }} :</strong> {{ ens_sel[i].nom_enseignant }}
+        
+
+        <a href="{{ url_for('creation_soutenance', 
+                    dateS=date_sel, 
+                    h_debut=heure_sel,
+                    salle=salle,
+                    ens1='' if i==0 else ens_ids[0], 
+                    ens2='' if i==1 else ens_ids[1], 
+                    ens3='' if i==2 else ens_ids[2],
+                    etu1='' if i==0 else etu_ids[0],
+                    etu2='' if i==1 else etu_ids[1],
+                    etu3='' if i==2 else etu_ids[2]) }}" 
+        class="btn btn-sm btn-outline-danger" style="margin-left:10px;">
+        Modifier l'enseignant
+        </a>
+        </div>
+
+        <div>
+        {% if etu_sel[i] %}
+        <strong>Étudiant :</strong> {{ etu_sel[i].nom_etudiant }} {{ etu_sel[i].prenom_etudiant }}
+                <a href="{{ url_for('creation_soutenance', 
+                            dateS=date_sel, h_debut=heure_sel, salle=salle,
+                            ens1=ens_ids[0], ens2=ens_ids[1], ens3=ens_ids[2],
+                            etu1='' if i==0 else etu_ids[0],
+                            etu2='' if i==1 else etu_ids[1],
+                            etu3='' if i==2 else etu_ids[2]) }}" 
+                   class="btn btn-sm btn-outline-warning" style="margin-left:10px;">
+                   Changer l'étudiant
+                </a>
+            {% else %}
+                <p><i>Choisir l'étudiant à évaluer :</i></p>
+                <ul class="list-group">
+                    {% for etu in etudiants_par_tuteur[i] %}
+                        <li class="list-group-item">
+                            <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel, salle=salle,
+                                        ens1=ens_ids[0], ens2=ens_ids[1], ens3=ens_ids[2],
+                                        etu1=etu.id_etudiant if i==0 else etu_ids[0],
+                                        etu2=etu.id_etudiant if i==1 else etu_ids[1],
+                                        etu3=etu.id_etudiant if i==2 else etu_ids[2]) }}">
+                                {{ etu.nom_etudiant }} {{ etu.prenom_etudiant }}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item text-muted">Aucun étudiant disponible pour cet enseignant.</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
+    {% else %}
+        <p>Choisir un enseignant disponible :</p>
+        <div>
+            <ul>
+                {% for e in enseignants_dispos %}
+                {% if e.id_enseignant|string not in ens_ids %}
+                <li>
+                    <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel,
+                        ens1=e.id_enseignant if i==0 else ens_ids[0],
+                        ens2=e.id_enseignant if i==1 else ens_ids[1],
+                        ens3=e.id_enseignant if i==2 else ens_ids[2],
+                        etu1=etu_ids[0],
+                        etu2=etu_ids[1],
+                        etu3=etu_ids[2]) }}">
+                        {{ e.nom_enseignant }}
+                    </a>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+    {% endif %}
+
+        </div>
+    
+    {% endfor %}
+
+    <div>
+        {{ createForm.salle.label }}
+        {{ createForm.salle(class="form-control") }}
+    </div>
+    {% endif %}
+
+    {% if createForm.nom_enseignant.errors %}
+        <ul>
+        {% for e in createForm.nom_enseignant.errors %}
+            <li>{{ e }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div>
+        {% if date_sel and heure_sel%}
+            <input type="submit" value="Ajouter" formmethod="POST" formaction="{{ url_for('valider_jury') }}">
+        {% endif %}
+        <br>
+        <br>
+        <a href="{{ url_for('planning_admin') }}" class="petit_bouton">Retour</a>
+    </div>
+</form>
+</div>
+{% endblock %}
