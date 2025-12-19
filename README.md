@@ -1,5 +1,10 @@
 # SAE-3.01c-Projet-FI
 
+##
+Lien vers les diapositives de la soutenance de bilan de la 3e semaine : 
+
+[Diaporama semaine 3](https://docs.google.com/presentation/d/1qlTzRkh3Dtm6tRGx9_wUHFio4fSNeo7LGqxjkEWp6G4/edit?usp=sharing)
+
 ## Description générale du projet  
 
   Dans le cadre de la SAE3.01c (projet en formation initiale), nous avons développé une application web permettant de gérer les soutenances, la gestion étant actuellement complexe et effectuée avec de multiples tableurs.  
