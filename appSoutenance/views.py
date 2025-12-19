@@ -196,7 +196,11 @@ def accueil_enseignant():
 
 @app.route('/enseignant/planning/')
 def planning_enseignant():
-    enseignant = current_user
+    enseignant=current_user
+    if not isinstance(enseignant, Enseignant):
+        flash("Accès réservé aux enseignants.", "warning")
+        return redirect(url_for("login"))
+    
     return render_template("enseignant/planning_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Planning enseignant")
 
 
