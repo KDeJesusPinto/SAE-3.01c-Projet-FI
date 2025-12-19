@@ -167,7 +167,7 @@ div.boite_horizontale p{
     background-color:var(--couleur_sombre_principale);
     color:var(--couleur_texte_clair);
     text-align: center;
-    cursor: pointer;
+    cursor: url(images/cursor.png), pointer;
 
     /* positionnement */
     padding: 2%;
