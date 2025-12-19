@@ -458,8 +458,7 @@ def accueil_admin():
     requete_soutenances = requete_les_etudiants.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
                                                      .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
                                                      .join(Soutenance, Stage.id_stage == Soutenance.id_stage)\
-                                                     .join(Tutorer, Etudiant.id_etudiant == Tutorer.id_etudiant)\
-                                                     .join(Composer, (Soutenance.id_soutenance == Composer.id_soutenance) & (Composer.id_enseignant == Tutorer.id_enseignant))
+                                                     .join(Tutorer, Etudiant.id_etudiant == Tutorer.id_etudiant)
     nb_soutenances_posees = requete_soutenances.with_entities(Soutenance.id_soutenance).distinct().count()
     nb_tuteurs = db.session.query(Tutorer.id_enseignant).distinct().count()
 
@@ -875,15 +874,13 @@ def liste_ens_admin():
                                            .join(Demarche)\
                                            .join(Stage)\
                                            .join(Soutenance, Stage.id_stage == Soutenance.id_stage)\
-                                           .join(Composer, (Composer.id_enseignant == Enseignant.id_enseignant) & (Composer.id_soutenance == Soutenance.id_soutenance))\
                                            .distinct()
         elif soutenance == "NonSoutenance":
             sq_soutenance = db.session.query(Tutorer.id_enseignant)\
                                       .join(Etudiant)\
                                       .join(Demarche)\
                                       .join(Stage)\
-                                      .join(Soutenance, Stage.id_stage == Soutenance.id_stage)\
-                                      .join(Composer, (Composer.id_enseignant == Tutorer.id_enseignant) & (Composer.id_soutenance == Soutenance.id_soutenance))
+                                      .join(Soutenance, Stage.id_stage == Soutenance.id_stage)
             lesEnseignants = lesEnseignants.join(Tutorer).filter(Enseignant.id_enseignant.notin_(sq_soutenance)).distinct()
 
     # Réccupérer soutenances avec jury non complet : Composer -> Soutenance -> Stage -> Demarche -> Etudiant -> Tutorer -> Enseignant
@@ -915,7 +912,6 @@ def liste_ens_admin():
             .join(Demarche, Stage.id_demarche == Demarche.id_demarche) \
             .join(Etudiant, Demarche.id_etudiant == Etudiant.id_etudiant) \
             .join(Tutorer, (Etudiant.id_etudiant == Tutorer.id_etudiant) & (Tutorer.id_enseignant == enseignant.id_enseignant)) \
-            .filter(Soutenance.id_stage == Stage.id_stage) \
             .count()
 
         nb_candide = db.session.query(Soutenance).join(Composer, Soutenance.id_soutenance == Composer.id_soutenance)\
