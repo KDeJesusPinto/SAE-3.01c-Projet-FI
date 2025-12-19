@@ -156,6 +156,11 @@ div.demarches{
             }
         }
     }
+
+    .tutore_accueil{
+        flex-grow: 0;
+        width: auto;
+    }
 }
 
 #glass_fleche_nav{

@@ -15,7 +15,7 @@
                     <p>Aucun étudiant trouvé.</p>
                 {% endif %}
                 {% for tutore in liste_tutore %}
-                    <div class="glass tutoré_accueil">
+                    <div class="glass tutore_accueil">
                         <div class="boite_horizontale">
                             <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
                         </div>
@@ -74,11 +74,9 @@
                     <div class="glass soutBUT3_accueil boite_verticale">
                         <h2>Soutenances posées</h2>
                         <h2>{{ nb_sout_place }}/{{ 0 }}</h2>
-                        <div class="boite_verticale">
-                            <a href="{{ url_for(accueil) }}" id="glass_fleche_nav">
-                                <i class="fas fa-arrow-circle-right petite_icone"></i>
-                            </a>
-                        </div>
+                        <a href="{{ url_for(accueil) }}" id="glass_fleche_nav">
+                            <i class="fas fa-arrow-circle-right petite_icone"></i>
+                        </a>
                     </div>
                     <div class="glass soutBUT3_accueil boite_verticale">
                         <h2>Soutenances en candide choisies</h2>
