@@ -1,0 +1,94 @@
+{% extends "enseignant/base_enseignant.html" %}
+{% block content %}
+    {% if resultats|length == 0 %}
+        <div class="no-bloc">
+            <p>Aucune soutenance n'a été planifiée pour le moment.</p>
+        </div>
+    {% else %}
+    <div class="boite_horizontale">
+        <form id="filtres" method="get" action="{{ url_for('soutenance_enseignant') }}">
+    <aside id="filtre_liste_admin">
+        <select class="combobox" name="Année" id="annee">
+            <option value="Année">Année</option>
+            <option value="2A">2ème année</option>
+            <option value="3A">3ème année</option>
+        </select>
+        <select class="combobox" name="Formation" id="formation">
+            <option value="Formation">Formation</option>
+            <option value="Info">Informatique</option>
+            <option value="Chimie">Chimie</option>
+            <option value="GEA">GEA</option>
+        </select>
+        <select class="combobox" name="date_soutenance" id="jour">
+        <option value="">Jour</option>
+        {% for date_s in dates_disponibles %}
+            <option value="{{ date_s }}">{{ date_s }}</option>
+        {% endfor %}
+        </select>
+
+
+        <select class="combobox" name="heure_soutenance" id="heure">
+        <option value="">Heure</option>
+        {% for heure_s in heures_disponibles %}
+            <option value="{{ heure_s }}">{{ heure_s }}</option>
+        {% endfor %}
+        </select>
+
+
+        <select class="combobox" name="jury_enseignant_id" id="jury">
+            <option value="">Jury (Enseignant)</option>
+            {% for enseignant in enseignants_disponibles %}
+                <option value="{{ enseignant.id_enseignant }}">{{ enseignant.nom_enseignant }} {{ enseignant.prenom_enseignant }}</option>
+            {% endfor %}
+        </select>
+        <button class="petit_bouton" id="filtrer" type="submit">Filtrer</button>
+        <select class="combobox" name="trier" id="trier">
+            <option value="">Trier par</option>
+            <option value="Nom">Nom</option>
+            <option value="Annee">Année</option>
+            <option value="Jour">Jour</option>
+        </select>
+    </aside>
+</form>
+        <div class="boite_verticale">
+            {% for bloc in resultats %}
+        <div class="glass boite_verticale">
+            <div class="boite_horizontale">
+                <span id="date">{{ bloc.dateS }}</span>
+                <div class="boite_horizontale">
+                    <span class="texte_header" bloc-label="Créneau">{{ bloc.h_debut }}</span>
+                    <span class="texte_header" bloc-label="salle">Salle: {{ bloc.salle }}</span>
+                </div>
+            </div>
+           
+            <p>
+                Jury: {{ bloc.jury_noms }}
+            </p>
+
+
+            <table >
+                <thead>
+                    <tr>
+                        <th>Étudiants</th>
+                        <th>Intitulé du stage</th>
+                        <th>Entreprise</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stage_info in bloc.stages %}
+                        <tr>
+                            <td>{{ stage_info.nom_etudiant }} {{ stage_info.prenom_etudiant }}</td>
+                            <td>{{ stage_info.titre_stage }}</td>
+                            <td>{{ stage_info.nom_entreprise }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endfor %}
+    
+        </div>
+        {% endif %}
+    </div>
+        
+{% endblock %}

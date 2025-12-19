@@ -1,4 +1,6 @@
 from collections import defaultdict
+
+
 from .app import app, db
 from flask import render_template, request, url_for, redirect, flash
 from appSoutenance.models import db,  Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, MaitreStage, Entreprise, Admini, Jury
@@ -6,9 +8,10 @@ from sqlalchemy import desc, asc, distinct, func
 from .importer_csv import importer_etudiants_stages, importer_entreprises
 from flask_login import login_user, logout_user, login_required, current_user
 from appSoutenance.forms import *
-from sqlalchemy import extract
+from sqlalchemy import extract,desc, distinct
 from flask import request, render_template, redirect, url_for
 from datetime import datetime, timedelta
+from .models import db
 
 
 
@@ -130,21 +133,156 @@ def resume_demarche_etudiant():
 @app.route('/enseignant/')
 @login_required
 def accueil_enseignant():
+    enseignant=current_user
+
+    num_personne=current_user.id_enseignant
+    queryListeTutore=Etudiant.query.join(Tutorer,Etudiant.id_etudiant==Tutorer.id_etudiant).filter(Tutorer.id_enseignant==num_personne)
+    query_soutenance_prevue=Soutenance.query.join(Composer,Composer.id_soutenance==Soutenance.id_soutenance).filter(Composer.id_enseignant==num_personne).order_by(Soutenance.dateS,Soutenance.h_debut)
+
+    res_tutore = []
+    res_soutenance=[]
+
+    for etudiant in queryListeTutore:
+        derniere_demarche = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant).order_by(desc(Demarche.date_envoi)).first()
+        soutenance_prevue_tutore=Soutenance.query.join(Stage,Stage.id_stage==Soutenance.id_stage).join(Demarche,Demarche.id_demarche==Stage.id_demarche).join(Etudiant,Etudiant.id_etudiant==Demarche.id_etudiant).filter(Etudiant.id_etudiant==etudiant.id_etudiant).first()
+        res_tutore.append({'etudiant':etudiant,'etat':derniere_demarche.situation if derniere_demarche else "Aucune",'soutenance_tutore':soutenance_prevue_tutore})
+        
+    for soutenance in query_soutenance_prevue:
+        res_soutenance.append({'soutenance':soutenance})
+    res_date=query_soutenance_prevue.distinct(Soutenance.dateS)
     enseignant = current_user
-    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil")
+    nb_soutenance_place=query_soutenance_prevue.count()
+    nb_soutenance_place_tutore=queryListeTutore.count()
+
+    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil",liste_tutore=res_tutore,liste_soutenance=res_soutenance,date_soute=res_date,nb_sout_place=nb_soutenance_place)
 
 
 @app.route('/enseignant/planning/')
 def planning_enseignant():
-    num_personne = request.args.get('num_personne')
-    enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
+    enseignant = current_user
     return render_template("enseignant/planning_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Planning enseignant")
+
+
+MOIS = {
+    1: 'Jan', 2: 'Fév', 3: 'Mar', 4: 'Avr', 5: 'Mai', 6: 'Juin',
+    7: 'Juil', 8: 'Août', 9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Déc'
+}
+
+
+@app.route('/enseignant/soutenances/')
+def soutenance_enseignant():
+
+
+    ##Filtre:
+    args = request.args
+    annee_promo = args.get('annee_promo', '')
+    formation_promo = args.get('formation_promo', '')
+    date_soutenance = args.get('date_soutenance', '')
+    heure_soutenance = args.get('heure_soutenance', '')
+    jury_enseignant_id = args.get('jury_enseignant_id', '')
+
+    num_personne = request.args.get('num_personne')
+    enseignant = current_user
+
+    query = Soutenance.query.order_by(Soutenance.dateS, Soutenance.h_debut)
+    dates_disponibles_dt = db.session.query(distinct(Soutenance.dateS)).order_by(Soutenance.dateS).all()
+    # Conversion au format string lisible (ex: 25 Mar)
+    dates_disponibles = [f"{d[0].day} {MOIS[d[0].month]}" for d in dates_disponibles_dt]
+
+
+    heures_disponibles = db.session.query(distinct(Soutenance.h_debut)).order_by(Soutenance.h_debut).all()
+    heures_disponibles = [h[0] for h in heures_disponibles]
+
+
+    # 1. Filtrer par Jour (date)
+    if date_soutenance:
+        pass
+    if heure_soutenance:
+        query = query.filter(Soutenance.h_debut == heure_soutenance)
+    if jury_enseignant_id:
+        query = query.join(Composer, Soutenance.id_soutenance == Composer.id_soutenance) \
+                     .filter(Composer.id_enseignant == jury_enseignant_id)
+       
+    if annee_promo or formation_promo:
+ 
+        subquery_stages = db.session.query(Stage.id_stage) \
+                              .join(Demarche, Stage.id_demarche == Demarche.id_demarche) \
+                              .join(Etudiant, Demarche.id_etudiant == Etudiant.id_etudiant) \
+                              .join(Entreprise,Entreprise.id_entreprise==Demarche.id_entreprise) \
+                              .join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant)
+        if annee_promo:
+            subquery_stages = subquery_stages.filter(Appartenir.nom_promo == annee_promo)
+        if formation_promo:
+            subquery_stages = subquery_stages.filter(Appartenir.formation_promo == formation_promo)
+
+
+        query = query.filter(Soutenance.id_stage.in_(subquery_stages))
+
+    lesSoutenances = query.all()
+    regroupement = {}
+
+    for soutenance in lesSoutenances:
+        stage = Stage.query.get(soutenance.id_stage)
+
+        entreprise_stage = None
+
+        etudiant_lie = None
+        if stage and stage.demarche:
+            etudiant_lie = stage.demarche.etudiant
+       
+        enseignants_jury = db.session.query(Enseignant).join(Composer).filter(Composer.id_soutenance == soutenance.id_soutenance).all()
+        membres_jury_noms =', '.join( [f"{e.nom_enseignant} {e.prenom_enseignant}" for e in enseignants_jury])
+
+
+        if not membres_jury_noms:
+            membres_jury_noms = "Jury non assigné"
+
+
+        if etudiant_lie:
+            jour_mois = soutenance.dateS.day
+            mois_francais = MOIS[soutenance.dateS.month]
+            date_formatee = f"{jour_mois} {mois_francais}"
+
+            
+
+            cle_regroupement = f"{soutenance.dateS.strftime('%Y-%m-%d')}-{soutenance.h_debut}-{soutenance.salle}-{membres_jury_noms}"
+           
+            if cle_regroupement not in regroupement:
+                # Si la clé n'existe pas, créer une nouvelle entrée (le "bloc")
+                regroupement[cle_regroupement] = {
+                    'dateS': date_formatee,
+                    'h_debut': soutenance.h_debut,
+                    'salle': soutenance.salle,
+                    'jury_noms': membres_jury_noms,
+                    'stages': []  # Initialiser la liste des stages/étudiants
+                }
+
+            if stage and stage.demarche:
+                entreprise_stage=stage.demarche.entreprise
+
+
+            # Ajouter l'étudiant/stage à la liste 'stages' de ce bloc
+            regroupement[cle_regroupement]['stages'].append({
+                'nom_etudiant': etudiant_lie.nom_etudiant,
+                'prenom_etudiant': etudiant_lie.prenom_etudiant,
+                'titre_stage': stage.titre_stage if stage else "Titre de stage non trouvé",
+                'nom_entreprise': entreprise_stage.nom_entreprise if entreprise_stage else "entreprise non trouvé"
+            })      
+
+    resultats_regroupes = list(regroupement.values())
+    return render_template("enseignant/soutenance_enseignant.html",
+                           accueil="accueil_enseignant",personne=enseignant,
+                           heures_disponibles = heures_disponibles,
+                           title="soutenance", resultats = resultats_regroupes)
+
+
+
 
 
 @app.route('/enseignant/liste+etu/')
 def liste_etu_enseignant():
     num_personne = request.args.get('num_personne')
-    enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
+    enseignant = current_user
     lesEtudiants = Etudiant.query.all()
     res = []
 
@@ -179,7 +317,8 @@ def liste_etu_enseignant():
             'situation':
                 derniere_demarche.situation if derniere_demarche else "Aucune"
         })
-    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Liste des étudiants",resultats=res)
+    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", title="Liste des étudiants",resultats=res)
+
 
 
 @app.route('/enseignant/liste+etu/etudiant/')
