@@ -9,6 +9,26 @@ from .models import *
 
 
 @app.cli.command()
+def resetdb():
+    """Réinitialise la base de données à son état initial"""
+    db.drop_all()
+    db.create_all()
+
+    sql_file = Path("appSoutenance/data/insertion.sql")
+    if sql_file.exists():
+        with open(sql_file, "r", encoding="utf-8") as f:
+            sql_script = f.read()
+            for statement in sql_script.split(";"):
+                statement = statement.strip()
+                if statement:
+                    db.session.execute(text(statement))
+        db.session.commit()
+        lg.warning("Base de données réinitialisée avec succès !")
+    else:
+        lg.warning("Tables créées mais aucun fichier insertion.sql trouvé pour les données initiales")
+
+
+@app.cli.command()
 @click.argument('filename')
 def loaddb(filename):
     """Crée les tables et importe les données depuis un CSV."""
@@ -186,10 +206,15 @@ def importer_entreprises(fichier):
         lg.warning(f"{fichier.name} : {ajout} entreprises ajoutées.")
 
 @app.cli.command()
-def test():
+@click.pass_context
+def test(ctx):
     """Lance les tests unitaires avec mesure de couverture."""
     import pytest
     import sys
     args = ["--cov=appSoutenance", "--cov-report=term-missing", "appSoutenance/tests"]
     errno = pytest.main(args)
+
+    # Réinitialisation automatique de la base de données de développement après les tests
+    ctx.invoke(resetdb)
+
     sys.exit(errno)
