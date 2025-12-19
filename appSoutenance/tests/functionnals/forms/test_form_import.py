@@ -1,5 +1,6 @@
 from flask import Flask
-from appSoutenance.forms import ImportForm, db
+from appSoutenance.forms import ImportForm
+from appSoutenance.models import db
 
 
 def test_import_form_invalide(testapp: Flask):
