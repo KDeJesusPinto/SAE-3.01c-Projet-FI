@@ -34,24 +34,17 @@
     <input type="hidden" name="etu3" value="{{ etu_ids[2] or '' }}">
 
     {% if date_sel and heure_sel %}
-    <input type="text" name="dateS" value="{{ date_sel }}">
-    <input type="text" name="h_debut" value="{{ heure_sel }}">
-    <input type="submit" value="Confirmer l'ajout de la soutenance" 
-               class="btn btn-success"
-               formmethod="POST" 
-               formaction="{{ url_for('valider_jury') }}">
     
     {% for i in range(3) %}
-    <div>
-        <strong>Jury Membre {{ i+1 }}</strong>
+    <div class="glass" style="margin-bottom:20px; padding-bottom: 8%; width: 100%; position: relative;">
+        <p style="text-align: center;"><strong>Jury Membre {{ i+1 }}</strong></p>
         <br>
 
         {% if ens_ids[i] %}
         <div class="alert alert-info">
         <div style="margin-bottom: 10px;">
-            <strong>Enseignant {{ i+1 }} :</strong> {{ ens_sel[i].nom_enseignant }}
+            <p><strong>Enseignant {{ i+1 }} :</strong></p> {{ ens_sel[i].nom_enseignant }}
         
-
         <a href="{{ url_for('creation_soutenance', 
                     dateS=date_sel, 
                     h_debut=heure_sel,
@@ -62,25 +55,25 @@
                     etu1='' if i==0 else etu_ids[0],
                     etu2='' if i==1 else etu_ids[1],
                     etu3='' if i==2 else etu_ids[2]) }}" 
-        class="btn btn-sm btn-outline-danger" style="margin-left:10px;">
-        Modifier l'enseignant
+        class="petit_bouton" style="margin-left:10px; font-size:0.7em;">
+        Changer d'enseignant
         </a>
         </div>
 
         <div>
         {% if etu_sel[i] %}
-        <strong>Étudiant :</strong> {{ etu_sel[i].nom_etudiant }} {{ etu_sel[i].prenom_etudiant }}
+        <p><strong>Étudiant :</strong></p> {{ etu_sel[i].nom_etudiant }} {{ etu_sel[i].prenom_etudiant }}
                 <a href="{{ url_for('creation_soutenance', 
                             dateS=date_sel, h_debut=heure_sel, salle=salle,
                             ens1=ens_ids[0], ens2=ens_ids[1], ens3=ens_ids[2],
                             etu1='' if i==0 else etu_ids[0],
                             etu2='' if i==1 else etu_ids[1],
                             etu3='' if i==2 else etu_ids[2]) }}" 
-                   class="btn btn-sm btn-outline-warning" style="margin-left:10px;">
+                   class="petit_bouton" style="margin-left:10px; font-size:0.7em;">
                    Changer l'étudiant
                 </a>
             {% else %}
-                <p><i>Choisir l'étudiant à évaluer :</i></p>
+                <p style="color:rgb(4, 115, 111)">Choisir l'étudiant à évaluer :</p>
                 <ul class="list-group">
                     {% for etu in etudiants_par_tuteur[i] %}
                         <li class="list-group-item">
@@ -101,7 +94,7 @@
     </div>
 
     {% else %}
-        <p>Choisir un enseignant disponible :</p>
+        <p style="color:rgb(0, 115, 111)">Choisir un enseignant disponible :</p>
         <div>
             <ul>
                 {% for e in enseignants_dispos %}
@@ -125,6 +118,7 @@
         </div>
     
     {% endfor %}
+    </div>
 
     <div>
         {{ createForm.salle.label }}
@@ -144,10 +138,14 @@
         {% if date_sel and heure_sel%}
             <input type="submit" value="Ajouter" formmethod="POST" formaction="{{ url_for('valider_jury') }}">
         {% endif %}
-        <br>
-        <br>
-        <a href="{{ url_for('planning_admin') }}" class="petit_bouton">Retour</a>
+        
     </div>
+    
 </form>
+</div>
+<div>
+    <br>
+    <br>
+    <a href="{{ url_for('planning_admin') }}" class="petit_bouton"><i class="fas fa-code"></i> Retour</a>
 </div>
 {% endblock %}

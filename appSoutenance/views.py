@@ -70,12 +70,21 @@ def sort_id(demarche):
 @login_required
 def accueil_etudiant():
     etudiant = current_user
+    if not isinstance(etudiant, Etudiant):
+        flash("Accès réservé aux étudiants.", "warning")
+        return redirect(url_for("login"))
+    
     lst_demarches = sorted(list(etudiant.demarches), key=sort_id)[:2]
     return render_template("etudiant/accueil_etu.html", accueil="accueil_etudiant", personne=etudiant, title="Accueil", liste_dem=lst_demarches)
 
 
 @app.route('/etudiant/demarches/')
 def demarches():
+    etudiant = current_user
+    if not isinstance(etudiant, Etudiant):
+        flash("Accès réservé aux étudiants.", "warning")
+        return redirect(url_for("login"))
+    
     num_personne = request.args.get('num_personne')
     etudiant = Etudiant.query.get(num_personne)
     #lst_demarches = sorted(list(etudiant.demarches), key=sort_id)
@@ -92,6 +101,11 @@ def demarches():
 
 @app.route('/etudiant/stage/')
 def info_stage():
+    etudiant = current_user
+    if not isinstance(etudiant, Etudiant):
+        flash("Accès réservé aux étudiants.", "warning")
+        return redirect(url_for("login"))
+    
     num_personne = request.args.get('num_personne')
     etudiant = Etudiant.query.filter(Etudiant.id_etudiant==num_personne).one()
     return render_template("etudiant/info_stage_valide.html", accueil="accueil_etudiant", personne=etudiant, title="Mon stage")
@@ -99,6 +113,11 @@ def info_stage():
 
 @app.route('/etudiant/demarches/new1/')
 def nouvelle_demarche1():
+    etudiant = current_user
+    if not isinstance(etudiant, Etudiant):
+        flash("Accès réservé aux étudiants.", "warning")
+        return redirect(url_for("login"))
+    
     num_personne = request.args.get('num_personne')
     etudiant = Etudiant.query.filter(Etudiant.id_etudiant==num_personne).one()
     return render_template("etudiant/nouvelle_demarche1.html", accueil="accueil_etudiant", personne=etudiant, title="Nouvelle démarche")
@@ -106,6 +125,11 @@ def nouvelle_demarche1():
 
 @app.route('/etudiant/demarches/new2/')
 def nouvelle_demarche2():
+    etudiant = current_user
+    if not isinstance(etudiant, Etudiant):
+        flash("Accès réservé aux étudiants.", "warning")
+        return redirect(url_for("login"))
+    
     num_personne = request.args.get('num_personne')
     etudiant = Etudiant.query.filter(Etudiant.id_etudiant==num_personne).one()
     return render_template("etudiant/nouvelle_demarche2.html", accueil="accueil_etudiant", personne=etudiant, title="Nouvelle démarche")
@@ -113,6 +137,11 @@ def nouvelle_demarche2():
 
 @app.route('/etudiant/demarches/new3/')
 def nouvelle_demarche3():
+    etudiant = current_user
+    if not isinstance(etudiant, Etudiant):
+        flash("Accès réservé aux étudiants.", "warning")
+        return redirect(url_for("login"))
+    
     num_personne = request.args.get('num_personne')
     etudiant = Etudiant.query.filter(Etudiant.id_etudiant==num_personne).one()
     return render_template("etudiant/nouvelle_demarche3.html", accueil="accueil_etudiant", personne=etudiant, title="Nouvelle démarche")
@@ -120,6 +149,11 @@ def nouvelle_demarche3():
 
 @app.route('/etudiant/demarches/resume/')
 def resume_demarche_etudiant():
+    etudiant = current_user
+    if not isinstance(etudiant, Etudiant):
+        flash("Accès réservé aux étudiants.", "warning")
+        return redirect(url_for("login"))
+    
     num_personne = request.args.get('num_personne')
     etudiant = Etudiant.query.filter(Etudiant.id_etudiant==num_personne).one()
     return render_template("etudiant/resume_demarche.html", accueil="accueil_etudiant", personne=etudiant, title="Résumé de la démarche")
@@ -134,10 +168,13 @@ def resume_demarche_etudiant():
 @login_required
 def accueil_enseignant():
     enseignant=current_user
+    if not isinstance(enseignant, Enseignant):
+        flash("Accès réservé aux enseignants.", "warning")
+        return redirect(url_for("login"))
 
     num_personne=current_user.id_enseignant
     queryListeTutore=Etudiant.query.join(Tutorer,Etudiant.id_etudiant==Tutorer.id_etudiant).filter(Tutorer.id_enseignant==num_personne)
-    query_soutenance_prevue=Soutenance.query.join(Composer,Composer.id_soutenance==Soutenance.id_soutenance).filter(Composer.id_enseignant==num_personne).order_by(Soutenance.dateS,Soutenance.h_debut)
+    query_soutenance_prevue=Soutenance.query.distinct(Soutenance.id_soutenance).join(Composer,Composer.id_soutenance==Soutenance.id_soutenance).filter(Composer.id_enseignant==num_personne)
 
     res_tutore = []
     res_soutenance=[]
@@ -147,9 +184,15 @@ def accueil_enseignant():
         soutenance_prevue_tutore=Soutenance.query.join(Stage,Stage.id_stage==Soutenance.id_stage).join(Demarche,Demarche.id_demarche==Stage.id_demarche).join(Etudiant,Etudiant.id_etudiant==Demarche.id_etudiant).filter(Etudiant.id_etudiant==etudiant.id_etudiant).first()
         res_tutore.append({'etudiant':etudiant,'etat':derniere_demarche.situation if derniere_demarche else "Aucune",'soutenance_tutore':soutenance_prevue_tutore})
         
-    for soutenance in query_soutenance_prevue:
-        res_soutenance.append({'soutenance':soutenance})
-    res_date=query_soutenance_prevue.distinct(Soutenance.dateS)
+    for soutenance in query_soutenance_prevue.distinct(Soutenance.dateS, Soutenance.h_debut):
+        print(soutenance)
+        res_soutenance.append({'soutenance':soutenance,'date':soutenance.dateS,'heure':soutenance.h_debut,'salle':soutenance.salle})
+    date_soute=query_soutenance_prevue.distinct(Soutenance.dateS)
+    res_date=[]
+    for date in date_soute:
+        if date.dateS not in res_date:
+            res_date.append(date.dateS)
+    print(res_date)
     enseignant = current_user
     nb_soutenance_place=query_soutenance_prevue.count()
     nb_soutenance_place_tutore=queryListeTutore.count()
@@ -171,7 +214,10 @@ MOIS = {
 
 @app.route('/enseignant/soutenances/')
 def soutenance_enseignant():
-
+    enseignant=current_user
+    if not isinstance(enseignant, Enseignant):
+        flash("Accès réservé aux enseignants.", "warning")
+        return redirect(url_for("login"))
 
     ##Filtre:
     args = request.args
@@ -282,7 +328,11 @@ def soutenance_enseignant():
 @app.route('/enseignant/liste+etu/')
 def liste_etu_enseignant():
     num_personne = request.args.get('num_personne')
-    enseignant = current_user
+    enseignant=current_user
+    if not isinstance(enseignant, Enseignant):
+        flash("Accès réservé aux enseignants.", "warning")
+        return redirect(url_for("login"))
+    
     lesEtudiants = Etudiant.query.all()
     res = []
 
@@ -307,7 +357,7 @@ def liste_etu_enseignant():
             'etudiant':
                 etudiant,
             'formation':
-                promo.formatio if promo else "None",
+                promo.formation_promo if promo else "None",
             'annee':
                 promo.annee_promo if promo else "None",
             'promo':
@@ -317,12 +367,17 @@ def liste_etu_enseignant():
             'situation':
                 derniere_demarche.situation if derniere_demarche else "Aucune"
         })
-    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", title="Liste des étudiants",resultats=res)
+    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", title="Liste des étudiants",resultats=res, personne=enseignant)
 
 
 
 @app.route('/enseignant/liste+etu/etudiant/')
 def detail_etudiant_ens():
+    enseignant=current_user
+    if not isinstance(enseignant, Enseignant):
+        flash("Accès réservé aux enseignants.", "warning")
+        return redirect(url_for("login"))
+    
     num_personne = request.args.get('num_personne')
     enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
     return render_template("admin/detail_etudiant_ens.html", accueil="accueil_enseignant", personne=enseignant, title="Detail de l'etudiant")
@@ -336,6 +391,8 @@ def detail_etudiant_ens():
 @app.route('/admin/', methods=['GET', 'POST'])
 @login_required
 def accueil_admin():
+    """Page d'accueil pour les administrateurs"""
+
     unForm = ImportForm()
     admin = current_user
     if not isinstance(admin, Admini):
@@ -430,6 +487,8 @@ MOIS = {
 @app.route('/admin/planning/')
 @login_required
 def planning_admin():
+    """Page de planning pour les administrateurs"""
+
     admin = current_user
     if not isinstance(admin, Admini):
         flash("Accès réservé aux administrateurs.", "warning")
@@ -551,6 +610,7 @@ HEURE= {
 @app.route('/admin/planning/creation_soutenance/', methods =["GET", "POST"])
 @login_required
 def creation_soutenance():
+    """Page de création de soutenance pour les administrateurs"""
 
     createForm = FormSoutenance()
 
@@ -616,6 +676,8 @@ def creation_soutenance():
 
 @app.route('/soutenance/valider', methods=['POST'])
 def valider_jury():
+    """Valider le jury d'une soutenance et l'insérer en base de données"""
+
     print("--- TENTATIVE D'INSERTION ---")
     print(f"Formulaire reçu : {request.form}")
 
@@ -696,6 +758,12 @@ def valider_jury():
 @app.route('/admin/liste+enseignants/<int:id>/')
 @login_required
 def detail_enseignant(id):
+    """Page de détail d'un enseignant pour les administrateurs
+
+    Args:
+        id (int): l'identifiant de l'enseignant
+    """
+
     admin = current_user
     if not isinstance(admin, Admini):
         flash("Accès réservé aux administrateurs.", "warning")
@@ -735,7 +803,13 @@ def detail_enseignant(id):
 
 @app.route('/admin/liste+etudiants/<int:id>/')
 @login_required
-def detail_etudiant_admin(id):
+def detail_etudiant_admin(id) -> str:
+    """Page de détail d'un étudiant pour les administrateurs
+
+    Args:
+        id (int): l'identifiant de l'étudiant
+    """
+
     admin = current_user
     if not isinstance(admin, Admini):
         flash("Accès réservé aux administrateurs.", "warning")
@@ -771,6 +845,7 @@ def detail_etudiant_admin(id):
 @app.route('/admin/liste+enseignants/')
 @login_required
 def liste_ens_admin():
+    """Liste des enseignants pour les administrateurs"""
     admin = current_user
     if not isinstance(admin, Admini):
         flash("Accès réservé aux administrateurs.", "warning")
@@ -858,6 +933,8 @@ def liste_ens_admin():
 @app.route('/admin/liste+etudiants/')
 @login_required
 def liste_etu_admin():
+    """Liste des étudiants pour les administrateurs"""
+
     admin = current_user
     if not isinstance(admin, Admini):
         flash("Accès réservé aux administrateurs.", "warning")
@@ -941,6 +1018,12 @@ def liste_etu_admin():
 @app.route('/admin/liste+soutenances+candides/<int:id>/')
 @login_required
 def liste_soutenances_candides_admin(id=None):
+    """Liste des soutenances sans candide pour les administrateurs
+    
+    Args:
+        id (int|None): l'identifiant de l'enseignant
+    """
+
     admin = current_user
     if not isinstance(admin, Admini):
         flash("Accès réservé aux administrateurs.", "warning")
@@ -980,6 +1063,13 @@ def liste_soutenances_candides_admin(id=None):
 @app.route('/admin/ajouter_candide/<int:id_ens>/<int:id_sout>/')
 @login_required
 def ajouter_candide_admin(id_ens, id_sout):
+    """Ajouter un enseignant en tant que candide d'une soutenance
+
+    Args:
+        id_ens (int): l'identifiant de l'enseignant
+        id_sout (int): l'identifiant de la soutenance
+    """
+    
     admin = current_user
     if not isinstance(admin, Admini):
         flash("Accès réservé aux administrateurs.", "warning")

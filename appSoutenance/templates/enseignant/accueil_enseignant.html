@@ -47,9 +47,9 @@
                     {% endif %}
                     {% for date in date_soute %}
                         <div class="glass">
-                            <p>{{date.dateS}}</p>
+                            <p>{{date}}</p>
                             {% for soutenance in liste_soutenance %}
-                                {% if soutenance.soutenance.dateS==date.dateS %}
+                                {% if soutenance.soutenance.dateS==date %}
                                     <div class="petit_bouton">
                                         <div class="boite_horizontale">
                                             <div class="boite_verticale">
