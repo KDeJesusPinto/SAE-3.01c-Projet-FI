@@ -36,8 +36,8 @@ def importer_etudiants_stages(file_storage):
 
 
         db.session.commit()
-        # lg.warning(f"Importation Étudiants/Stages terminée : {ajout} lignes traitées.")
-        # return True, f"{ajout} lignes d'étudiants et stages importées avec succès."
+        # lg.warning(f"Importation Étudiants/Stages terminée : {ajout} lignes traitées")
+        # return True, f"{ajout} lignes d'étudiants et stages importées avec succès"
         return True, f"{ajout} lignes traitées."
     
     except Exception as e:
@@ -52,8 +52,30 @@ def importer_entreprises(file_storage):
         stream = io.StringIO(content) 
         reader = csv.DictReader(stream)
         ajout = 0
+        for row in reader:
+            nom = (row.get('service_adm_nom_service') or "").strip().upper()
+            ville = (row.get('service_adm_ville_service') or "").strip().upper()
+            if not nom:
+                continue
+            
+            # Eviter les doublons
+            existante = Entreprise.query.filter(
+                db.func.upper(db.func.trim(Entreprise.nom_entreprise)) == nom,
+                db.func.upper(db.func.trim(Entreprise.ville)) == ville).first()
+            
+            if not existante:
+                ent = Entreprise(
+                    nom_entreprise=nom.title(),
+                    adresse=row.get('service_adm_adr1_service') or "Adresse inconnue",
+                    code_postal=row.get('service_adm_cp_service') or "00000",
+                    ville=ville.title(),
+                    secteur="NC",
+                    typeE="NC"
+                )
+                db.session.add(ent)
+                ajout += 1
+
         db.session.commit()
-        lg.warning(f"Importation Entreprises terminée : {ajout} entreprises ajoutées.")
         return True, f"{ajout} entreprises ajoutées avec succès."
     except Exception as e:
         db.session.rollback()
