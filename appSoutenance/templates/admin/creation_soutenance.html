@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Création d'une soutenance</h1>
-
+<div class="boite_verticale">
 <form role="form" method="GET" action="{{ url_for('creation_soutenance') }}">
     {{ createForm.hidden_tag() }}
     
@@ -25,15 +25,21 @@
 
         <button type="submit">Vérifier disponibilités</button>
         
-    </div> {% for i in range(1,4) %}
-        <input type="hidden" name="ens{{i}}" value="{{ ens_ids[i-1] or '' }}">
-        <input type="hidden" name="etu{{i}}" value="{{ etu_ids[i-1] or '' }}">
-    {% endfor %}
+    </div> 
+    <input type="hidden" name="ens1" value="{{ ens_ids[0] or '' }}">
+    <input type="hidden" name="ens2" value="{{ ens_ids[1] or '' }}">
+    <input type="hidden" name="ens3" value="{{ ens_ids[2] or '' }}">
+    <input type="hidden" name="etu1" value="{{ etu_ids[0] or '' }}">
+    <input type="hidden" name="etu2" value="{{ etu_ids[1] or '' }}">
+    <input type="hidden" name="etu3" value="{{ etu_ids[2] or '' }}">
 
     {% if date_sel and heure_sel %}
-    <input type="hidden" name="dateS" value="{{ date_sel }}">
-    <input type="hidden" name="h_debut" value="{{ heure_sel }}">
-    <hr>
+    <input type="text" name="dateS" value="{{ date_sel }}">
+    <input type="text" name="h_debut" value="{{ heure_sel }}">
+    <input type="submit" value="Confirmer l'ajout de la soutenance" 
+               class="btn btn-success"
+               formmethod="POST" 
+               formaction="{{ url_for('valider_jury') }}">
     
     {% for i in range(3) %}
     <div>
@@ -41,56 +47,83 @@
         <br>
 
         {% if ens_ids[i] %}
-        <div>
-            <b>Enseignant sélectionné : </b> {{ens_sel[i].nom_enseignant }}
-            <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel,
-                ens1='' if i==0 else ens_ids[0], 
-                ens2='' if i==1 else ens_ids[1], 
-                ens3='' if i==2 else ens_ids[2]) }}"></a>
-                <br>
-                Étudiant sélectionné : {{ etu_sel[i].nom_etudiant }} {{ etu_sel[i].prenom_etudiant }}
-                    <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel,
-                        ens1=ens_ids[0], ens2=ens_ids[1], ens3=ens_ids[2],
-                        etu1='' if i==0 else etu_ids[0],
-                        etu2='' if i==1 else etu_ids[1],
-                        etu3='' if i==2 else etu_ids[2])}}"></a>
+        <div class="alert alert-info">
+        <div style="margin-bottom: 10px;">
+            <strong>Enseignant {{ i+1 }} :</strong> {{ ens_sel[i].nom_enseignant }}
+        
+
+        <a href="{{ url_for('creation_soutenance', 
+                    dateS=date_sel, 
+                    h_debut=heure_sel,
+                    salle=salle,
+                    ens1='' if i==0 else ens_ids[0], 
+                    ens2='' if i==1 else ens_ids[1], 
+                    ens3='' if i==2 else ens_ids[2],
+                    etu1='' if i==0 else etu_ids[0],
+                    etu2='' if i==1 else etu_ids[1],
+                    etu3='' if i==2 else etu_ids[2]) }}" 
+        class="btn btn-sm btn-outline-danger" style="margin-left:10px;">
+        Modifier l'enseignant
+        </a>
         </div>
 
-        <p>Ses étudiants suivis : </p>
-        <ul>
-            {% if etudiants_par_tuteur[i] %}
-                {% for etu in etudiants_par_tuteur[i] %}
-                    <li><a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel,
+        <div>
+        {% if etu_sel[i] %}
+        <strong>Étudiant :</strong> {{ etu_sel[i].nom_etudiant }} {{ etu_sel[i].prenom_etudiant }}
+                <a href="{{ url_for('creation_soutenance', 
+                            dateS=date_sel, h_debut=heure_sel, salle=salle,
                             ens1=ens_ids[0], ens2=ens_ids[1], ens3=ens_ids[2],
-                            etu1=etu.id_etudiant if i==0 else etu_ids[0],
-                            etu2=etu.id_etudiant if i==1 else etu_ids[1],
-                            etu3=etu.id_etudiant if i==2 else etu_ids[2]) }}">
-                            {{ etu.nom_etudiant }}
-                        </a>
-                    </li>
-                {% endfor %}
+                            etu1='' if i==0 else etu_ids[0],
+                            etu2='' if i==1 else etu_ids[1],
+                            etu3='' if i==2 else etu_ids[2]) }}" 
+                   class="btn btn-sm btn-outline-warning" style="margin-left:10px;">
+                   Changer l'étudiant
+                </a>
+            {% else %}
+                <p><i>Choisir l'étudiant à évaluer :</i></p>
+                <ul class="list-group">
+                    {% for etu in etudiants_par_tuteur[i] %}
+                        <li class="list-group-item">
+                            <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel, salle=salle,
+                                        ens1=ens_ids[0], ens2=ens_ids[1], ens3=ens_ids[2],
+                                        etu1=etu.id_etudiant if i==0 else etu_ids[0],
+                                        etu2=etu.id_etudiant if i==1 else etu_ids[1],
+                                        etu3=etu.id_etudiant if i==2 else etu_ids[2]) }}">
+                                {{ etu.nom_etudiant }} {{ etu.prenom_etudiant }}
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="list-group-item text-muted">Aucun étudiant disponible pour cet enseignant.</li>
+                    {% endfor %}
+                </ul>
             {% endif %}
-        </ul>
+        </div>
+    </div>
 
     {% else %}
         <p>Choisir un enseignant disponible :</p>
         <div>
             <ul>
                 {% for e in enseignants_dispos %}
+                {% if e.id_enseignant|string not in ens_ids %}
                 <li>
                     <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel,
                         ens1=e.id_enseignant if i==0 else ens_ids[0],
                         ens2=e.id_enseignant if i==1 else ens_ids[1],
-                        ens3=e.id_enseignant if i==2 else ens_ids[2]) }}">
+                        ens3=e.id_enseignant if i==2 else ens_ids[2],
+                        etu1=etu_ids[0],
+                        etu2=etu_ids[1],
+                        etu3=etu_ids[2]) }}">
                         {{ e.nom_enseignant }}
                     </a>
                 </li>
+                {% endif %}
                 {% endfor %}
             </ul>
     {% endif %}
 
         </div>
-    <hr>
+    
     {% endfor %}
 
     <div>
@@ -116,4 +149,5 @@
         <a href="{{ url_for('planning_admin') }}" class="petit_bouton">Retour</a>
     </div>
 </form>
+</div>
 {% endblock %}

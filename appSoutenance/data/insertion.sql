@@ -284,7 +284,7 @@ INSERT INTO PROMO (
     )
 VALUES ('BUT2', 2025, 'BUT Informatique', 1),
     ('BUT3', 2025, 'BUT Informatique', 2),
-    ('BUT1', 2025, 'BUT Informatique', 3);
+    ('BUT2', 2025, 'BUT GEA', 3);
 
 INSERT INTO APPARTENIR (
         id_etudiant,
@@ -294,8 +294,14 @@ INSERT INTO APPARTENIR (
     )
 VALUES (1, 'BUT2', 2025, 'Formation initiale'),
     (2, 'BUT2', 2025, 'Formation initiale'),
-    (3, 'BUT1', 2025, 'Formation initiale'),
-    (4, 'BUT3', 2025, 'Formation apprentissage');
+    (3, 'BUT2', 2025, 'Formation initiale'),
+    (4, 'BUT3', 2025, 'Formation apprentissage'),
+    (10, 'BUT2', 2025, 'Formation initiale'),
+    (5, 'BUT3', 2025, 'Formation apprentissage'),
+    (6, 'BUT2', 2025, 'Formation initiale'),
+    (7, 'BUT2', 2025, 'Formation initiale'),
+    (8, 'BUT3', 2025, 'Formation apprentissage'),
+    (9, 'BUT2', 2025, 'Formation initiale');
 
 INSERT INTO TUTORER (id_enseignant, id_etudiant, annee)
 VALUES (1, 1, 2025),
@@ -436,6 +442,46 @@ VALUES (
         'lm_unknown.pdf',
         1,
         7
+    ),
+    (6,
+    'LinkedIn',
+    'Réponse à offre',
+    'Acceptée',
+    '2025-11-01',
+    NULL,
+    'Stage obtenu',
+    NULL,
+    'cv_unknown.pdf',
+    'lm_unknown.pdf',
+    1,
+    10),
+    (
+        7,
+        'Import',
+        'Création manuelle',
+        'Acceptée',
+        '2025-12-01',
+        NULL,
+        'Stage obtenu',
+        NULL,
+        'cv_martin.pdf',
+        'lm_martin.pdf',
+        1,
+        4
+    ),
+    (
+        8,
+        'Import',
+        'Création manuelle',
+        'Acceptée',
+        '2025-12-01',
+        NULL,
+        'Stage obtenu',
+        NULL,
+        'cv_wilson.pdf',
+        'lm_wilson.pdf',
+        1,
+        5
     );
 
 INSERT INTO STAGE (
@@ -493,7 +539,7 @@ VALUES (
         '2025-06-30',
         6,
         'mois',
-        "Conception d'un agent conversationnel",
+        'Conception d''un agent conversationnel',
         'IA & NLP',
         4,
         3
@@ -507,8 +553,42 @@ VALUES (
         'mois',
         'Projet spécial',
         'Développement',
-        NULL,
+        1,
         5
+    ),
+    (6,
+    'Stage BUT2',
+    '2025-12-01',
+    '2026-02-01',
+    2,
+    'mois',
+    'Sujet Noah',
+    'Dev',
+    1,
+    6),
+    (
+        7,
+        'Stage professionnel',
+        '2025-12-01',
+        '2026-02-01',
+        2,
+        'mois',
+        'Stage auto Lucas Martin',
+        'Général',
+        NULL,
+        7
+    ),
+    (
+        8,
+        'Stage professionnel',
+        '2025-12-01',
+        '2026-02-01',
+        2,
+        'mois',
+        'Stage auto Emma Wilson',
+        'Général',
+        NULL,
+        8
     );
 
 INSERT INTO SOUTENANCE (
