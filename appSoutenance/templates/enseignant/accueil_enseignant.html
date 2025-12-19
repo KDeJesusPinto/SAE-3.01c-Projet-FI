@@ -15,7 +15,7 @@
                     <p>Aucun étudiant trouvé.</p>
                 {% endif %}
                 {% for tutore in liste_tutore %}
-                    <div class="glass_tutoré_accueil">
+                    <div class="glass tutoré_accueil">
                     <div class="boite_horizontale">
                         <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
                     </div>
@@ -46,7 +46,7 @@
                     </select>
                 </div>
                 <div class="boite_horizontale">
-                    {% if liste_souteance|length == 0 %}
+                    {% if liste_soutenance|length == 0 %}
                         <p>Aucune soutenance trouvé.</p>
                     {% endif %}
                     {% for date in date_soute %}
