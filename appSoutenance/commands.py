@@ -53,11 +53,13 @@ def loaddb(filename):
             #Promo
             nom_promo = row.get("lib_import") or "Promo inconnue"
             annee_promo = 2025
-            promo = Promo(nom_promo=nom_promo,
-                          annee_promo=annee_promo,
-                          formation_promo="Informatique")
-            db.session.add(promo)
-            db.session.flush()
+            promo = Promo.query.filter_by(nom_promo=nom_promo, annee_promo=annee_promo).first()
+            if not promo:
+                promo = Promo(nom_promo=nom_promo,
+                              annee_promo=annee_promo,
+                              formation_promo="Informatique")
+                db.session.add(promo)
+                db.session.flush()
 
             # Association étudiant --> promo
             appart = Appartenir(

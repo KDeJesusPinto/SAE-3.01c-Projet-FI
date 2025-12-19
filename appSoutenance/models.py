@@ -121,12 +121,10 @@ class Stage(db.Model):
     # 0,1
     id_maitre = db.Column(db.Integer,
                           db.ForeignKey("maitre_stage.id_maitre"),
-                          unique=True,
                           nullable=True)
     maitre_stage = db.relationship("MaitreStage",
-                                   backref=db.backref("stage",
-                                                      lazy="select",
-                                                      uselist=False))
+                                   backref=db.backref("stages",
+                                                      lazy="select"))
 
     # 0,1
     # id_soutenance = db.Column(db.Integer, db.ForeignKey("soutenance.id_soutenance"), unique = True, nullable = True)
@@ -192,10 +190,10 @@ class MaitreStage(db.Model):
 class Soutenance(db.Model):
     id_soutenance = db.Column(db.Integer, primary_key=True)
     salle = db.Column(db.Integer, nullable=False)
-    nom_bat = db.Column(db.String(50), nullable=False)
+    nom_bat = db.Column(db.String(50), nullable=True)
     dateS = db.Column(db.Date, nullable=False)
     h_debut = db.Column(db.String(5), nullable=False)
-    h_fin = db.Column(db.String(5), nullable=False)
+    h_fin = db.Column(db.String(5), nullable=True)
 
     # 1,1
     id_stage = db.Column(db.Integer,
@@ -203,7 +201,7 @@ class Soutenance(db.Model):
                          unique=True,
                          nullable=False)
 
-    def __init__(self, salle, nom_bat, dateS, h_debut, h_fin, id_stage):
+    def __init__(self, salle, dateS, h_debut, id_stage, h_fin=None, nom_bat=""):
         self.salle = salle
         self.nom_bat = nom_bat
         self.dateS = dateS
@@ -212,7 +210,7 @@ class Soutenance(db.Model):
         self.id_stage = id_stage
 
     def __repr__(self):
-        return f"<La soutenance a lieu le {self.date} à {self.h_debut} au batîment {self.nom_bat} {self.salle}>"
+        return f"<La soutenance a lieu le {self.dateS} à {self.h_debut} dans la salle {self.salle}>"
 
 
 class Etudiant(db.Model, UserMixin):
@@ -260,7 +258,7 @@ class Etudiant(db.Model, UserMixin):
 class Promo(db.Model):
     nom_promo = db.Column(db.String(100), primary_key=True)
     annee_promo = db.Column(db.Integer, primary_key=True)
-    formation_promo = db.Column(db.String(100), nullable=False)
+    formation_promo = db.Column(db.String(100), primary_key=True)
 
     # 0,1
     id_enseignant = db.Column(db.Integer,
@@ -355,7 +353,7 @@ class Jury(db.Model):
         self.id_soutenance = id_soutenance
 
     def __repr__(self):
-        return f"<Le jury pour la soutenance {self.id_soutenance} le {self.date_jury} a {self.heure_jury} pendant {self.duree_jury} minutes>"
+        return f"<Le jury pour la soutenance {self.id_soutenance} le {self.date_jury} a {self.h_jury} pendant {self.duree_jury} minutes>"
 
 
 class Composer(db.Model):
