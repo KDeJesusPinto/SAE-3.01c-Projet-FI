@@ -1,4 +1,5 @@
 import csv
+import subprocess
 import click
 import logging as lg
 from sqlalchemy import text

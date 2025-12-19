@@ -714,6 +714,11 @@ def valider_jury():
                 errors.append(f"Aucun stage validé trouvé pour l'étudiant id={id_etu_int}.")
                 continue
 
+            existante = Soutenance.query.filter_by(id_stage=stage.id_stage).first()
+            if existante:
+                errors.append(f"Une soutenance existe déjà pour l'étudiant id={id_etu_int}.")
+                continue
+
             # Créer une soutenance liée au stage
             nouvelle_sout = Soutenance(
                 salle=salle_sel,
