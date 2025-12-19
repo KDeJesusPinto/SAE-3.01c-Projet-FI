@@ -399,8 +399,11 @@ def accueil_admin():
     # Nombre de soutenances posées par tuteur
     requete_soutenances = requete_les_etudiants.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
                                                      .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
-                                                     .join(Soutenance, Stage.id_stage == Soutenance.id_stage)
+                                                     .join(Soutenance, Stage.id_stage == Soutenance.id_stage)\
+                                                     .join(Tutorer, Etudiant.id_etudiant == Tutorer.id_etudiant)\
+                                                     .join(Composer, (Soutenance.id_soutenance == Composer.id_soutenance) & (Composer.id_enseignant == Tutorer.id_enseignant))
     nb_soutenances_posees = requete_soutenances.with_entities(Soutenance.id_soutenance).distinct().count()
+    nb_tuteurs = db.session.query(Tutorer.id_enseignant).distinct().count()
 
     # Nombre de soutenances en attente de candide
     requete_ids_soutenances_pertinentes = requete_soutenances.with_entities(Soutenance.id_soutenance).distinct()
@@ -419,6 +422,7 @@ def accueil_admin():
         nb_soutenances_alternants=nb_soutenances_alternants,
         nb_soutenances_posees=nb_soutenances_posees,
         nb_soutenances_attente_candide=nb_soutenances_attente_candide,
+        nb_tuteurs=nb_tuteurs,
         createForm = unForm)
 
 
