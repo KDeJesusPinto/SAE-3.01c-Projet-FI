@@ -137,7 +137,7 @@ def accueil_enseignant():
 
     num_personne=current_user.id_enseignant
     queryListeTutore=Etudiant.query.join(Tutorer,Etudiant.id_etudiant==Tutorer.id_etudiant).filter(Tutorer.id_enseignant==num_personne)
-    query_soutenance_prevue=Soutenance.query.join(Composer,Composer.id_soutenance==Soutenance.id_soutenance).filter(Composer.id_enseignant==num_personne).order_by(Soutenance.dateS,Soutenance.h_debut)
+    query_soutenance_prevue=Soutenance.query.distinct(Soutenance.id_soutenance).join(Composer,Composer.id_soutenance==Soutenance.id_soutenance).filter(Composer.id_enseignant==num_personne)
 
     res_tutore = []
     res_soutenance=[]
@@ -147,14 +147,23 @@ def accueil_enseignant():
         soutenance_prevue_tutore=Soutenance.query.join(Stage,Stage.id_stage==Soutenance.id_stage).join(Demarche,Demarche.id_demarche==Stage.id_demarche).join(Etudiant,Etudiant.id_etudiant==Demarche.id_etudiant).filter(Etudiant.id_etudiant==etudiant.id_etudiant).first()
         res_tutore.append({'etudiant':etudiant,'etat':derniere_demarche.situation if derniere_demarche else "Aucune",'soutenance_tutore':soutenance_prevue_tutore})
         
-    for soutenance in query_soutenance_prevue:
-        res_soutenance.append({'soutenance':soutenance})
-    res_date=query_soutenance_prevue.distinct(Soutenance.dateS)
+    for soutenance in query_soutenance_prevue.distinct():
+        if soutenance not in res_soutenance:
+            print(soutenance)
+            res_soutenance.append({'soutenance':soutenance})
+    date_soute=query_soutenance_prevue.distinct(Soutenance.dateS)
+    res_date=[]
+    for date in date_soute:
+        if date.dateS not in res_date:
+            res_date.append(date.dateS)
+    print(res_date)
     enseignant = current_user
     nb_soutenance_place=query_soutenance_prevue.count()
     nb_soutenance_place_tutore=queryListeTutore.count()
+    
 
-    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil",liste_tutore=res_tutore,liste_souteance=res_soutenance,date_soute=res_date,nb_sout_place=nb_soutenance_place)
+
+    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil",liste_tutore=res_tutore,liste_soutenance=res_soutenance,date_soute=res_date,nb_sout_place=nb_soutenance_place)
 
 
 @app.route('/enseignant/planning/')
