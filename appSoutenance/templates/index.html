@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% with messages = get_flashed_messages(with_categories=true) %} {% if messages
+%} {% for category, message in messages %}
+<div
+ class="alert alert-{{ category }} alert-dismissible fade show"
+ role="alert"
+ style="display: block"
+>
+ {{ message }}
+ <button
+   type="button"
+   class="btn-close"
+   data-bs-dismiss="alert"
+      aria-label="Close"
+ ></button>
+</div>
+{% endfor %} {% endif %} {% endwith %}
+
+
+
+{% block content %}
+    
+    <div id="connexion" class="glass boite_verticale">
+        <h2>Bienvenue<br>connectez-vous en tant que...</h2>
+
+        <form method="POST" action="{{ url_for('login') }}" class="boite_verticale">
+            {{ form.hidden_tag() }}
+            {{ form.Login.label }}
+            {{ form.Login(class_="form-control") }}
+            
+            {{ form.Password.label }}
+            {{ form.Password(class_="form-control") }}
+
+            {% if error %}
+            <div>{{ error }}</div>
+            {% endif %}
+        
+            <button type="submit" class="petit_bouton">Connexion</button>
+        </form>
+
+
+    </div>
+{% endblock %}
+
+

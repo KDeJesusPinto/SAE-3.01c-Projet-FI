@@ -1,0 +1,371 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bebas+Neue&family=PT+Sans+Narrow:wght@400;700&display=swap');
+
+
+:root{
+    --couleur_sombre_principale: #242f53;
+
+    --couleur_bouton_important: #8f11bc;
+
+    --couleur_principale_site: #51a1a2;
+
+    --couleur_texte_clair: white;
+}
+
+/*---------------- STYLES GÉNÉRAUX ----------------*/
+
+body{
+    /* style */
+    background: url(images/fond.jpg) no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+
+    font-family: "Arimo", sans-serif;
+    font-size: 30px;
+
+    /* positionnement */
+    padding: 0;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    height: 100vh;
+    width: 100vw;
+}
+
+h1{
+    /* style */
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2.5em;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    
+    text-align: center;
+
+    /* positionnement */
+    margin: 0;
+}
+
+h2{
+    /* style */
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2em;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+
+    /* positionnement */
+    text-align: center;
+
+    margin: 0;
+}
+
+a{
+    /* style */
+    color: black;
+    text-decoration: none;
+    cursor: url(images/cursor.png), pointer;
+
+    /* positionnement */
+}
+
+/* ---------------- STYLES GÉNÉRAUX DES BOÎTES ----------------*/
+
+.glass{
+    /* style */
+    border-radius: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(3px);
+    background-color: rgba(255, 255, 255, 0.55);
+
+    /* positionnement */
+}
+
+.boite_verticale{
+    /* style */
+    /* positionnement */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 20px;
+
+    padding: 10px;
+}
+
+.boite_horizontale{
+    /* style */
+    /* positionnement */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 20px;
+
+    padding: 20px;
+}
+
+/* ---------------- STYLES DES TEXTES ----------------*/
+
+div.boite_horizontale p{
+    /* style */
+    text-align: center;
+
+    /* positionnement */
+    margin: 0;
+}
+
+.short{
+    /* style */
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+
+    /* positionnement */
+    width: 220px;
+}
+
+/* ---------------- STYLES DES ICONES ----------------*/
+
+.grande_icone{
+    /* style */
+    font-size: 2em !important;
+
+    /* positionnement */
+}
+
+.petite_icone{
+    /* style */
+    font-size: 1.4em !important;
+
+    /* positionnement */
+}
+
+/* ---------------- STYLES DES ÉLÉMENTS CLIQUABLES ----------------*/
+
+.petit_bouton{
+    /* style */
+
+    font-family: "Arimo", sans-serif;
+
+    border-radius: 30px;
+    background-color:var(--couleur_sombre_principale);
+    color:var(--couleur_texte_clair);
+    text-align: center;
+    cursor: pointer;
+
+    /* positionnement */
+    padding: 15px;
+    width: 100%;
+}
+
+.petit_bouton:hover{
+    /* style */
+    background: var(--couleur_principale_site);
+
+    /* positionnement */
+}
+
+.imp{
+    /* style */
+    background-color: var(--couleur_bouton_important);
+    border-radius: 20px;
+
+    font-family: "Arimo", sans-serif;
+    text-align: center;
+    text-wrap: nowrap;
+    color:var(--couleur_texte_clair);
+
+    /* positionnement */
+    /*width: 300px;*/
+    padding: 15px;
+}
+
+.bouton_nav{
+    /* style */
+    background-color: var(--couleur_principale_site);
+    color: var(--couleur_texte_clair);
+
+    border-radius: 20px;
+    
+    font-size: 1.4em;
+    text-align: center;
+
+    /* positionnement */
+    width: 100%;
+    padding: 10px 15px;
+}
+
+div.bouton_horizontal{
+    /* style */
+    /* positionnement */
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    column-gap: 100px;
+}
+
+
+.tooltip:hover::after{
+    /* style */
+    background-color: rgb(178, 185, 187);
+    content: attr(data-tooltip);
+    font-size: 0.7em;
+
+    /* positionnement */
+    position: absolute;
+    right: 16%;
+}
+
+div.demarche_etape{
+    /* style */
+    /* positionnement */
+    width: 2500px;
+    flex-grow: 0;
+}
+
+/*---------------- STYLE DE LA BOITE CONTENANT TOUT LE CONTENU ----------------*/
+
+div#main_body{
+    /* style */
+    /* positionnement */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+
+    padding: 150px 0 100px;
+}
+
+/*---------------- STYLES BARRE DE NAVIGATION ----------------*/
+
+nav#barre_navigation{
+    /* style */
+    background-color: var(--couleur_principale_site);
+    color:var(--couleur_texte_clair);
+
+    /* positionnement */
+    width: 100%;
+    max-width: 100%;
+    padding: 15px;
+
+    display: flex;
+    position: fixed;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    z-index: 2;
+
+    img{
+        /* style */
+        /* positionnement */
+        height: 35px;
+    }
+
+    ul{
+        /* style */
+        list-style: none;
+
+        /* positionnement */
+        display: flex;
+        column-gap: 50px;
+        margin: 0;
+        padding: 0;
+    }
+
+    p, li{
+        /* style */
+        font-size: 0.7em;
+        text-align: right;
+
+        /* positionnement */
+    }
+
+    div{
+        /* style */
+        /* positionnement */
+        padding: 0;
+    }
+
+    a{
+        /* style */
+        color:var(--couleur_texte_clair);
+        font-size: 1.3em;
+
+        /* positionnement */
+    }
+}
+  
+.choix{
+    /* style */
+    background-color:var(--couleur_sombre_principale);
+    border-radius: 80px; /* Harmonisation avec combobox */
+
+    font-family: "Arimo", sans-serif;
+    text-align: left;
+    color:var(--couleur_texte_clair);
+
+    /* positionnement */
+    width: 150px;
+    padding: 20px;
+}
+
+input#import_csv{
+    /* style */
+    display: none;
+
+    /* positionnement */
+}
+
+/* ---------------- STYLES DES COMBOBOX ----------------*/
+
+
+select.combobox { /* Agrandissement des combobox */
+    /* style */
+    background-color: var(--couleur_principale_site);
+    border-radius: 80px;
+
+    font-family: "Arimo", sans-serif;
+    font-size: 0.7em; /* Augmente la taille de la police */
+    text-align: center;
+    color:var(--couleur_texte_clair);
+
+    /* positionnement */
+    width: 300px;
+    min-width: 220px;
+    height: 75px;
+    padding: 15px 40px;
+    margin: 15px;
+
+    display: flex;
+    align-items: center;
+}
+
+/* ---------------- STYLES DES FORMULAIRES ----------------*/
+
+.form-group, .form-check {
+   padding-top: 1em;
+}
+
+
+.form-label {
+   color: #064a72;
+   margin-bottom: 0.3em;
+}
+
+
+.form-control,
+input.form-control,
+select.form-control,
+textarea.form-control {
+   border-radius: 50px;
+}

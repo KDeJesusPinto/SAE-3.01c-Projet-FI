@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+    <nav id="barre_navigation">
+            <a href="{{ url_for(accueil, num_personne=personne.id_etudiant) }}">
+                <img src="{{ url_for('static', filename = 'images/icone.png') }}" alt="">
+            </a>
+            <ul>
+                <li><a href="{{ url_for('accueil_etudiant', num_personne=personne.id_etudiant) }}">Accueil</a></li>
+                <li><a href="{{ url_for('demarches', num_personne=personne.id_etudiant) }}">Mes démarches</a></li>
+                <li><a href="">Mon stage</a></li>
+            </ul>
+            <div class="boite_horizontale">
+                <div class="boite_horizontale">
+                    <p>{{ personne.prenom_etudiant }}<br>{{ personne.nom_etudiant }}</p>
+                    <i class="fas fa-user-circle petite_icone"></i>
+                </div>
+                <a href="{{ url_for('index') }}"><i class="fas fa-sign-out-alt petite_icone"></i></a>
+            </div>
+    </nav>
+{% endblock %}

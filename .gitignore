@@ -1,0 +1,4 @@
+__pycache__
+/venv/
+.nfs*
+/appSoutenance/static/images/cursor.png
