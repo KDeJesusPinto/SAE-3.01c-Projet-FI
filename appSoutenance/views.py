@@ -79,6 +79,7 @@ def accueil_etudiant():
 
 
 @app.route('/etudiant/demarches/')
+@login_required
 def demarches():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
@@ -100,6 +101,7 @@ def demarches():
 
 
 @app.route('/etudiant/stage/')
+@login_required
 def info_stage():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
@@ -112,6 +114,7 @@ def info_stage():
 
 
 @app.route('/etudiant/demarches/new1/')
+@login_required
 def nouvelle_demarche1():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
@@ -124,6 +127,7 @@ def nouvelle_demarche1():
 
 
 @app.route('/etudiant/demarches/new2/')
+@login_required
 def nouvelle_demarche2():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
@@ -136,6 +140,7 @@ def nouvelle_demarche2():
 
 
 @app.route('/etudiant/demarches/new3/')
+@login_required
 def nouvelle_demarche3():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
@@ -148,6 +153,7 @@ def nouvelle_demarche3():
 
 
 @app.route('/etudiant/demarches/resume/')
+@login_required
 def resume_demarche_etudiant():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
@@ -195,8 +201,13 @@ def accueil_enseignant():
 
 
 @app.route('/enseignant/planning/')
+@login_required
 def planning_enseignant():
-    enseignant = current_user
+    enseignant=current_user
+    if not isinstance(enseignant, Enseignant):
+        flash("Accès réservé aux enseignants.", "warning")
+        return redirect(url_for("login"))
+    
     return render_template("enseignant/planning_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Planning enseignant")
 
 
@@ -207,6 +218,7 @@ MOIS = {
 
 
 @app.route('/enseignant/soutenances/')
+@login_required
 def soutenance_enseignant():
     enseignant=current_user
     if not isinstance(enseignant, Enseignant):
@@ -320,7 +332,9 @@ def soutenance_enseignant():
 
 
 @app.route('/enseignant/liste+etu/')
+@login_required
 def liste_etu_enseignant():
+
     num_personne = request.args.get('num_personne')
     enseignant=current_user
     if not isinstance(enseignant, Enseignant):
@@ -366,6 +380,7 @@ def liste_etu_enseignant():
 
 
 @app.route('/enseignant/liste+etu/etudiant/')
+@login_required
 def detail_etudiant_ens():
     enseignant=current_user
     if not isinstance(enseignant, Enseignant):
@@ -387,6 +402,11 @@ def detail_etudiant_ens():
 def accueil_admin():
     """Page d'accueil pour les administrateurs"""
 
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
+    
     unForm = ImportForm()
     admin = current_user
     if not isinstance(admin, Admini):
@@ -606,6 +626,11 @@ HEURE= {
 def creation_soutenance():
     """Page de création de soutenance pour les administrateurs"""
 
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
+
     createForm = FormSoutenance()
 
     date_sel = request.args.get('dateS')
@@ -672,6 +697,11 @@ def creation_soutenance():
 def valider_jury():
     """Valider le jury d'une soutenance et l'insérer en base de données"""
 
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
+
     print("--- TENTATIVE D'INSERTION ---")
     print(f"Formulaire reçu : {request.form}")
 
@@ -682,7 +712,6 @@ def valider_jury():
     created = 0
     errors = []
 
-    # Validation simple de la date
     try:
         date_obj = datetime.strptime(dateS, '%Y-%m-%d').date()
     except Exception:
@@ -699,14 +728,12 @@ def valider_jury():
                 errors.append(f"Identifiant étudiant invalide : {id_etu}")
                 continue
 
-            # Trouver le stage de cet étudiant
             stage = Stage.query.join(Demarche).filter(Demarche.id_etudiant == id_etu_int).first()
 
             if not stage:
                 errors.append(f"Aucun stage validé trouvé pour l'étudiant id={id_etu_int}.")
                 continue
 
-            # Créer une soutenance liée au stage
             nouvelle_sout = Soutenance(
                 salle=salle_sel,
                 dateS=date_obj,
@@ -716,9 +743,8 @@ def valider_jury():
                 nom_bat=""
             )
             db.session.add(nouvelle_sout)
-            db.session.flush()  # pour obtenir id_soutenance
+            db.session.flush()
 
-            # Ajouter les membres du jury
             for j in range(1, 4):
                 id_ens = request.form.get(f'ens{j}')
                 if id_ens and id_ens.strip():
@@ -726,7 +752,6 @@ def valider_jury():
                         comp = Composer(id_enseignant=int(id_ens), id_soutenance=nouvelle_sout.id_soutenance)
                         db.session.add(comp)
                     except ValueError:
-                        # ignorer les valeurs non numériques
                         pass
 
             created += 1
@@ -869,7 +894,7 @@ def liste_ens_admin():
                                       .join(Composer, (Composer.id_enseignant == Tutorer.id_enseignant) & (Composer.id_soutenance == Soutenance.id_soutenance))
             lesEnseignants = lesEnseignants.join(Tutorer).filter(Enseignant.id_enseignant.notin_(sq_soutenance)).distinct()
 
-    # Réccupérer soutenances avec jury non complet : Composer -> Soutenance -> Stage -> Demarche -> Etudiant -> Tutorer -> Enseignant
+    # Récupérer soutenances avec jury non complet : Composer -> Soutenance -> Stage -> Demarche -> Etudiant -> Tutorer -> Enseignant
     # id de l'étudiant =! de l'id de l'étudiant dont l'enseignant est tuteur
     if candide == 'NonCandide':
         sq = db.session.query(Enseignant.id_enseignant)\
