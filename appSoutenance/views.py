@@ -307,7 +307,7 @@ def liste_etu_enseignant():
             'etudiant':
                 etudiant,
             'formation':
-                promo.formatio if promo else "None",
+                promo.formation_promo if promo else "None",
             'annee':
                 promo.annee_promo if promo else "None",
             'promo':
@@ -317,7 +317,7 @@ def liste_etu_enseignant():
             'situation':
                 derniere_demarche.situation if derniere_demarche else "Aucune"
         })
-    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", title="Liste des étudiants",resultats=res)
+    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", title="Liste des étudiants",resultats=res, personne=enseignant)
 
 
 
