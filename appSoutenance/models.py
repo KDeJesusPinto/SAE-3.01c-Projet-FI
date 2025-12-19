@@ -258,7 +258,7 @@ class Etudiant(db.Model, UserMixin):
 class Promo(db.Model):
     nom_promo = db.Column(db.String(100), primary_key=True)
     annee_promo = db.Column(db.Integer, primary_key=True)
-    formation_promo = db.Column(db.String(100), nullable=False)
+    formation_promo = db.Column(db.String(100), primary_key=True)
 
     # 0,1
     id_enseignant = db.Column(db.Integer,
@@ -353,7 +353,7 @@ class Jury(db.Model):
         self.id_soutenance = id_soutenance
 
     def __repr__(self):
-        return f"<Le jury pour la soutenance {self.id_soutenance} le {self.date_jury} a {self.heure_jury} pendant {self.duree_jury} minutes>"
+        return f"<Le jury pour la soutenance {self.id_soutenance} le {self.date_jury} a {self.h_jury} pendant {self.duree_jury} minutes>"
 
 
 class Composer(db.Model):

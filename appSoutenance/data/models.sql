@@ -106,7 +106,7 @@ CREATE TABLE STAGE (
 );
 
 CREATE TABLE PROMO (
-  PRIMARY KEY (nom_promo, annee_promo),
+  PRIMARY KEY (nom_promo, annee_promo, formation_promo),
   nom_promo VARCHAR(100) NOT NULL,
   annee_promo INT(4) NOT NULL,
   formation_promo VARCHAR(100),
