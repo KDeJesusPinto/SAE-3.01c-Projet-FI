@@ -133,9 +133,9 @@ def resume_demarche_etudiant():
 @app.route('/enseignant/')
 @login_required
 def accueil_enseignant():
-    num_personne = request.args.get('num_personne')
+    enseignant=current_user
 
-
+    num_personne=current_user.id_enseignant
     queryListeTutore=Etudiant.query.join(Tutorer,Etudiant.id_etudiant==Tutorer.id_etudiant).filter(Tutorer.id_enseignant==num_personne)
     query_soutenance_prevue=Soutenance.query.join(Composer,Composer.id_soutenance==Soutenance.id_soutenance).filter(Composer.id_enseignant==num_personne).order_by(Soutenance.dateS,Soutenance.h_debut)
 
@@ -150,7 +150,7 @@ def accueil_enseignant():
     for soutenance in query_soutenance_prevue:
         res_soutenance.append({'soutenance':soutenance})
     res_date=query_soutenance_prevue.distinct(Soutenance.dateS)
-    enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
+    enseignant = current_user
     nb_soutenance_place=query_soutenance_prevue.count()
     nb_soutenance_place_tutore=queryListeTutore.count()
 
@@ -159,8 +159,7 @@ def accueil_enseignant():
 
 @app.route('/enseignant/planning/')
 def planning_enseignant():
-    num_personne = request.args.get('num_personne')
-    enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
+    enseignant = current_user
     return render_template("enseignant/planning_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Planning enseignant")
 
 
@@ -183,7 +182,7 @@ def soutenance_enseignant():
     jury_enseignant_id = args.get('jury_enseignant_id', '')
 
     num_personne = request.args.get('num_personne')
-    enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
+    enseignant = current_user
 
     query = Soutenance.query.order_by(Soutenance.dateS, Soutenance.h_debut)
     dates_disponibles_dt = db.session.query(distinct(Soutenance.dateS)).order_by(Soutenance.dateS).all()
@@ -283,7 +282,7 @@ def soutenance_enseignant():
 @app.route('/enseignant/liste+etu/')
 def liste_etu_enseignant():
     num_personne = request.args.get('num_personne')
-    enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
+    enseignant = current_user
     lesEtudiants = Etudiant.query.all()
     res = []
 
