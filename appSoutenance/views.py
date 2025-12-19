@@ -70,7 +70,7 @@ def sort_id(demarche):
 @login_required
 def accueil_etudiant():
     etudiant = current_user
-    if not isinstance(etudiant, Admini):
+    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -81,7 +81,7 @@ def accueil_etudiant():
 @app.route('/etudiant/demarches/')
 def demarches():
     etudiant = current_user
-    if not isinstance(etudiant, Admini):
+    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -102,7 +102,7 @@ def demarches():
 @app.route('/etudiant/stage/')
 def info_stage():
     etudiant = current_user
-    if not isinstance(etudiant, Admini):
+    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -114,7 +114,7 @@ def info_stage():
 @app.route('/etudiant/demarches/new1/')
 def nouvelle_demarche1():
     etudiant = current_user
-    if not isinstance(etudiant, Admini):
+    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -126,7 +126,7 @@ def nouvelle_demarche1():
 @app.route('/etudiant/demarches/new2/')
 def nouvelle_demarche2():
     etudiant = current_user
-    if not isinstance(etudiant, Admini):
+    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -138,7 +138,7 @@ def nouvelle_demarche2():
 @app.route('/etudiant/demarches/new3/')
 def nouvelle_demarche3():
     etudiant = current_user
-    if not isinstance(etudiant, Admini):
+    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -150,7 +150,7 @@ def nouvelle_demarche3():
 @app.route('/etudiant/demarches/resume/')
 def resume_demarche_etudiant():
     etudiant = current_user
-    if not isinstance(etudiant, Admini):
+    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
