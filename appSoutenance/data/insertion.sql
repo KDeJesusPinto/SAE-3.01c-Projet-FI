@@ -108,6 +108,72 @@ VALUES (
         'lucas.martin@gmail.com',
         'lucasmartin',
         'pass4'
+    ),
+    (
+        5,
+        'Wilson',
+        'Emma',
+        '2002-07-19',
+        'Mme',
+        '0616171819',
+        'emma.wilson@gmail.com',
+        'emmawilson',
+        'pass5'
+    ),
+    (
+        6,
+        'Taylor',
+        'Olivia',
+        '2003-12-30',
+        'Mme',
+        '0620212223',
+        'olivia.taylor@gmail.com',
+        'oliviataylor',
+        'pass6'
+    ),
+    (
+        7,
+        'Anderson',
+        'Liam',
+        '2004-09-25',
+        'M.',
+        '0624252627',
+        'liam.anderson@gmail.com',
+        'liamanderson',
+        'pass7'
+    ),
+    (
+        8,
+        'Thomas',
+        'Sophia',
+        '2002-04-18',
+        'Mme',
+        '0628293031',
+        'sophia.thomas@gmail.com',
+        'sophiathomas',
+        'pass8'
+    ),
+    (
+        9,
+        'Jackson',
+        'Mia',
+        '2003-08-09',
+        'Mme',
+        '0632333435',
+        'mia.jackson@gmail.com',
+        'miamjackson',
+        'pass9'
+    ),
+    (
+        10,
+        'White',
+        'Noah',
+        '2004-01-12',
+        'M.',
+        '0636373839',
+        'noah.white@gmail.com',
+        'noahwhite',
+        'pass10'
     );
 
 INSERT INTO ENSEIGNANT (
@@ -154,6 +220,60 @@ VALUES (
         'camille.durand@univ.fr',
         'cdurand',
         'prof4'
+    ),
+    (
+        5,
+        'Moreau',
+        'Luc',
+        'M.',
+        'luc.moreau@univ.fr',
+        'lmoreau',
+        'prof5'
+    ),
+    (
+        6,
+        'Girard',
+        'Isabelle',
+        'Mme',
+        'isabelle.girard@univ.fr',
+        'igirard',
+        'prof6'
+    ),
+    (
+        7,
+        'Roux',
+        'Antoine',
+        'M.',
+        'antoine.roux@univ.fr',
+        'aroux',
+        'prof7'
+    ),
+    (
+        8,
+        'Fontaine',
+        'Elise',
+        'Mme',
+        'elise.fontaine@univ.fr',
+        'efontaine',
+        'prof8'
+    ),
+    (
+        9,
+        'Blanc',
+        'Marc',
+        'M.',
+        'marc.blanc@univ.fr',
+        'mblanc',
+        'prof9'
+    ),
+    (
+        10,
+        'Garnier',
+        'Nathalie',
+        'Mme',
+        'nathalie.garnier@univ.fr',
+        'ngarnier',
+        'prof10'
     );
 
 INSERT INTO PROMO (
@@ -162,10 +282,9 @@ INSERT INTO PROMO (
         formation_promo,
         id_enseignant
     )
-VALUES ('BUT2', 2024, 'BUT Informatique', 1),
+VALUES ('BUT2', 2025, 'BUT Informatique', 1),
     ('BUT3', 2025, 'BUT Informatique', 2),
-    ('BUT1', 2023, 'BUT Informatique', 3),
-    ('BUT2', 2025, 'BUT Informatique', 4);
+    ('BUT2', 2025, 'BUT GEA', 3);
 
 INSERT INTO APPARTENIR (
         id_etudiant,
@@ -173,16 +292,26 @@ INSERT INTO APPARTENIR (
         annee_promo,
         regime_etudiant
     )
-VALUES (1, 'BUT2', 2024, 'Formation initiale'),
-    (2, 'BUT2', 2024, 'Formation initiale'),
-    (3, 'BUT1', 2023, 'Formation initiale'),
-    (4, 'BUT3', 2025, 'Formation apprentissage');
+VALUES (1, 'BUT2', 2025, 'Formation initiale'),
+    (2, 'BUT2', 2025, 'Formation initiale'),
+    (3, 'BUT2', 2025, 'Formation initiale'),
+    (4, 'BUT3', 2025, 'Formation apprentissage'),
+    (10, 'BUT2', 2025, 'Formation initiale'),
+    (5, 'BUT3', 2025, 'Formation apprentissage'),
+    (6, 'BUT2', 2025, 'Formation initiale'),
+    (7, 'BUT2', 2025, 'Formation initiale'),
+    (8, 'BUT3', 2025, 'Formation apprentissage'),
+    (9, 'BUT2', 2025, 'Formation initiale');
 
 INSERT INTO TUTORER (id_enseignant, id_etudiant, annee)
-VALUES (1, 1, 2024),
-    (2, 2, 2024),
-    (3, 3, 2023),
-    (4, 4, 2025);
+VALUES (1, 1, 2025),
+    (2, 2, 2025),
+    (3, 3, 2025),
+    (4, 4, 2025),
+    (5, 5, 2025),
+    (6, 6, 2025),
+    (7, 10, 2025),
+    (8, 4, 2025);
 
 INSERT INTO MAITRE_STAGE (
         id_maitre,
@@ -249,7 +378,7 @@ VALUES (
         'Site entreprise',
         'Candidature spontanée',
         'Acceptée',
-        '2024-09-15',
+        '2025-09-15',
         NULL,
         'Stage obtenu',
         NULL,
@@ -263,21 +392,21 @@ VALUES (
         'LinkedIn',
         'Réponse à offre',
         'Refusée',
-        '2024-09-10',
-        '2024-09-25',
+        '2025-09-10',
+        '2025-09-25',
         'Refusé',
         'Profil junior',
         'cv_doe.pdf',
         'lm_doe2.pdf',
         2,
-        1
+        5
     ),
     (
         3,
         'Salon',
         'Contact direct',
         'En cours',
-        '2024-09-20',
+        '2025-09-20',
         NULL,
         NULL,
         NULL,
@@ -291,7 +420,7 @@ VALUES (
         'Indeed',
         'Réponse à offre',
         'Acceptée',
-        '2024-09-12',
+        '2025-09-12',
         NULL,
         'Stage obtenu',
         NULL,
@@ -299,6 +428,60 @@ VALUES (
         'lm_brown.pdf',
         4,
         3
+    ),
+    (
+        5,
+        'Entreprise',
+        'Candidature spontanée',
+        'Acceptée',
+        '2025-09-01',
+        NULL,
+        'Stage obtenu',
+        NULL,
+        'cv_unknown.pdf',
+        'lm_unknown.pdf',
+        1,
+        7
+    ),
+    (6,
+    'LinkedIn',
+    'Réponse à offre',
+    'Acceptée',
+    '2025-11-01',
+    NULL,
+    'Stage obtenu',
+    NULL,
+    'cv_unknown.pdf',
+    'lm_unknown.pdf',
+    1,
+    10),
+    (
+        7,
+        'Import',
+        'Création manuelle',
+        'Acceptée',
+        '2025-12-01',
+        NULL,
+        'Stage obtenu',
+        NULL,
+        'cv_martin.pdf',
+        'lm_martin.pdf',
+        1,
+        4
+    ),
+    (
+        8,
+        'Import',
+        'Création manuelle',
+        'Acceptée',
+        '2025-12-01',
+        NULL,
+        'Stage obtenu',
+        NULL,
+        'cv_wilson.pdf',
+        'lm_wilson.pdf',
+        1,
+        5
     );
 
 INSERT INTO STAGE (
@@ -316,7 +499,7 @@ INSERT INTO STAGE (
 VALUES (
         1,
         'Stage de fin études',
-        '2024-10-01',
+        '2025-10-01',
         '2025-03-31',
         6,
         'mois',
@@ -328,7 +511,7 @@ VALUES (
     (
         2,
         'Stage de deuxième année',
-        '2024-10-15',
+        '2025-10-15',
         '2025-04-15',
         6,
         'mois',
@@ -340,8 +523,8 @@ VALUES (
     (
         3,
         'Stage initiation',
-        '2023-05-01',
-        '2023-07-31',
+        '2025-05-01',
+        '2025-07-31',
         3,
         'mois',
         'Découverte du développement front-end',
@@ -356,10 +539,56 @@ VALUES (
         '2025-06-30',
         6,
         'mois',
-        "Conception d'un agent conversationnel",
+        'Conception d''un agent conversationnel',
         'IA & NLP',
         4,
         3
+    ),
+    (
+        5,
+        'Stage professionnel',
+        '2025-04-01',
+        '2025-06-30',
+        3,
+        'mois',
+        'Projet spécial',
+        'Développement',
+        1,
+        5
+    ),
+    (6,
+    'Stage BUT2',
+    '2025-12-01',
+    '2026-02-01',
+    2,
+    'mois',
+    'Sujet Noah',
+    'Dev',
+    1,
+    6),
+    (
+        7,
+        'Stage professionnel',
+        '2025-12-01',
+        '2026-02-01',
+        2,
+        'mois',
+        'Stage auto Lucas Martin',
+        'Général',
+        NULL,
+        7
+    ),
+    (
+        8,
+        'Stage professionnel',
+        '2025-12-01',
+        '2026-02-01',
+        2,
+        'mois',
+        'Stage auto Emma Wilson',
+        'Général',
+        NULL,
+        8
     );
 
 INSERT INTO SOUTENANCE (
@@ -382,20 +611,20 @@ VALUES (
     ),
     (
         2,
-        102,
+        101,
         'Bâtiment A',
-        '2025-04-10',
-        '10:00',
-        '10:45',
+        '2025-03-25',
+        '09:00',
+        '09:45',
         2
     ),
     (
         3,
-        103,
-        'Bâtiment B',
-        '2023-07-15',
-        '14:00',
-        '14:45',
+        101,
+        'Bâtiment A',
+        '2025-03-25',
+        '09:00',
+        '09:45',
         3
     ),
     (
@@ -406,6 +635,15 @@ VALUES (
         '11:00',
         '11:45',
         4
+    ),
+    (
+        5,
+        102,
+        'Bâtiment B',
+        '2025-03-25',
+        '09:00',
+        '09:45',
+        5
     );
 
 INSERT INTO JURY (
@@ -416,15 +654,27 @@ INSERT INTO JURY (
         id_soutenance
     )
 VALUES (1, '2025-03-25', '09:00', 45, 1),
-    (2, '2025-04-10', '10:00', 45, 2),
-    (3, '2023-07-15', '14:00', 45, 3),
-    (4, '2025-06-20', '11:00', 45, 4);
+    (2, '2025-03-25', '09:00', 45, 2),
+    (3, '2025-03-25', '09:00', 45, 3),
+    (4, '2025-06-20', '11:00', 45, 4),
+    (5, '2025-03-25', '09:00', 45, 5);
 
 INSERT INTO COMPOSER (id_enseignant, id_soutenance)
-VALUES (1, 1),
+VALUES -- Jury (profs 1,2,3) assigned to soutenances 1,2,3 (same jury for these sessions)
+    (1, 1),
+    (2, 1),
+    (3, 1),
+    (1, 2),
     (2, 2),
+    (3, 2),
+    (1, 3),
+    (2, 3),
     (3, 3),
-    (4, 4);
+    -- jury for soutenance 4 (single prof)
+    (4, 4),
+    -- jury for soutenance 5 (different jury, same day/time as 1-3)
+    (4, 5),
+    (5, 5);
 
 INSERT INTO ADMINI (
         id_admin,
