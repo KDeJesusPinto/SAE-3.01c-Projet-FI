@@ -71,7 +71,6 @@ def sort_id(demarche):
 def accueil_etudiant():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
-    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -83,7 +82,6 @@ def accueil_etudiant():
 @login_required
 def demarches():
     etudiant = current_user
-    if not isinstance(etudiant, Etudiant):
     if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
@@ -107,7 +105,6 @@ def demarches():
 def info_stage():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
-    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -120,7 +117,6 @@ def info_stage():
 @login_required
 def nouvelle_demarche1():
     etudiant = current_user
-    if not isinstance(etudiant, Etudiant):
     if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
@@ -135,7 +131,6 @@ def nouvelle_demarche1():
 def nouvelle_demarche2():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
-    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -149,7 +144,6 @@ def nouvelle_demarche2():
 def nouvelle_demarche3():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
-    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -162,7 +156,6 @@ def nouvelle_demarche3():
 @login_required
 def resume_demarche_etudiant():
     etudiant = current_user
-    if not isinstance(etudiant, Etudiant):
     if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
@@ -759,11 +752,6 @@ def valider_jury():
 
             if not stage:
                 errors.append(f"Aucun stage validé trouvé pour l'étudiant id={id_etu_int}.")
-                continue
-
-            existante = Soutenance.query.filter_by(id_stage=stage.id_stage).first()
-            if existante:
-                errors.append(f"Une soutenance existe déjà pour l'étudiant id={id_etu_int}.")
                 continue
 
             # Créer une soutenance liée au stage
