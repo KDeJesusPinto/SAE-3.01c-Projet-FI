@@ -4,11 +4,11 @@ from flask_login import UserMixin
 @login_manager.user_loader
 def load_user(user_id):
     if user_id.startswith("ETU_"):
-        return Etudiant.query.get(int(user_id.split("_")[1]))
+        return db.session.get(Etudiant, int(user_id.split("_")[1]))
     elif user_id.startswith("ENS_"):
-        return Enseignant.query.get(int(user_id.split("_")[1]))
+        return db.session.get(Enseignant, int(user_id.split("_")[1]))
     elif user_id.startswith("ADM_"):
-        return Admini.query.get(user_id.split("_")[1])
+        return db.session.get(Admini, user_id.split("_")[1])
     return None
 
 class Entreprise(db.Model):
