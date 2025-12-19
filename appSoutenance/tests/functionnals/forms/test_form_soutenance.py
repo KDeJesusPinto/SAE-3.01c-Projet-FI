@@ -1,6 +1,6 @@
 from flask import Flask
-from appSoutenance.forms import FormSoutenance, db
-
+from appSoutenance.forms import FormSoutenance
+from appSoutenance import db
 
 def test_form_soutenance_valide(testapp: Flask):
     """Test du formulaire de soutenance avec des données valides"""

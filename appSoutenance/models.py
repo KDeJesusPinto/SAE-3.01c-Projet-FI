@@ -419,7 +419,7 @@ class Admini(db.Model, UserMixin):
 
 
     def __repr__(self):
-        return f"<Admini : {self.id_admin} {self.nom_admin} {self.prenom_admin} {self.login_admin}>"
+        return f"<Admininistration : {self.id_admin} {self.nom_admin} {self.prenom_admin} {self.login_admin}>"
    
 class Assembler(db.Model):
     __tablename__ = 'ASSEMBLER'
