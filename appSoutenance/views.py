@@ -632,6 +632,10 @@ def creation_soutenance():
         return redirect(url_for("login"))
 
     createForm = FormSoutenance()
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
 
     date_sel = request.args.get('dateS')
     heure_sel = request.args.get('h_debut')
@@ -694,8 +698,13 @@ def creation_soutenance():
     )
 
 @app.route('/soutenance/valider', methods=['POST'])
+@login_required
 def valider_jury():
     """Valider le jury d'une soutenance et l'insérer en base de données"""
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
 
     admin = current_user
     if not isinstance(admin, Admini):
@@ -822,7 +831,7 @@ def detail_enseignant(id):
 
 @app.route('/admin/liste+etudiants/<int:id>/')
 @login_required
-def detail_etudiant_admin(id) -> str:
+def detail_etudiant_admin(id):
     """Page de détail d'un étudiant pour les administrateurs
 
     Args:
