@@ -185,9 +185,8 @@ def accueil_enseignant():
         res_tutore.append({'etudiant':etudiant,'etat':derniere_demarche.situation if derniere_demarche else "Aucune",'soutenance_tutore':soutenance_prevue_tutore})
         
     for soutenance in query_soutenance_prevue.distinct():
-        if soutenance not in res_soutenance:
-            print(soutenance)
-            res_soutenance.append({'soutenance':soutenance})
+        print(soutenance)
+        res_soutenance.append({'soutenance':soutenance,'date':soutenance.dateS,'heure':soutenance.h_debut,'salle':soutenance.salle})
     date_soute=query_soutenance_prevue.distinct(Soutenance.dateS)
     res_date=[]
     for date in date_soute:
@@ -218,9 +217,9 @@ MOIS = {
 @app.route('/enseignant/soutenances/')
 def soutenance_enseignant():
     enseignant=current_user
-        if not isinstance(enseignant, Enseignant):
-            flash("Accès réservé aux enseignants.", "warning")
-            return redirect(url_for("login"))
+    if not isinstance(enseignant, Enseignant):
+        flash("Accès réservé aux enseignants.", "warning")
+        return redirect(url_for("login"))
 
     ##Filtre:
     args = request.args
