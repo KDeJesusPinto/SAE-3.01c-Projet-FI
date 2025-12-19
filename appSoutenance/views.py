@@ -71,6 +71,7 @@ def sort_id(demarche):
 def accueil_etudiant():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
+    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -82,6 +83,7 @@ def accueil_etudiant():
 @login_required
 def demarches():
     etudiant = current_user
+    if not isinstance(etudiant, Etudiant):
     if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
@@ -105,6 +107,7 @@ def demarches():
 def info_stage():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
+    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -117,6 +120,7 @@ def info_stage():
 @login_required
 def nouvelle_demarche1():
     etudiant = current_user
+    if not isinstance(etudiant, Etudiant):
     if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
@@ -131,6 +135,7 @@ def nouvelle_demarche1():
 def nouvelle_demarche2():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
+    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -144,6 +149,7 @@ def nouvelle_demarche2():
 def nouvelle_demarche3():
     etudiant = current_user
     if not isinstance(etudiant, Etudiant):
+    if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
     
@@ -156,6 +162,7 @@ def nouvelle_demarche3():
 @login_required
 def resume_demarche_etudiant():
     etudiant = current_user
+    if not isinstance(etudiant, Etudiant):
     if not isinstance(etudiant, Etudiant):
         flash("Accès réservé aux étudiants.", "warning")
         return redirect(url_for("login"))
@@ -180,7 +187,7 @@ def accueil_enseignant():
 
     num_personne=current_user.id_enseignant
     queryListeTutore=Etudiant.query.join(Tutorer,Etudiant.id_etudiant==Tutorer.id_etudiant).filter(Tutorer.id_enseignant==num_personne)
-    query_soutenance_prevue=Soutenance.query.join(Composer,Composer.id_soutenance==Soutenance.id_soutenance).filter(Composer.id_enseignant==num_personne).order_by(Soutenance.dateS,Soutenance.h_debut)
+    query_soutenance_prevue=Soutenance.query.distinct(Soutenance.id_soutenance).join(Composer,Composer.id_soutenance==Soutenance.id_soutenance).filter(Composer.id_enseignant==num_personne)
 
     res_tutore = []
     res_soutenance=[]
@@ -190,14 +197,22 @@ def accueil_enseignant():
         soutenance_prevue_tutore=Soutenance.query.join(Stage,Stage.id_stage==Soutenance.id_stage).join(Demarche,Demarche.id_demarche==Stage.id_demarche).join(Etudiant,Etudiant.id_etudiant==Demarche.id_etudiant).filter(Etudiant.id_etudiant==etudiant.id_etudiant).first()
         res_tutore.append({'etudiant':etudiant,'etat':derniere_demarche.situation if derniere_demarche else "Aucune",'soutenance_tutore':soutenance_prevue_tutore})
         
-    for soutenance in query_soutenance_prevue:
-        res_soutenance.append({'soutenance':soutenance})
-    res_date=query_soutenance_prevue.distinct(Soutenance.dateS)
+    for soutenance in query_soutenance_prevue.distinct():
+        print(soutenance)
+        res_soutenance.append({'soutenance':soutenance,'date':soutenance.dateS,'heure':soutenance.h_debut,'salle':soutenance.salle})
+    date_soute=query_soutenance_prevue.distinct(Soutenance.dateS)
+    res_date=[]
+    for date in date_soute:
+        if date.dateS not in res_date:
+            res_date.append(date.dateS)
+    print(res_date)
     enseignant = current_user
     nb_soutenance_place=query_soutenance_prevue.count()
     nb_soutenance_place_tutore=queryListeTutore.count()
+    
 
-    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil",liste_tutore=res_tutore,liste_souteance=res_soutenance,date_soute=res_date,nb_sout_place=nb_soutenance_place)
+
+    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil",liste_tutore=res_tutore,liste_soutenance=res_soutenance,date_soute=res_date,nb_sout_place=nb_soutenance_place)
 
 
 @app.route('/enseignant/planning/')
@@ -469,8 +484,10 @@ def accueil_admin():
     # Nombre de soutenances posées par tuteur
     requete_soutenances = requete_les_etudiants.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
                                                      .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
-                                                     .join(Soutenance, Stage.id_stage == Soutenance.id_stage)
+                                                     .join(Soutenance, Stage.id_stage == Soutenance.id_stage)\
+                                                     .join(Tutorer, Etudiant.id_etudiant == Tutorer.id_etudiant)
     nb_soutenances_posees = requete_soutenances.with_entities(Soutenance.id_soutenance).distinct().count()
+    nb_tuteurs = db.session.query(Tutorer.id_enseignant).distinct().count()
 
     # Nombre de soutenances en attente de candide
     requete_ids_soutenances_pertinentes = requete_soutenances.with_entities(Soutenance.id_soutenance).distinct()
@@ -489,6 +506,7 @@ def accueil_admin():
         nb_soutenances_alternants=nb_soutenances_alternants,
         nb_soutenances_posees=nb_soutenances_posees,
         nb_soutenances_attente_candide=nb_soutenances_attente_candide,
+        nb_tuteurs=nb_tuteurs,
         createForm = unForm)
 
 
@@ -743,6 +761,12 @@ def valider_jury():
                 errors.append(f"Aucun stage validé trouvé pour l'étudiant id={id_etu_int}.")
                 continue
 
+            existante = Soutenance.query.filter_by(id_stage=stage.id_stage).first()
+            if existante:
+                errors.append(f"Une soutenance existe déjà pour l'étudiant id={id_etu_int}.")
+                continue
+
+            # Créer une soutenance liée au stage
             nouvelle_sout = Soutenance(
                 salle=salle_sel,
                 dateS=date_obj,
@@ -892,15 +916,13 @@ def liste_ens_admin():
                                            .join(Demarche)\
                                            .join(Stage)\
                                            .join(Soutenance, Stage.id_stage == Soutenance.id_stage)\
-                                           .join(Composer, (Composer.id_enseignant == Enseignant.id_enseignant) & (Composer.id_soutenance == Soutenance.id_soutenance))\
                                            .distinct()
         elif soutenance == "NonSoutenance":
             sq_soutenance = db.session.query(Tutorer.id_enseignant)\
                                       .join(Etudiant)\
                                       .join(Demarche)\
                                       .join(Stage)\
-                                      .join(Soutenance, Stage.id_stage == Soutenance.id_stage)\
-                                      .join(Composer, (Composer.id_enseignant == Tutorer.id_enseignant) & (Composer.id_soutenance == Soutenance.id_soutenance))
+                                      .join(Soutenance, Stage.id_stage == Soutenance.id_stage)
             lesEnseignants = lesEnseignants.join(Tutorer).filter(Enseignant.id_enseignant.notin_(sq_soutenance)).distinct()
 
     # Récupérer soutenances avec jury non complet : Composer -> Soutenance -> Stage -> 
@@ -934,7 +956,6 @@ def liste_ens_admin():
             .join(Demarche, Stage.id_demarche == Demarche.id_demarche) \
             .join(Etudiant, Demarche.id_etudiant == Etudiant.id_etudiant) \
             .join(Tutorer, (Etudiant.id_etudiant == Tutorer.id_etudiant) & (Tutorer.id_enseignant == enseignant.id_enseignant)) \
-            .filter(Soutenance.id_stage == Stage.id_stage) \
             .count()
 
         nb_candide = db.session.query(Soutenance).join(Composer, Soutenance.id_soutenance == Composer.id_soutenance)\
