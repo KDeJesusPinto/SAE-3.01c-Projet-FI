@@ -184,3 +184,12 @@ def importer_entreprises(fichier):
             ajout += 1
         db.session.commit()
         lg.warning(f"{fichier.name} : {ajout} entreprises ajoutées.")
+
+@app.cli.command()
+def test():
+    """Lance les tests unitaires avec mesure de couverture."""
+    import pytest
+    import sys
+    args = ["--cov=appSoutenance", "--cov-report=term-missing", "appSoutenance/tests"]
+    errno = pytest.main(args)
+    sys.exit(errno)
