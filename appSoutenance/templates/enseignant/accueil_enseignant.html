@@ -8,63 +8,32 @@
                 <select name="filtre" id="filtre_accueil_enseignant" class="choix">
                     <option value="Filtres">Filtres</option>
                 </select>
-                <i class="fas fa-search petite_icone"></i>
-                <div class="boite_verticale">
-                </div>
+                <i class="fas fa-search"></i>
             </div>
             <div class="boite_horizontale">
-                <div class="glass tutore_accueil">
+                {% if liste_tutore|length == 0 %}
+                    <p>Aucun étudiant trouvé.</p>
+                {% endif %}
+                {% for tutore in liste_tutore %}
+                    <div class="glass_tutoré_accueil">
                     <div class="boite_horizontale">
-                        <h2>john doe</h2>
+                        <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
                     </div>
                     <div class="boite_horizontale">
                         <i class="far fa-clipboard"></i>
-                        <p>état:</p>
+                        <p>état: {{tutore.etat}}</p>
                     </div>
                     <div class="boite_horizontale">
                         <i class="far fa-calendar-alt"></i>
-                        <p>8:15</p>
+                        <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
+                            en {{tutore.soutenance_tutore.salle}}</p>
                     </div>
                 </div>
-                <div class="glass tutore_accueil">
-                    <div class="boite_horizontale">
-                        <h2>john doe</h2>
-                    </div>
-                    <div class="boite_horizontale">
-                        <i class="far fa-clipboard"></i>
-                        <p>état:</p>
-                    </div>
-                    <div class="boite_horizontale">
-                        <i class="far fa-calendar-alt"></i>
-                        <p>8:15</p>
-                    </div>
-                </div>
-                <div class="glass tutore_accueil">
-                    <div class="boite_horizontale">
-                        <h2>john doe</h2>
-                    </div>
-                    <div class="boite_horizontale">
-                        <i class="far fa-clipboard"></i>
-                        <p>état:</p>
-                    </div>
-                    <div class="boite_horizontale">
-                        <i class="far fa-calendar-alt"></i>
-                        <p>8:15</p>
-                    </div>
-                </div>
-                <div class="glass tutore_accueil">
-                    <div class="boite_horizontale">
-                        <h2>john doe</h2>
-                    </div>
-                    <div class="boite_horizontale">
-                        <i class="far fa-clipboard"></i>
-                        <p>état:</p>
-                    </div>
-                    <div class="boite_horizontale">
-                        <i class="far fa-calendar-alt"></i>
-                        <p>8:15</p>
-                    </div>
-                </div>
+                {% endfor %}
+
+                
+                
+
             </div>
         </div>
         <div class="boite_horizontale">
@@ -77,25 +46,30 @@
                     </select>
                 </div>
                 <div class="boite_horizontale">
-                    <div class="glass planning_accueil">
-                        <p>25/07</p>
-                        <div class="dark_planning_accueil">
-                            <div class="boite_horizontale">
-                               <div class="boite_verticale">
-                                    <p>8:00</p>
-                                    <p>9:00</p>
-                                </div>
-                                <i class="fas fa-map-marker-alt"></i>
-                                <p>I202</p> 
-                                </div>
+                    {% if liste_souteance|length == 0 %}
+                        <p>Aucune soutenance trouvé.</p>
+                    {% endif %}
+                    {% for date in date_soute %}
+                        <div class="glass_planning_accueil">
+                        <p>{{date.dateS}}</p>
+                        {% for soutenance in liste_souteance %}
+                            {%if soutenance.soutenance.dateS==date.dateS%}
+                                <div class="dark_planning_accueil">
+                                    <div class="boite_horizontale">
+                                        <div class="boite_verticale">
+                                            <p>{{soutenance.soutenance.h_debut}}</p>
+                                            <p>{{soutenance.soutenance.h_fin}}</p>
+                                        </div>
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <p>{{soutenance.soutenance.salle}}</p> 
+                                    </div>
+                                </div>   
+                            {%endif%}
                         </div>
-                    </div>
-                    <div class="glass planning_accueil">
-                        <p>26/07</p>
-                    </div>
-                    <div class="glass planning_accueil">
-                        <p>27/07</p>
-                    </div>
+                        {% endfor%}
+                        
+                    {% endfor %}
+                    
                 </div>
             </div>
             <div class="boite_verticale">
@@ -105,7 +79,7 @@
                 <div class="boite_horizontale">
                     <div class="glass soutBUT3_accueil">
                     <h2>soutenance posées</h2>
-                    <h2>/</h2>
+                    <h2>{{nb_sout_place}}/</h2>
                         <div class="boite_verticale">
                             <a href="{{ url_for(accueil) }}" id="glass_fleche_nav">
                               <i class="fas fa-arrow-right"></i>
