@@ -1,6 +1,7 @@
 import pytest
 from pathlib import Path
 from sqlalchemy import text
+import subprocess
 from appSoutenance.app import app, db
 
 @pytest.fixture
@@ -20,16 +21,10 @@ def testapp():
         db.drop_all()
         db.create_all()
         
-        sql_file = Path("appSoutenance/data/insertion.sql")
-        if sql_file.exists():
-            with open(sql_file, "r", encoding="utf-8") as f:
-                sql_script = f.read()
-                for statement in sql_script.split(";"):
-                    statement = statement.strip()
-                    if statement:
-                        db.session.execute(text(statement))
-            db.session.commit()
-            
+        runner = app.test_cli_runner()
+        runner.invoke(args=['loaddb', 'appSoutenance/data/arexis_donnees.csv'])
+
         yield app
+        db.session.rollback()
         db.session.remove()
         db.drop_all()

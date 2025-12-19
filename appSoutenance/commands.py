@@ -1,4 +1,5 @@
 import csv
+import subprocess
 import click
 import logging as lg
 from sqlalchemy import text
@@ -208,13 +209,25 @@ def importer_entreprises(fichier):
 @app.cli.command()
 @click.pass_context
 def test(ctx):
-    """Lance les tests unitaires avec mesure de couverture."""
-    import pytest
+    """Lance les tests unitaires avec coverage et reload automatique."""
     import sys
-    args = ["--cov=appSoutenance", "--cov-report=term-missing", "appSoutenance/tests"]
-    errno = pytest.main(args)
 
-    # Réinitialisation automatique de la base de données de développement après les tests
-    ctx.invoke(resetdb)
+    # 1. Réinitialisation initiale
+    ctx.invoke(loaddb, filename='appSoutenance/data/arexis_donnees.csv')
 
-    sys.exit(errno)
+    try:
+        # 2. Exécution des tests via subprocess pour un coverage précis
+        res = subprocess.run([
+            "coverage", "run", "-m", "pytest", 
+            "--cov=appSoutenance", "--cov-report=term-missing", "appSoutenance/tests"
+        ])
+        # 3. Affichage du rapport de couverture
+        subprocess.run(["coverage", "report", "-m"])
+        return_code = res.returncode
+    finally:
+        # 4. Nettoyage des sessions et réinitialisation finale pour retrouver la base de dev propre
+        db.session.remove()
+        db.engine.dispose()
+        ctx.invoke(loaddb, filename='appSoutenance/data/arexis_donnees.csv')
+
+    sys.exit(return_code)

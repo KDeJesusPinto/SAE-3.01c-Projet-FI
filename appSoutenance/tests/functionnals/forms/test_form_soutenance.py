@@ -1,5 +1,5 @@
 from flask import Flask
-from appSoutenance.forms import FormSoutenance
+from appSoutenance.forms import FormSoutenance, db
 
 
 def test_form_soutenance_valide(testapp: Flask):
@@ -14,6 +14,7 @@ def test_form_soutenance_valide(testapp: Flask):
             nom_enseignant="Jean Dubois",
         )
         assert form.validate() is True
+        db.session.rollback()
 
 
 def test_form_soutenance_sans_date(testapp: Flask):
@@ -23,6 +24,7 @@ def test_form_soutenance_sans_date(testapp: Flask):
         form = FormSoutenance(id_stage="1", h_debut="10:00", dateS="", salle="102")
         assert form.validate() is False
         assert "dateS" in form.errors
+        db.session.rollback()
 
 
 def test_form_soutenance_structure_valide(testapp: Flask):
@@ -35,3 +37,4 @@ def test_form_soutenance_structure_valide(testapp: Flask):
         assert "h_debut" in form._fields
         assert "dateS" in form._fields
         assert "salle" in form._fields
+        db.session.rollback()

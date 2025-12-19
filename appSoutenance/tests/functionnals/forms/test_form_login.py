@@ -41,9 +41,7 @@ def test_login_form_enseignant_invalid_password(testapp: Flask):
 
     with testapp.app_context():
         form = LoginForm(Login="jdubois", Password="prof123")
-
-        user = form.get_authenticated_enseignant()
-        assert user is None
+        assert form.get_authenticated_enseignant is None
 
 def test_login_form_etudiant_invalid_password(testapp: Flask):
     """Test de l'authentification étudiant avec un mauvais mot de passe"""
@@ -79,11 +77,12 @@ def test_login_form_etudiant_sha256(testapp: Flask):
             pwd_etudiant=mdp_hashe,
         )
         db.session.add(nouveau_etu)
-        db.session.commit()
+        db.session.flush() # Envoie à la BD sans valider définitivement
 
         form = LoginForm(Login="shaetu", Password=mdp_clair)
         user = form.get_authenticated_etudiant()
         assert user is not None
+        db.session.rollback() # Annule l'insertion pour le test suivant
 
 def test_login_form_admin_sha256(testapp: Flask):
     """Test du fallback SHA256 pour admin"""
@@ -102,11 +101,12 @@ def test_login_form_admin_sha256(testapp: Flask):
             pwd_admin=mdp_hashe,
         )
         db.session.add(nouvel_admin)
-        db.session.commit()
+        db.session.flush()
 
         form = LoginForm(Login="shaadmin", Password=mdp_clair)
         user = form.get_authenticated_admin()
         assert user is not None
+        db.session.rollback()
 
 def test_login_form_enseignant_sha256(testapp: Flask):
     """Test du fallback SHA256 pour enseignant"""
@@ -126,11 +126,12 @@ def test_login_form_enseignant_sha256(testapp: Flask):
             pwd_enseignant=mdp_hashe,
         )
         db.session.add(nouveau_prof)
-        db.session.commit()
+        db.session.flush()
 
         form = LoginForm(Login="shasuser", Password=mdp_clair)
         user = form.get_authenticated_enseignant()
         assert user is not None
+        db.session.rollback()
 
 
 
