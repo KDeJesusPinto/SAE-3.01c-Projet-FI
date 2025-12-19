@@ -903,7 +903,8 @@ def liste_ens_admin():
                                       .join(Composer, (Composer.id_enseignant == Tutorer.id_enseignant) & (Composer.id_soutenance == Soutenance.id_soutenance))
             lesEnseignants = lesEnseignants.join(Tutorer).filter(Enseignant.id_enseignant.notin_(sq_soutenance)).distinct()
 
-    # Récupérer soutenances avec jury non complet : Composer -> Soutenance -> Stage -> Demarche -> Etudiant -> Tutorer -> Enseignant
+    # Récupérer soutenances avec jury non complet : Composer -> Soutenance -> Stage -> 
+    # Demarche -> Etudiant -> Tutorer -> Enseignant
     # id de l'étudiant =! de l'id de l'étudiant dont l'enseignant est tuteur
     if candide == 'NonCandide':
         sq = db.session.query(Enseignant.id_enseignant)\
@@ -912,7 +913,8 @@ def liste_ens_admin():
             .join(Stage, Stage.id_stage == Soutenance.id_stage)\
             .join(Demarche, Demarche.id_demarche == Stage.id_demarche)\
             .join(Etudiant, Etudiant.id_etudiant == Demarche.id_etudiant)\
-            .outerjoin(Tutorer, (Tutorer.id_enseignant == Enseignant.id_enseignant) & (Tutorer.id_etudiant == Etudiant.id_etudiant))\
+            .outerjoin(Tutorer, (Tutorer.id_enseignant == Enseignant.id_enseignant)\
+                 & (Tutorer.id_etudiant == Etudiant.id_etudiant))\
             .filter(Tutorer.id_enseignant.is_(None))
         lesEnseignants = lesEnseignants.filter(Enseignant.id_enseignant.notin_(sq))
 
@@ -1057,12 +1059,12 @@ def liste_soutenances_candides_admin(id=None):
         flash("Accès réservé aux administrateurs.", "warning")
         return redirect(url_for("login"))
 
-    # IDs des soutenances qui ont un jury complet (>= 2 membres)
+    # IDs des soutenances qui ont un jury complet
     soutenances_jury_complet_ids = db.session.query(Composer.id_soutenance)\
         .group_by(Composer.id_soutenance)\
         .having(func.count(Composer.id_enseignant) >= 2)
 
-    # n récupère toutes les soutenances dont l'ID n'est pas dans la liste des complets
+    # On récupère toutes les soutenances dont l'ID n'est pas dans la liste des complets
     requete_soutenances_sans_candide = db.session.query(Soutenance, Etudiant, Enseignant, Stage)\
         .join(Stage, Soutenance.id_stage == Stage.id_stage)\
         .join(Demarche, Stage.id_demarche == Demarche.id_demarche)\

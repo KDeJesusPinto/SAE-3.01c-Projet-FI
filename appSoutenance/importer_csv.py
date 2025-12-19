@@ -7,11 +7,12 @@ from sqlalchemy.exc import IntegrityError
 
 
 def importer_etudiants_stages(file_storage):
-    """Importe les données Étudiants/Stages à partir d'un flux de fichier CSV."""
+    """Importe les données Étudiants/Stages à partir d'un flux de fichier CSV"""
+
     ajout = 0
     try:
         content = file_storage.read().decode('utf-8')
-        stream = io.StringIO(content) # On utilise StringIO au lieu de TextIOWrapper
+        stream = io.StringIO(content)
         reader = csv.DictReader(stream)
 
         champs_attendus = ['mail_etu', 'nom_stagiaire', 'prenom_stagiaire', 'civilite_stagiaire']
@@ -19,7 +20,7 @@ def importer_etudiants_stages(file_storage):
             return False, f"Format CSV invalide. Colonnes attendues : {', '.join(champs_attendus)}"
 
         for row in reader:
-            email = row.get('mail_perso') or row.get('mail_etu') or "email@anonyme.com"
+            email = row.get('mail_perso') or row.get('mail_etu')
             if not email:
                 continue
             etu = Etudiant.query.filter_by(email_etudiant=email).first()
@@ -36,8 +37,6 @@ def importer_etudiants_stages(file_storage):
 
 
         db.session.commit()
-        # lg.warning(f"Importation Étudiants/Stages terminée : {ajout} lignes traitées")
-        # return True, f"{ajout} lignes d'étudiants et stages importées avec succès"
         return True, f"{ajout} lignes traitées."
     
     except Exception as e:
@@ -46,7 +45,8 @@ def importer_etudiants_stages(file_storage):
 
 
 def importer_entreprises(file_storage):
-    """Importe les entreprises à partir d'un flux de fichier CSV."""
+    """Importe les entreprises à partir d'un flux de fichier CSV"""
+    
     try:
         content = file_storage.read().decode('utf-8')
         stream = io.StringIO(content) 
