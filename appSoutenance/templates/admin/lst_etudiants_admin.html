@@ -41,8 +41,8 @@
                 <p>Aucun étudiant trouvé</p>
             {% endif %}
             {% for res in resultats %}
-            <div class="glass" id="liste_etu">
-                <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 10px 0.35fr 0.2fr 0.2fr 0.1fr 0.25fr 0.4fr 50px 50px; align-items: center;">
+            <a class="glass liste_etu" href="{{ url_for('detail_etudiant_admin', id=res.etudiant.id_etudiant) }}">
+                <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 10px 0.35fr 0.2fr 0.2fr 0.1fr 0.25fr 0.4fr 50px; align-items: center;">
                     <i class="fas fa-user-circle grande_icone"></i>
                     <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.etudiant.prenom_etudiant }} {{ res.etudiant.nom_etudiant }}</p>
                     <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.formation }}</p>
@@ -50,7 +50,6 @@
                     <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.regime }}</p>
                     <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Démarches : {{ res.nb_demarches }}</p>
                     <p class="pliste" style="padding-right: 5px;">Dernière démarche : {{ res.situation }}</p>
-                    <a id="detail" href="{{ url_for('detail_etudiant_admin', id=res.etudiant.id_etudiant) }}"><i class="fas fa-info"></i></a>
                     {% if res.situation == "Acceptée" %}
                         <i class="fas fa-check-circle grande_icone" style="color:green; font-size: 4rem !important;"></i>
                     {% elif res.situation == "En cours" %}
@@ -59,7 +58,7 @@
                         <i class="fas fa-times-circle grande_icone" style="color:red; font-size: 4rem !important;"></i>
                     {% endif %}
                 </div>
-            </div>
+            </a>
             {% endfor %}
         </div>
     </div>

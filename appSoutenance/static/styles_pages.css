@@ -198,7 +198,7 @@ div#boite{
     justify-content: center;
 }
 
-div#liste_etu{
+div#liste_etu, div#liste_ens{
     /* style */
     /* positionnement */
     width: 100%;
@@ -221,7 +221,7 @@ a#voir{
     width: 250px;
 }
 
-a#detail {
+.detail_icon, #detail {
     /* style */
     font-size: 1.2em;
     color: var(--couleur_sombre_principale);
@@ -233,6 +233,9 @@ a#detail {
     width: 70px;
     height: auto;
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 button#importer, button#exporter{
