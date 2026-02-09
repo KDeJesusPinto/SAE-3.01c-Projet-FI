@@ -322,6 +322,8 @@ label[for="import_csv"], label[for="export_csv"]{
 
 #en_haut{
     align-self: baseline;
+    position: sticky;
+    top: 90px;
 }
 
 /*---------------- POUR LE PLANNING DES PAGES ADMIN ----------------*/

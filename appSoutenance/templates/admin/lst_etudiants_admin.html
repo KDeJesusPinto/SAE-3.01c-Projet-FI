@@ -4,7 +4,7 @@
     <div class="boite_horizontale">
         <aside id="en_haut" id="filtre_liste_admin">
             <form method="get" action="{{ url_for('liste_etu_admin') }}">
-            <a href="{{ url_for('accueil_admin') }}" class="petit_bouton" style="font-size: 0.7em; align-items: center; display: block; margin: 12px auto; margin-bottom:10%; width: 30%;"><i class="fas fa-code"></i> Retour</a>
+            
                 <select class="combobox" name="annee" id="annee">
                     <option value="">Année</option>
                     <option value="2A" {% if request.args.get('annee') == '2A' %}selected{% endif %}>2ème année</option>
@@ -33,6 +33,7 @@
                     <option value="Annee">Année</option>
                     <option value="NbDemarches">Nombre de démarches</option>
                 </select>
+                <a href="{{ url_for('accueil_admin') }}" class="petit_bouton" style="font-size: 0.7em; align-items: center; display: block; margin: 12px auto; margin-bottom:10%; width: 30%;"><i class="fas fa-code"></i> Retour</a>
             </form>
         </aside>
 
