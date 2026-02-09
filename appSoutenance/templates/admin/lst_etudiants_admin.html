@@ -26,13 +26,13 @@
                     <option value="Alternant" {% if request.args.get('regime') == 'Alternant' %}selected{% endif %}>Alternant</option>
                     <option value="Formation Initiale" {% if request.args.get('regime') == 'Formation Initiale' %}selected{% endif %}>Formation Initiale</option>
                 </select>
-                <button class="petit_bouton" id="filtrer" type="submit" style="display: block; margin: 12px auto;">Appliquer</button>
                 <select class="combobox" name="trier" id="trier">
                     <option value="">Trier par</option>
                     <option value="Nom">Nom</option>
                     <option value="Annee">Année</option>
                     <option value="NbDemarches">Nombre de démarches</option>
                 </select>
+                <button class="petit_bouton" id="filtrer" type="submit" style="display: block; margin: 12px auto;">Appliquer</button>
             </form>
         </aside>
 

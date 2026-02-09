@@ -327,6 +327,15 @@ label[for="import_csv"], label[for="export_csv"]{
     align-self: baseline;
 }
 
+#ajouter_soutenance{
+    /* style */
+    font-size: 0.7em;
+
+    /* positionnement */
+    width: 100%;
+    padding: 10px 3px;
+}
+
 /*---------------- POUR LE PLANNING DES PAGES ADMIN ----------------*/
 
 #filtres{
