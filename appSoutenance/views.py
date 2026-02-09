@@ -511,7 +511,7 @@ MOIS = {
 
 @app.route('/admin/planning/')
 @login_required
-def planning_admin():
+def planning_admini():
     """Page de planning pour les administrateurs"""
 
     admin = current_user
@@ -625,12 +625,41 @@ def planning_admin():
                            title="Planning", resultats = resultats_regroupes,
                            heures_disponibles = heures_disponibles,
                            enseignants_disponibles = enseignants_disponibles,
-                           dates_disponibles = dates_disponibles)
+                           dates_disponibles = dates_disponibles,
+                           soutenance = regroupement)
+
 
 HEURE= {
     1: '08:00', 2: '09:00', 3: '10:00', 4: '11:00', 5: '12:00', 6: '13:00',
     7: '14:00'
 }
+
+
+
+
+@app.route('/admin/planning/<int:id>/')
+@login_required
+def detail_soutenance_admin(id):
+    """Page de détail d'une soutenance pour les administrateurs
+
+
+    Args:
+        id (int): l'identifiant de la soutenance
+    """
+
+
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
+   
+    soutenance = Soutenance.query.get(id)
+   
+    return render_template("admin/planning_admin.html",
+                           accueil="accueil_admin",
+                           title="Planning soutenances",
+                           soutenance = soutenance)
+
 
 @app.route('/admin/planning/creation_soutenance/', methods =["GET", "POST"])
 @login_required
@@ -793,7 +822,7 @@ def valider_jury():
         db.session.rollback()
         flash(f"Erreur lors de l'insertion : {e}", "danger")
 
-    return redirect(url_for('planning_admin'))
+    return redirect(url_for('planning_admini'))
 
 @app.route('/admin/liste+enseignants/<int:id>/')
 @login_required
