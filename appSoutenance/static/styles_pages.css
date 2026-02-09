@@ -199,7 +199,7 @@ section#section_planning_accueil{
                 width: 100%;
                 margin: 10px 0;
                 justify-content: space-between;
-                padding: 10px;
+                padding: 20px;
             }
         }
     }
@@ -208,6 +208,20 @@ section#section_planning_accueil{
 section#section_soutenance_accueil{
     flex-basis: 40%;
     flex-grow: 0;
+
+    h1{
+        white-space: wrap;
+    }
+
+    a{
+        align-self: flex-end;
+    }
+
+    .glass{
+        row-gap: 0;
+        width: 50%;
+        padding: 20px;
+    }
 }
 
 section#tutores{
@@ -228,13 +242,13 @@ section#tutores{
     }
 }
 
-#glass_fleche_nav{
+/*#glass_fleche_nav{
     /* style */
     /* positionnement */
-    padding: 20px;
+    /*padding: 20px;
 
     align-items: center;
-}
+}*/
 
 .tutore_accueil{
     /* style */
