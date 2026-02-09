@@ -738,6 +738,12 @@ def valider_jury():
         flash("Date invalide.", "danger")
         return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel))
 
+    # Vérification si une soutenance existe déjà dans cette salle à cette heure
+    soutenance_existante = Soutenance.query.filter_by(dateS=date_obj, h_debut=heure_sel, salle=salle_sel).first()
+    if soutenance_existante:
+        flash(f"Conflit : La salle {salle_sel} est déjà occupée le {dateS} à {heure_sel}!!", "danger")
+        return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel))
+
     for i in range(1, 4):
         id_etu = request.form.get(f'etu{i}')
 
@@ -752,6 +758,12 @@ def valider_jury():
 
             if not stage:
                 errors.append(f"Aucun stage validé trouvé pour l'étudiant id={id_etu_int}.")
+                continue
+
+            # Vérification si ce stage a déjà une soutenance (évite l'IntegrityError)
+            soutenance_stage = Soutenance.query.filter_by(id_stage=stage.id_stage).first()
+            if soutenance_stage:
+                errors.append(f"L'étudiant {id_etu_int} a déjà une soutenance programmée.")
                 continue
 
             # Créer une soutenance liée au stage
