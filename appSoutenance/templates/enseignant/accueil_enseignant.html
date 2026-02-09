@@ -1,8 +1,8 @@
 {% extends "enseignant/base_enseignant.html" %}
 
 {% block content %}
-    <div class="boite_verticale" id="accueil_enseignant">
-        <div class="boite_verticale">
+    <div class="boite_verticale"> <!--id="accueil_enseignant"-->
+        <section class="boite_verticale" id="tutores">
             <div class="boite_horizontale">
                 <h1>Tutorés</h1>
                 <select name="filtre" id="filtre_accueil_enseignant" class="choix">
@@ -10,7 +10,7 @@
                 </select>
                 <i class="fas fa-search grande_icone"></i>
             </div>
-            <div class="boite_horizontale">
+            <article class="boite_horizontale">
                 {% if liste_tutore|length == 0 %}
                     <p>Aucun étudiant trouvé.</p>
                 {% endif %}
@@ -29,11 +29,67 @@
                                 en {{tutore.soutenance_tutore.salle}}</p>
                         </div>
                     </div>
+                    <div class="glass tutore_accueil">
+                        <div class="boite_horizontale">
+                            <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
+                        </div>
+                        <div class="boite_horizontale">
+                            <i class="fas fa-clipboard petite_icone"></i>
+                            <p>État: {{tutore.etat}}</p>
+                        </div>
+                        <div class="boite_horizontale">
+                            <i class="fas fa-calendar-alt petite_icone"></i>
+                            <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
+                                en {{tutore.soutenance_tutore.salle}}</p>
+                        </div>
+                    </div>
+                    <div class="glass tutore_accueil">
+                        <div class="boite_horizontale">
+                            <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
+                        </div>
+                        <div class="boite_horizontale">
+                            <i class="fas fa-clipboard petite_icone"></i>
+                            <p>État: {{tutore.etat}}</p>
+                        </div>
+                        <div class="boite_horizontale">
+                            <i class="fas fa-calendar-alt petite_icone"></i>
+                            <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
+                                en {{tutore.soutenance_tutore.salle}}</p>
+                        </div>
+                    </div>
+                    <div class="glass tutore_accueil">
+                        <div class="boite_horizontale">
+                            <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
+                        </div>
+                        <div class="boite_horizontale">
+                            <i class="fas fa-clipboard petite_icone"></i>
+                            <p>État: {{tutore.etat}}</p>
+                        </div>
+                        <div class="boite_horizontale">
+                            <i class="fas fa-calendar-alt petite_icone"></i>
+                            <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
+                                en {{tutore.soutenance_tutore.salle}}</p>
+                        </div>
+                    </div>
+                    <div class="glass tutore_accueil">
+                        <div class="boite_horizontale">
+                            <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
+                        </div>
+                        <div class="boite_horizontale">
+                            <i class="fas fa-clipboard petite_icone"></i>
+                            <p>État: {{tutore.etat}}</p>
+                        </div>
+                        <div class="boite_horizontale">
+                            <i class="fas fa-calendar-alt petite_icone"></i>
+                            <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
+                                en {{tutore.soutenance_tutore.salle}}</p>
+                        </div>
+                    </div>
                 {% endfor %}
-            </div>
-        </div>
+                </article>
+        </section>
         <div class="boite_horizontale">
-            <div class="boite_verticale">
+            <section class="boite_verticale" id="section_planning_accueil">
                 <div class="boite_horizontale">
                     <h1>Planning</h1>
                     <select name="filtre_planning" id="filtre_planning_annee_enseignant" class="choix">
@@ -41,7 +97,7 @@
                         <option value="2ème année">2ème année</option>
                     </select>
                 </div>
-                <div class="boite_horizontale" id="planning_accueil">
+                <article id="planning_accueil">
                     {% if liste_soutenance|length == 0 %}
                         <p>Aucune soutenance trouvé.</p>
                     {% endif %}
@@ -50,12 +106,12 @@
                             <p>{{date}}</p>
                             {% for soutenance in liste_soutenance %}
                                 {% if soutenance.soutenance.dateS==date %}
-                                    <div class="petit_bouton">
+                                    <div class="petit_bouton boite_horizontale">
+                                        <div class="boite_verticale">
+                                            <p>{{soutenance.soutenance.h_debut}}</p>
+                                            <p>{{soutenance.soutenance.h_fin}}</p>
+                                        </div>
                                         <div class="boite_horizontale">
-                                            <div class="boite_verticale">
-                                                <p>{{soutenance.soutenance.h_debut}}</p>
-                                                <p>{{soutenance.soutenance.h_fin}}</p>
-                                            </div>
                                             <i class="fas fa-map-marker-alt"></i>
                                             <p>{{soutenance.soutenance.salle}}</p> 
                                         </div>
@@ -64,9 +120,9 @@
                             {% endfor%}
                         </div>
                     {% endfor %}
-                </div>
-            </div>
-            <div class="boite_verticale">
+                    </article>
+            </section>
+            <section class="boite_verticale" id="section_soutenance_accueil">
                 <div class="boite_horizontale">
                     <h1>soutenance des BUT3</h1>
                 </div>
@@ -86,7 +142,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
 {% endblock %}

@@ -121,7 +121,7 @@ div.demarches{
 
 /*---------------- POUR LES PAGES ENSEIGNANT ----------------*/
 
-#accueil_enseignant{
+/*#accueil_enseignant{
     width: 100%;
 
     > div{
@@ -161,6 +161,48 @@ div.demarches{
         flex-grow: 0;
         width: auto;
     }
+}*/
+
+section#section_planning_accueil{
+    flex-basis: 60%;
+    flex-shrink: 0;
+
+    *{
+        box-sizing: border-box;
+    }
+
+    > *{
+        width: 100%;
+    }
+
+    #planning_accueil{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 20px;
+
+        .glass{
+            overflow-y: scroll;
+            padding: 10px;
+            /*overflow-x: hidden;*/
+
+            *{
+                /*column-gap: 5px;*/
+                padding: 0;
+            }
+            
+            .petit_bouton{
+                width: 100%;
+                margin: 10px 0;
+                justify-content: space-between;
+                padding: 10px;
+            }
+        }
+    }
+}
+
+section#section_soutenance_accueil{
+    flex-basis: 40%;
+    flex-grow: 0;
 }
 
 #glass_fleche_nav{
