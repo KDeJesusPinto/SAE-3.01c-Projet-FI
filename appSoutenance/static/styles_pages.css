@@ -198,7 +198,7 @@ div#boite{
     justify-content: center;
 }
 
-div#liste_etu, div#liste_ens{
+div.liste_etu, div.liste_ens{
     /* style */
     /* positionnement */
     width: 100%;
