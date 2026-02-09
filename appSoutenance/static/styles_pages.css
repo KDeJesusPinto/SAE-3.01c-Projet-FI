@@ -163,6 +163,11 @@ div.demarches{
     }
 }*/
 
+#main_body:has(#tutores){
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
 section#section_planning_accueil{
     flex-basis: 60%;
     flex-shrink: 0;
@@ -203,6 +208,24 @@ section#section_planning_accueil{
 section#section_soutenance_accueil{
     flex-basis: 40%;
     flex-grow: 0;
+}
+
+section#tutores{
+    width: 100%;
+
+    > *{
+        width: 100%;
+    }
+
+    article{
+        overflow-x: scroll;
+        max-width: 100%;
+
+        .glass{
+            min-width: 300px;
+            max-width: 33vw;
+        }
+    }
 }
 
 #glass_fleche_nav{

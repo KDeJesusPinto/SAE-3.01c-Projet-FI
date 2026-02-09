@@ -1,7 +1,6 @@
 {% extends "enseignant/base_enseignant.html" %}
 
-{% block content %}
-    <div class="boite_verticale"> <!--id="accueil_enseignant"-->
+{% block content %} <!--id="accueil_enseignant"-->
         <section class="boite_verticale" id="tutores">
             <div class="boite_horizontale">
                 <h1>Tutorés</h1>
@@ -15,62 +14,6 @@
                     <p>Aucun étudiant trouvé.</p>
                 {% endif %}
                 {% for tutore in liste_tutore %}
-                    <div class="glass tutore_accueil">
-                        <div class="boite_horizontale">
-                            <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
-                        </div>
-                        <div class="boite_horizontale">
-                            <i class="fas fa-clipboard petite_icone"></i>
-                            <p>État: {{tutore.etat}}</p>
-                        </div>
-                        <div class="boite_horizontale">
-                            <i class="fas fa-calendar-alt petite_icone"></i>
-                            <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
-                                en {{tutore.soutenance_tutore.salle}}</p>
-                        </div>
-                    </div>
-                    <div class="glass tutore_accueil">
-                        <div class="boite_horizontale">
-                            <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
-                        </div>
-                        <div class="boite_horizontale">
-                            <i class="fas fa-clipboard petite_icone"></i>
-                            <p>État: {{tutore.etat}}</p>
-                        </div>
-                        <div class="boite_horizontale">
-                            <i class="fas fa-calendar-alt petite_icone"></i>
-                            <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
-                                en {{tutore.soutenance_tutore.salle}}</p>
-                        </div>
-                    </div>
-                    <div class="glass tutore_accueil">
-                        <div class="boite_horizontale">
-                            <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
-                        </div>
-                        <div class="boite_horizontale">
-                            <i class="fas fa-clipboard petite_icone"></i>
-                            <p>État: {{tutore.etat}}</p>
-                        </div>
-                        <div class="boite_horizontale">
-                            <i class="fas fa-calendar-alt petite_icone"></i>
-                            <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
-                                en {{tutore.soutenance_tutore.salle}}</p>
-                        </div>
-                    </div>
-                    <div class="glass tutore_accueil">
-                        <div class="boite_horizontale">
-                            <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
-                        </div>
-                        <div class="boite_horizontale">
-                            <i class="fas fa-clipboard petite_icone"></i>
-                            <p>État: {{tutore.etat}}</p>
-                        </div>
-                        <div class="boite_horizontale">
-                            <i class="fas fa-calendar-alt petite_icone"></i>
-                            <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
-                                en {{tutore.soutenance_tutore.salle}}</p>
-                        </div>
-                    </div>
                     <div class="glass tutore_accueil">
                         <div class="boite_horizontale">
                             <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
@@ -144,5 +87,4 @@
                 </div>
             </section>
         </div>
-    </div>
 {% endblock %}
