@@ -41,15 +41,16 @@
                 <p>Aucun enseignant trouvé.</p>
             {% endif %}
             {% for res in resultats %}
-            <div class="glass" id="liste_etu">
-            <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 50px 1.2fr 0.7fr 2fr 1.5fr 50px 1fr; align-items: center; gap: 10px;">
+            <div class="glass liste_ens" style="position: relative;">
+                <a href="{{ url_for('detail_enseignant', id=res.enseignant.id_enseignant) }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></a>
+                
+                <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 50px 1.2fr 0.7fr 1.8fr 1.2fr 1.2fr; align-items: center; gap: 10px; position: relative; z-index: 2; pointer-events: none;">
                     <i class="fas fa-user-circle grande_icone"></i>
                     <p class="pliste" style="border-right: 2px solid; padding-right: 10px;">{{ res.enseignant.prenom_enseignant }} {{ res.enseignant.nom_enseignant }}</p>
-                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;"> Tutorés : {{ res.nb_tutores }}</p>
-                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;"> Soutenances de tutorés posées : {{ res.nb_soutenances_en_tuteur }} / {{ res.nb_tutores }} </p>
-                    <p class="pliste"> Soutenances en candide : {{ res.nb_candide }} </p>
-                    <a id="detail" href="{{ url_for('detail_enseignant', id=res.enseignant.id_enseignant) }}"><i class="fas fa-info"></i></a>
-                    <a href="{{ url_for('liste_soutenances_candides_admin', id=res.enseignant.id_enseignant)}}" class="petit_bouton" style="font-size: 0.7em; width: 100%;">Ajouter soutenance</a>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;">Tutorés : {{ res.nb_tutores }}</p>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 10px;">Soutenances de tutorés posées : {{ res.nb_soutenances_en_tuteur }} / {{ res.nb_tutores }} </p>
+                    <p class="pliste">Soutenances en candide : {{ res.nb_candide }} </p>
+                    <a id="ajouter_soutenance" href="{{ url_for('liste_soutenances_candides_admin', id=res.enseignant.id_enseignant)}}" class="petit_bouton btn-overlay">Ajouter soutenance</a>
                 </div>
             </div>
             {% endfor %}
