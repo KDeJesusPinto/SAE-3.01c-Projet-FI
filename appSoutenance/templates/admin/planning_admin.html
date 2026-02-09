@@ -62,9 +62,8 @@
         </div>
     {% else %}
         {% for bloc in resultats %}
-
-        <a href="{{ url_for('detail_soutenance_admin', id=bloc.id_soutenance) }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></a>
-        <div class="glass boite_verticale">
+        <div class="glass boite_verticale" style="position: relative;">
+            <a href="{{ url_for('detail_soutenance_admin', id=bloc.id_soutenance) }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></a>
             <div class="boite_horizontale">
                 <span id="date">{{ bloc.dateS }}</span>
                 <div class="boite_horizontale">

@@ -606,6 +606,7 @@ def planning_admini():
            
             if cle_regroupement not in regroupement:
                 regroupement[cle_regroupement] = {
+                    'id_soutenance': soutenance.id_soutenance,
                     'dateS': date_formatee,
                     'h_debut': soutenance.h_debut,
                     'salle': soutenance.salle,
@@ -655,9 +656,9 @@ def detail_soutenance_admin(id):
    
     soutenance = Soutenance.query.get(id)
    
-    return render_template("admin/planning_admin.html",
+    return render_template("admin/detail_soutenance_admin.html",
                            accueil="accueil_admin",
-                           title="Planning soutenances",
+                           title="Détail de la soutenance",
                            soutenance = soutenance)
 
 
