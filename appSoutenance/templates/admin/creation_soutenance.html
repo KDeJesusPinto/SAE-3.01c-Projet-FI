@@ -40,7 +40,7 @@
             </select>
         </div>
 
-        <button type="submit" class="petit_bouton" style="width: 50%; ">Vérifier disponibilités</button>
+        <button type="submit" class="petit_bouton" id="retour" style="width: 50%;">Vérifier disponibilités</button>
         
     </div> 
     <input type="hidden" name="ens1" value="{{ ens_ids[0] or '' }}">
@@ -182,20 +182,6 @@
     {% endif %}
     {% endwith %}
 
-    <a href="{{ url_for('planning_admini') }}" class="petit_bouton"><i class="fas fa-code"></i> Retour</a>
+    <a href="{{ url_for('planning_admini') }}" id="retour" class="petit_bouton"><i class="fas fa-code"></i> Retour</a>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const scrollPosition = sessionStorage.getItem('scrollPosition');
-        if (scrollPosition) {
-            window.scrollTo(0, parseInt(scrollPosition));
-            sessionStorage.removeItem('scrollPosition');
-        }
-    });
-
-
-    window.addEventListener('beforeunload', function() {
-        sessionStorage.setItem('scrollPosition', window.scrollY);
-    });
-</script>
 {% endblock %}

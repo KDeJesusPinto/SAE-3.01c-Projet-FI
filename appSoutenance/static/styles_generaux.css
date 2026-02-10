@@ -241,7 +241,7 @@ div.demarche_etape{
     display: block;
     margin: 12px auto;
     margin-bottom:10%;
-    width: 30%;
+    width: fit-content;
 }
 /*---------------- STYLE DE LA BOITE CONTENANT TOUT LE CONTENU ----------------*/
 
