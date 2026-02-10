@@ -227,100 +227,6 @@ MOIS = {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @app.route('/enseignant/soutenances/')
 @login_required
 def soutenance_enseignant():
@@ -385,7 +291,6 @@ def soutenance_enseignant():
 
     for soutenance in lesSoutenances:
         stage = Stage.query.get(soutenance.id_stage)
-
         
         etudiant_lie = None
         if stage and stage.demarche:
@@ -417,18 +322,21 @@ def soutenance_enseignant():
                 regroupement[cle_regroupement] = {
                     'dateS': date_formatee,
                     'h_debut': soutenance.h_debut,
+                    'liste_id_soutenance':[],
                     'salle': soutenance.salle,
                     'jury_noms': membres_jury_noms,
                     'nom_promo': promo_etudiant,
                     'stages': [],
-                    'bouton_desinscription':user_present and "3" in promo_etudiant,
-                    'bouton_inscription':(not user_present) and  "3" in promo_etudiant
+                    'bouton_desinscription':user_present and "2" in promo_etudiant,
+                    'bouton_inscription':(not user_present) and  "2" in promo_etudiant
                 }
             regroupement[cle_regroupement]['stages'].append({
                 'nom_etudiant': etudiant_lie.nom_etudiant,
                 'prenom_etudiant': etudiant_lie.prenom_etudiant,
                 'titre_stage': stage.titre_stage if stage else "Titre de stage non trouvé"
             })
+            regroupement[cle_regroupement]['liste_id_soutenance'].append(soutenance.id_soutenance)
+            print(regroupement[cle_regroupement]['liste_id_soutenance'])
 
     resultats_regroupes = list(regroupement.values())
     return render_template("enseignant/soutenance_enseignant.html",
@@ -441,108 +349,20 @@ def soutenance_enseignant():
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@app.route('/enseignant/soutenances/inscription/')
+@login_required
+def inscription_enseignant():
+    enseignant = current_user
+    print(request.args.get('soutenance_jury'))
+    for soutenance in request.args.get('soutenance_jury'):
+        inscription_soutenance = Composer(
+            id_enseignant=enseignant.id_enseignant,
+            id_soutenance=soutenance
+            )
+        print(inscription_soutenance)
+        db.session.add(inscription_soutenance)
+        db.session.commit()
+    return redirect(url_for('soutenance_enseignant'))
 
 
 @app.route('/enseignant/liste+etu/')
@@ -1000,6 +820,121 @@ def valider_jury():
         flash(f"Erreur lors de l'insertion : {e}", "danger")
 
     return redirect(url_for('planning_admin'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @app.route('/admin/liste+enseignants/<int:id>/')
 @login_required

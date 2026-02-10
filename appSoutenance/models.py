@@ -378,6 +378,9 @@ class Composer(db.Model):
         self.id_enseignant = id_enseignant
         self.id_soutenance = id_soutenance
 
+    def __repr__(self):
+        return f"<Composer : {self.id_enseignant}, {self.id_soutenance}>"
+
 
 class Tutorer(db.Model):
     annee = db.Column(db.Integer)

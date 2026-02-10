@@ -96,7 +96,8 @@
                 {% if bloc.bouton_desinscription %}
                     <button class="petit_bouton" id="enseignant_desinscription_soutenance" type="submit">se desinscricre</button>
                 {% elif bloc.bouton_inscription %}
-                    <button class="petit_bouton" id="enseignant_inscription_soutenance" type="submit">s'inscricre</button>
+                    <button action="{{ url_for('inscription_enseignant', soutenance_jury=bloc.liste_id_soutenance, **request.args) }}" class="petit_bouton">s'inscrire</button>
+                    <button><a href="{{ url_for('inscription_enseignant', soutenance_jury=bloc.liste_id_soutenance, **request.args) }}" class="petit_bouton">s'inscrire</button></a>
                 {% endif %}
             </div>
         </div>
