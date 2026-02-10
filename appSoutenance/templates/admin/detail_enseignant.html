@@ -3,8 +3,9 @@
 {% block content %}
     <div class="glass" style="width: 90%; height: 100%;">
         <div class="boite_horizontale" style="justify-content: center; position: relative; margin-top: 2%; width: 100%;">
-            <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" style="position: absolute; left: 20px; width: fit-content; font-size: 0.7em; padding: 10px 20px; margin: 0;"><i class="fas fa-code"></i> Retour</a>
-            <h1>{{ enseignant.civilite_enseignant }} {{ enseignant.nom_enseignant }} {{ enseignant.prenom_enseignant }}</h1>
+            <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" style="position: absolute; left: 20px; width: fit-content; font-size: 0.7em; padding: 10px 20px; margin: 0;"><i class="fas fa-code"></i> Retour enseignants</a>
+            <a href="{{ url_for('planning_admini') }}" class="petit_bouton" style="position: absolute; right: 60px; width: fit-content; font-size: 0.7em; padding: 10px 20px; margin: 0;"><i class="fas fa-code"></i> Retour planning</a>
+            <h1>{{ enseignant.civilite_enseignant }} {{ enseignant.nom_enseignant }} {{ enseignant.prénom_enseignant }}</h1>
         </div>
         <div class="boite_verticale" style="display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-left:2%;">
             <p><strong>Login : </strong>{{ enseignant.login_enseignant }}</p>

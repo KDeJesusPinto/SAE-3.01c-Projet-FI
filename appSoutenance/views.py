@@ -659,10 +659,17 @@ def detail_soutenance_admin(id):
         flash("Soutenance introuvable.", "danger")
         return redirect(url_for('planning_admini'))
    
+    enseignants_jury = db.session.query(Enseignant)\
+            .join(Composer)\
+            .filter(Composer.id_soutenance == id)\
+            .all()
+
+
     return render_template("admin/detail_soutenance_admin.html",
                            accueil="accueil_admin",
                            title="Détail de la soutenance",
-                           soutenance = soutenance)
+                           soutenance = soutenance,
+                           enseignants_jury = enseignants_jury)
 
 
 @app.route('/admin/planning/creation_soutenance/', methods =["GET", "POST"])

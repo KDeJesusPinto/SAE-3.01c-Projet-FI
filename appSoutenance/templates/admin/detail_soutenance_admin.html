@@ -14,10 +14,17 @@
                 </div>
            
                 <p>
-                    Jury: {{ soutenance.jury_noms }}
+                    <strong>Jury :</strong>
+                    {% if enseignants_jury %}
+                        {% for ens in enseignants_jury %}
+                            <a href="{{ url_for('detail_enseignant', id=ens.id_enseignant) }}" style="text-decoration: underline; color: inherit;">
+                                {{ ens.nom_enseignant }} {{ ens.prenom_enseignant }},
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        Jury non assigné
+                    {% endif %}
                 </p>
-
-
 
 
                 <table >
@@ -29,7 +36,13 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ soutenance.stage.demarche.etudiant.nom_etudiant }} {{ soutenance.stage.demarche.etudiant.prenom_etudiant }}</td>
+                            <td>
+                                {% set etudiant = soutenance.stage.demarche.etudiant %}
+                                <a href="{{ url_for('detail_etudiant_admin', id=etudiant.id_etudiant) }}" 
+                                style="text-decoration: underline; color: inherit;">
+                                    {{ etudiant.nom_etudiant }} {{ etudiant.prenom_etudiant }}, 
+                                </a>
+                            </td>
                             <td>{{ soutenance.stage.titre_stage }}</td>
                         </tr>
                     </tbody>
