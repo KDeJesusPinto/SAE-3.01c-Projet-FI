@@ -340,10 +340,6 @@ label[for="import_csv"], label[for="export_csv"]{
 
 /*---------------- POUR LE PLANNING DES PAGES ADMIN ----------------*/
 
-#filtres{
-    align-self: baseline;
-}
-
 #date {
     font-size: 2.2em; 
     font-weight: 900; 
