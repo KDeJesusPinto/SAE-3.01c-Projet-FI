@@ -163,9 +163,40 @@ div.demarches{
     }
 }*/
 
+:root:has(#tutores){
+    font-size: 2.5vh;
+
+    body{
+        overflow-y: hidden;
+    }
+
+    #main_body{
+        padding: 10vh 100px;
+
+        > *{
+            width: 100%;
+        }
+
+        .boite_horizontale, .boite_verticale{
+            padding: 0;
+        }
+
+        .glass{
+            padding: 15px;
+        }
+    }
+}
+
 #main_body:has(#tutores){
-    padding-left: 100px;
-    padding-right: 100px;
+    padding: 10vh 100px;
+
+    .boite_horizontale, .boite_verticale{
+        padding: 0;
+    }
+
+    .glass{
+        padding: 15px;
+    }
 }
 
 section#section_planning_accueil{
@@ -189,7 +220,9 @@ section#section_planning_accueil{
         .glass{
             overflow-y: scroll;
             padding: 10px;
+            max-height: 40vh;
             /*overflow-x: hidden;*/
+            min-width: 200px;
 
             *{
                 column-gap: 10%;
@@ -230,7 +263,7 @@ section#section_soutenance_accueil{
 }
 
 #section_soutenance_accueil>div:last-child{
-    height: 25vh;
+    height: 20vh;
 }
 
 section#tutores{
@@ -245,8 +278,33 @@ section#tutores{
         max-width: 100%;
 
         .glass{
-            min-width: 300px;
-            max-width: 33vw;
+            min-width: 250px;
+            max-width: 20vw;
+
+            p{
+                text-align: left;
+            }
+
+            .boite_horizontale{
+                padding-bottom: 20px !important;
+            }
+        }
+    }
+}
+
+@media (max-width: 1200px) {
+    body{
+        /*background: aqua;*/
+        overflow-y: scroll !important;
+    }
+
+    #main_body:has(#tutores)>div.boite_horizontale{
+        flex-direction: column;
+        align-items: center;
+        row-gap: 40px;
+
+        section{
+            width: 100%;
         }
     }
 }
