@@ -36,7 +36,13 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>{{ soutenance.stage.demarche.etudiant.nom_etudiant }} {{ soutenance.stage.demarche.etudiant.prenom_etudiant }}</td>
+                            <td>
+                                {% set etudiant = soutenance.stage.demarche.etudiant %}
+                                <a href="{{ url_for('detail_etudiant_admin', id=etudiant.id_etudiant) }}" 
+                                style="text-decoration: underline; color: inherit;">
+                                    {{ etudiant.nom_etudiant }} {{ etudiant.prenom_etudiant }}, 
+                                </a>
+                            </td>
                             <td>{{ soutenance.stage.titre_stage }}</td>
                         </tr>
                     </tbody>
