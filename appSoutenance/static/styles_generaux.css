@@ -362,9 +362,9 @@ select.combobox { /* Agrandissement des combobox */
 
 /* ---------------- STYLES DES FORMULAIRES ----------------*/
 
-.form-group, .form-check {
+/* .form-group, .form-check {
    padding-top: 1em;
-}
+} */
 
 
 .form-label {
