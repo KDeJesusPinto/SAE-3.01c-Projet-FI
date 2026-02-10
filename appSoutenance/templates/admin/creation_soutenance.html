@@ -40,7 +40,7 @@
             </select>
         </div>
 
-        <button type="submit">Vérifier disponibilités</button>
+        <button type="submit" class="petit_bouton" style="width: 50%; ">Vérifier disponibilités</button>
         
     </div> 
     <input type="hidden" name="ens1" value="{{ ens_ids[0] or '' }}">
@@ -164,7 +164,6 @@
         {% if date_sel and heure_sel%}
             <input type="submit" value="Ajouter" formaction="{{ url_for('valider_jury') }}" formmethod="POST">
         {% endif %}
-        
     </div>
     
 </form>
@@ -172,6 +171,31 @@
 <div>
     <br>
     <br>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category if category != 'message' else 'info' }} alert-dismissible fade show" role="alert" style="color: red;">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
     <a href="{{ url_for('planning_admin') }}" class="petit_bouton"><i class="fas fa-code"></i> Retour</a>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const scrollPosition = sessionStorage.getItem('scrollPosition');
+        if (scrollPosition) {
+            window.scrollTo(0, parseInt(scrollPosition));
+            sessionStorage.removeItem('scrollPosition');
+        }
+    });
+
+
+    window.addEventListener('beforeunload', function() {
+        sessionStorage.setItem('scrollPosition', window.scrollY);
+    });
+</script>
 {% endblock %}

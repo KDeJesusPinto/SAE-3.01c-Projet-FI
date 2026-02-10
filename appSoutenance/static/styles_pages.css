@@ -198,13 +198,13 @@ div#boite{
     justify-content: center;
 }
 
-div#liste_etu{
+div.liste_etu, div.liste_ens{
     /* style */
     /* positionnement */
-    width: 100%;
+    flex-grow: 1;
     height: fit-content;
     min-height: 100px;
-    margin: 10px 0; 
+    margin: 0; 
 }
 
 div#contenu_admin {
@@ -221,7 +221,7 @@ a#voir{
     width: 250px;
 }
 
-a#detail {
+.detail_icon, #detail {
     /* style */
     font-size: 1.2em;
     color: var(--couleur_sombre_principale);
@@ -233,6 +233,9 @@ a#detail {
     width: 70px;
     height: auto;
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 button#importer, button#exporter{
@@ -326,11 +329,16 @@ label[for="import_csv"], label[for="export_csv"]{
     top: 90px;
 }
 
-/*---------------- POUR LE PLANNING DES PAGES ADMIN ----------------*/
+#ajouter_soutenance{
+    /* style */
+    font-size: 0.7em;
 
-#filtres{
-    align-self: baseline;
+    /* positionnement */
+    width: 10%;
+    margin-right: 0;
 }
+
+/*---------------- POUR LE PLANNING DES PAGES ADMIN ----------------*/
 
 #date {
     font-size: 2.2em; 

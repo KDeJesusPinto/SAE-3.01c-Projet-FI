@@ -3,8 +3,9 @@
 {% block content %}
     <div class="glass" style="width: 90%; height: 100%;">
         <div class="boite_horizontale" style="justify-content: center; position: relative; margin-top: 2%; width: 100%;">
-            <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" style="position: absolute; left: 20px; width: fit-content; font-size: 0.7em; padding: 10px 20px; margin: 0;"><i class="fas fa-code"></i> Retour</a>
-            <h1>{{ enseignant.civilite_enseignant }} {{ enseignant.prenom_enseignant }} {{ enseignant.nom_enseignant }}</h1>
+            <a href="{{ url_for('liste_ens_admin') }}" class="petit_bouton" id="retour" style="position: absolute; left: 2%; width: fit-content; padding: 10px 20px; margin: 0;"><i class="fas fa-code"></i> Retour enseignants</a>
+            <a href="{{ url_for('planning_admini') }}" class="petit_bouton" id="retour" style="position: absolute; right: 4%; width: fit-content; padding: 10px 20px; margin: 0;"><i class="fas fa-code"></i> Retour planning</a>
+            <h1>{{ enseignant.civilite_enseignant }} {{ enseignant.nom_enseignant }} {{ enseignant.prénom_enseignant }}</h1>
         </div>
         <div class="boite_verticale" style="display: flex; flex-direction: column; align-items: flex-start; gap: 12px; margin-left:2%;">
             <p><strong>Login : </strong>{{ enseignant.login_enseignant }}</p>
@@ -12,7 +13,7 @@
             {% if etudiants_suivis %}
                 <p><strong>Étudiants suivis : </strong>
                     {% for etudiant in etudiants_suivis %}
-                        <a href="{{url_for('detail_etudiant_admin', id=etudiant.id_etudiant)}}" style="text-decoration: underline;">{{etudiant.civilite_etudiant}} {{ etudiant.prenom_etudiant }} {{ etudiant.nom_etudiant }}</a>{% if not loop.last %}, {% endif %}
+                        <a href="{{url_for('detail_etudiant_admin', id=etudiant.id_etudiant)}}" style="text-decoration: underline;">{{etudiant.civilite_etudiant}} {{ etudiant.nom_etudiant }} {{ etudiant.prenom_etudiant }}</a>{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </p>
             {% else %}

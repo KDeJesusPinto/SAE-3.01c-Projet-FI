@@ -511,7 +511,7 @@ MOIS = {
 
 @app.route('/admin/planning/')
 @login_required
-def planning_admin():
+def planning_admini():
     """Page de planning pour les administrateurs"""
 
     admin = current_user
@@ -606,6 +606,7 @@ def planning_admin():
            
             if cle_regroupement not in regroupement:
                 regroupement[cle_regroupement] = {
+                    'id_soutenance': soutenance.id_soutenance,
                     'dateS': date_formatee,
                     'h_debut': soutenance.h_debut,
                     'salle': soutenance.salle,
@@ -625,12 +626,88 @@ def planning_admin():
                            title="Planning", resultats = resultats_regroupes,
                            heures_disponibles = heures_disponibles,
                            enseignants_disponibles = enseignants_disponibles,
-                           dates_disponibles = dates_disponibles)
+                           dates_disponibles = dates_disponibles,
+                           soutenance = regroupement)
+
 
 HEURE= {
     1: '08:00', 2: '09:00', 3: '10:00', 4: '11:00', 5: '12:00', 6: '13:00',
     7: '14:00'
 }
+
+
+
+
+@app.route('/admin/planning/<int:id>/')
+@login_required
+def detail_soutenance_admin(id):
+    """Page de détail d'une soutenance pour les administrateurs
+
+
+    Args:
+        id (int): l'identifiant de la soutenance
+    """
+
+
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
+   
+    soutenance = Soutenance.query.get(id)
+    if not soutenance:
+        flash("Soutenance introuvable.", "danger")
+        return redirect(url_for('planning_admini'))
+   
+    enseignants_jury = db.session.query(Enseignant)\
+            .join(Composer)\
+            .filter(Composer.id_soutenance == id)\
+            .all()
+
+
+    return render_template("admin/detail_soutenance_admin.html",
+                           accueil="accueil_admin",
+                           title="Détail de la soutenance",
+                           soutenance = soutenance,
+                           enseignants_jury = enseignants_jury)
+
+
+
+
+
+@app.route('/admin/planning/<int:id>/')
+@login_required
+def detail_soutenance_admin(id):
+    """Page de détail d'une soutenance pour les administrateurs
+
+
+    Args:
+        id (int): l'identifiant de la soutenance
+    """
+
+
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
+ 
+    soutenance = Soutenance.query.get(id)
+    if not soutenance:
+        flash("Soutenance introuvable.", "danger")
+        return redirect(url_for('planning_admini'))
+   
+    enseignants_jury = db.session.query(Enseignant)\
+            .join(Composer)\
+            .filter(Composer.id_soutenance == id)\
+            .all()
+
+
+    return render_template("admin/detail_soutenance_admin.html",
+                           accueil="accueil_admin",
+                           title="Détail de la soutenance",
+                           soutenance = soutenance,
+                           enseignants_jury = enseignants_jury)
+
 
 @app.route('/admin/planning/creation_soutenance/', methods =["GET", "POST"])
 @login_required
@@ -837,7 +914,7 @@ def valider_jury():
         db.session.rollback()
         flash(f"Erreur lors de l'insertion : {e}", "danger")
 
-    return redirect(url_for('planning_admin'))
+    return redirect(url_for('planning_admini'))
 
 @app.route('/admin/liste+enseignants/<int:id>/')
 @login_required

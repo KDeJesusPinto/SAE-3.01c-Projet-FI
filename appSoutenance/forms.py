@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, HiddenField, IntegerField, SelectField, SubmitField, FormField, PasswordField
+from wtforms import StringField, HiddenField, IntegerField, SelectField, SubmitField, FormField, PasswordField, DateField
 from wtforms.validators import DataRequired, NumberRange
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 from hashlib import sha256
@@ -66,6 +66,7 @@ class FormSoutenance(FlaskForm):
     id_stage = HiddenField("ID du stage ")
     h_debut = StringField("Heure de début: ")
     dateS = StringField("Date de la soutenance: ", validators=[DataRequired()])
+    dateS = DateField("Date de la soutenance: ", validators=[DataRequired()])
     salle = StringField ("Salle de la soutenance: ")
     nom_enseignant =  StringField("Liste prof")
 

@@ -201,6 +201,21 @@ class Soutenance(db.Model):
                          unique=True,
                          nullable=False)
 
+    stage = db.relationship("Stage", backref=db.backref("soutenance", uselist=False))
+
+    @property
+    def jury_noms(self):
+        """Retourne les noms des membres du jury sous forme de chaîne."""
+        return ', '.join([f"{comp.enseignant.nom_enseignant} {comp.enseignant.prenom_enseignant}" for comp in self.compositions]) or "Jury non assigné"
+
+    @property
+    def nom_promo(self):
+        """Retourne le nom de la promotion de l'étudiant concerné."""
+        if self.stage and self.stage.demarche and self.stage.demarche.etudiant:
+            app = self.stage.demarche.etudiant.appartenirs[0] if self.stage.demarche.etudiant.appartenirs else None
+            return app.nom_promo if app else "N/C"
+        return "N/C"
+
     def __init__(self, salle, dateS, h_debut, id_stage, h_fin=None, nom_bat=""):
         self.salle = salle
         self.nom_bat = nom_bat

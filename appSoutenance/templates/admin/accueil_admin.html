@@ -127,7 +127,6 @@
                     });
                 }
 
-                // Fermeture manuelle des alertes si le JS de Bootstrap n'est pas chargé
                 document.querySelectorAll('.btn-close').forEach(button => {
                     button.addEventListener('click', function() {
                         this.closest('.alert').style.display = 'none';
