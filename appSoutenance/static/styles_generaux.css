@@ -233,6 +233,17 @@ div.demarche_etape{
     flex-grow: 0;
 }
 
+#retour {
+    /* style */
+    font-size: 0.7em;
+
+    /* positionnement */
+    align-items: center;
+    display: block;
+    margin: 12px auto;
+    margin-bottom:10%;
+    width: 30%;
+}
 /*---------------- STYLE DE LA BOITE CONTENANT TOUT LE CONTENU ----------------*/
 
 div#main_body{
