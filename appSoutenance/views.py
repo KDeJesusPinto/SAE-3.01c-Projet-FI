@@ -673,42 +673,6 @@ def detail_soutenance_admin(id):
 
 
 
-
-
-@app.route('/admin/planning/<int:id>/')
-@login_required
-def detail_soutenance_admin(id):
-    """Page de détail d'une soutenance pour les administrateurs
-
-
-    Args:
-        id (int): l'identifiant de la soutenance
-    """
-
-
-    admin = current_user
-    if not isinstance(admin, Admini):
-        flash("Accès réservé aux administrateurs.", "warning")
-        return redirect(url_for("login"))
- 
-    soutenance = Soutenance.query.get(id)
-    if not soutenance:
-        flash("Soutenance introuvable.", "danger")
-        return redirect(url_for('planning_admini'))
-   
-    enseignants_jury = db.session.query(Enseignant)\
-            .join(Composer)\
-            .filter(Composer.id_soutenance == id)\
-            .all()
-
-
-    return render_template("admin/detail_soutenance_admin.html",
-                           accueil="accueil_admin",
-                           title="Détail de la soutenance",
-                           soutenance = soutenance,
-                           enseignants_jury = enseignants_jury)
-
-
 @app.route('/admin/planning/creation_soutenance/', methods =["GET", "POST"])
 @login_required
 def creation_soutenance():
@@ -958,7 +922,6 @@ def detail_enseignant(id):
                            etudiants_suivis=etudiants_suivis,
                            enseignant_promo=enseignant_promo,
                            jury_soutenances=jury_soutenances)
-
 
 
 
