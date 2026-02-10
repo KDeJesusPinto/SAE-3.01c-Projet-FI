@@ -659,18 +659,112 @@ def detail_soutenance_admin(id):
         flash("Soutenance introuvable.", "danger")
         return redirect(url_for('planning_admini'))
    
+    soutenances_groupe = Soutenance.query.filter_by(
+        dateS=soutenance.dateS,
+        h_debut=soutenance.h_debut,
+        salle=soutenance.salle
+    ).all()
+
     enseignants_jury = db.session.query(Enseignant)\
             .join(Composer)\
             .filter(Composer.id_soutenance == id)\
             .all()
 
+    deleteForm = FormSoutenance()
 
-    return render_template("admin/detail_soutenance_admin.html",
+    return render_template("/admin/detail_soutenance_admin.html",
                            accueil="accueil_admin",
                            title="Détail de la soutenance",
                            soutenance = soutenance,
-                           enseignants_jury = enseignants_jury)
+                           soutenances_groupe = soutenances_groupe,
+                           enseignants_jury = enseignants_jury,
+                           deleteForm = deleteForm)
 
+
+@app.route('/admin/planning/<int:id>/update')
+@login_required
+def modifier_soutenance_admin(id):
+    uneSoutenance = Soutenance.query.get(id)
+    compose = Composer.query.filter_by(id_soutenance=id).all()
+    unForm = FormSoutenance(id_soutenance = uneSoutenance.id_soutenance, id_stage =uneSoutenance.id_stage,
+                            h_debut=uneSoutenance.h_debut, dateS=uneSoutenance.dateS, salle=uneSoutenance.salle,
+                            nom_enseignant1 = compose[0].enseignant if len(compose) > 0 else None,
+                            nom_enseignant2 = compose[1].enseignant if len(compose) > 1 else None,
+                            nom_enseignant3 = compose[2].enseignant if len(compose) > 2 else None)
+    return render_template("admin/update_soutenance.html", accueil="accueil_admin", title="Modifier la soutenance", createForm=unForm, uneSoutenance=uneSoutenance)
+
+@app.route('/admin/planning/<int:id>/update/save', methods=("POST",))
+def save_soutenance_admin():
+    id_soutenance = request.form.get('id_soutenance')
+    soutenance = Soutenance.query.get(id_soutenance)
+    if not soutenance:
+        flash("Soutenance introuvable.", "danger")
+        return redirect(url_for('planning_admini'))
+
+    soutenance.dateS = request.form.get('dateS')
+    soutenance.h_debut = request.form.get('h_debut')
+    soutenance.salle = request.form.get('salle')
+
+    for i in range(1, 4):
+        id_ens = request.form.get(f'ens{i}')
+        if id_ens and id_ens.strip():
+            try:
+                comp = Composer(id_enseignant=int(id_ens), id_soutenance=soutenance.id_soutenance)
+                db.session.add(comp)
+            except ValueError:
+                pass
+
+    try:
+        db.session.commit()
+        flash("Soutenance mise à jour avec succès !", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Erreur lors de la mise à jour : {e}", "danger")
+
+    return redirect(url_for('planning_admini'))
+
+@app.route('/admin/planning/<int:id>/delete')
+def suppression_soutenance_admin(id):
+    uneSoutenance = Soutenance.query.get(id)
+    soutenances_groupe = Soutenance.query.filter_by(
+        dateS=uneSoutenance.dateS,
+        h_debut=uneSoutenance.h_debut,
+        salle=uneSoutenance.salle
+    ).all()
+
+    compose = Composer.query.filter_by(id_soutenance=id).all()
+    unForm = FormSoutenance(id_soutenance = uneSoutenance.id_soutenance, id_stage =uneSoutenance.id_stage,
+                            h_debut=uneSoutenance.h_debut, dateS=uneSoutenance.dateS, salle=uneSoutenance.salle,
+                            nom_enseignant1 = compose[0].enseignant if len(compose) > 0 else None,
+                            nom_enseignant2 = compose[1].enseignant if len(compose) > 1 else None,
+                            nom_enseignant3 = compose[2].enseignant if len(compose) > 2 else None)
+    return render_template("admin/supprimer_soutenance_admin.html", accueil="accueil_admin", title="Supprimer la soutenance", deleteForm=unForm, uneSoutenance=uneSoutenance, soutenances_groupe=soutenances_groupe)
+
+@app.route('/admin/planning/<int:id>/erase', methods=("POST",))
+def erase_soutenance_admin(id):
+    soutenance = Soutenance.query.get(id)
+    if not soutenance:
+        flash("Soutenance introuvable.", "danger")
+        return redirect(url_for('planning_admini'))
+
+    try:
+        soutenances_to_delete = Soutenance.query.filter_by(
+            dateS=soutenance.dateS,
+            h_debut=soutenance.h_debut,
+            salle=soutenance.salle
+        ).all()
+
+        for s in soutenances_to_delete:
+            Jury.query.filter_by(id_soutenance=s.id_soutenance).delete()
+            Composer.query.filter_by(id_soutenance=s.id_soutenance).delete()
+            db.session.delete(s)
+            
+        db.session.commit()
+        flash("Soutenances supprimées avec succès !", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Erreur lors de la suppression : {e}", "danger")
+    return redirect(url_for('planning_admini'))
 
 
 @app.route('/admin/planning/creation_soutenance/', methods =["GET", "POST"])

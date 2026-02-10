@@ -1,0 +1,23 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<h1>Suppression d'une soutenance</h1>
+<form role="form" method="POST" action="{{ url_for ('erase_soutenance_admin', id=uneSoutenance.id_soutenance) }}">
+    {{deleteForm.hidden_tag()}}
+    <div >
+        {{ deleteForm.id_soutenance.label}}
+        {{ deleteForm.id_soutenance(size=50, disabled=True, class_="form-control") }}
+    </div>
+    <div>
+        <ul>
+            {% for s in soutenances_groupe %}
+                <li>{{ s.stage.demarche.etudiant.nom_etudiant }} {{s.stage.demarche.etudiant.prenom_etudiant}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <input class ="btn btn-danger" type="submit" value ="Confirmer">
+    <a href="{{ url_for('planning_admini') }}" class="btn btn-secondary">Retour</a>
+</form >
+
+
+{% endblock %}

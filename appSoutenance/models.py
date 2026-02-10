@@ -206,7 +206,7 @@ class Soutenance(db.Model):
     @property
     def jury_noms(self):
         """Retourne les noms des membres du jury sous forme de chaîne."""
-        return ', '.join([f"{comp.enseignant.nom_enseignant} {comp.enseignant.prenom_enseignant}" for comp in self.compositions]) or "Jury non assigné"
+        return ', '.join([f"{comp.enseignant.nom_enseignant} {comp.enseignant.prenom_enseignant}" for comp in self.compose]) or "Jury non assigné"
 
     @property
     def nom_promo(self):
@@ -378,7 +378,7 @@ class Composer(db.Model):
                               db.ForeignKey("enseignant.id_enseignant"),
                               primary_key=True)
     enseignant = db.relationship("Enseignant",
-                                 backref=db.backref("compositions",
+                                 backref=db.backref("compose",
                                                     lazy="dynamic"))
 
     # 0,N
@@ -386,7 +386,7 @@ class Composer(db.Model):
                               db.ForeignKey("soutenance.id_soutenance"),
                               primary_key=True)
     soutenance = db.relationship("Soutenance",
-                                 backref=db.backref("compositions",
+                                 backref=db.backref("compose",
                                                     lazy="dynamic"))
 
     def __init__(self, id_enseignant, id_soutenance):
@@ -449,8 +449,8 @@ class Assembler(db.Model):
                          primary_key=True)
 
 
-    admini = db.relationship("Admini", backref=db.backref("jury_compositions", lazy="dynamic"))
-    jury = db.relationship("Jury", backref=db.backref("admin_compositions", lazy="dynamic"))
+    admini = db.relationship("Admini", backref=db.backref("jury_compose", lazy="dynamic"))
+    jury = db.relationship("Jury", backref=db.backref("admin_compose", lazy="dynamic"))
 
 
     def __init__(self, id_jury, id_admin):

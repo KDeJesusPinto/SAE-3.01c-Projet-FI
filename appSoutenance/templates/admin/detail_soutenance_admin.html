@@ -35,19 +35,53 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for s in soutenances_groupe %}
                         <tr>
                             <td>
-                                {% set etudiant = soutenance.stage.demarche.etudiant %}
-                                <a href="{{ url_for('detail_etudiant_admin', id=etudiant.id_etudiant) }}" 
+                                {% set etudiant = s.stage.demarche.etudiant %}
+                                <a href="{{ url_for('detail_etudiant_admin', id=etudiant.id_etudiant)}}" 
                                 style="text-decoration: underline; color: inherit;">
-                                    {{ etudiant.nom_etudiant }} {{ etudiant.prenom_etudiant }}, 
+                                    {{etudiant.nom_etudiant}} {{etudiant.prenom_etudiant}}, 
                                 </a>
                             </td>
-                            <td>{{ soutenance.stage.titre_stage }}</td>
+                            <td>{{ s.stage.titre_stage }}</td>
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
-            </div>
+    </div>
+    <div>
+        <a href="{{ url_for('modifier_soutenance_admin', id=soutenance.id_soutenance)}}" class="petit_bouton" 
+        style="margin-top: 20px; width: fit-content; font-size: 0.7em; padding: 10px 20px;"><i class="fas fa-edit"></i> Modifier</a>
+        
+        
+        {% if request.args.get('confirm') =='1' %}
+        <div class="glass" style="margin-top:20px; padding:20px;">
+            <p>Êtes-vous sûr de vouloir supprimer cette soutenance ?</p>
+
+            <form method="POST" action="{{ url_for('erase_soutenance_admin', id=soutenance.id_soutenance)}}" style="display:inline;">
+                {{ deleteForm.hidden_tag() }}
+                <button type="submit" class="petit_bouton" style="background:#e74c3c;color:white;">
+                    Confirmer la suppression
+                </button>
+            </form>
+
+            <a href="{{url_for('detail_soutenance_admin', id=soutenance.id_soutenance)}}"
+            class="petit_bouton">
+                Annuler
+            </a>
+        </div>
+
+        {% else %}
+
+        <a href="{{ url_for('detail_soutenance_admin', id=soutenance.id_soutenance, confirm=1) }}"
+        class="petit_bouton"
+        style="margin-top:20px;background:#e74c3c;color:white;">
+            <i class="fas fa-trash"></i> Supprimer
+        </a>
+
+    {% endif %}
+</div>
 
 
 {% endblock %}
