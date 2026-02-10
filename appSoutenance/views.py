@@ -393,6 +393,7 @@ def soutenance_enseignant():
        
         enseignants_jury = db.session.query(Enseignant).join(Composer).filter(Composer.id_soutenance == soutenance.id_soutenance).all()
         membres_jury_noms =', '.join( [f"{e.nom_enseignant} {e.prenom_enseignant}" for e in enseignants_jury])
+        user_present=enseignant.nom_enseignant+" "+enseignant.prenom_enseignant in membres_jury_noms
 
         promo_etudiant = "N/C"
         if etudiant_lie:
@@ -411,7 +412,7 @@ def soutenance_enseignant():
 
 
             cle_regroupement = f"{soutenance.dateS.strftime('%Y-%m-%d')}-{soutenance.h_debut}-{soutenance.salle}-{membres_jury_noms}"
-           
+            print(promo_etudiant)
             if cle_regroupement not in regroupement:
                 regroupement[cle_regroupement] = {
                     'dateS': date_formatee,
@@ -419,7 +420,9 @@ def soutenance_enseignant():
                     'salle': soutenance.salle,
                     'jury_noms': membres_jury_noms,
                     'nom_promo': promo_etudiant,
-                    'stages': []
+                    'stages': [],
+                    'bouton_desinscription':user_present and "3" in promo_etudiant,
+                    'bouton_inscription':(not user_present) and  "3" in promo_etudiant
                 }
             regroupement[cle_regroupement]['stages'].append({
                 'nom_etudiant': etudiant_lie.nom_etudiant,

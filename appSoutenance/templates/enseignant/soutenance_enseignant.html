@@ -93,9 +93,9 @@
                 </tbody>
             </table>
             <div class="boite horizontal">
-                {% if resultats==None %}
+                {% if bloc.bouton_desinscription %}
                     <button class="petit_bouton" id="enseignant_desinscription_soutenance" type="submit">se desinscricre</button>
-                {% elif resultats!=None %}
+                {% elif bloc.bouton_inscription %}
                     <button class="petit_bouton" id="enseignant_inscription_soutenance" type="submit">s'inscricre</button>
                 {% endif %}
             </div>
