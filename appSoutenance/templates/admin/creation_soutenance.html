@@ -2,6 +2,23 @@
 
 {% block content %}
 <h1>Création d'une soutenance</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %} 
+        {% if messages%} 
+            <div class="boite_verticale" style="width: 100%; padding: 0;">
+                {% for category, message in messages %}
+                    <div class="glass alert alert-{{ category }} alert-dismissible fade show custom-alert" role="alert">
+                        <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %} grande_icone" style="font-size: 1.2em !important;"></i>
+                        <span style="flex-grow: 1;">{{ message }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                {% endfor %} 
+            </div>
+        {% endif %} 
+    {% endwith %}
+
 <div class="boite_verticale">
 <form role="form" method="GET" action="{{ url_for('creation_soutenance') }}">
     {{ createForm.hidden_tag() }}
@@ -76,15 +93,24 @@
                 <p style="color:rgb(4, 115, 111)">Choisir l'étudiant à évaluer :</p>
                 <ul class="list-group">
                     {% for etu in etudiants_par_tuteur[i] %}
-                        <li class="list-group-item">
-                            <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel, salle=salle,
-                                        ens1=ens_ids[0], ens2=ens_ids[1], ens3=ens_ids[2],
-                                        etu1=etu.id_etudiant if i==0 else etu_ids[0],
-                                        etu2=etu.id_etudiant if i==1 else etu_ids[1],
-                                        etu3=etu.id_etudiant if i==2 else etu_ids[2]) }}">
-                                {{ etu.nom_etudiant }} {{ etu.prenom_etudiant }}
-                            </a>
-                        </li>
+                        {# On vérifie si l'étudiant est déjà sélectionné dans un autre slot #}
+                        {% set is_selected_in_other_slot = false %}
+                        {% for j in range(3) %}
+                            {% if i != j and etu_ids[j] == etu.id_etudiant|string %}
+                                {% set is_selected_in_other_slot = true %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if not is_selected_in_other_slot %}
+                            <li class="list-group-item">
+                                <a href="{{ url_for('creation_soutenance', dateS=date_sel, h_debut=heure_sel, salle=salle,
+                                            ens1=ens_ids[0], ens2=ens_ids[1], ens3=ens_ids[2],
+                                            etu1=etu.id_etudiant if i==0 else etu_ids[0],
+                                            etu2=etu.id_etudiant if i==1 else etu_ids[1],
+                                            etu3=etu.id_etudiant if i==2 else etu_ids[2]) }}">
+                                    {{ etu.nom_etudiant }} {{ etu.prenom_etudiant }}
+                                </a>
+                            </li>
+                        {% endif %}
                     {% else %}
                         <li class="list-group-item text-muted">Aucun étudiant disponible pour cet enseignant.</li>
                     {% endfor %}
@@ -136,7 +162,7 @@
 
     <div>
         {% if date_sel and heure_sel%}
-            <input type="submit" value="Ajouter" formmethod="POST" formaction="{{ url_for('valider_jury') }}" class="petit_bouton">
+            <input type="submit" value="Ajouter" formaction="{{ url_for('valider_jury') }}" formmethod="POST">
         {% endif %}
     </div>
     
