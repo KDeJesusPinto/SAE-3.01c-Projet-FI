@@ -33,6 +33,7 @@
                     <option value="NbDemarches">Nombre de démarches</option>
                 </select>
                 <button class="petit_bouton" id="filtrer" type="submit" style="display: block; margin: 12px auto;">Appliquer</button>
+                <a href="{{ url_for('accueil_admin') }}" class="petit_bouton" style="font-size: 0.7em; align-items: center; display: block; margin: 12px auto; margin-bottom:10%; width: 30%;"><i class="fas fa-code"></i> Retour</a>
             </form>
         </aside>
 
@@ -46,7 +47,7 @@
 
                 <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 50px 1.2fr 0.7fr 1fr 0.8fr 0.8fr 1.2fr 50px; align-items: center; gap: 10px; position: relative; z-index: 2; pointer-events: none;">
                     <i class="fas fa-user-circle grande_icone"></i>
-                    <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.etudiant.prenom_etudiant }} {{ res.etudiant.nom_etudiant }}</p>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.etudiant.nom_etudiant }} {{ res.etudiant.prenom_etudiant }}</p>
                     <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.formation }}</p>
                     <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.promo }} {{ res.annee }}</p>
                     <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.regime }}</p>

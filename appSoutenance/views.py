@@ -655,6 +655,9 @@ def detail_soutenance_admin(id):
         return redirect(url_for("login"))
    
     soutenance = Soutenance.query.get(id)
+    if not soutenance:
+        flash("Soutenance introuvable.", "danger")
+        return redirect(url_for('planning_admini'))
    
     return render_template("admin/detail_soutenance_admin.html",
                            accueil="accueil_admin",
