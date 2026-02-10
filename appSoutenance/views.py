@@ -643,10 +643,6 @@ def creation_soutenance():
         return redirect(url_for("login"))
 
     createForm = FormSoutenance()
-    admin = current_user
-    if not isinstance(admin, Admini):
-        flash("Accès réservé aux administrateurs.", "warning")
-        return redirect(url_for("login"))
 
     date_sel = request.args.get('dateS')
     heure_sel = request.args.get('h_debut')
@@ -662,14 +658,8 @@ def creation_soutenance():
     if date_sel:
         try:
             createForm.dateS.data = datetime.strptime(date_sel, '%Y-%m-%d').date()
-            annee_sout = int(date_sel.split('-')[0])
-            deja_planifies = db.session.query(Demarche.id_etudiant).join(
-                Stage, Stage.id_demarche == Demarche.id_demarche
-            ).join(
-                Soutenance, Soutenance.id_stage == Stage.id_stage
-            ).filter(extract('year', Soutenance.dateS) == annee_sout).all()
             
-            ids_exclus = [r[0] for r in deja_planifies]
+            #ids_exclus = [r[0] for r in deja_planifies]
             
             for i in range(3):
                 if ens_ids[i] and ens_ids[i].strip():
@@ -678,8 +668,14 @@ def creation_soutenance():
                     query = db.session.query(Etudiant).join(Tutorer).filter(
                         Tutorer.id_enseignant == int(ens_ids[i])
                     )
-                    if ids_exclus:
-                        query = query.filter(~Etudiant.id_etudiant.in_(ids_exclus))
+                    # query = query.join(Demarche).filter(Demarche.situation == 'Acceptée').distinct()
+                    # if ids_exclus:
+                    #     query = query.filter(~Etudiant.id_etudiant.in_(ids_exclus))
+                    query = query.join(Demarche).filter(Demarche.situation == 'Acceptée')\
+                                 .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
+                                 .outerjoin(Soutenance, Stage.id_stage == Soutenance.id_stage)\
+                                 .filter(Soutenance.id_soutenance == None)\
+                                 .distinct()
                     etudiants_par_tuteur[i] = query.all()
 
                 if etu_ids[i] and etu_ids[i].strip():
@@ -688,8 +684,14 @@ def creation_soutenance():
         except Exception as e:
             print(f"Erreur de traitement : {e}")    
 
-    tous_les_enseignants = Enseignant.query.all()
+    query_enseignants = Enseignant.query
+    if date_sel and heure_sel:
+        enseignants_occupes = db.session.query(Composer.id_enseignant)\
+            .join(Soutenance, Composer.id_soutenance == Soutenance.id_soutenance)\
+            .filter(Soutenance.dateS == date_sel, Soutenance.h_debut == heure_sel)
+        query_enseignants = query_enseignants.filter(Enseignant.id_enseignant.notin_(enseignants_occupes))
 
+    tous_les_enseignants = query_enseignants.all()
 
     return render_template(
         'admin/creation_soutenance.html',
@@ -729,8 +731,34 @@ def valider_jury():
     heure_sel = request.form.get('h_debut')
     salle_sel = request.form.get('salle')
 
+    if not salle_sel or not salle_sel.strip():
+        flash("Veuillez renseigner une salle.", "danger")
+        ens1 = request.form.get('ens1', '')
+        ens2 = request.form.get('ens2', '')
+        ens3 = request.form.get('ens3', '')
+        etu1 = request.form.get('etu1', '')
+        etu2 = request.form.get('etu2', '')
+        etu3 = request.form.get('etu3', '')
+        return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel, ens1=ens1, ens2=ens2, ens3=ens3, etu1=etu1, etu2=etu2, etu3=etu3))
+
     created = 0
     errors = []
+    # Utiliser un set pour ne traiter chaque étudiant qu'une seule fois et éviter les doublons
+    unique_etu_ids = set()
+    for i in range(1, 4):
+        id_etu = request.form.get(f'etu{i}')
+        if id_etu and id_etu.strip():
+            try:
+                unique_etu_ids.add(int(id_etu))
+            except ValueError:
+                errors.append(f"Identifiant étudiant invalide pour le champ etu{i}: {id_etu}")
+
+    if not unique_etu_ids:
+        flash("Veuillez sélectionner au moins un étudiant pour créer une soutenance.", "danger")
+        ens1 = request.form.get('ens1', '')
+        ens2 = request.form.get('ens2', '')
+        ens3 = request.form.get('ens3', '')
+        return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel, ens1=ens1, ens2=ens2, ens3=ens3))
 
     try:
         date_obj = datetime.strptime(dateS, '%Y-%m-%d').date()
@@ -738,51 +766,67 @@ def valider_jury():
         flash("Date invalide.", "danger")
         return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel))
 
-    for i in range(1, 4):
-        id_etu = request.form.get(f'etu{i}')
+    if Soutenance.query.filter(Soutenance.dateS == date_obj, Soutenance.h_debut == heure_sel, Soutenance.salle == salle_sel).first():
+        flash(f"La salle {salle_sel} est déjà occupée à cette date et heure.", "danger")
+        ens1 = request.form.get('ens1', '')
+        ens2 = request.form.get('ens2', '')
+        ens3 = request.form.get('ens3', '')
+        etu1 = request.form.get('etu1', '')
+        etu2 = request.form.get('etu2', '')
+        etu3 = request.form.get('etu3', '')
+        return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel, ens1=ens1, ens2=ens2, ens3=ens3, etu1=etu1, etu2=etu2, etu3=etu3))
 
-        if id_etu and id_etu.strip():
-            try:
-                id_etu_int = int(id_etu)
-            except ValueError:
-                errors.append(f"Identifiant étudiant invalide : {id_etu}")
-                continue
+    for id_etu_int in unique_etu_ids:
+        stage = Stage.query.join(Demarche).filter(
+            Demarche.id_etudiant == id_etu_int,
+            Demarche.situation == 'Acceptée'
+        ).first()
 
-            stage = Stage.query.join(Demarche).filter(Demarche.id_etudiant == id_etu_int).first()
+        if not stage:
+            etudiant = Etudiant.query.get(id_etu_int)
+            errors.append(f"Aucun stage validé trouvé pour {etudiant.prenom_etudiant} {etudiant.nom_etudiant}.")
+            continue
 
-            if not stage:
-                errors.append(f"Aucun stage validé trouvé pour l'étudiant id={id_etu_int}.")
-                continue
+        # Vérifier si une soutenance existe déjà pour ce stage
+        if Soutenance.query.filter_by(id_stage=stage.id_stage).first():
+            etudiant = Etudiant.query.get(id_etu_int)
+            errors.append(f"Une soutenance existe déjà pour {etudiant.prenom_etudiant} {etudiant.nom_etudiant}.")
+            continue
 
-            # Créer une soutenance liée au stage
-            nouvelle_sout = Soutenance(
-                salle=salle_sel,
-                dateS=date_obj,
-                h_debut=heure_sel,
-                h_fin=(datetime.strptime(heure_sel, '%H:%M') + timedelta(minutes=45)).strftime('%H:%M'),
-                id_stage=stage.id_stage,
-                nom_bat=""
-            )
-            db.session.add(nouvelle_sout)
-            db.session.flush()
+        # Créer une soutenance liée au stage
+        nouvelle_sout = Soutenance(
+            salle=salle_sel,
+            dateS=date_obj,
+            h_debut=heure_sel,
+            h_fin=(datetime.strptime(heure_sel, '%H:%M') + timedelta(minutes=45)).strftime('%H:%M'),
+            id_stage=stage.id_stage,
+            nom_bat=""
+        )
+        db.session.add(nouvelle_sout)
+        db.session.flush()
 
-            for j in range(1, 4):
-                id_ens = request.form.get(f'ens{j}')
-                if id_ens and id_ens.strip():
-                    try:
-                        comp = Composer(id_enseignant=int(id_ens), id_soutenance=nouvelle_sout.id_soutenance)
-                        db.session.add(comp)
-                    except ValueError:
-                        pass
-
-            created += 1
+        for j in range(1, 4):
+            id_ens = request.form.get(f'ens{j}')
+            if id_ens and id_ens.strip():
+                try:
+                    comp = Composer(id_enseignant=int(id_ens), id_soutenance=nouvelle_sout.id_soutenance)
+                    db.session.add(comp)
+                except ValueError:
+                    pass
+        created += 1
 
     if created == 0:
         db.session.rollback()
         for e in errors:
             flash(e, "warning")
         flash("Aucune soutenance n'a été créée. Veuillez vérifier que les étudiants ont un stage validé.", "danger")
-        return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel))
+        ens1 = request.form.get('ens1', '')
+        ens2 = request.form.get('ens2', '')
+        ens3 = request.form.get('ens3', '')
+        etu1 = request.form.get('etu1', '')
+        etu2 = request.form.get('etu2', '')
+        etu3 = request.form.get('etu3', '')
+        return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel, ens1=ens1, ens2=ens2, ens3=ens3, etu1=etu1, etu2=etu2, etu3=etu3))
 
     try:
         db.session.commit()
