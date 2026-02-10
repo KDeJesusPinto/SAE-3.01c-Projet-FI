@@ -1001,13 +1001,14 @@ def detail_enseignant(id):
 
     liste_soutenances = []
     for s in soutenances_jury:
-        stage = Stage.query.get(s.id_stage)
-        etudiant = stage.demarche.etudiant
+        etudiant = s.stage.demarche.etudiant
         est_tuteur = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant, id_etudiant=etudiant.id_etudiant).first() is not None
-        role = "(Tuteur)" if est_tuteur else "(Candide)"
-        liste_soutenances.append(f"Soutenance n°{s.id_soutenance} {stage.titre_stage} {role}")
-
-    jury_soutenances = '. '.join(liste_soutenances)
+        role = "Tuteur" if est_tuteur else "Candide"
+        liste_soutenances.append({
+            'id': s.id_soutenance,
+            'titre': s.stage.titre_stage,
+            'role': role
+        })
 
     return render_template("admin/detail_enseignant.html",
                            accueil="accueil_admin",
@@ -1015,7 +1016,7 @@ def detail_enseignant(id):
                            enseignant=enseignant,
                            etudiants_suivis=etudiants_suivis,
                            enseignant_promo=enseignant_promo,
-                           jury_soutenances=jury_soutenances)
+                           soutenances=liste_soutenances)
 
 
 

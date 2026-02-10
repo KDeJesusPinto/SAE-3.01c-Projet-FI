@@ -22,10 +22,17 @@
             {% if enseignant_promo %}
                 <p><strong>Directeur d'études : </strong>{{ enseignant_promo.formation_promo }} {{ enseignant_promo.nom_promo }} {{ enseignant_promo.annee_promo }}</p>
             {% endif %}
-            {% if jury_soutenances|length == 0 %}
+            {% if soutenances|length == 0 %}
                 <p><strong>N'est jury d'aucune soutenance</strong></p>
             {% else %}
-                <p><strong>Jury des soutenances : </strong>{{ jury_soutenances }}</p>
+                <p><strong>Jury des soutenances : </strong></p>
+                <ul style="margin: 0 0 0 20px;">
+                    {% for s in soutenances %}
+                        <li>
+                            <a href="{{ url_for('detail_soutenance_admin', id=s.id) }}" style="text-decoration: underline;">Soutenance n°{{ s.id }} - {{ s.titre }} ({{ s.role }})</a>
+                        </li>
+                    {% endfor %}
+                </ul>
             {% endif %}
         </div>
     </div>

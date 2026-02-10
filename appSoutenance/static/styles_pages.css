@@ -198,6 +198,11 @@ div#boite{
     justify-content: center;
 }
 
+div#import_form_container, div#export_form_container{
+    width: 700px;
+    height: 500px;
+}
+
 div.liste_etu, div.liste_ens{
     /* style */
     /* positionnement */
