@@ -171,6 +171,7 @@ div.demarches{
 section#section_planning_accueil{
     flex-basis: 60%;
     flex-shrink: 0;
+    align-self: flex-start;
 
     *{
         box-sizing: border-box;
@@ -191,7 +192,7 @@ section#section_planning_accueil{
             /*overflow-x: hidden;*/
 
             *{
-                /*column-gap: 5px;*/
+                column-gap: 10%;
                 padding: 0;
             }
             
@@ -208,6 +209,7 @@ section#section_planning_accueil{
 section#section_soutenance_accueil{
     flex-basis: 40%;
     flex-grow: 0;
+    align-self: flex-start;
 
     h1{
         white-space: wrap;
@@ -221,7 +223,14 @@ section#section_soutenance_accueil{
         row-gap: 0;
         width: 50%;
         padding: 20px;
+
+        height: 100%;
+        justify-content: space-between;
     }
+}
+
+#section_soutenance_accueil>div:last-child{
+    height: 25vh;
 }
 
 section#tutores{
