@@ -69,7 +69,6 @@ a{
     /* style */
     color: black;
     text-decoration: none;
-    cursor: url(images/cursor.png), pointer;
 
     /* positionnement */
 }

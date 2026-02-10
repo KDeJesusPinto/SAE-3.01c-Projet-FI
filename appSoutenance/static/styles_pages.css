@@ -201,10 +201,10 @@ div#boite{
 div.liste_etu, div.liste_ens{
     /* style */
     /* positionnement */
-    width: 100%;
+    flex-grow: 1;
     height: fit-content;
     min-height: 100px;
-    margin: 10px 0; 
+    margin: 0; 
 }
 
 div#contenu_admin {
@@ -334,8 +334,8 @@ label[for="import_csv"], label[for="export_csv"]{
     font-size: 0.7em;
 
     /* positionnement */
-    width: 100%;
-    padding: 10px 3px;
+    width: 10%;
+    margin-right: 0;
 }
 
 /*---------------- POUR LE PLANNING DES PAGES ADMIN ----------------*/
