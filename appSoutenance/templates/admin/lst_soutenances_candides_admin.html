@@ -15,7 +15,7 @@
                         <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Tuteur : {{ res.tuteur.civilite_enseignant}} {{ res.tuteur.nom_enseignant }} {{ res.tuteur.prenom_enseignant }}</p>
                         <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Stage : {{ res.stage.titre_stage }}</p>
                         {% if id_enseignant %}
-                            <a href="{{ url_for('ajouter_candide_admin', id_ens=id_enseignant, id_sout=res.soutenance.id_soutenance) }}" class="petit_bouton" style="font-size: 0.7em; width: 100%;">Ajouter cet enseignant</a>
+                            <a href="{{ url_for('ajouter_candide_admin', id_ens=id_enseignant, id_sout=res.soutenance.id_soutenance) }}" class="petit_bouton" style="font-size: 0.7em; width: 80%;">Ajouter cet enseignant</a>
                         {% else %}
                             <p class="pliste">Consultation uniquement</p>
                         {% endif %}
