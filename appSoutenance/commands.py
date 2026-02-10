@@ -1,4 +1,5 @@
 import csv
+import subprocess
 import click
 import logging as lg
 from sqlalchemy import text
@@ -6,6 +7,26 @@ from datetime import datetime
 from pathlib import Path
 from .app import app, db
 from .models import *
+
+
+@app.cli.command()
+def resetdb():
+    """Réinitialise la base de données à son état initial"""
+    db.drop_all()
+    db.create_all()
+
+    sql_file = Path("appSoutenance/data/insertion.sql")
+    if sql_file.exists():
+        with open(sql_file, "r", encoding="utf-8") as f:
+            sql_script = f.read()
+            for statement in sql_script.split(";"):
+                statement = statement.strip()
+                if statement:
+                    db.session.execute(text(statement))
+        db.session.commit()
+        lg.warning("Base de données réinitialisée avec succès !")
+    else:
+        lg.warning("Tables créées mais aucun fichier insertion.sql trouvé pour les données initiales")
 
 
 @app.cli.command()
@@ -184,3 +205,29 @@ def importer_entreprises(fichier):
             ajout += 1
         db.session.commit()
         lg.warning(f"{fichier.name} : {ajout} entreprises ajoutées.")
+
+@app.cli.command()
+@click.pass_context
+def test(ctx):
+    """Lance les tests unitaires avec coverage et reload automatique."""
+    import sys
+
+    # 1. Réinitialisation initiale
+    ctx.invoke(loaddb, filename='appSoutenance/data/arexis_donnees.csv')
+
+    try:
+        # 2. Exécution des tests via subprocess pour un coverage précis
+        res = subprocess.run([
+            "coverage", "run", "-m", "pytest", 
+            "--cov=appSoutenance", "--cov-report=term-missing", "appSoutenance/tests"
+        ])
+        # 3. Affichage du rapport de couverture
+        subprocess.run(["coverage", "report", "-m"])
+        return_code = res.returncode
+    finally:
+        # 4. Nettoyage des sessions et réinitialisation finale pour retrouver la base de dev propre
+        db.session.remove()
+        db.engine.dispose()
+        ctx.invoke(loaddb, filename='appSoutenance/data/arexis_donnees.csv')
+
+    sys.exit(return_code)

@@ -4,11 +4,11 @@ from flask_login import UserMixin
 @login_manager.user_loader
 def load_user(user_id):
     if user_id.startswith("ETU_"):
-        return Etudiant.query.get(int(user_id.split("_")[1]))
+        return db.session.get(Etudiant, int(user_id.split("_")[1]))
     elif user_id.startswith("ENS_"):
-        return Enseignant.query.get(int(user_id.split("_")[1]))
+        return db.session.get(Enseignant, int(user_id.split("_")[1]))
     elif user_id.startswith("ADM_"):
-        return Admini.query.get(user_id.split("_")[1])
+        return db.session.get(Admini, user_id.split("_")[1])
     return None
 
 class Entreprise(db.Model):
@@ -419,7 +419,7 @@ class Admini(db.Model, UserMixin):
 
 
     def __repr__(self):
-        return f"<Admini : {self.id_admin} {self.nom_admin} {self.prenom_admin} {self.login_admin}>"
+        return f"<Admininistration : {self.id_admin} {self.nom_admin} {self.prenom_admin} {self.login_admin}>"
    
 class Assembler(db.Model):
     __tablename__ = 'ASSEMBLER'
