@@ -14,18 +14,19 @@
                     <p>Aucun étudiant trouvé.</p>
                 {% endif %}
                 {% for tutore in liste_tutore %}
-                    <div class="glass tutoré_accueil">
-                    <div class="boite_horizontale">
-                        <h2>{{tutore.etudiant.nom_etudiant}} {{tutore.etudiant.prenom_etudiant}}</h2>
-                    </div>
-                    <div class="boite_horizontale">
-                        <i class="far fa-clipboard"></i>
-                        <p>état: {{tutore.etat}}</p>
-                    </div>
-                    <div class="boite_horizontale">
-                        <i class="far fa-calendar-alt"></i>
-                        <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
-                            en {{tutore.soutenance_tutore.salle}}</p>
+                    <div class="glass tutore_accueil">
+                        <div class="boite_horizontale">
+                            <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
+                        </div>
+                        <div class="boite_horizontale">
+                            <i class="fas fa-clipboard petite_icone"></i>
+                            <p>État: {{tutore.etat}}</p>
+                        </div>
+                        <div class="boite_horizontale">
+                            <i class="fas fa-calendar-alt petite_icone"></i>
+                            <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
+                                en {{tutore.soutenance_tutore.salle}}</p>
+                        </div>
                     </div>
                 {% endfor %}
                 </article>
