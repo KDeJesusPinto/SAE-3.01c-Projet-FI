@@ -339,13 +339,13 @@ input#import_csv{
 /* ---------------- STYLES DES COMBOBOX ----------------*/
 
 
-select.combobox { /* Agrandissement des combobox */
+select.combobox {
     /* style */
     background-color: var(--couleur_principale_site);
     border-radius: 80px;
 
     font-family: "Arimo", sans-serif;
-    font-size: 0.7em; /* Augmente la taille de la police */
+    font-size: 0.7em;
     text-align: center;
     color:var(--couleur_texte_clair);
 
