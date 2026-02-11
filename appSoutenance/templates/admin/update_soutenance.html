@@ -1,7 +1,129 @@
 {% extends "admin/base_admin.html" %}
 
 {% block content %}
-<h1>Modification d'une soutenance</h1>
+    <h1>Modification d'une soutenance</h1>
+    <div class="glass boite_verticale" > <!-- style="width: 50%; margin: 20px auto; padding: 30px;"" -->
+        <form action="{{ url_for('save_soutenance_admin', id=uneSoutenance.id_soutenance) }}" method="POST">
+            <input type="hidden" name="id_soutenance" value="{{ uneSoutenance.id_soutenance }}">
+            <input type="hidden" id="initial_jury_data" value="{{ jury_actuel_id | tojson }}">
+            <input type="hidden" id="initial_student_data" value='{{ etu_actuels_id | tojson }}'>
+
+            
+            <div class="form-group">
+                <label for="dateS">Date de la soutenance :</label>
+                <input type="date" id="dateS" name="dateS" value="{{ uneSoutenance.dateS }}" class="form-control" required onchange="refresh_page()">
+            </div>
+
+            <div class="form-group">
+                <label for="h_debut">Heure de début :</label>
+                <input type="time" id="h_debut" name="h_debut" value="{{ uneSoutenance.h_debut }}" class="form-control" required onchange="refresh_page()">
+            </div>
+
+            <div class="form-group">
+                <label for="salle">Salle :</label>
+                <input type="text" id="salle" name="salle" value="{{ uneSoutenance.salle }}" class="form-control" required>
+            </div>
+
+            <hr>
+            <h3>Jury (Enseignants)</h3>
+                {% for i in range(1, 4) %}
+                    <div class="form-group">
+                        <label>Enseignant {{ i }} :</label>
+                        <select name="ens{{ i }}" id="ens{{ i }}" class="form-control" onchange="updateEtudiants(`{{ i }}`, this.value)">
+                            <option value="">-- Aucun --</option>
+                        </select>
+                        
+                        <label style="margin-top:10px; display:block">Étudiant :</label>
+                        <select name="etu{{ i }}" id="etu{{ i }}" class="form-control">
+                            <option value="">-- En attente --</option>
+                        </select>
+                        </div>
+                {% endfor %}
+
+            <div style="margin-top: 20px;">
+                <button type="submit" class="petit_bouton">Enregistrer les modifications</button>
+                <a href="{{ url_for('detail_soutenance_admin', id=uneSoutenance.id_soutenance) }}" class="petit_bouton" style="background: #95a5a6;">Annuler</a>
+            </div>
+        </form>
+    </div>
+
+        <script>
+
+        async function refresh_page() {
+        console.log("Refreshing enseignants disponibles...");
+        const d = document.getElementById('dateS').value;
+        const h = document.getElementById('h_debut').value;
+        const idSout = "{{ uneSoutenance.id_soutenance }}";
+
+        const initialJuryRaw = document.getElementById('initial_jury_data').value;
+        let initialJury = [];
+        try {
+            initialJury = JSON.parse(initialJuryRaw || "[]");
+        } catch(e) { console.error("Erreur parse JSON", e); }
+
+        if (!d || !h) return;
+
+        try {
+            const res = await fetch(`/api/enseignants_disponibles/${idSout}?date=${d}&heure=${h}`);
+            const enseignants = await res.json();
+
+            for (let i = 1; i <= 3; i++) {
+                const selectEns = document.getElementById(`ens${i}`);
+                const currentSelection = selectEns.value;
+                
+                let html = '<option value="">-- Aucun --</option>';
+                
+                enseignants.forEach(ens => {
+                    // Comparaison en Number pour éviter comparaison entre String et int
+                    const jury_actuel = (initialJury[i-1] && Number(initialJury[i-1]) === Number(ens.id));
+                    const jury_choisi = (Number(currentSelection) === Number(ens.id));
+                    
+                    const selected = (jury_actuel || jury_choisi) ? 'selected' : '';
+                    html += `<option value="${ens.id}" ${selected}>${ens.nom} ${ens.prenom}</option>`;
+                });
+                //innerHTML permet de remplacer le contenu existant
+                selectEns.innerHTML = html;
+
+                // Charger les étudiants dès qu'un prof est sélectionné
+                if (selectEns.value) {
+                    updateEtudiants(i, selectEns.value);
+                }
+            }
+        } catch (err) {
+        console.error("Erreur lors du chargement des enseignants:", err);
+    }
+}
+
+    async function updateEtudiants(index, idEnseignant) {
+    const selEtu = document.getElementById("etu" + index);
+    const idSout = "{{ uneSoutenance.id_soutenance }}";
+
+    const select_etudiant = document.getElementById('initial_student_data').value;
+    let liste_etudiants_actuels = [];
+    try {
+        liste_etudiants_actuels = JSON.parse(select_etudiant || "[]");
+    } catch(e) { console.error(e); }
+
+    if (!idEnseignant) {
+        selEtu.innerHTML = '<option value="">-- Aucun --</option>';
+        return;
+    }
+
+    const res = await fetch(`/api/etudiants_par_tuteur/${idEnseignant}/${idSout}`);
+    const etudiants = await res.json();
+
+    let html = '<option value="">-- Choisir un étudiant --</option>';
+
+    etudiants.forEach(etu => {
+        const jury_actuel = liste_etudiants_actuels.includes(Number(etu.id));
+        const selected = jury_actuel ? 'selected' : '';
+        html += `<option value="${etu.id}" ${selected}>${etu.nom} ${etu.prenom}</option>`;
+    });
+
+    selEtu.innerHTML = html;
+}
 
 
+     window.onload = refresh_page;
+    </script>
 {% endblock %}

@@ -3,14 +3,14 @@ import csv
 import io
 
 from .app import app, db
-from flask import render_template, request, url_for, redirect, flash, Response
+from flask import jsonify, render_template, request, url_for, redirect, flash, Response
 from appSoutenance.models import db,  Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, MaitreStage, Entreprise, Admini, Jury
 from sqlalchemy import desc, asc, distinct, func
 from .importer_csv import importer_etudiants_stages, importer_entreprises
 from .exporter_csv import exporter_etudiants, exporter_entreprises, exporter_soutenances
 from flask_login import login_user, logout_user, login_required, current_user
 from appSoutenance.forms import *
-from sqlalchemy import extract,desc, distinct
+from sqlalchemy import extract,desc, distinct, or_
 from flask import request, render_template, redirect, url_for
 from datetime import datetime, timedelta
 from .models import db
@@ -419,14 +419,8 @@ def accueil_admin():
     
     importForm = ImportForm()
     exportForm = ExportForm()
-    admin = current_user
-    if not isinstance(admin, Admini):
-        flash("Accès réservé aux administrateurs.", "warning")
-        return redirect(url_for("login"))
-    
     # Import
     if importForm.submit.data and importForm.validate_on_submit():
-        print("c'est bon")
         file_storage = importForm.ficCSV.data
         type_import = importForm.type_import.data
 
@@ -460,7 +454,7 @@ def accueil_admin():
             flash("Type d'export inconnu", "warning")
             return redirect(url_for('accueil_admin'))
 
-        # return Response(output, mimetype="text/csv", headers={"Content-Disposition": f"attachment;filename={filename}"})
+        return Response(output.getvalue(), mimetype="text/csv", headers={"Content-Disposition": f"attachment;filename={filename}"})
 
     # Filtres
     annee_filter = request.args.get('annee')
@@ -709,24 +703,49 @@ def detail_soutenance_admin(id):
 def modifier_soutenance_admin(id):
     uneSoutenance = Soutenance.query.get(id)
     compose = Composer.query.filter_by(id_soutenance=id).all()
-    unForm = FormSoutenance(id_soutenance = uneSoutenance.id_soutenance, id_stage =uneSoutenance.id_stage,
-                            h_debut=uneSoutenance.h_debut, dateS=uneSoutenance.dateS, salle=uneSoutenance.salle,
-                            nom_enseignant1 = compose[0].enseignant if len(compose) > 0 else None,
-                            nom_enseignant2 = compose[1].enseignant if len(compose) > 1 else None,
-                            nom_enseignant3 = compose[2].enseignant if len(compose) > 2 else None)
-    return render_template("admin/update_soutenance.html", accueil="accueil_admin", title="Modifier la soutenance", createForm=unForm, uneSoutenance=uneSoutenance)
+    jury_actuel_id = [int(c.id_enseignant) for c in compose]
+    
+    etu_actuels_id = []
+    for s in Soutenance.query.filter_by(
+            dateS=uneSoutenance.dateS,
+            h_debut=uneSoutenance.h_debut,
+            salle=uneSoutenance.salle
+        ).all():
+        if s.stage and s.stage.demarche and s.stage.demarche.etudiant:
+            etu_actuels_id.append(s.stage.demarche.etudiant.id_etudiant)
+
+    return render_template(
+        "admin/update_soutenance.html",
+        uneSoutenance=uneSoutenance,
+        jury_actuel_id=jury_actuel_id,
+        etu_actuels_id=etu_actuels_id
+    )
+
+
+
 
 @app.route('/admin/planning/<int:id>/update/save', methods=("POST",))
-def save_soutenance_admin():
-    id_soutenance = request.form.get('id_soutenance')
-    soutenance = Soutenance.query.get(id_soutenance)
+@login_required
+def save_soutenance_admin(id):
+    soutenance = Soutenance.query.get(id)
     if not soutenance:
         flash("Soutenance introuvable.", "danger")
         return redirect(url_for('planning_admini'))
 
-    soutenance.dateS = request.form.get('dateS')
-    soutenance.h_debut = request.form.get('h_debut')
-    soutenance.salle = request.form.get('salle')
+    date_str = request.form.get('dateS')
+    heure_str = request.form.get('h_debut')
+    salle = request.form.get('salle')
+
+    # strptime pour convertir la date (string) au format date
+    if date_str:
+        soutenance.dateS = datetime.strptime(date_str, "%Y-%m-%d").date()
+
+    if heure_str:
+        soutenance.h_debut = heure_str
+    
+    soutenance.salle =salle
+
+    Composer.query.filter_by(id_soutenance=id).delete()
 
     for i in range(1, 4):
         id_ens = request.form.get(f'ens{i}')
@@ -746,7 +765,64 @@ def save_soutenance_admin():
 
     return redirect(url_for('planning_admini'))
 
+
+@app.route('/api/enseignants_disponibles/<int:id_soutenance>')
+@login_required
+def api_enseignants_disponibles(id_soutenance):
+    date_s = request.args.get('date')
+    heure_s = request.args.get('heure')
+    
+
+    occupes = db.session.query(Composer.id_enseignant).join(Soutenance).filter(
+            Soutenance.dateS == date_s,
+            Soutenance.h_debut == heure_s,
+            Soutenance.id_soutenance != id_soutenance
+        ).all()
+
+    ids_occupes = [o[0] for o in occupes]
+    jury_actuel = db.session.query(Composer.id_enseignant).filter(Composer.id_soutenance == id_soutenance).all()
+    ids_jury_actuel = [j[0] for j in jury_actuel]
+    ids_a_exclure = [id_ens for id_ens in ids_occupes if id_ens not in ids_jury_actuel]
+    dispos = Enseignant.query.filter(~Enseignant.id_enseignant.in_(ids_a_exclure)).all()
+
+    return jsonify([
+        {
+            'id': int(e.id_enseignant),
+            'nom': e.nom_enseignant,
+            'prenom': e.prenom_enseignant
+        }
+        for e in dispos
+    ])
+
+
+@app.route('/api/etudiants_par_tuteur/<int:id_enseignant>/<int:id_soutenance>')
+@login_required
+def api_etudiants_par_tuteur(id_enseignant, id_soutenance):
+    query = db.session.query(Etudiant).join(Tutorer).filter(Tutorer.id_enseignant == id_enseignant)
+    query = query.join(Demarche).filter(Demarche.situation == 'Acceptée').join(Stage, Demarche.id_demarche == Stage.id_demarche).outerjoin(Soutenance, Stage.id_stage == Soutenance.id_stage)
+    #query = query.filter(or_(Soutenance.id_soutenance == None, Soutenance.id_soutenance == id_soutenance)).distinct()  
+    query = query.filter((Soutenance.id_soutenance == None) | (Soutenance.id_soutenance == id_soutenance)).distinct()  
+    etudiants = query.all()
+
+    return jsonify([
+        {'id': int(etu.id_etudiant), 'nom': etu.nom_etudiant, 'prenom': etu.prenom_etudiant} 
+        for etu in etudiants
+    ])
+
+
+@app.route('/api/salle_disponible/')
+@login_required
+def api_salle_disponible(id_soutenance):
+    date_s = request.args.get('date')
+    heure_s = request.args.get('heure')
+    salle_s = request.args.get('salle')
+    if not date_s or not heure_s or not salle_s:
+        return jsonify({'disponible': True})
+
+
+
 @app.route('/admin/planning/<int:id>/delete')
+@login_required
 def suppression_soutenance_admin(id):
     uneSoutenance = Soutenance.query.get(id)
     soutenances_groupe = Soutenance.query.filter_by(
@@ -764,6 +840,7 @@ def suppression_soutenance_admin(id):
     return render_template("admin/supprimer_soutenance_admin.html", accueil="accueil_admin", title="Supprimer la soutenance", deleteForm=unForm, uneSoutenance=uneSoutenance, soutenances_groupe=soutenances_groupe)
 
 @app.route('/admin/planning/<int:id>/erase', methods=("POST",))
+@login_required
 def erase_soutenance_admin(id):
     soutenance = Soutenance.query.get(id)
     if not soutenance:
