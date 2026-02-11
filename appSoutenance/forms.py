@@ -65,7 +65,6 @@ class FormSoutenance(FlaskForm):
     id_soutenance = HiddenField("ID:")
     id_stage = HiddenField("ID du stage ")
     h_debut = StringField("Heure de début: ")
-    dateS = StringField("Date de la soutenance: ", validators=[DataRequired()])
     dateS = DateField("Date de la soutenance: ", validators=[DataRequired()])
     salle = StringField ("Salle de la soutenance: ")
     nom_enseignant =  StringField("Liste prof")
