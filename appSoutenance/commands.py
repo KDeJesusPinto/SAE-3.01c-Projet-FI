@@ -1,4 +1,4 @@
-import csv
+import csv, os
 import subprocess
 import click
 import logging as lg
@@ -7,7 +7,7 @@ from datetime import datetime
 from pathlib import Path
 from .app import app, db
 from .models import *
-
+from .importer_csv import suppression_sauts_a_la_ligne_csv
 
 @app.cli.command()
 def resetdb():
@@ -51,7 +51,9 @@ def loaddb(filename):
     else:
         lg.warning("Aucun fichier insertion.sql trouvé.")
 
-    with open(filename, newline='', encoding='utf-8') as csvfile:
+    temp_file = suppression_sauts_a_la_ligne_csv(filename)
+
+    with open(temp_file, newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
 
         for row in reader:
@@ -171,6 +173,7 @@ def loaddb(filename):
     for fichier in data_dir.glob("*.csv"):
         importer_entreprises(fichier)
 
+    os.remove(temp_file)
     lg.warning("Import des entreprises du dossier terminé !")
 
 

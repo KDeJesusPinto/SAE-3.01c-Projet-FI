@@ -4,14 +4,18 @@ from datetime import datetime
 import io
 from .models import db, Etudiant, Promo, Appartenir, Entreprise, MaitreStage, Demarche, Stage
 from sqlalchemy.exc import IntegrityError
+from werkzeug.datastructures import FileStorage
+
+import time, os
 
 
-def importer_etudiants_stages(file_storage):
+def importer_etudiants_stages(file_storage:FileStorage):
     """Importe les données Étudiants/Stages à partir d'un flux de fichier CSV"""
 
     ajout = 0
     try:
-        content = file_storage.read().decode('utf-8')
+        temp_file = suppression_sauts_a_la_ligne_csv(file_storage)
+        content = temp_file.read().decode('utf-8')
         stream = io.StringIO(content)
         reader = csv.DictReader(stream)
 
@@ -37,10 +41,15 @@ def importer_etudiants_stages(file_storage):
 
 
         db.session.commit()
+        os.remove(temp_file)
         return True, f"{ajout} lignes traitées."
     
     except Exception as e:
         db.session.rollback()
+        try:
+            os.remove(temp_file)
+        except:
+            pass
         return False, str(e)
 
 
@@ -81,38 +90,46 @@ def importer_entreprises(file_storage):
         db.session.rollback()
         lg.error(f"Erreur lors de l'importation Entreprises: {e}")
         return False, f"Erreur critique lors de l'importation : {e}"
-    
-def suppression_sauts_a_la_ligne_csv(nom_fichier):
-    with open(nom_fichier, "r") as file:
-        entete = file.readline().split(",") # liste contenant les entêtes
-        nb_virgules_par_ligne = len(entete) - 1
-        cpt_virgules = 0
-        resultat = ""
 
-        fichier_original = file.read()
-        #print(fichier_original)
+def suppression_sauts_a_la_ligne_csv(fichier:str|FileStorage):
+    str_fichier = ""
+    if type(fichier) == str:
+        print(fichier)
+        with open(fichier, "r") as file:
+            
+            entete = file.readline().split(",") # liste contenant les entêtes
+            nb_virgules_par_ligne = len(entete) - 1
+            cpt_virgules = 0
+            resultat = ""
 
-        for carac in fichier_original:
-            if carac == ",":
-                cpt_virgules += 1
+            fichier_original = file.read()
+            #print(fichier_original)
 
-            elif carac == "\n":
-                #print("haaaa")
+            for carac in fichier_original:
+                if carac == ",":
+                    cpt_virgules += 1
 
-                if cpt_virgules >= nb_virgules_par_ligne:
-                    #print("réinitialisation à 0")
-                    cpt_virgules = 0
-                else:
-                    continue
+                elif carac == "\n":
+                    #print("haaaa")
 
-            resultat += carac
-            #print(cpt_virgules, nb_virgules_par_ligne)
+                    if cpt_virgules >= nb_virgules_par_ligne:
+                        #print("réinitialisation à 0")
+                        cpt_virgules = 0
+                    else:
+                        continue
 
-        #print(resultat)
+                resultat += carac
+                #print(cpt_virgules, nb_virgules_par_ligne)
 
-        with open("appSoutenance/data/nouveau_fichier.csv", "w") as nouveau_fichier:
-            nouveau_fichier.write(",".join(entete) + resultat)
+            #print(resultat)
+
+            with open("appSoutenance/data/temp_" + fichier.split("/")[-1], "w") as nouveau_fichier:
+                nouveau_fichier.write(",".join(entete) + resultat)
+
+    return "appSoutenance/data/temp_" + fichier.split("/")[-1]
 
 
 if __name__ == "__main__":
     suppression_sauts_a_la_ligne_csv('appSoutenance/data/arexis_donnees.csv')
+    time.sleep(15)
+    os.remove("appSoutenance/data/nouveau_fichier.csv")
