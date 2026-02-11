@@ -1,0 +1,6 @@
+ID;Date;Heure;Salle;Etudiant;Titre Stage;Jury
+1;2025-03-25;09:00;101;Doe John;Développer une application web de gestion;Dubois Jean, Martin Sophie, Lefebvre Pierre
+2;2025-03-25;09:00;101;Brown Alice;Analyse de données massives pour la prédiction;Dubois Jean, Martin Sophie, Lefebvre Pierre
+3;2025-03-25;09:00;101;Wilson Emma;Découverte du développement front-end;Dubois Jean, Martin Sophie, Lefebvre Pierre
+4;2025-06-20;11:00;104;Smith Jane;Conception d'un agent conversationnel;Durand Camille
+5;2025-03-25;09:00;102;Anderson Liam;Projet spécial;Durand Camille, Moreau Luc

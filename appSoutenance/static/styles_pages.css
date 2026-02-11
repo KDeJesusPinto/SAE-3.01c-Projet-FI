@@ -166,13 +166,6 @@ aside#filtre_liste_admin{
     align-items: center;
 }
 
-#nav_admin {
-    /* style */
-    /* positionnement */
-    margin-right: auto;
-    justify-content: flex-start;
-}
-
 button#voir{
     /* style */
     border-radius: 40px;
