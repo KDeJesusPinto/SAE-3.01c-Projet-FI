@@ -190,8 +190,12 @@ def accueil_enseignant():
         soutenance_prevue_tutore=Soutenance.query.join(Stage,Stage.id_stage==Soutenance.id_stage).join(Demarche,Demarche.id_demarche==Stage.id_demarche).join(Etudiant,Etudiant.id_etudiant==Demarche.id_etudiant).filter(Etudiant.id_etudiant==etudiant.id_etudiant).first()
         res_tutore.append({'etudiant':etudiant,'etat':derniere_demarche.situation if derniere_demarche else "Aucune",'soutenance_tutore':soutenance_prevue_tutore})
         
+    heure_date_deja_utilisé=[]
     for soutenance in query_soutenance_prevue.distinct():
-        res_soutenance.append({'soutenance':soutenance,'date':soutenance.dateS,'heure':soutenance.h_debut,'salle':soutenance.salle})
+        print(soutenance)
+        if soutenance.__repr__() not in heure_date_deja_utilisé:
+            res_soutenance.append(soutenance)
+            heure_date_deja_utilisé.append(soutenance.__repr__())
     date_soute=query_soutenance_prevue.distinct(Soutenance.dateS)
     res_date=[]
     for date in date_soute:

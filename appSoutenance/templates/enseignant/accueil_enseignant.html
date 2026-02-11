@@ -53,15 +53,15 @@
                         <div class="glass_planning_accueil">
                         <p>{{date}}</p>
                         {% for soutenance in liste_soutenance %}
-                            {%if soutenance.soutenance.dateS==date%}
+                            {%if soutenance.dateS==date%}
                                 <div class="dark_planning_accueil">
                                     <div class="boite_horizontale">
                                         <div class="boite_verticale">
-                                            <p>{{soutenance.soutenance.h_debut}}</p>
-                                            <p>{{soutenance.soutenance.h_fin}}</p>
+                                            <p>{{soutenance.h_debut}}</p>
+                                            <p>{{soutenance.h_fin}}</p>
                                         </div>
                                         <i class="fas fa-map-marker-alt"></i>
-                                        <p>{{soutenance.soutenance.salle}}</p> 
+                                        <p>{{soutenance.salle}}</p> 
                                     </div>
                                 </div>   
                             {%endif%}
