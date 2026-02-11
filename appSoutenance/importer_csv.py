@@ -81,3 +81,38 @@ def importer_entreprises(file_storage):
         db.session.rollback()
         lg.error(f"Erreur lors de l'importation Entreprises: {e}")
         return False, f"Erreur critique lors de l'importation : {e}"
+    
+def suppression_sauts_a_la_ligne_csv(nom_fichier):
+    with open(nom_fichier, "r") as file:
+        entete = file.readline().split(",") # liste contenant les entêtes
+        nb_virgules_par_ligne = len(entete) - 1
+        cpt_virgules = 0
+        resultat = ""
+
+        fichier_original = file.read()
+        #print(fichier_original)
+
+        for carac in fichier_original:
+            if carac == ",":
+                cpt_virgules += 1
+
+            elif carac == "\n":
+                #print("haaaa")
+
+                if cpt_virgules >= nb_virgules_par_ligne:
+                    #print("réinitialisation à 0")
+                    cpt_virgules = 0
+                else:
+                    continue
+
+            resultat += carac
+            #print(cpt_virgules, nb_virgules_par_ligne)
+
+        #print(resultat)
+
+        with open("appSoutenance/data/nouveau_fichier.csv", "w") as nouveau_fichier:
+            nouveau_fichier.write(",".join(entete) + resultat)
+
+
+if __name__ == "__main__":
+    suppression_sauts_a_la_ligne_csv('appSoutenance/data/arexis_donnees.csv')

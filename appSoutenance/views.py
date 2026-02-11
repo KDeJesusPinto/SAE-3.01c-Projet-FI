@@ -423,8 +423,8 @@ def accueil_admin():
     
     if unForm.validate_on_submit():
         print("c'est bon")
-        file_storage = unForm.ficCSV.data
-        type_import = unForm.type_import.data
+        file_storage = unForm.ficCSV.data # on récupère le fichier donnée par l'utilisateur
+        type_import = unForm.type_import.data # on récupère le type de fichier dans le select
 
         success = False
         message = ""
