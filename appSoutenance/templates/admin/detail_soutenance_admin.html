@@ -2,7 +2,7 @@
 
 
 {% block content %}
-    <div class="glass boite_verticale">
+    <div class="glass boite_verticale" style="width: 60%; height: 60%;">
         <a href="{{ url_for('planning_admini') }}" class="petit_bouton" style="position: absolute; left: 20px; width: fit-content; font-size: 0.7em; padding: 10px 20px; margin: 0;"><i class="fas fa-code"></i> Retour</a>
                 <div class="boite_horizontale">
                     <span id="date">{{ soutenance.dateS }}</span>
@@ -18,8 +18,8 @@
                     {% if enseignants_jury %}
                         {% for ens in enseignants_jury %}
                             <a href="{{ url_for('detail_enseignant', id=ens.id_enseignant) }}" style="text-decoration: underline; color: inherit;">
-                                {{ ens.nom_enseignant }} {{ ens.prenom_enseignant }},
-                            </a>
+                                {{ ens.nom_enseignant }} {{ ens.prenom_enseignant }}
+                            </a>{% if not loop.last %}, {% endif %}
                         {% endfor %}
                     {% else %}
                         Jury non assigné
@@ -41,8 +41,8 @@
                                 {% set etudiant = s.stage.demarche.etudiant %}
                                 <a href="{{ url_for('detail_etudiant_admin', id=etudiant.id_etudiant)}}" 
                                 style="text-decoration: underline; color: inherit;">
-                                    {{etudiant.nom_etudiant}} {{etudiant.prenom_etudiant}}, 
-                                </a>
+                                    {{etudiant.nom_etudiant}} {{etudiant.prenom_etudiant}}
+                                </a>{% if not loop.last %}, {% endif %}
                             </td>
                             <td>{{ s.stage.titre_stage }}</td>
                         </tr>
@@ -52,7 +52,7 @@
     </div>
     <div>
         <a href="{{ url_for('modifier_soutenance_admin', id=soutenance.id_soutenance)}}" class="petit_bouton" 
-        style="margin-top: 20px; width: fit-content; font-size: 0.7em; padding: 10px 20px;"><i class="fas fa-edit"></i> Modifier</a>
+        style="margin-top: 20px; width: fit-content; font-size: 0.7em; padding: 15px 20px;"><i class="fas fa-edit"></i> Modifier</a>
         
         
         {% if request.args.get('confirm') =='1' %}
@@ -76,7 +76,7 @@
 
         <a href="{{ url_for('detail_soutenance_admin', id=soutenance.id_soutenance, confirm=1) }}"
         class="petit_bouton"
-        style="margin-top:20px;background:#e74c3c;color:white;">
+        style="margin-top:20px; background:#e74c3c;color:white; font-size: 0.7em; width: fit-content; padding: 15px 20px;">
             <i class="fas fa-trash"></i> Supprimer
         </a>
 
