@@ -1127,6 +1127,8 @@ def detail_etudiant_admin(id):
     stage_etudiant = Stage.query.join(Demarche, Stage.id_demarche == Demarche.id_demarche)\
                         .filter(Demarche.id_etudiant == etudiant.id_etudiant).first()
 
+    soutenance = stage_etudiant.soutenance if stage_etudiant else None
+
     maitre_stage = MaitreStage.query.get(stage_etudiant.id_maitre) if stage_etudiant else None
     entreprise = Entreprise.query.get(maitre_stage.id_entreprise) if maitre_stage else None
 
@@ -1138,6 +1140,7 @@ def detail_etudiant_admin(id):
                            demarches=demarches,
                            tuteur=tuteur,
                            stage_etudiant=stage_etudiant,
+                           etudiant_soutenance=soutenance,
                            maitre_stage=maitre_stage,
                            entreprise=entreprise)
 

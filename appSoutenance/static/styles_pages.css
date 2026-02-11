@@ -301,7 +301,7 @@ div#filtre_admin{
     /* positionnement */
     width: 80%;
     max-width: 1200px;
-    margin: 150px auto 20px auto;
+    margin: 20px auto 20px auto;
     padding: 20px;
 
     display: flex;

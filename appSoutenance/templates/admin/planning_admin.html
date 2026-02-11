@@ -22,18 +22,18 @@
                     <option value="GEA" {% if request.args.get('formation_promo') == 'GEA' %}selected{% endif %}>GEA</option>
                 </select>
                 <select class="combobox" name="date_soutenance" id="jour">
-                <option value="">Jour</option>
-                {% for val, label in dates_disponibles %}
-                    <option value="{{ val }}" {% if request.args.get('date_soutenance') == val %}selected{% endif %}>{{ label }}</option>
-                {% endfor %}
+                    <option value="">Jour</option>
+                    {% for val, label in dates_disponibles %}
+                        <option value="{{ val }}" {% if request.args.get('date_soutenance') == val %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
                 </select>
 
 
                 <select class="combobox" name="heure_soutenance" id="heure">
-                <option value="">Heure</option>
-                {% for heure_s in heures_disponibles %}
-                    <option value="{{ heure_s }}" {% if request.args.get('heure_soutenance') == heure_s %}selected{% endif %}>{{ heure_s }}</option>
-                {% endfor %}
+                    <option value="">Heure</option>
+                    {% for heure_s in heures_disponibles %}
+                        <option value="{{ heure_s }}" {% if request.args.get('heure_soutenance') == heure_s %}selected{% endif %}>{{ heure_s }}</option>
+                    {% endfor %}
                 </select>
 
 
@@ -73,13 +73,10 @@
                             <span class="texte_header" bloc-label="salle">Salle: {{ bloc.salle }}</span>
                         </div>
                     </div>
-                
                     <p>
                         Jury: {{ bloc.jury_noms }}
                     </p>
-
-
-                    <table >
+                    <table>
                         <thead>
                             <tr>
                                 <th>Étudiants</th>
