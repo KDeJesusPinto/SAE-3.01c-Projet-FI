@@ -325,7 +325,8 @@ def soutenance_enseignant():
                     'nom_promo': promo_etudiant,
                     'stages': [],
                     'bouton_desinscription':user_present and "2" in promo_etudiant,
-                    'bouton_inscription':(not user_present) and  "2" in promo_etudiant
+                    'bouton_inscription':(not user_present) and  "2" in promo_etudiant,
+                    'inscris':user_present
                 }
             regroupement[cle_regroupement]['stages'].append({
                 'nom_etudiant': etudiant_lie.nom_etudiant,
