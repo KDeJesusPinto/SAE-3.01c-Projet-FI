@@ -24,7 +24,7 @@ def test_export_form_choix(testapp: Flask):
 
     with testapp.app_context():
         form = ExportForm()
-        choix = [c[0] for c in form.type_export.choix]
+        choix = [c[0] for c in form.type_export.choices]
         assert "etudiants" in choix
         assert "entreprises" in choix
         assert "soutenances" in choix
