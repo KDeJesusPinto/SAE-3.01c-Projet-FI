@@ -7,6 +7,7 @@ from flask import render_template, request, url_for, redirect, flash, Response
 from appSoutenance.models import db,  Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, MaitreStage, Entreprise, Admini, Jury
 from sqlalchemy import desc, asc, distinct, func
 from .importer_csv import importer_etudiants_stages, importer_entreprises
+from .exporter_csv import exporter_etudiants, exporter_entreprises, exporter_soutenances
 from flask_login import login_user, logout_user, login_required, current_user
 from appSoutenance.forms import *
 from sqlalchemy import extract,desc, distinct
@@ -446,49 +447,20 @@ def accueil_admin():
     # Export
     if exportForm.submit.data and exportForm.validate_on_submit():
         type_export = exportForm.type_export.data
-        output = io.StringIO()
-        writer = csv.writer(output, delimiter=';')
-        filename = "export.csv"
-
-        # Export des étudiants
         if type_export == 'etudiants':
+            output = exporter_etudiants()
             filename = "etudiants.csv"
-            writer.writerow(['ID', 'Nom', 'Prénom', 'Email', 'Promo', 'Année', 'Régime'])
-            etudiants = Etudiant.query.all()
-            for e in etudiants:
-                app = Appartenir.query.filter_by(id_etudiant=e.id_etudiant).first()
-                promo = app.nom_promo if app else ""
-                annee = app.annee_promo if app else ""
-                regime = app.regime_etudiant if app else ""
-                writer.writerow([e.id_etudiant, e.nom_etudiant, e.prenom_etudiant, e.email_etudiant, promo, annee, regime])
-
-        # Export des entreprises
         elif type_export == 'entreprises':
+            output = exporter_entreprises()
             filename = "entreprises.csv"
-            writer.writerow(['ID', 'Nom', 'Ville', 'Adresse', 'CP', 'Secteur', 'Type', 'Tel', 'Email'])
-            entreprises = Entreprise.query.all()
-            for ent in entreprises:
-                writer.writerow([ent.id_entreprise, ent.nom_entreprise, ent.ville, ent.adresse, ent.code_postal, ent.secteur, ent.typeE, ent.tel_entreprise, ent.email_entreprise])
-
-        # Export des soutenances
         elif type_export == 'soutenances':
+            output = exporter_soutenances()
             filename = "soutenances.csv"
-            writer.writerow(['ID', 'Date', 'Heure', 'Salle', 'Etudiant', 'Titre Stage', 'Jury'])
-            soutenances = Soutenance.query.all()
-            for s in soutenances:
-                stage = Stage.query.get(s.id_stage)
-                etudiant_str = "NC"
-                titre_stage = "NC"
-                if stage:
-                    titre_stage = stage.titre_stage
-                    if stage.demarche and stage.demarche.etudiant:
-                        etudiant_str = f"{stage.demarche.etudiant.nom_etudiant} {stage.demarche.etudiant.prenom_etudiant}"
-                enseignants = Enseignant.query.join(Composer).filter(Composer.id_soutenance == s.id_soutenance).all()
-                jury_str = ", ".join([f"{ens.nom_enseignant} {ens.prenom_enseignant}" for ens in enseignants])
-                writer.writerow([s.id_soutenance, s.dateS, s.h_debut, s.salle, etudiant_str, titre_stage, jury_str])
+        else:
+            flash("Type d'export inconnu", "warning")
+            return redirect(url_for('accueil_admin'))
 
-        output.seek(0)
-        return Response(output, mimetype="text/csv", headers={"Content-Disposition": f"attachment;filename={filename}"})
+        # return Response(output, mimetype="text/csv", headers={"Content-Disposition": f"attachment;filename={filename}"})
 
     # Filtres
     annee_filter = request.args.get('annee')
