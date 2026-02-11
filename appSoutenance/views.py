@@ -191,14 +191,12 @@ def accueil_enseignant():
         res_tutore.append({'etudiant':etudiant,'etat':derniere_demarche.situation if derniere_demarche else "Aucune",'soutenance_tutore':soutenance_prevue_tutore})
         
     for soutenance in query_soutenance_prevue.distinct():
-        print(soutenance)
         res_soutenance.append({'soutenance':soutenance,'date':soutenance.dateS,'heure':soutenance.h_debut,'salle':soutenance.salle})
     date_soute=query_soutenance_prevue.distinct(Soutenance.dateS)
     res_date=[]
     for date in date_soute:
         if date.dateS not in res_date:
             res_date.append(date.dateS)
-    print(res_date)
     enseignant = current_user
     nb_soutenance_place=query_soutenance_prevue.count()
     nb_soutenance_place_tutore=queryListeTutore.count()
@@ -317,7 +315,6 @@ def soutenance_enseignant():
 
 
             cle_regroupement = f"{soutenance.dateS.strftime('%Y-%m-%d')}-{soutenance.h_debut}-{soutenance.salle}-{membres_jury_noms}"
-            print(promo_etudiant)
             if cle_regroupement not in regroupement:
                 regroupement[cle_regroupement] = {
                     'dateS': date_formatee,
@@ -353,14 +350,37 @@ def soutenance_enseignant():
 @login_required
 def inscription_enseignant():
     enseignant = current_user
-    print(request.args.get('soutenance_jury'))
-    for soutenance in request.args.get('soutenance_jury'):
+    print(request.args.get('liste_soutenance'),"    desinscription")
+    sout_trouve=Soutenance.query.filter(Soutenance.id_soutenance==request.args.get('liste_soutenance')).first()
+    liste_sout=Soutenance.query.filter(Soutenance.h_debut==sout_trouve.h_debut,Soutenance.h_fin==sout_trouve.h_fin,Soutenance.dateS==sout_trouve.dateS,Soutenance.salle==sout_trouve.salle,Soutenance.nom_bat==sout_trouve.nom_bat).all()
+    print(liste_sout)
+    for soutenance in liste_sout:
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print(soutenance)
+        print(Composer.query.filter(Composer.id_enseignant==enseignant.id_enseignant,Composer.id_soutenance==soutenance.id_soutenance).all())
         inscription_soutenance = Composer(
             id_enseignant=enseignant.id_enseignant,
-            id_soutenance=soutenance
+            id_soutenance=soutenance.id_soutenance
             )
-        print(inscription_soutenance)
+        print(inscription_soutenance," inscription")
         db.session.add(inscription_soutenance)
+        db.session.commit()
+    return redirect(url_for('soutenance_enseignant'))
+
+
+@app.route('/enseignant/soutenances/desinscription/')
+@login_required
+def desinscription_enseignant():
+    enseignant = current_user
+    print(request.args.get('liste_soutenance'),"    desinscription")
+    sout_trouve=Soutenance.query.filter(Soutenance.id_soutenance==request.args.get('liste_soutenance')).first()
+    liste_sout=Soutenance.query.filter(Soutenance.h_debut==sout_trouve.h_debut,Soutenance.h_fin==sout_trouve.h_fin,Soutenance.dateS==sout_trouve.dateS,Soutenance.salle==sout_trouve.salle,Soutenance.nom_bat==sout_trouve.nom_bat).all()
+    print(liste_sout)
+    for soutenance in liste_sout:
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        print(soutenance)
+        print(Composer.query.filter(Composer.id_enseignant==enseignant.id_enseignant,Composer.id_soutenance==soutenance.id_soutenance).all())
+        Composer.query.filter(Composer.id_enseignant==enseignant.id_enseignant,Composer.id_soutenance==soutenance.id_soutenance).delete()
         db.session.commit()
     return redirect(url_for('soutenance_enseignant'))
 

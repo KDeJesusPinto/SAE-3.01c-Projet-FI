@@ -93,11 +93,13 @@
                 </tbody>
             </table>
             <div class="boite horizontal">
+                {% for a in bloc.liste_id_soutenance %}
+                    <p>a</p>
+                {% endfor %}
                 {% if bloc.bouton_desinscription %}
-                    <button class="petit_bouton" id="enseignant_desinscription_soutenance" type="submit">se desinscricre</button>
+                    <button><a href="{{ url_for('desinscription_enseignant', liste_soutenance=bloc.liste_id_soutenance) }}" class="petit_bouton">se desinscrire</a></button>
                 {% elif bloc.bouton_inscription %}
-                    <button action="{{ url_for('inscription_enseignant', soutenance_jury=bloc.liste_id_soutenance, **request.args) }}" class="petit_bouton">s'inscrire</button>
-                    <button><a href="{{ url_for('inscription_enseignant', soutenance_jury=bloc.liste_id_soutenance, **request.args) }}" class="petit_bouton">s'inscrire</button></a>
+                    <button><a href="{{ url_for('inscription_enseignant', liste_soutenance=bloc.liste_id_soutenance) }}" class="petit_bouton">s'inscrire</a></button>
                 {% endif %}
             </div>
         </div>
