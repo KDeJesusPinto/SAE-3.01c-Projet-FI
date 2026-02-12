@@ -259,10 +259,9 @@ div.demarche_etape{
 
 #retour {
     /* style */
-    font-size: 0.7em;
+    font-size: 0.7rem;
 
     /* positionnement */
-    align-items: center;
     display: block;
     margin: 12px auto;
     margin-bottom:10%;
@@ -344,6 +343,15 @@ nav#barre_navigation{
         /* positionnement */
     }
 }
+
+.sous_menu{
+    display: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: var(--couleur_sombre_principale);
+}
+nav#barre_navigation li:hover .sous_menu{
+    display: block;
+}
   
 .choix{
     /* style */
@@ -380,7 +388,7 @@ select.combobox {
     color:var(--couleur_texte_clair);
 
     /* positionnement */
-    width: 300px;
+    width: 250px;
     min-width: 220px;
     height: 75px;
     padding: 15px 40px;

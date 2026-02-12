@@ -1,0 +1,102 @@
+{% extends "admin/base_admin.html" %}
+
+
+{% block content %}
+    <div class="boite_horizontale">
+        <form id="en_haut" method="get" action="{{ url_for(request.endpoint) }}">
+            <aside id="filtre_liste_admin">
+                <select class="combobox" name="nom_promo" id="nom_promo">
+                    <option value="">Niveau</option>
+                    <option value="2A" {% if current_promo == '2A' %}selected{% endif %}>2ème année</option>
+                    <option value="3A" {% if current_promo == '3A' %}selected{% endif %}>3ème année</option>
+                </select>
+                <select class="combobox" name="regime" id="regime">
+                    <option value="">Régime</option>
+                    <option value="Initial" {% if request.args.get('regime') == 'Initial' %}selected{% endif %}>Initial</option>
+                    <option value="Alternance" {% if request.args.get('regime') == 'Alternance' %}selected{% endif %}>Alternance</option>
+                </select>
+                <select class="combobox" name="formation_promo" id="formation">
+                    <option value="">Formation</option>
+                    <option value="Info" {% if request.args.get('formation_promo') == 'Info' %}selected{% endif %}>Informatique</option>
+                    <option value="Chimie" {% if request.args.get('formation_promo') == 'Chimie' %}selected{% endif %}>Chimie</option>
+                    <option value="GEA" {% if request.args.get('formation_promo') == 'GEA' %}selected{% endif %}>GEA</option>
+                </select>
+                <select class="combobox" name="date_soutenance" id="jour">
+                    <option value="">Jour</option>
+                    {% for val, label in dates_disponibles %}
+                        <option value="{{ val }}" {% if request.args.get('date_soutenance') == val %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+
+
+                <select class="combobox" name="heure_soutenance" id="heure">
+                    <option value="">Heure</option>
+                    {% for heure_s in heures_disponibles %}
+                        <option value="{{ heure_s }}" {% if request.args.get('heure_soutenance') == heure_s %}selected{% endif %}>{{ heure_s }}</option>
+                    {% endfor %}
+                </select>
+
+
+                <select class="combobox" name="jury_enseignant_id" id="jury">
+                    <option value="">Jury (Enseignant)</option>
+                    {% for enseignant in enseignants_disponibles %}
+                        <option value="{{ enseignant.id_enseignant }}" {% if request.args.get('jury_enseignant_id') == enseignant.id_enseignant|string %}selected{% endif %}>{{ enseignant.nom_enseignant }} {{ enseignant.prenom_enseignant }}</option>
+                    {% endfor %}
+                </select>
+                <select class="combobox" name="trier" id="trier">
+                    <option value="">Trier par</option>
+                    <option value="Nom" {% if request.args.get('trier') == 'Nom' %}selected{% endif %}>Nom de l'étudiant</option>
+                    <option value="DateDesc" {% if request.args.get('trier') == 'DateDesc' %}selected{% endif %}>Date (Décroissant)</option>
+                </select>
+                <button class="petit_bouton" id="filtrer" type="submit">Appliquer</button>
+                <a href="{{ url_for('accueil_admin') }}" class="petit_bouton" id="retour"><i class="fas fa-code"></i> Retour</a>
+            </aside>
+        </form>
+        <div id="planning-boite">
+            <div class="boite_horizontale">
+                <h1>Planning des Soutenances des BUT2</h1>
+                <a href="{{ url_for('creation_soutenance') }}"><i class="fas fa-plus-circle grande_icone"></i></a>        
+            </div>
+            {% if resultats|length == 0 %}
+                <div class="no-bloc">
+                    <p>Aucune soutenance n'a été planifiée pour le moment.</p>
+                </div>
+            {% else %}
+                {% for bloc in resultats %}
+                <div class="glass boite_verticale" style="position: relative;">
+                    <a href="{{ url_for('detail_soutenance_admin', id=bloc.id_soutenance) }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></a>
+                    <div class="boite_horizontale">
+                        <span id="date">{{ bloc.dateS }}</span>
+                        <div class="boite_horizontale">
+                            <span class="badge_promo">{{ bloc.nom_promo }}</span>
+                            <span class="texte_header" bloc-label="Créneau">{{ bloc.h_debut }} - {{ bloc.h_fin }}</span>
+                            <span class="texte_header" bloc-label="salle">Salle: {{ bloc.salle }}</span>
+                        </div>
+                    </div>
+                    <p>
+                        Jury: {{ bloc.jury_noms }}
+                    </p>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Étudiants</th>
+                                <th>Entreprise</th>
+                                <th>Maître de stage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stage_info in bloc.stages %}
+                                <tr>
+                                    <td>{{ stage_info.nom_etudiant }} {{ stage_info.prenom_etudiant }}</td>
+                                    <td>{{ stage_info.nom_entreprise }}</td> 
+                                    <td>{{ stage_info.nom_maitre }}</td> 
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
