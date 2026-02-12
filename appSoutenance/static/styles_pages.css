@@ -446,6 +446,7 @@ button#ajout_sout {
     /* positionnement */
     width: 200px;
     height: auto;
+}
 #barre_navigation ul li {
     position: relative;
 }
@@ -461,6 +462,7 @@ button#importer, button#exporter{
     padding: 40px;
     margin: 20px;
     height: auto; 
+}
 .sous_menu {
     display: none;
     position: absolute;
@@ -480,8 +482,10 @@ button#filtrer{
     font-size: 0.7rem;
 
     /* positionnement */
-    width: 300px;
+    width: 70%;
     margin: 10px auto;
+    display: block;
+}
 
 .sous_menu li a {
     padding: 10px;
@@ -501,6 +505,7 @@ button#voir {
     /* positionnement */
     width: 300px;
     height: 150px;
+}
 .sous_menu li a:hover {
     background-color: rgba(255, 255, 255, 0.2);
 }
@@ -511,6 +516,7 @@ div#contenu_admin {
 
     /* positionnement */
     align-items: center;
+}
 #barre_navigation ul li:hover .sous_menu {
     display: block;
 }

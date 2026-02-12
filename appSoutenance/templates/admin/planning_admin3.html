@@ -48,7 +48,7 @@
                     <option value="Nom" {% if request.args.get('trier') == 'Nom' %}selected{% endif %}>Nom de l'étudiant</option>
                     <option value="DateDesc" {% if request.args.get('trier') == 'DateDesc' %}selected{% endif %}>Date (Décroissant)</option>
                 </select>
-                <button class="petit_bouton" id="filtrer" type="submit">Filtrer</button>
+                <button class="petit_bouton" id="filtrer" type="submit">Appliquer</button>
                 <a href="{{ url_for('accueil_admin') }}" class="petit_bouton" id="retour"><i class="fas fa-code"></i> Retour</a>
             </aside>
         </form>
