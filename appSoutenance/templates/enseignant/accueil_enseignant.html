@@ -1,111 +1,101 @@
 {% extends "enseignant/base_enseignant.html" %}
 
-{% block content %}
-    <div class="boite_verticale">
-        <div class="boite_verticale">
+{% block content %} <!--id="accueil_enseignant"-->
+        <section class="boite_verticale" id="tutores">
             <div class="boite_horizontale">
                 <h1>Tutorés</h1>
                 <select name="filtre" id="filtre_accueil_enseignant" class="choix">
                     <option value="Filtres">Filtres</option>
                 </select>
-                <i class="fas fa-search"></i>
+                <i class="fas fa-search grande_icone"></i>
             </div>
-            <div class="boite_horizontale">
+            <article class="boite_horizontale">
                 {% if liste_tutore|length == 0 %}
                     <p>Aucun étudiant trouvé.</p>
                 {% endif %}
                 {% for tutore in liste_tutore %}
-                    <div class="glass tutoré_accueil">
-                    <div class="boite_horizontale">
-                        <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
+                    <div class="glass tutore_accueil">
+                        <div class="boite_horizontale">
+                            <h2>{{tutore.etudiant.prenom_etudiant}} {{tutore.etudiant.nom_etudiant}}</h2>
+                        </div>
+                        <div class="boite_horizontale">
+                            <i class="fas fa-clipboard petite_icone"></i>
+                            <p>État: {{tutore.etat}}</p>
+                        </div>
+                        <div class="boite_horizontale">
+                            <i class="fas fa-calendar-alt petite_icone"></i>
+                            <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
+                                en {{tutore.soutenance_tutore.salle}}</p>
+                        </div>
                     </div>
-                    <div class="boite_horizontale">
-                        <i class="far fa-clipboard"></i>
-                        <p>état: {{tutore.etat}}</p>
-                    </div>
-                    <div class="boite_horizontale">
-                        <i class="far fa-calendar-alt"></i>
-                        <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
-                            en {{tutore.soutenance_tutore.salle}}</p>
-                    </div>
-                </div>
                 {% endfor %}
-
-                
-                
-
-            </div>
-        </div>
+                </article>
+        </section>
         <div class="boite_horizontale">
-            <div class="boite_verticale">
+            <section class="boite_verticale" id="section_planning_accueil">
                 <div class="boite_horizontale">
                     <h1>Planning</h1>
                     <select name="filtre_planning" id="filtre_planning_annee_enseignant" class="choix">
-                        <option value="3éme année">3éme année</option>
-                        <option value="2éme année">2éme année</option>
+                        <option value="3ème année">3ème année</option>
+                        <option value="2ème année">2ème année</option>
                     </select>
                 </div>
-                <div class="boite_horizontale">
+                <article id="planning_accueil">
                     {% if liste_soutenance|length == 0 %}
                         <p>Aucune soutenance trouvé.</p>
                     {% endif %}
                     {% for date in date_soute %}
-                        <div class="glass_planning_accueil">
-                        <p>{{date}}</p>
-                        {% for soutenance in liste_soutenance %}
-                            {%if soutenance.dateS==date%}
-                                <div class="dark_planning_accueil">
-                                    <div class="boite_verticale">
-                                        {% for h in res_liste_etu_sout %}
-                                            {% if h==soutenance.horaire() %}
-                                                {% for nom_etu in res_liste_etu_sout[h] %}
-                                                    <p>{{nom_etu}}</p>
-                                                {% endfor %}    
-                                            {% endif %}
-                                        {% endfor %}
-                                    </div>
-                                    <div class="boite_horizontale">
+                        <div class="glass">
+                            <p>{{date}}</p>
+                            {% for soutenance in liste_soutenance %}
+                                {%if soutenance.dateS==date%}
+                                    <div class="petit_bouton boite_verticale">
                                         <div class="boite_verticale">
-                                            <p>{{soutenance.h_debut}}</p>
-                                            <p>{{soutenance.h_fin}}</p>
+                                            {% for h in res_liste_etu_sout %}
+                                                {% if h==soutenance.horaire() %}
+                                                    {% for nom_etu in res_liste_etu_sout[h] %}
+                                                        <p>{{nom_etu}}</p>
+                                                    {% endfor %}    
+                                                {% endif %}
+                                            {% endfor %}
                                         </div>
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        <p>{{soutenance.salle}}</p> 
-                                    </div>
-                                </div>   
-                            {%endif%}
+                                        <div class="boite_horizontale">
+                                            <div class="boite_verticale">
+                                                <p>{{soutenance.h_debut}}</p>
+                                                <p>{{soutenance.h_fin}}</p>
+                                            </div>
+                                            <div class="boite_horizontale">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                <p>{{soutenance.salle}}</p> 
+                                            </div>
+                                        </div>
+                                    </div>   
+                                {% endif %}
+                            {% endfor %}
                         </div>
-                        {% endfor%}
-                        
                     {% endfor %}
-                    
-                </div>
-            </div>
-            <div class="boite_verticale">
+                    </article>
+            </section>
+            <section class="boite_verticale" id="section_soutenance_accueil">
                 <div class="boite_horizontale">
                     <h1>soutenance des BUT3</h1>
                 </div>
                 <div class="boite_horizontale">
-                    <div class="glass soutBUT3_accueil">
-                    <h2>soutenance posées</h2>
-                    <h2>{{nb_sout_place}}/</h2>
-                        <div class="boite_verticale">
-                            <a href="{{ url_for(accueil) }}" id="glass_fleche_nav">
-                              <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
+                    <div class="glass soutBUT3_accueil boite_verticale">
+                        <h3>Soutenances posées</h3>
+                        <h1>{{ nb_sout_place }}/{{ 0 }}</h1>
+                        <a href="{{ url_for(accueil) }}" id="glass_fleche_nav">
+                            <i class="fas fa-arrow-circle-right petite_icone"></i>
+                        </a>
                     </div>
-                    <div class="glass soutBUT3_accueil">
-                        <div class="boite_verticale">
-                            <h2>soutenance en<br />candide choisies</h2>
-                            <h2>/</h2>
-                            <a href="{{ url_for(accueil) }}" id="glass_fleche_nav">
-                              <i class="fas fa-arrow-right"></i>  
-                            </a>
-                        </div>
+                    <div class="glass soutBUT3_accueil boite_verticale">
+                        <h3>Soutenances en candide choisies</h3>
+                        <h1>{{ 0 }}/{{ 0 }}</h1> 
+                        <a href="{{ url_for(accueil) }}" id="glass_fleche_nav">
+                            <i class="fas fa-arrow-circle-right petite_icone"></i>
+                        </a>
                     </div>
                 </div>
-            </div>
+            </section>
         </div>
-    </div>
 {% endblock %}

@@ -1,14 +1,16 @@
 from collections import defaultdict
-
+import csv
+import io
 
 from .app import app, db
-from flask import render_template, request, url_for, redirect, flash
+from flask import jsonify, render_template, request, url_for, redirect, flash, Response
 from appSoutenance.models import db,  Etudiant, Demarche, Promo, Appartenir, Stage, Soutenance, Enseignant, Composer, Tutorer, MaitreStage, Entreprise, Admini, Jury
 from sqlalchemy import desc, asc, distinct, func
 from .importer_csv import importer_etudiants_stages, importer_entreprises
+from .exporter_csv import exporter_etudiants, exporter_entreprises, exporter_soutenances
 from flask_login import login_user, logout_user, login_required, current_user
 from appSoutenance.forms import *
-from sqlalchemy import extract,desc, distinct
+from sqlalchemy import extract,desc, distinct, or_
 from flask import request, render_template, redirect, url_for
 from datetime import datetime, timedelta
 from .models import db
@@ -469,16 +471,12 @@ def accueil_admin():
         flash("Accès réservé aux administrateurs.", "warning")
         return redirect(url_for("login"))
     
-    unForm = ImportForm()
-    admin = current_user
-    if not isinstance(admin, Admini):
-        flash("Accès réservé aux administrateurs.", "warning")
-        return redirect(url_for("login"))
-    
-    if unForm.validate_on_submit():
-        print("c'est bon")
-        file_storage = unForm.ficCSV.data
-        type_import = unForm.type_import.data
+    importForm = ImportForm()
+    exportForm = ExportForm()
+    # Import
+    if importForm.submit.data and importForm.validate_on_submit():
+        file_storage = importForm.ficCSV.data
+        type_import = importForm.type_import.data
 
         success = False
         message = ""
@@ -493,6 +491,24 @@ def accueil_admin():
         else:
             flash(f"Échec de l'importation : {message}", 'danger')
         return redirect(url_for('accueil_admin'))
+
+    # Export
+    if exportForm.submit.data and exportForm.validate_on_submit():
+        type_export = exportForm.type_export.data
+        if type_export == 'etudiants':
+            output = exporter_etudiants()
+            filename = "etudiants.csv"
+        elif type_export == 'entreprises':
+            output = exporter_entreprises()
+            filename = "entreprises.csv"
+        elif type_export == 'soutenances':
+            output = exporter_soutenances()
+            filename = "soutenances.csv"
+        else:
+            flash("Type d'export inconnu", "warning")
+            return redirect(url_for('accueil_admin'))
+
+        return Response(output.getvalue(), mimetype="text/csv", headers={"Content-Disposition": f"attachment;filename={filename}"})
 
     # Filtres
     annee_filter = request.args.get('annee')
@@ -554,7 +570,8 @@ def accueil_admin():
         nb_soutenances_posees=nb_soutenances_posees,
         nb_soutenances_attente_candide=nb_soutenances_attente_candide,
         nb_tuteurs=nb_tuteurs,
-        createForm = unForm)
+        importForm = importForm,
+        exportForm = exportForm)
 
 
 MOIS = {
@@ -565,7 +582,7 @@ MOIS = {
 
 @app.route('/admin/planning/')
 @login_required
-def planning_admin():
+def planning_admini():
     """Page de planning pour les administrateurs"""
 
     admin = current_user
@@ -660,6 +677,7 @@ def planning_admin():
            
             if cle_regroupement not in regroupement:
                 regroupement[cle_regroupement] = {
+                    'id_soutenance': soutenance.id_soutenance,
                     'dateS': date_formatee,
                     'h_debut': soutenance.h_debut,
                     'salle': soutenance.salle,
@@ -679,12 +697,229 @@ def planning_admin():
                            title="Planning", resultats = resultats_regroupes,
                            heures_disponibles = heures_disponibles,
                            enseignants_disponibles = enseignants_disponibles,
-                           dates_disponibles = dates_disponibles)
+                           dates_disponibles = dates_disponibles,
+                           soutenance = regroupement)
+
 
 HEURE= {
     1: '08:00', 2: '09:00', 3: '10:00', 4: '11:00', 5: '12:00', 6: '13:00',
     7: '14:00'
 }
+
+
+
+
+@app.route('/admin/planning/<int:id>/')
+@login_required
+def detail_soutenance_admin(id):
+    """Page de détail d'une soutenance pour les administrateurs
+
+
+    Args:
+        id (int): l'identifiant de la soutenance
+    """
+
+
+    admin = current_user
+    if not isinstance(admin, Admini):
+        flash("Accès réservé aux administrateurs.", "warning")
+        return redirect(url_for("login"))
+   
+    soutenance = Soutenance.query.get(id)
+    if not soutenance:
+        flash("Soutenance introuvable.", "danger")
+        return redirect(url_for('planning_admini'))
+   
+    soutenances_groupe = Soutenance.query.filter_by(
+        dateS=soutenance.dateS,
+        h_debut=soutenance.h_debut,
+        salle=soutenance.salle
+    ).all()
+
+    enseignants_jury = db.session.query(Enseignant)\
+            .join(Composer)\
+            .filter(Composer.id_soutenance == id)\
+            .all()
+
+    deleteForm = FormSoutenance()
+
+    return render_template("/admin/detail_soutenance_admin.html",
+                           accueil="accueil_admin",
+                           title="Détail de la soutenance",
+                           soutenance = soutenance,
+                           soutenances_groupe = soutenances_groupe,
+                           enseignants_jury = enseignants_jury,
+                           deleteForm = deleteForm)
+
+
+@app.route('/admin/planning/<int:id>/update')
+@login_required
+def modifier_soutenance_admin(id):
+    uneSoutenance = Soutenance.query.get(id)
+    compose = Composer.query.filter_by(id_soutenance=id).all()
+    jury_actuel_id = [int(c.id_enseignant) for c in compose]
+    
+    etu_actuels_id = []
+    for s in Soutenance.query.filter_by(
+            dateS=uneSoutenance.dateS,
+            h_debut=uneSoutenance.h_debut,
+            salle=uneSoutenance.salle
+        ).all():
+        if s.stage and s.stage.demarche and s.stage.demarche.etudiant:
+            etu_actuels_id.append(s.stage.demarche.etudiant.id_etudiant)
+
+    return render_template(
+        "admin/update_soutenance.html",
+        uneSoutenance=uneSoutenance,
+        jury_actuel_id=jury_actuel_id,
+        etu_actuels_id=etu_actuels_id
+    )
+
+
+
+
+@app.route('/admin/planning/<int:id>/update/save', methods=("POST",))
+@login_required
+def save_soutenance_admin(id):
+    soutenance = Soutenance.query.get(id)
+    if not soutenance:
+        flash("Soutenance introuvable.", "danger")
+        return redirect(url_for('planning_admini'))
+
+    date_str = request.form.get('dateS')
+    heure_str = request.form.get('h_debut')
+    salle = request.form.get('salle')
+
+    # strptime pour convertir la date (string) au format date
+    if date_str:
+        soutenance.dateS = datetime.strptime(date_str, "%Y-%m-%d").date()
+
+    if heure_str:
+        soutenance.h_debut = heure_str
+    
+    soutenance.salle =salle
+
+    Composer.query.filter_by(id_soutenance=id).delete()
+
+    for i in range(1, 4):
+        id_ens = request.form.get(f'ens{i}')
+        if id_ens and id_ens.strip():
+            try:
+                comp = Composer(id_enseignant=int(id_ens), id_soutenance=soutenance.id_soutenance)
+                db.session.add(comp)
+            except ValueError:
+                pass
+
+    try:
+        db.session.commit()
+        flash("Soutenance mise à jour avec succès !", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Erreur lors de la mise à jour : {e}", "danger")
+
+    return redirect(url_for('planning_admini'))
+
+
+@app.route('/api/enseignants_disponibles/<int:id_soutenance>')
+@login_required
+def api_enseignants_disponibles(id_soutenance):
+    date_s = request.args.get('date')
+    heure_s = request.args.get('heure')
+    
+
+    occupes = db.session.query(Composer.id_enseignant).join(Soutenance).filter(
+            Soutenance.dateS == date_s,
+            Soutenance.h_debut == heure_s,
+            Soutenance.id_soutenance != id_soutenance
+        ).all()
+
+    ids_occupes = [o[0] for o in occupes]
+    jury_actuel = db.session.query(Composer.id_enseignant).filter(Composer.id_soutenance == id_soutenance).all()
+    ids_jury_actuel = [j[0] for j in jury_actuel]
+    ids_a_exclure = [id_ens for id_ens in ids_occupes if id_ens not in ids_jury_actuel]
+    dispos = Enseignant.query.filter(~Enseignant.id_enseignant.in_(ids_a_exclure)).all()
+
+    return jsonify([
+        {
+            'id': int(e.id_enseignant),
+            'nom': e.nom_enseignant,
+            'prenom': e.prenom_enseignant
+        }
+        for e in dispos
+    ])
+
+
+@app.route('/api/etudiants_par_tuteur/<int:id_enseignant>/<int:id_soutenance>')
+@login_required
+def api_etudiants_par_tuteur(id_enseignant, id_soutenance):
+    query = db.session.query(Etudiant).join(Tutorer).filter(Tutorer.id_enseignant == id_enseignant)
+    query = query.join(Demarche).filter(Demarche.situation == 'Acceptée').join(Stage, Demarche.id_demarche == Stage.id_demarche).outerjoin(Soutenance, Stage.id_stage == Soutenance.id_stage)
+    #query = query.filter(or_(Soutenance.id_soutenance == None, Soutenance.id_soutenance == id_soutenance)).distinct()  
+    query = query.filter((Soutenance.id_soutenance == None) | (Soutenance.id_soutenance == id_soutenance)).distinct()  
+    etudiants = query.all()
+
+    return jsonify([
+        {'id': int(etu.id_etudiant), 'nom': etu.nom_etudiant, 'prenom': etu.prenom_etudiant} 
+        for etu in etudiants
+    ])
+
+
+@app.route('/api/salle_disponible/')
+@login_required
+def api_salle_disponible(id_soutenance):
+    date_s = request.args.get('date')
+    heure_s = request.args.get('heure')
+    salle_s = request.args.get('salle')
+    if not date_s or not heure_s or not salle_s:
+        return jsonify({'disponible': True})
+
+
+
+@app.route('/admin/planning/<int:id>/delete')
+@login_required
+def suppression_soutenance_admin(id):
+    uneSoutenance = Soutenance.query.get(id)
+    soutenances_groupe = Soutenance.query.filter_by(
+        dateS=uneSoutenance.dateS,
+        h_debut=uneSoutenance.h_debut,
+        salle=uneSoutenance.salle
+    ).all()
+
+    compose = Composer.query.filter_by(id_soutenance=id).all()
+    unForm = FormSoutenance(id_soutenance = uneSoutenance.id_soutenance, id_stage =uneSoutenance.id_stage,
+                            h_debut=uneSoutenance.h_debut, dateS=uneSoutenance.dateS, salle=uneSoutenance.salle,
+                            nom_enseignant1 = compose[0].enseignant if len(compose) > 0 else None,
+                            nom_enseignant2 = compose[1].enseignant if len(compose) > 1 else None,
+                            nom_enseignant3 = compose[2].enseignant if len(compose) > 2 else None)
+    return render_template("admin/supprimer_soutenance_admin.html", accueil="accueil_admin", title="Supprimer la soutenance", deleteForm=unForm, uneSoutenance=uneSoutenance, soutenances_groupe=soutenances_groupe)
+
+@app.route('/admin/planning/<int:id>/erase', methods=("POST",))
+@login_required
+def erase_soutenance_admin(id):
+    soutenance = Soutenance.query.get(id)
+    if not soutenance:
+        flash("Soutenance introuvable.", "danger")
+        return redirect(url_for('planning_admini'))
+
+    try:
+        soutenances_to_delete = Soutenance.query.filter_by(
+            dateS=soutenance.dateS,
+            h_debut=soutenance.h_debut,
+            salle=soutenance.salle
+        ).all()
+
+        for s in soutenances_to_delete:
+            Jury.query.filter_by(id_soutenance=s.id_soutenance).delete()
+            Composer.query.filter_by(id_soutenance=s.id_soutenance).delete()
+            db.session.delete(s)
+            
+        db.session.commit()
+        flash("Soutenances supprimées avec succès !", "success")
+    except Exception as e:
+        db.session.rollback()
+        flash(f"Erreur lors de la suppression : {e}", "danger")
+    return redirect(url_for('planning_admini'))
+
 
 @app.route('/admin/planning/creation_soutenance/', methods =["GET", "POST"])
 @login_required
@@ -697,10 +932,6 @@ def creation_soutenance():
         return redirect(url_for("login"))
 
     createForm = FormSoutenance()
-    admin = current_user
-    if not isinstance(admin, Admini):
-        flash("Accès réservé aux administrateurs.", "warning")
-        return redirect(url_for("login"))
 
     date_sel = request.args.get('dateS')
     heure_sel = request.args.get('h_debut')
@@ -716,14 +947,8 @@ def creation_soutenance():
     if date_sel:
         try:
             createForm.dateS.data = datetime.strptime(date_sel, '%Y-%m-%d').date()
-            annee_sout = int(date_sel.split('-')[0])
-            deja_planifies = db.session.query(Demarche.id_etudiant).join(
-                Stage, Stage.id_demarche == Demarche.id_demarche
-            ).join(
-                Soutenance, Soutenance.id_stage == Stage.id_stage
-            ).filter(extract('year', Soutenance.dateS) == annee_sout).all()
             
-            ids_exclus = [r[0] for r in deja_planifies]
+            #ids_exclus = [r[0] for r in deja_planifies]
             
             for i in range(3):
                 if ens_ids[i] and ens_ids[i].strip():
@@ -732,8 +957,14 @@ def creation_soutenance():
                     query = db.session.query(Etudiant).join(Tutorer).filter(
                         Tutorer.id_enseignant == int(ens_ids[i])
                     )
-                    if ids_exclus:
-                        query = query.filter(~Etudiant.id_etudiant.in_(ids_exclus))
+                    # query = query.join(Demarche).filter(Demarche.situation == 'Acceptée').distinct()
+                    # if ids_exclus:
+                    #     query = query.filter(~Etudiant.id_etudiant.in_(ids_exclus))
+                    query = query.join(Demarche).filter(Demarche.situation == 'Acceptée')\
+                                 .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
+                                 .outerjoin(Soutenance, Stage.id_stage == Soutenance.id_stage)\
+                                 .filter(Soutenance.id_soutenance == None)\
+                                 .distinct()
                     etudiants_par_tuteur[i] = query.all()
 
                 if etu_ids[i] and etu_ids[i].strip():
@@ -742,8 +973,14 @@ def creation_soutenance():
         except Exception as e:
             print(f"Erreur de traitement : {e}")    
 
-    tous_les_enseignants = Enseignant.query.all()
+    query_enseignants = Enseignant.query
+    if date_sel and heure_sel:
+        enseignants_occupes = db.session.query(Composer.id_enseignant)\
+            .join(Soutenance, Composer.id_soutenance == Soutenance.id_soutenance)\
+            .filter(Soutenance.dateS == date_sel, Soutenance.h_debut == heure_sel)
+        query_enseignants = query_enseignants.filter(Enseignant.id_enseignant.notin_(enseignants_occupes))
 
+    tous_les_enseignants = query_enseignants.all()
 
     return render_template(
         'admin/creation_soutenance.html',
@@ -783,8 +1020,34 @@ def valider_jury():
     heure_sel = request.form.get('h_debut')
     salle_sel = request.form.get('salle')
 
+    if not salle_sel or not salle_sel.strip():
+        flash("Veuillez renseigner une salle.", "danger")
+        ens1 = request.form.get('ens1', '')
+        ens2 = request.form.get('ens2', '')
+        ens3 = request.form.get('ens3', '')
+        etu1 = request.form.get('etu1', '')
+        etu2 = request.form.get('etu2', '')
+        etu3 = request.form.get('etu3', '')
+        return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel, ens1=ens1, ens2=ens2, ens3=ens3, etu1=etu1, etu2=etu2, etu3=etu3))
+
     created = 0
     errors = []
+    # Utiliser un set pour ne traiter chaque étudiant qu'une seule fois et éviter les doublons
+    unique_etu_ids = set()
+    for i in range(1, 4):
+        id_etu = request.form.get(f'etu{i}')
+        if id_etu and id_etu.strip():
+            try:
+                unique_etu_ids.add(int(id_etu))
+            except ValueError:
+                errors.append(f"Identifiant étudiant invalide pour le champ etu{i}: {id_etu}")
+
+    if not unique_etu_ids:
+        flash("Veuillez sélectionner au moins un étudiant pour créer une soutenance.", "danger")
+        ens1 = request.form.get('ens1', '')
+        ens2 = request.form.get('ens2', '')
+        ens3 = request.form.get('ens3', '')
+        return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel, ens1=ens1, ens2=ens2, ens3=ens3))
 
     try:
         date_obj = datetime.strptime(dateS, '%Y-%m-%d').date()
@@ -792,51 +1055,67 @@ def valider_jury():
         flash("Date invalide.", "danger")
         return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel))
 
-    for i in range(1, 4):
-        id_etu = request.form.get(f'etu{i}')
+    if Soutenance.query.filter(Soutenance.dateS == date_obj, Soutenance.h_debut == heure_sel, Soutenance.salle == salle_sel).first():
+        flash(f"La salle {salle_sel} est déjà occupée à cette date et heure.", "danger")
+        ens1 = request.form.get('ens1', '')
+        ens2 = request.form.get('ens2', '')
+        ens3 = request.form.get('ens3', '')
+        etu1 = request.form.get('etu1', '')
+        etu2 = request.form.get('etu2', '')
+        etu3 = request.form.get('etu3', '')
+        return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel, ens1=ens1, ens2=ens2, ens3=ens3, etu1=etu1, etu2=etu2, etu3=etu3))
 
-        if id_etu and id_etu.strip():
-            try:
-                id_etu_int = int(id_etu)
-            except ValueError:
-                errors.append(f"Identifiant étudiant invalide : {id_etu}")
-                continue
+    for id_etu_int in unique_etu_ids:
+        stage = Stage.query.join(Demarche).filter(
+            Demarche.id_etudiant == id_etu_int,
+            Demarche.situation == 'Acceptée'
+        ).first()
 
-            stage = Stage.query.join(Demarche).filter(Demarche.id_etudiant == id_etu_int).first()
+        if not stage:
+            etudiant = Etudiant.query.get(id_etu_int)
+            errors.append(f"Aucun stage validé trouvé pour {etudiant.prenom_etudiant} {etudiant.nom_etudiant}.")
+            continue
 
-            if not stage:
-                errors.append(f"Aucun stage validé trouvé pour l'étudiant id={id_etu_int}.")
-                continue
+        # Vérifier si une soutenance existe déjà pour ce stage
+        if Soutenance.query.filter_by(id_stage=stage.id_stage).first():
+            etudiant = Etudiant.query.get(id_etu_int)
+            errors.append(f"Une soutenance existe déjà pour {etudiant.prenom_etudiant} {etudiant.nom_etudiant}.")
+            continue
 
-            # Créer une soutenance liée au stage
-            nouvelle_sout = Soutenance(
-                salle=salle_sel,
-                dateS=date_obj,
-                h_debut=heure_sel,
-                h_fin=(datetime.strptime(heure_sel, '%H:%M') + timedelta(minutes=45)).strftime('%H:%M'),
-                id_stage=stage.id_stage,
-                nom_bat=""
-            )
-            db.session.add(nouvelle_sout)
-            db.session.flush()
+        # Créer une soutenance liée au stage
+        nouvelle_sout = Soutenance(
+            salle=salle_sel,
+            dateS=date_obj,
+            h_debut=heure_sel,
+            h_fin=(datetime.strptime(heure_sel, '%H:%M') + timedelta(minutes=45)).strftime('%H:%M'),
+            id_stage=stage.id_stage,
+            nom_bat=""
+        )
+        db.session.add(nouvelle_sout)
+        db.session.flush()
 
-            for j in range(1, 4):
-                id_ens = request.form.get(f'ens{j}')
-                if id_ens and id_ens.strip():
-                    try:
-                        comp = Composer(id_enseignant=int(id_ens), id_soutenance=nouvelle_sout.id_soutenance)
-                        db.session.add(comp)
-                    except ValueError:
-                        pass
-
-            created += 1
+        for j in range(1, 4):
+            id_ens = request.form.get(f'ens{j}')
+            if id_ens and id_ens.strip():
+                try:
+                    comp = Composer(id_enseignant=int(id_ens), id_soutenance=nouvelle_sout.id_soutenance)
+                    db.session.add(comp)
+                except ValueError:
+                    pass
+        created += 1
 
     if created == 0:
         db.session.rollback()
         for e in errors:
             flash(e, "warning")
         flash("Aucune soutenance n'a été créée. Veuillez vérifier que les étudiants ont un stage validé.", "danger")
-        return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel))
+        ens1 = request.form.get('ens1', '')
+        ens2 = request.form.get('ens2', '')
+        ens3 = request.form.get('ens3', '')
+        etu1 = request.form.get('etu1', '')
+        etu2 = request.form.get('etu2', '')
+        etu3 = request.form.get('etu3', '')
+        return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel, ens1=ens1, ens2=ens2, ens3=ens3, etu1=etu1, etu2=etu2, etu3=etu3))
 
     try:
         db.session.commit()
@@ -847,7 +1126,7 @@ def valider_jury():
         db.session.rollback()
         flash(f"Erreur lors de l'insertion : {e}", "danger")
 
-    return redirect(url_for('planning_admin'))
+    return redirect(url_for('planning_admini'))
 
 @app.route('/admin/liste+enseignants/<int:id>/')
 @login_required
@@ -876,13 +1155,14 @@ def detail_enseignant(id):
 
     liste_soutenances = []
     for s in soutenances_jury:
-        stage = Stage.query.get(s.id_stage)
-        etudiant = stage.demarche.etudiant
+        etudiant = s.stage.demarche.etudiant
         est_tuteur = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant, id_etudiant=etudiant.id_etudiant).first() is not None
-        role = "(Tuteur)" if est_tuteur else "(Candide)"
-        liste_soutenances.append(f"Soutenance n°{s.id_soutenance} {stage.titre_stage} {role}")
-
-    jury_soutenances = '. '.join(liste_soutenances)
+        role = "Tuteur" if est_tuteur else "Candide"
+        liste_soutenances.append({
+            'id': s.id_soutenance,
+            'titre': s.stage.titre_stage,
+            'role': role
+        })
 
     return render_template("admin/detail_enseignant.html",
                            accueil="accueil_admin",
@@ -890,8 +1170,7 @@ def detail_enseignant(id):
                            enseignant=enseignant,
                            etudiants_suivis=etudiants_suivis,
                            enseignant_promo=enseignant_promo,
-                           jury_soutenances=jury_soutenances)
-
+                           soutenances=liste_soutenances)
 
 
 
@@ -921,6 +1200,8 @@ def detail_etudiant_admin(id):
     stage_etudiant = Stage.query.join(Demarche, Stage.id_demarche == Demarche.id_demarche)\
                         .filter(Demarche.id_etudiant == etudiant.id_etudiant).first()
 
+    soutenance = stage_etudiant.soutenance if stage_etudiant else None
+
     maitre_stage = MaitreStage.query.get(stage_etudiant.id_maitre) if stage_etudiant else None
     entreprise = Entreprise.query.get(maitre_stage.id_entreprise) if maitre_stage else None
 
@@ -932,6 +1213,7 @@ def detail_etudiant_admin(id):
                            demarches=demarches,
                            tuteur=tuteur,
                            stage_etudiant=stage_etudiant,
+                           etudiant_soutenance=soutenance,
                            maitre_stage=maitre_stage,
                            entreprise=entreprise)
 
