@@ -394,11 +394,14 @@ div#import_form_container, div#export_form_container{
     height: 500px;
 }
 
-div.liste_etu, div.liste_ens{
+div.liste_etu{
     /* style */
     /* positionnement */
-    flex-grow: 1;
-    height: fit-content;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 0 0 100px;
+    height: 100px;
+    overflow: hidden;
     min-height: 100px;
     margin: 0; 
 }
@@ -525,6 +528,9 @@ p.pliste {
     /* style */
     font-family: "Arimo", sans-serif;
     font-size: 0.7em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     /* positionnement */
     margin: 10px 0;
@@ -575,6 +581,7 @@ label[for="import_csv"], label[for="export_csv"]{
     /* positionnement */
     width: 7%;
     margin-right: 0;
+    margin-left: auto;
 }
 
 /*---------------- POUR LE PLANNING DES PAGES ADMIN ----------------*/
