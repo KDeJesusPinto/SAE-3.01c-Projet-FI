@@ -529,15 +529,26 @@ MOIS = {
 @app.route('/admin/planning/')
 @login_required
 def planning_admini():
-    """Page de planning pour les administrateurs"""
+    return _planning_admin_common("admin/planning_admin2.html")
 
+@app.route('/admin/planning/but2')
+@login_required
+def planning_admini2():
+    return _planning_admin_common("admin/planning_admin2.html", forced_promo="2A")
+
+@app.route('/admin/planning/but3')
+@login_required
+def planning_admini3():
+    return _planning_admin_common("admin/planning_admin3.html", forced_promo="3A")
+
+def _planning_admin_common(template_name, forced_promo=None):
     admin = current_user
     if not isinstance(admin, Admini):
         flash("Accès réservé aux administrateurs.", "warning")
         return redirect(url_for("login"))
 
     args = request.args
-    nom_promo = args.get('nom_promo')
+    nom_promo = forced_promo if forced_promo else args.get('nom_promo')
     regime = args.get('regime')
     formation_promo = args.get('formation_promo')
     date_soutenance = args.get('date_soutenance')
@@ -638,13 +649,14 @@ def planning_admini():
             })
 
     resultats_regroupes = list(regroupement.values())
-    return render_template("admin/planning_admin.html",
+    return render_template(template_name,
                            accueil="accueil_admin",
-                           title="Planning", resultats = resultats_regroupes,
+                           title="Planning", resultats=resultats_regroupes,
                            heures_disponibles = heures_disponibles,
                            enseignants_disponibles = enseignants_disponibles,
                            dates_disponibles = dates_disponibles,
-                           soutenance = regroupement)
+                           soutenance=regroupement,
+                           current_promo=nom_promo)
 
 
 HEURE= {

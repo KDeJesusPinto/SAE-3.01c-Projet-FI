@@ -3,12 +3,12 @@
 
 {% block content %}
     <div class="boite_horizontale">
-        <form id="en_haut" method="get" action="{{ url_for('planning_admini') }}">
+        <form id="en_haut" method="get" action="{{ url_for(request.endpoint) }}">
             <aside id="filtre_liste_admin">
                 <select class="combobox" name="nom_promo" id="nom_promo">
                     <option value="">Niveau</option>
-                    <option value="2A" {% if request.args.get('nom_promo') == '2A' %}selected{% endif %}>2ème année</option>
-                    <option value="3A" {% if request.args.get('nom_promo') == '3A' %}selected{% endif %}>3ème année</option>
+                    <option value="2A" {% if current_promo == '2A' %}selected{% endif %}>2ème année</option>
+                    <option value="3A" {% if current_promo == '3A' %}selected{% endif %}>3ème année</option>
                 </select>
                 <select class="combobox" name="regime" id="regime">
                     <option value="">Régime</option>
@@ -54,7 +54,7 @@
         </form>
         <div id="planning-boite">
             <div class="boite_horizontale">
-                <h1>Planning des Soutenances</h1>
+                <h1>Planning des Soutenances des BUT2</h1>
                 <a href="{{ url_for('creation_soutenance') }}"><i class="fas fa-plus-circle grande_icone"></i></a>        
             </div>
             {% if resultats|length == 0 %}
