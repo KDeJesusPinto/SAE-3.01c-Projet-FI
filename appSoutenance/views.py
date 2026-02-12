@@ -1011,6 +1011,56 @@ def valider_jury():
         etu3 = request.form.get('etu3', '')
         return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel, ens1=ens1, ens2=ens2, ens3=ens3, etu1=etu1, etu2=etu2, etu3=etu3))
 
+    # Validation spécifique BUT3
+    est_but3 = False
+    for id_etu_int in unique_etu_ids:
+        appartenance = Appartenir.query.filter_by(id_etudiant=id_etu_int).first()
+        if appartenance and "BUT3" in appartenance.nom_promo:
+            est_but3 = True
+            break
+
+    duree = 45
+    if est_but3:
+        if len(unique_etu_ids) > 1:
+            flash("Une soutenance BUT3 ne peut concerner qu'un seul étudiant.", "danger")
+            ens1 = request.form.get('ens1', '')
+            ens2 = request.form.get('ens2', '')
+            ens3 = request.form.get('ens3', '')
+            etu1 = request.form.get('etu1', '')
+            etu2 = request.form.get('etu2', '')
+            etu3 = request.form.get('etu3', '')
+            return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel, ens1=ens1, ens2=ens2, ens3=ens3, etu1=etu1, etu2=etu2, etu3=etu3))
+        
+        selected_ens_ids = []
+        for j in range(1, 4):
+            id_ens = request.form.get(f'ens{j}')
+            if id_ens and id_ens.strip():
+                selected_ens_ids.append(int(id_ens))
+        
+        if len(selected_ens_ids) != 2:
+            flash("Une soutenance BUT3 doit avoir exactement 2 enseignants (tuteur + candide).", "danger")
+            ens1 = request.form.get('ens1', '')
+            ens2 = request.form.get('ens2', '')
+            ens3 = request.form.get('ens3', '')
+            etu1 = request.form.get('etu1', '')
+            etu2 = request.form.get('etu2', '')
+            etu3 = request.form.get('etu3', '')
+            return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel, ens1=ens1, ens2=ens2, ens3=ens3, etu1=etu1, etu2=etu2, etu3=etu3))
+            
+        id_etu = list(unique_etu_ids)[0]
+        tuteur_rel = Tutorer.query.filter_by(id_etudiant=id_etu).first()
+        if not tuteur_rel or tuteur_rel.id_enseignant not in selected_ens_ids:
+            flash("Le tuteur de l'étudiant doit obligatoirement faire partie du jury BUT3.", "danger")
+            ens1 = request.form.get('ens1', '')
+            ens2 = request.form.get('ens2', '')
+            ens3 = request.form.get('ens3', '')
+            etu1 = request.form.get('etu1', '')
+            etu2 = request.form.get('etu2', '')
+            etu3 = request.form.get('etu3', '')
+            return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel, ens1=ens1, ens2=ens2, ens3=ens3, etu1=etu1, etu2=etu2, etu3=etu3))
+            
+        duree = 60
+
     for id_etu_int in unique_etu_ids:
         stage = Stage.query.join(Demarche).filter(
             Demarche.id_etudiant == id_etu_int,
@@ -1033,7 +1083,7 @@ def valider_jury():
             salle=salle_sel,
             dateS=date_obj,
             h_debut=heure_sel,
-            h_fin=(datetime.strptime(heure_sel, '%H:%M') + timedelta(minutes=45)).strftime('%H:%M'),
+            h_fin=(datetime.strptime(heure_sel, '%H:%M') + timedelta(minutes=duree)).strftime('%H:%M'),
             id_stage=stage.id_stage,
             nom_bat=""
         )

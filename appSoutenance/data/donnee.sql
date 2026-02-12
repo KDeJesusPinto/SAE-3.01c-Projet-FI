@@ -1,7 +1,5 @@
--- Script d'insertion de données pour la base appsoutenance
-
 -- ============================
--- INSERTION DES ENSEIGNANTS (10)
+-- INSERTION DES ENSEIGNANTS
 -- ============================
 INSERT INTO ENSEIGNANT (id_enseignant, nom_enseignant, prenom_enseignant, civilite_enseignant, email_enseignant, login_enseignant, pwd_enseignant) VALUES
 (1, 'Dubois', 'Jean', 'M.', 'jean.dubois@univ.fr', 'jdubois', 'prof1'),
@@ -53,8 +51,6 @@ INSERT INTO ETUDIANT (id_etudiant, nom_etudiant, prenom_etudiant, date_naissance
 (6, 'Leroy', 'Emma', '2002-12-21', 'Mme', '0667891245', 'emma.leroy@edu.fr', 'eleroy', 'pass6'),
 (7, 'Fournier', 'Hugo', '2003-04-15', 'M.', '0678912356', 'hugo.fournier@edu.fr', 'hfournier', 'pass7'),
 (8, 'Girard', 'Léa', '2003-09-28', 'Mme', '0689123467', 'lea.girard@edu.fr', 'lgirard', 'pass8'),
-
--- 8 étudiants BUT2 2025
 (9, 'Bonnet', 'Antoine', '2004-03-14', 'M.', '0691234578', 'antoine.bonnet@edu.fr', 'abonnet', 'pass9'),
 (10, 'Blanc', 'Sarah', '2004-06-22', 'Mme', '0612345987', 'sarah.blanc@edu.fr', 'sblanc', 'pass10'),
 (11, 'Garnier', 'Maxime', '2004-01-08', 'M.', '0623456198', 'maxime.garnier@edu.fr', 'mgarnier', 'pass11'),
@@ -63,8 +59,6 @@ INSERT INTO ETUDIANT (id_etudiant, nom_etudiant, prenom_etudiant, date_naissance
 (14, 'Vincent', 'Manon', '2004-08-11', 'Mme', '0656789432', 'manon.vincent@edu.fr', 'mvincent', 'pass14'),
 (15, 'Muller', 'Arthur', '2004-02-25', 'M.', '0667891543', 'arthur.muller@edu.fr', 'amuller', 'pass15'),
 (16, 'Lefevre', 'Jade', '2004-07-07', 'Mme', '0678912654', 'jade.lefevre@edu.fr', 'jlefevre', 'pass16'),
-
--- 8 étudiants BUT2 2025 (mêmes que BUT3 2025 mais dans leur ancienne promo)
 (17, 'Mercier', 'Paul', '2004-11-16', 'M.', '0689123765', 'paul.mercier@edu.fr', 'pmercier', 'pass17'),
 (18, 'Lemoine', 'Louise', '2004-04-02', 'Mme', '0691234876', 'louise.lemoine@edu.fr', 'llemoine', 'pass18'),
 (19, 'Andre', 'Theo', '2004-09-13', 'M.', '0612348765', 'theo.andre@edu.fr', 'tandre', 'pass19'),
@@ -73,7 +67,6 @@ INSERT INTO ETUDIANT (id_etudiant, nom_etudiant, prenom_etudiant, date_naissance
 (22, 'Bertrand', 'Zoé', '2005-06-18', 'Mme', '0645672198', 'zoe.bertrand@edu.fr', 'zbertrand', 'pass22'),
 (23, 'Morel', 'Gabriel', '2005-01-21', 'M.', '0656783219', 'gabriel.morel@edu.fr', 'gmorel', 'pass23'),
 (24, 'Fontaine', 'Alice', '2005-08-09', 'Mme', '0667894321', 'alice.fontaine@edu.fr', 'afontaine', 'pass24'),
--- Nouveaux étudiants pour atteindre 120 (70 BUT2 + 50 BUT3)
 (25, 'Guerin', 'Lucas', '2005-02-10', 'M.', '0600000025', 'lucas.guerin@edu.fr', 'lguerin', 'pass25'),
 (26, 'Rousseau', 'Manon', '2005-03-15', 'Mme', '0600000026', 'manon.rousseau@edu.fr', 'mrousseau', 'pass26'),
 (27, 'Blanc', 'Théo', '2005-04-20', 'M.', '0600000027', 'theo.blanc@edu.fr', 'tblanc', 'pass27'),
@@ -213,10 +206,7 @@ INSERT INTO APPARTENIR (id_etudiant, nom_promo, annee_promo, regime_etudiant) VA
 (55, 'BUT2', 2025, 'Formation initiale'), (56, 'BUT2', 2025, 'Formation initiale'), (57, 'BUT2', 2025, 'Formation initiale'), (58, 'BUT2', 2025, 'Formation initiale'), (59, 'BUT2', 2025, 'Formation initiale'),
 (60, 'BUT2', 2025, 'Formation initiale'), (61, 'BUT2', 2025, 'Formation initiale'), (62, 'BUT2', 2025, 'Formation initiale'), (63, 'BUT2', 2025, 'Formation initiale'), (64, 'BUT2', 2025, 'Formation initiale'),
 (65, 'BUT2', 2025, 'Formation initiale'), (66, 'BUT2', 2025, 'Formation initiale'), (67, 'BUT2', 2025, 'Formation initiale'), (68, 'BUT2', 2025, 'Formation initiale'), (69, 'BUT2', 2025, 'Formation initiale'),
-(70, 'BUT2', 2025, 'Formation initiale');
-
-INSERT INTO APPARTENIR (id_etudiant, nom_promo, annee_promo, regime_etudiant) VALUES
-(71, 'BUT3', 2025, 'Formation initiale'), (72, 'BUT3', 2025, 'Formation initiale'), (73, 'BUT3', 2025, 'Formation initiale'), (74, 'BUT3', 2025, 'Formation initiale'), (75, 'BUT3', 2025, 'Formation initiale'),
+(70, 'BUT2', 2025, 'Formation initiale'), (71, 'BUT3', 2025, 'Formation initiale'), (72, 'BUT3', 2025, 'Formation initiale'), (73, 'BUT3', 2025, 'Formation initiale'), (74, 'BUT3', 2025, 'Formation initiale'), (75, 'BUT3', 2025, 'Formation initiale'),
 (76, 'BUT3', 2025, 'Formation initiale'), (77, 'BUT3', 2025, 'Formation initiale'), (78, 'BUT3', 2025, 'Formation initiale'), (79, 'BUT3', 2025, 'Formation initiale'), (80, 'BUT3', 2025, 'Formation initiale'),
 (81, 'BUT3', 2025, 'Formation initiale'), (82, 'BUT3', 2025, 'Formation initiale'), (83, 'BUT3', 2025, 'Formation initiale'), (84, 'BUT3', 2025, 'Formation initiale'), (85, 'BUT3', 2025, 'Formation initiale'),
 (86, 'BUT3', 2025, 'Formation initiale'), (87, 'BUT3', 2025, 'Formation initiale'), (88, 'BUT3', 2025, 'Formation initiale'), (89, 'BUT3', 2025, 'Formation initiale'), (90, 'BUT3', 2025, 'Formation initiale'),
@@ -298,55 +288,64 @@ INSERT INTO MAITRE_STAGE (id_maitre, nom_maitre, prenom_maitre, civilite_maitre,
 INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, date_relance, resultat, raison_refus, cv, lettre_motiv, id_entreprise, id_etudiant) VALUES
 (1, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-15', NULL, 'Stage obtenu', NULL, 'cv_dupont.pdf', 'lm_dupont.pdf', 1, 1),
 (2, 'LinkedIn', 'Réponse à offre', 'Refusée', '2025-09-10', '2025-09-25', 'Refusé', 'Profil junior', 'cv_dupont.pdf', 'lm_dupont2.pdf', 2, 1),
-(3, 'Salon', 'Contact direct', 'En attente', '2025-09-20', NULL, NULL, NULL, 'cv_dupont.pdf', 'lm_dupont3.pdf', 3, 1);
-
-
-INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, date_relance, resultat, raison_refus, cv, lettre_motiv, id_entreprise, id_etudiant) VALUES
+(3, 'Salon', 'Contact direct', 'En attente', '2025-09-20', NULL, NULL, NULL, 'cv_dupont.pdf', 'lm_dupont3.pdf', 3, 1),
 (4, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-12', NULL, 'Stage obtenu', NULL, 'cv_moreau.pdf', 'lm_moreau.pdf', 2, 2),
-(5, 'Site entreprise', 'Candidature spontanée', 'Refusée', '2025-09-08', '2025-09-22', 'Refusé', 'Pas de place', 'cv_moreau.pdf', 'lm_moreau2.pdf', 4, 2);
-
-INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, date_relance, resultat, raison_refus, cv, lettre_motiv, id_entreprise, id_etudiant) VALUES
+(5, 'Site entreprise', 'Candidature spontanée', 'Refusée', '2025-09-08', '2025-09-22', 'Refusé', 'Pas de place', 'cv_moreau.pdf', 'lm_moreau2.pdf', 4, 2),
 (6, 'Réseau personnel', 'Recommandation', 'Acceptée', '2025-09-18', NULL, 'Stage obtenu', NULL, 'cv_laurent.pdf', 'lm_laurent.pdf', 3, 3),
 (7, 'Indeed', 'Réponse à offre', 'Refusée', '2025-09-05', NULL, 'Refusé', 'Niveau insuffisant', 'cv_laurent.pdf', 'lm_laurent2.pdf', 5, 3),
-(8, 'LinkedIn', 'Réponse à offre', 'En attente', '2025-09-25', NULL, NULL, NULL, 'cv_laurent.pdf', 'lm_laurent3.pdf', 6, 3);
-
-INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, date_relance, resultat, raison_refus, cv, lettre_motiv, id_entreprise, id_etudiant) VALUES
+(8, 'LinkedIn', 'Réponse à offre', 'En attente', '2025-09-25', NULL, NULL, NULL, 'cv_laurent.pdf', 'lm_laurent3.pdf', 6, 3),
 (9, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-14', NULL, 'Stage obtenu', NULL, 'cv_bonnet.pdf', 'lm_bonnet.pdf', 4, 9),
-(10, 'Salon', 'Contact direct', 'Refusée', '2025-09-11', NULL, 'Refusé', 'Budget limité', 'cv_bonnet.pdf', 'lm_bonnet2.pdf', 7, 9);
-
-INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, date_relance, resultat, raison_refus, cv, lettre_motiv, id_entreprise, id_etudiant) VALUES
+(10, 'Salon', 'Contact direct', 'Refusée', '2025-09-11', NULL, 'Refusé', 'Budget limité', 'cv_bonnet.pdf', 'lm_bonnet2.pdf', 7, 9),
 (11, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-16', NULL, 'Stage obtenu', NULL, 'cv_blanc.pdf', 'lm_blanc.pdf', 5, 10),
 (12, 'LinkedIn', 'Réponse à offre', 'En attente', '2025-09-22', NULL, NULL, NULL, 'cv_blanc.pdf', 'lm_blanc2.pdf', 8, 10),
-(13, 'Site entreprise', 'Candidature spontanée', 'Refusée', '2025-09-07', '2025-09-21', 'Refusé', 'Profil inadapté', 'cv_blanc.pdf', 'lm_blanc3.pdf', 1, 10);
-
-INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, date_relance, resultat, raison_refus, cv, lettre_motiv, id_entreprise, id_etudiant) VALUES
-(14, 'Réseau personnel', 'Recommandation', 'Acceptée', '2025-09-19', NULL, 'Stage obtenu', NULL, 'cv_garnier.pdf', 'lm_garnier.pdf', 6, 11);
+(13, 'Site entreprise', 'Candidature spontanée', 'Refusée', '2025-09-07', '2025-09-21', 'Refusé', 'Profil inadapté', 'cv_blanc.pdf', 'lm_blanc3.pdf', 1, 10),
+(14, 'Réseau personnel', 'Recommandation', 'Acceptée', '2025-09-19', NULL, 'Stage obtenu', NULL, 'cv_garnier.pdf', 'lm_garnier.pdf', 6, 11),
+(15, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-15', NULL, 'Stage obtenu', NULL, 'cv_faure.pdf', 'lm_faure.pdf', 6, 12),
+(16, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-12', NULL, 'Stage obtenu', NULL, 'cv_roussel.pdf', 'lm_roussel.pdf', 7, 13),
+(17, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-10', NULL, 'Stage obtenu', NULL, 'cv_vincent.pdf', 'lm_vincent.pdf', 8, 14),
+(18, 'Salon', 'Contact direct', 'Acceptée', '2025-09-20', NULL, 'Stage obtenu', NULL, 'cv_muller.pdf', 'lm_muller.pdf', 1, 15),
+(19, 'Réseau personnel', 'Recommandation', 'Acceptée', '2025-09-18', NULL, 'Stage obtenu', NULL, 'cv_lefevre.pdf', 'lm_lefevre.pdf', 2, 16),
+(20, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-05', NULL, 'Stage obtenu', NULL, 'cv_mercier.pdf', 'lm_mercier.pdf', 1, 17),
+(21, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-25', NULL, 'Stage obtenu', NULL, 'cv_lemoine.pdf', 'lm_lemoine.pdf', 2, 18),
+(22, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-14', NULL, 'Stage obtenu', NULL, 'cv_andre.pdf', 'lm_andre.pdf', 3, 19),
+(23, 'Salon', 'Contact direct', 'Acceptée', '2025-09-11', NULL, 'Stage obtenu', NULL, 'cv_roux.pdf', 'lm_roux.pdf', 4, 20),
+(24, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-16', NULL, 'Stage obtenu', NULL, 'cv_david.pdf', 'lm_david.pdf', 5, 21),
+(25, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-22', NULL, 'Stage obtenu', NULL, 'cv_bertrand.pdf', 'lm_bertrand.pdf', 6, 22),
+(26, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-07', NULL, 'Stage obtenu', NULL, 'cv_morel.pdf', 'lm_morel.pdf', 7, 23),
+(27, 'Réseau personnel', 'Recommandation', 'Acceptée', '2025-09-19', NULL, 'Stage obtenu', NULL, 'cv_fontaine.pdf', 'lm_fontaine.pdf', 8, 24),
+(28, 'Indeed', 'Réponse à offre', 'En cours', '2025-10-05', NULL, NULL, NULL, 'cv_guerin.pdf', 'lm_guerin.pdf', 1, 25),
+(29, 'LinkedIn', 'Réponse à offre', 'Refusée', '2025-10-01', '2025-10-15', 'Refusé', 'Manque d''expérience', 'cv_rousseau.pdf', 'lm_rousseau.pdf', 2, 26),
+(30, 'Site entreprise', 'Candidature spontanée', 'En cours', '2025-10-10', NULL, NULL, NULL, 'cv_blanc_t.pdf', 'lm_blanc_t.pdf', 3, 27),
+(31, 'Salon', 'Contact direct', 'Acceptée', '2025-10-12', NULL, 'Stage obtenu', NULL, 'cv_garnier_l.pdf', 'lm_garnier_l.pdf', 4, 28),
+(32, 'Indeed', 'Réponse à offre', 'Refusée', '2025-09-28', NULL, 'Refusé', 'Poste pourvu', 'cv_chevalier.pdf', 'lm_chevalier.pdf', 5, 29),
+(33, 'LinkedIn', 'Réponse à offre', 'En cours', '2025-10-14', NULL, NULL, NULL, 'cv_francois.pdf', 'lm_francois.pdf', 6, 30),
+(34, 'Indeed', 'Réponse à offre', 'Refusée', '2025-09-20', '2025-10-05', 'Refusé', 'Profil trop junior', 'cv_dupont.pdf', 'lm_dupont4.pdf', 4, 1),
+(35, 'LinkedIn', 'Réponse à offre', 'En cours', '2025-10-12', NULL, NULL, NULL, 'cv_moreau.pdf', 'lm_moreau3.pdf', 5, 2),
+(36, 'Site entreprise', 'Candidature spontanée', 'Refusée', '2025-09-25', NULL, 'Refusé', 'Pas de recrutement actuellement', 'cv_laurent.pdf', 'lm_laurent4.pdf', 7, 3),
+(37, 'Indeed', 'Réponse à offre', 'En cours', '2025-10-18', NULL, NULL, NULL, 'cv_legrand.pdf', 'lm_legrand.pdf', 1, 31),
+(38, 'LinkedIn', 'Réponse à offre', 'Refusée', '2025-10-05', '2025-10-20', 'Refusé', 'Test technique non concluant', 'cv_gauthier.pdf', 'lm_gauthier.pdf', 2, 32),
+(39, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-10-22', NULL, 'Stage obtenu', NULL, 'cv_perrin.pdf', 'lm_perrin.pdf', 3, 33),
+(40, 'Salon', 'Contact direct', 'En cours', '2025-10-25', NULL, NULL, NULL, 'cv_robin.pdf', 'lm_robin.pdf', 4, 34),
+(41, 'Indeed', 'Réponse à offre', 'Refusée', '2025-10-10', NULL, 'Refusé', 'Candidature incomplète', 'cv_clement.pdf', 'lm_clement.pdf', 5, 35),
+(42, 'LinkedIn', 'Réponse à offre', 'En cours', '2025-10-28', NULL, NULL, NULL, 'cv_morin.pdf', 'lm_morin.pdf', 6, 36),
+(43, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-10-15', NULL, 'Stage obtenu', NULL, 'cv_nicolas.pdf', 'lm_nicolas.pdf', 7, 37);
 
 -- ============================
--- STAGES (19 étudiants avec stage, 5 sans)
--- Étudiants SANS stage : 4, 5, 7, 8, 17
+-- STAGES 
 -- ============================
 
 INSERT INTO STAGE (id_stage, typeS, date_debut, date_fin, duree_stage, unite_duree, titre_stage, theme_stage, id_maitre, id_demarche) VALUES
 (1, 'Stage de fin d''études', '2025-10-01', '2025-03-31', 6, 'mois', 'Développement d''une application web de gestion', 'Développement Full-Stack', 1, 1),
 (2, 'Stage de fin d''études', '2025-10-15', '2025-04-15', 6, 'mois', 'Analyse de données massives pour la prédiction', 'Big Data et Machine Learning', 2, 4),
-(3, 'Stage de fin d''études', '2025-10-01', '2025-03-31', 6, 'mois', 'Création d''un site e-commerce responsive', 'Développement Web', 3, 6);
-
-INSERT INTO STAGE (id_stage, typeS, date_debut, date_fin, duree_stage, unite_duree, titre_stage, theme_stage, id_maitre, id_demarche) VALUES
-(4, 'Stage de fin d''études', '2025-10-15', '2025-04-15', 6, 'mois', 'Développement d''applications mobiles iOS/Android', 'Mobile Development', 6, 15);
-
-INSERT INTO STAGE (id_stage, typeS, date_debut, date_fin, duree_stage, unite_duree, titre_stage, theme_stage, id_maitre, id_demarche) VALUES
+(3, 'Stage de fin d''études', '2025-10-01', '2025-03-31', 6, 'mois', 'Création d''un site e-commerce responsive', 'Développement Web', 3, 6),
+(4, 'Stage de fin d''études', '2025-10-15', '2025-04-15', 6, 'mois', 'Développement d''applications mobiles iOS/Android', 'Mobile Development', 6, 15),
 (5, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Mise en place d''une infrastructure sécurisée', 'Cybersécurité et Réseaux', 4, 9),
 (6, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Migration vers le Cloud AWS', 'Cloud Computing', 5, 11),
-(7, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Développement d''une application mobile de fitness', 'Applications mobiles', 6, 14);
-
-INSERT INTO STAGE (id_stage, typeS, date_debut, date_fin, duree_stage, unite_duree, titre_stage, theme_stage, id_maitre, id_demarche) VALUES
+(7, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Développement d''une application mobile de fitness', 'Applications mobiles', 6, 14),
 (8, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Développement d''un ERP sur mesure', 'Développement logiciel', 7, 16),
 (9, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Transformation digitale des processus internes', 'Digital & Innovation', 8, 17),
 (10, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Développement d''une plateforme web collaborative', 'Développement Web', 9, 18),
-(11, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Optimisation des performances d''applications', 'Performance & Big Data', 10, 19);
-
-INSERT INTO STAGE (id_stage, typeS, date_debut, date_fin, duree_stage, unite_duree, titre_stage, theme_stage, id_maitre, id_demarche) VALUES
+(11, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Optimisation des performances d''applications', 'Performance & Big Data', 10, 19),
 (12, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Création d''interfaces utilisateur modernes', 'UX/UI Design', 1, 20),
 (13, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Analyse de données clients pour le marketing', 'Data Analytics', 2, 21),
 (14, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Développement d''API REST pour microservices', 'Architecture logicielle', 3, 22),
@@ -357,17 +356,14 @@ INSERT INTO STAGE (id_stage, typeS, date_debut, date_fin, duree_stage, unite_dur
 (19, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Création d''un CMS personnalisé', 'Développement Web', 8, 27);
 
 -- ============================
--- SOUTENANCES (pour les étudiants BUT3 2025 et certains BUT2 2025)
--- Seulement 12 soutenances sur 19 stages
+-- SOUTENANCES
 -- ============================
 
 INSERT INTO SOUTENANCE (id_soutenance, salle, nom_bat, dateS, h_debut, h_fin, id_stage) VALUES
 (1, 101, 'Bâtiment A', '2025-04-15', '09:00', '10:30', 1),
 (2, 102, 'Bâtiment A', '2025-04-15', '14:00', '15:30', 2),
 (3, 103, 'Bâtiment B', '2025-04-16', '09:00', '10:30', 3),
-(4, 104, 'Bâtiment B', '2025-04-16', '14:00', '15:30', 4);
-
-INSERT INTO SOUTENANCE (id_soutenance, salle, nom_bat, dateS, h_debut, h_fin, id_stage) VALUES
+(4, 104, 'Bâtiment B', '2025-04-16', '14:00', '15:30', 4),
 (5, 201, 'Bâtiment C', '2025-07-01', '09:00', '10:00', 12),
 (6, 202, 'Bâtiment C', '2025-07-01', '10:30', '11:30', 13),
 (7, 203, 'Bâtiment C', '2025-07-01', '14:00', '15:00', 14),
@@ -375,10 +371,17 @@ INSERT INTO SOUTENANCE (id_soutenance, salle, nom_bat, dateS, h_debut, h_fin, id
 (9, 201, 'Bâtiment C', '2025-07-02', '10:30', '11:30', 16),
 (10, 202, 'Bâtiment C', '2025-07-02', '14:00', '15:00', 17),
 (11, 203, 'Bâtiment C', '2025-07-03', '09:00', '10:00', 18),
-(12, 204, 'Bâtiment C', '2025-07-03', '10:30', '11:30', 19);
+(12, 204, 'Bâtiment C', '2025-07-03', '10:30', '11:30', 19),
+(13, 101, 'Bâtiment A', '2025-07-04', '09:00', '10:00', 5),
+(14, 102, 'Bâtiment A', '2025-07-04', '10:30', '11:30', 6),
+(15, 103, 'Bâtiment B', '2025-07-04', '14:00', '15:00', 7),
+(16, 104, 'Bâtiment B', '2025-07-05', '09:00', '10:00', 8),
+(17, 201, 'Bâtiment C', '2025-07-05', '10:30', '11:30', 9),
+(18, 202, 'Bâtiment C', '2025-07-05', '14:00', '15:00', 10),
+(19, 203, 'Bâtiment C', '2025-07-06', '09:00', '10:00', 11);
 
 -- ============================
--- JURYS (un jury par soutenance)
+-- JURYS
 -- ============================
 INSERT INTO JURY (id_jury, date_jury, h_jury, duree, id_soutenance) VALUES
 (1, '2025-04-15', '09:00', 90, 1),
@@ -392,60 +395,58 @@ INSERT INTO JURY (id_jury, date_jury, h_jury, duree, id_soutenance) VALUES
 (9, '2025-07-02', '10:30', 60, 9),
 (10, '2025-07-02', '14:00', 60, 10),
 (11, '2025-07-03', '09:00', 60, 11),
-(12, '2025-07-03', '10:30', 60, 12);
+(12, '2025-07-03', '10:30', 60, 12),
+(13, '2025-07-04', '09:00', 60, 13),
+(14, '2025-07-04', '10:30', 60, 14),
+(15, '2025-07-04', '14:00', 60, 15),
+(16, '2025-07-05', '09:00', 60, 16),
+(17, '2025-07-05', '10:30', 60, 17),
+(18, '2025-07-05', '14:00', 60, 18),
+(19, '2025-07-06', '09:00', 60, 19);
 
 -- ============================
--- COMPOSER (au moins 2 enseignants par jury)
+-- COMPOSER
 -- ============================
 
 INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
-(1, 1),  -- Tuteur
-(3, 1),  -- Autre enseignant
-(5, 1);  -- Troisième enseignant
-
-INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
-(2, 2),  -- Tuteur
-(4, 2),  -- Autre enseignant
-(6, 2);  -- Troisième enseignant
-
-INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
-(3, 3),  -- Tuteur
-(1, 3),  -- Autre enseignant
-(7, 3);  -- Troisième enseignant
-
-INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
-(6, 4),  -- Tuteur
-(2, 4),  -- Autre enseignant
-(8, 4);  -- Troisième enseignant
-
-INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
-(8, 5),  -- Tuteur
-(9, 5);  -- Autre enseignant
-
-INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
-(9, 6),  -- Tuteur
-(10, 6); -- Autre enseignant
-
-INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
-(10, 7), -- Tuteur
-(1, 7);  -- Autre enseignant
-
-INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
-(1, 8),  -- Tuteur
-(2, 8);  -- Autre enseignant
-
-INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
-(2, 9),  -- Tuteur
-(3, 9);  -- Autre enseignant
-
-INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
-(3, 10), -- Tuteur
-(4, 10); -- Autre enseignant
-
-INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
-(4, 11), -- Tuteur
-(5, 11); -- Autre enseignant
-
-INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
-(6, 12), -- Tuteur
-(7, 12); -- Autre enseignant
+(1, 1),
+(3, 1),
+(5, 1),
+(2, 2),
+(4, 2),
+(6, 2),
+(3, 3),
+(1, 3),
+(7, 3),
+(6, 4),
+(2, 4),
+(8, 4),
+(8, 5),
+(9, 5),
+(9, 6),
+(10, 6),
+(10, 7),
+(1, 7),
+(2, 8),
+(2, 9),
+(3, 9),
+(3, 10),
+(4, 10),
+(4, 11),
+(5, 11),
+(6, 12),
+(7, 12),
+(9, 13),
+(1, 13),
+(10, 14),
+(2, 14),
+(1, 15),
+(3, 15),
+(3, 16),
+(4, 16),
+(4, 17),
+(5, 17),
+(5, 18),
+(6, 18),
+(6, 19),
+(7, 19);
