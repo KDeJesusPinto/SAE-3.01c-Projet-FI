@@ -667,8 +667,6 @@ def detail_soutenance_admin(id):
     Args:
         id (int): l'identifiant de la soutenance
     """
-
-
     admin = current_user
     if not isinstance(admin, Admini):
         flash("Accès réservé aux administrateurs.", "warning")
@@ -689,6 +687,8 @@ def detail_soutenance_admin(id):
             .join(Composer)\
             .filter(Composer.id_soutenance == id)\
             .all()
+    
+    entreprise_groupe = db.session.query(Entreprise).join(Demarche).join(Stage).join(Soutenance).filter(Soutenance.id_soutenance == id).all()
 
     deleteForm = FormSoutenance()
 
@@ -697,6 +697,7 @@ def detail_soutenance_admin(id):
                            title="Détail de la soutenance",
                            soutenance = soutenance,
                            soutenances_groupe = soutenances_groupe,
+                           entreprise_groupe = entreprise_groupe,
                            enseignants_jury = enseignants_jury,
                            deleteForm = deleteForm)
 

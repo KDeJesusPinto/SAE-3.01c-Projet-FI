@@ -588,9 +588,6 @@ label[for="import_csv"], label[for="export_csv"]{
     }
 }
 
-#planning-boite:first-child{
-    padding-left: 0;
-}
 
 /*---------------- POUR LES MESSAGES D'ALERTES ----------------*/
 

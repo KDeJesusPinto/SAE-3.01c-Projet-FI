@@ -1,7 +1,7 @@
 {% extends "admin/base_admin.html" %}
 
 {% block content %}
-    <div class="glass boite_verticale";>
+    <div class="glass boite_verticale">
         <a href="{{ url_for('planning_admini') }}" class="petit_bouton" style="position: absolute; left: 20px; width: fit-content; font-size: 0.7em; padding: 10px 20px; margin: 0;"><i class="fas fa-code"></i> Retour</a>
         <div class="boite_horizontale">
             <span id="date">{{ soutenance.dateS }}</span>
@@ -29,6 +29,8 @@
                 <tr>
                     <th>Étudiants</th>
                     <th>Intitulé du stage</th>
+                    <th>Entreprise</th>
+                    <th>Maître de stage</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,6 +48,21 @@
                         {% endif %}
                     </td>
                     <td>{{ s.stage.titre_stage }}</td>
+                    {% if entreprise_groupe %}
+                        {% for ent in entreprise_groupe %}
+                            <td>{{ ent.nom_entreprise }}</td>
+                        {% endfor %}
+                    {% else %}
+                        Entreprise inconnue
+                    {% endif %}
+                        
+                    <td>
+                        {% if s.stage and s.stage.maitre_stage %}
+                            {{ s.stage.maitre_stage.prenom_maitre }} {{ s.stage.maitre_stage.nom_maitre }}
+                        {% else %}
+                            Non renseigné
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
