@@ -24,8 +24,12 @@
                         </div>
                         <div class="boite_horizontale">
                             <i class="fas fa-calendar-alt petite_icone"></i>
-                            <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
-                                en {{tutore.soutenance_tutore.salle}}</p>
+                            {% if tutore.soutenance_tutore.dateS==None %}
+                                <p>pas encore planiéfié</p>
+                            {% else %}
+                                <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
+                                    en {{tutore.soutenance_tutore.salle}}</p>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
