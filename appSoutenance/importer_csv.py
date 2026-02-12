@@ -40,20 +40,23 @@ def importer_etudiants_stages(file_storage:FileStorage):
         db.session.commit()
         os.remove(temp_file_name)
         return True, f"{ajout} lignes traitées."
+    
     except Exception as e:
-            db.session.rollback()
-            try:
-                os.remove(temp_file_name)
-            except:
-                pass
-            return False, str(e)
+        db.session.rollback()
+        try:
+            os.remove(temp_file_name)
+        except:
+            pass
+        return False, str(e)
 
 
 def importer_entreprises(file_storage):
     """Importe les entreprises à partir d'un flux de fichier CSV"""
     
     try:
-        content = file_storage.read().decode('utf-8')
+        temp_file_name = suppression_sauts_a_la_ligne_csv(file_storage)
+        temp_file = open(temp_file_name, 'rb')
+        content = temp_file.read().decode('utf-8')
         stream = io.StringIO(content) 
         reader = csv.DictReader(stream)
         ajout = 0
@@ -81,10 +84,17 @@ def importer_entreprises(file_storage):
                 ajout += 1
 
         db.session.commit()
+        os.remove(temp_file_name)
         return True, f"{ajout} entreprises ajoutées avec succès."
+    
     except Exception as e:
         db.session.rollback()
         lg.error(f"Erreur lors de l'importation Entreprises: {e}")
+        try:
+            #time.sleep(20)
+            os.remove(temp_file_name)
+        except:
+            pass
         return False, f"Erreur critique lors de l'importation : {e}"
 
 def suppression_sauts_a_la_ligne_csv(fichier:str|FileStorage):
@@ -141,6 +151,6 @@ def suppression_sauts_a_la_ligne_csv(fichier:str|FileStorage):
 
 
 if __name__ == "__main__":
-    suppression_sauts_a_la_ligne_csv('appSoutenance/data/arexis_donnees.csv')
+    nouveau_fichier = suppression_sauts_a_la_ligne_csv('appSoutenance/data/entreprises/stages_entreprises_2024_2025_.csv')
     time.sleep(15)
-    os.remove("appSoutenance/data/nouveau_fichier.csv")
+    os.remove(nouveau_fichier)
