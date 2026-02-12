@@ -69,7 +69,7 @@
                         <span id="date">{{ bloc.dateS }}</span>
                         <div class="boite_horizontale">
                             <span class="badge_promo">{{ bloc.nom_promo }}</span>
-                            <span class="texte_header" bloc-label="Créneau">{{ bloc.h_debut }}</span>
+                            <span class="texte_header" bloc-label="Créneau">{{ bloc.h_debut }} - {{ bloc.h_fin }}</span>
                             <span class="texte_header" bloc-label="salle">Salle: {{ bloc.salle }}</span>
                         </div>
                     </div>
@@ -80,14 +80,16 @@
                         <thead>
                             <tr>
                                 <th>Étudiants</th>
-                                <th>Intitulé du stage</th>
+                                <th>Entreprise</th>
+                                <th>Maître de stage</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for stage_info in bloc.stages %}
                                 <tr>
                                     <td>{{ stage_info.nom_etudiant }} {{ stage_info.prenom_etudiant }}</td>
-                                    <td>{{ stage_info.titre_stage }}</td>
+                                    <td>{{ stage_info.nom_entreprise }}</td> 
+                                    <td>{{ stage_info.nom_maitre }}</td> 
                                 </tr>
                             {% endfor %}
                         </tbody>

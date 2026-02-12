@@ -600,13 +600,14 @@ def planning_admini():
             date_formatee = f"{jour_mois} {mois_francais} {soutenance.dateS.year}"
 
 
-            cle_regroupement = f"{soutenance.dateS.strftime('%Y-%m-%d')}-{soutenance.h_debut}-{soutenance.salle}-{membres_jury_noms}"
+            cle_regroupement = f"{soutenance.dateS.strftime('%Y-%m-%d')}-{soutenance.h_debut}-{soutenance.h_fin}-{soutenance.salle}-{membres_jury_noms}"
            
             if cle_regroupement not in regroupement:
                 regroupement[cle_regroupement] = {
                     'id_soutenance': soutenance.id_soutenance,
                     'dateS': date_formatee,
                     'h_debut': soutenance.h_debut,
+                    'h_fin': soutenance.h_fin,
                     'salle': soutenance.salle,
                     'jury_noms': membres_jury_noms,
                     'nom_promo': promo_etudiant,
@@ -615,7 +616,9 @@ def planning_admini():
             regroupement[cle_regroupement]['stages'].append({
                 'nom_etudiant': etudiant_lie.nom_etudiant,
                 'prenom_etudiant': etudiant_lie.prenom_etudiant,
-                'titre_stage': stage.titre_stage if stage else "Titre de stage non trouvé"
+                'titre_stage': stage.titre_stage if stage else "Titre de stage non trouvé",
+                'nom_entreprise': stage.demarche.entreprise.nom_entreprise if stage else "Entreprise non trouvée",
+                'nom_maitre': stage.maitre_stage.prenom_maitre + " " + stage.maitre_stage.nom_maitre if stage and stage.maitre_stage else "Maître de stage non trouvé   "
             })
 
     resultats_regroupes = list(regroupement.values())
