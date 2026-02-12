@@ -184,6 +184,7 @@ def accueil_enseignant():
 
     res_tutore = []
     res_soutenance=[]
+    res_liste_etu_sout=dict()
 
     for etudiant in queryListeTutore:
         derniere_demarche = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant).order_by(desc(Demarche.date_envoi)).first()
@@ -193,9 +194,11 @@ def accueil_enseignant():
     heure_date_deja_utilisé=[]
     for soutenance in query_soutenance_prevue.distinct():
         print(soutenance)
-        if soutenance.__repr__() not in heure_date_deja_utilisé:
+        if soutenance.horaire() not in heure_date_deja_utilisé:
             res_soutenance.append(soutenance)
-            heure_date_deja_utilisé.append(soutenance.__repr__())
+            heure_date_deja_utilisé.append(soutenance.horaire())
+            res_liste_etu_sout[soutenance.horaire()]=[]
+        res_liste_etu_sout[soutenance.horaire()].append(soutenance.get_nom_prenom_etu())
     date_soute=query_soutenance_prevue.distinct(Soutenance.dateS)
     res_date=[]
     for date in date_soute:
@@ -207,7 +210,7 @@ def accueil_enseignant():
     
 
 
-    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil",liste_tutore=res_tutore,liste_soutenance=res_soutenance,date_soute=res_date,nb_sout_place=nb_soutenance_place)
+    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil",liste_tutore=res_tutore,liste_soutenance=res_soutenance,date_soute=res_date,nb_sout_place=nb_soutenance_place,res_liste_etu_sout=res_liste_etu_sout)
 
 
 @app.route('/enseignant/planning/')
