@@ -344,6 +344,15 @@ nav#barre_navigation{
         /* positionnement */
     }
 }
+
+.sous_menu{
+    display: none;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: var(--couleur_sombre_principale);
+}
+nav#barre_navigation li:hover .sous_menu{
+    display: block;
+}
   
 .choix{
     /* style */
