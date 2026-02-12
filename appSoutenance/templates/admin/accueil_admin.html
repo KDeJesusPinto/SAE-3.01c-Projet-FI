@@ -72,7 +72,7 @@
         
         <div class="boite boite_horizontale">
             <div class="glass boite boite_verticale" id="import_form_container">
-                <h3> Importer un fichier CSV</h3>
+                <h2> Importer un fichier CSV</h2>
                 <form method="POST" action="{{ url_for('accueil_admin') }}" enctype="multipart/form-data">
                     {{ importForm.hidden_tag() }}
                     <div class="form-group" style="display: flex; flex-direction: column; align-items: center;">
@@ -98,7 +98,7 @@
                 </form>
             </div>
             <div class="glass boite_verticale" id="export_form_container" style="text-align: center; justify-content: center;">
-                <h3>Exporter en CSV</h3>
+                <h2>Exporter en CSV</h2>
                 <form method="POST" action="{{ url_for('accueil_admin') }}">
                     {{ exportForm.hidden_tag() }}
                     <div class="form-group" style="display: flex; flex-direction: column; align-items: center;">
