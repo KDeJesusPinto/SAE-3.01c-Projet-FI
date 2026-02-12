@@ -63,6 +63,23 @@
                             Non renseigné
                         {% endif %}
                     </td>
+
+                    <td>
+                        {% if s.stage and s.stage.maitre_stage %}
+                            {{ s.stage.maitre_stage.email_maitre }}
+                        {% else %}
+                            Non renseigné
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if s.stage and s.stage.maitre_stage %}
+                            {{ s.stage.maitre_stage.tel_maitre }}
+                        {% else %}
+                            Non renseigné
+                        {% endif %}
+                    </td>
+
                 </tr>
                 {% endfor %}
             </tbody>

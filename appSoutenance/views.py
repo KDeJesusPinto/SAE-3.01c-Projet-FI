@@ -674,8 +674,7 @@ HEURE= {
 @login_required
 def detail_soutenance_admin(id):
     """Page de détail d'une soutenance pour les administrateurs
-
-
+    
     Args:
         id (int): l'identifiant de la soutenance
     """
