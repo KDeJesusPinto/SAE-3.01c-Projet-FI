@@ -1101,14 +1101,15 @@ def detail_enseignant(id):
 
     liste_soutenances = []
     for s in soutenances_jury:
-        etudiant = s.stage.demarche.etudiant
-        est_tuteur = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant, id_etudiant=etudiant.id_etudiant).first() is not None
-        role = "Tuteur" if est_tuteur else "Candide"
-        liste_soutenances.append({
-            'id': s.id_soutenance,
-            'titre': s.stage.titre_stage,
-            'role': role
-        })
+        if s.stage and s.stage.demarche and s.stage.demarche.etudiant:
+            etudiant = s.stage.demarche.etudiant
+            est_tuteur = Tutorer.query.filter_by(id_enseignant=enseignant.id_enseignant, id_etudiant=etudiant.id_etudiant).first() is not None
+            role = "Tuteur" if est_tuteur else "Candide"
+            liste_soutenances.append({
+                'id': s.id_soutenance,
+                'titre': s.stage.titre_stage,
+                'role': role
+            })
 
     return render_template("admin/detail_enseignant.html",
                            accueil="accueil_admin",
@@ -1212,12 +1213,17 @@ def liste_ens_admin():
 
 
     lesEnseignants = lesEnseignants.all()
+    total_enseignants = Enseignant.query.count()
+    total_etudiants = Etudiant.query.count()
+    nb_tutores_max_global = (total_etudiants + total_enseignants - 1) // total_enseignants if total_enseignants > 0 else 0 # Arrondis à l'entier supérieur
+
     res = []
 
 
     for enseignant in lesEnseignants:
         nb_tutore = Tutorer.query.filter_by(
             id_enseignant=enseignant.id_enseignant).count()
+        nb_tutores_max = nb_tutores_max_global
 
         nb_soutenances = Composer.query.filter_by(
             id_enseignant=enseignant.id_enseignant).count()
@@ -1237,6 +1243,7 @@ def liste_ens_admin():
         res.append({
             "enseignant": enseignant,
             "nb_tutores": nb_tutore,
+            "nb_tutores_max": nb_tutores_max,
             "nb_soutenances": nb_soutenances,
             "nb_soutenances_en_tuteur": nb_soutenances_en_tuteur,
             "nb_candide": nb_candide
@@ -1320,6 +1327,7 @@ def liste_etu_admin():
             'situation': current_situation
         })
 
+    res = sorted(res, key=lambda x: x["etudiant"].nom_etudiant)
 
     if tri == "Nom":
         res = sorted(res, key=lambda x: x["etudiant"].nom_etudiant)
