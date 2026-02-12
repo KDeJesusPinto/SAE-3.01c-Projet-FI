@@ -2,11 +2,11 @@
 
 
 :root{
-    --couleur_sombre_principale: #252b40;
+    --couleur_sombre_principale: #2240a3;
 
     --couleur_bouton_important: #788d8e;;
 
-    --couleur_principale_site: #757575;
+    --couleur_principale_site: #1f0068;
 
     --couleur_texte_clair: white;
 
@@ -94,7 +94,6 @@ a{
     /* style */
     color: var(--couleur_texte_sombre);
     text-decoration: none;
-    cursor: url(images/cursor.png), pointer;
 
     /* positionnement */
 }
@@ -258,6 +257,17 @@ div.demarche_etape{
     flex-grow: 0;
 }
 
+#retour {
+    /* style */
+    font-size: 0.7em;
+
+    /* positionnement */
+    align-items: center;
+    display: block;
+    margin: 12px auto;
+    margin-bottom:10%;
+    width: fit-content;
+}
 /*---------------- STYLE DE LA BOITE CONTENANT TOUT LE CONTENU ----------------*/
 
 div#main_body{
@@ -359,13 +369,13 @@ input#import_csv{
 /* ---------------- STYLES DES COMBOBOX ----------------*/
 
 
-select.combobox { /* Agrandissement des combobox */
+select.combobox {
     /* style */
     background-color: var(--couleur_principale_site);
     border-radius: 80px;
 
     font-family: "Arimo", sans-serif;
-    font-size: 1.2rem; /* Augmente la taille de la police */
+    font-size: 0.7em;
     text-align: center;
     color:var(--couleur_texte_clair);
 

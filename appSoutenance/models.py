@@ -201,6 +201,21 @@ class Soutenance(db.Model):
                          unique=True,
                          nullable=False)
 
+    stage = db.relationship("Stage", backref=db.backref("soutenance", uselist=False))
+
+    @property
+    def jury_noms(self):
+        """Retourne les noms des membres du jury sous forme de chaîne."""
+        return ', '.join([f"{comp.enseignant.nom_enseignant} {comp.enseignant.prenom_enseignant}" for comp in self.compose]) or "Jury non assigné"
+
+    @property
+    def nom_promo(self):
+        """Retourne le nom de la promotion de l'étudiant concerné."""
+        if self.stage and self.stage.demarche and self.stage.demarche.etudiant:
+            app = self.stage.demarche.etudiant.appartenirs[0] if self.stage.demarche.etudiant.appartenirs else None
+            return app.nom_promo if app else "N/C"
+        return "N/C"
+
     def __init__(self, salle, dateS, h_debut, id_stage, h_fin=None, nom_bat=""):
         self.salle = salle
         self.nom_bat = nom_bat
@@ -363,7 +378,7 @@ class Composer(db.Model):
                               db.ForeignKey("enseignant.id_enseignant"),
                               primary_key=True)
     enseignant = db.relationship("Enseignant",
-                                 backref=db.backref("compositions",
+                                 backref=db.backref("compose",
                                                     lazy="dynamic"))
 
     # 0,N
@@ -371,7 +386,7 @@ class Composer(db.Model):
                               db.ForeignKey("soutenance.id_soutenance"),
                               primary_key=True)
     soutenance = db.relationship("Soutenance",
-                                 backref=db.backref("compositions",
+                                 backref=db.backref("compose",
                                                     lazy="dynamic"))
 
     def __init__(self, id_enseignant, id_soutenance):
@@ -434,8 +449,8 @@ class Assembler(db.Model):
                          primary_key=True)
 
 
-    admini = db.relationship("Admini", backref=db.backref("jury_compositions", lazy="dynamic"))
-    jury = db.relationship("Jury", backref=db.backref("admin_compositions", lazy="dynamic"))
+    admini = db.relationship("Admini", backref=db.backref("jury_compose", lazy="dynamic"))
+    jury = db.relationship("Jury", backref=db.backref("admin_compose", lazy="dynamic"))
 
 
     def __init__(self, id_jury, id_admin):
