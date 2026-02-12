@@ -21,6 +21,7 @@ def importer_etudiants_stages(file_storage:FileStorage):
 
         champs_attendus = ['mail_etu', 'nom_stagiaire', 'prenom_stagiaire', 'civilite_stagiaire']
         if not all(champ in reader.fieldnames for champ in champs_attendus):
+            os.remove(temp_file_name)
             return False, f"Format CSV invalide. Colonnes attendues : {', '.join(champs_attendus)}"
         for row in reader:
             email = row.get('mail_perso') or row.get('mail_etu')
@@ -60,6 +61,11 @@ def importer_entreprises(file_storage):
         stream = io.StringIO(content) 
         reader = csv.DictReader(stream)
         ajout = 0
+
+        champs_attendus = ["service_adm_nom_service", "service_adm_adr1_service", "service_adm_adr2_service", "service_adm_cp_service", "service_adm_ville_service"]
+        if not all(champ in reader.fieldnames for champ in champs_attendus):
+            os.remove(temp_file_name)
+            return False, f"Format CSV invalide. Colonnes attendues : {', '.join(champs_attendus)}"
         for row in reader:
             nom = (row.get('service_adm_nom_service') or "").strip().upper()
             ville = (row.get('service_adm_ville_service') or "").strip().upper()
@@ -91,7 +97,6 @@ def importer_entreprises(file_storage):
         db.session.rollback()
         lg.error(f"Erreur lors de l'importation Entreprises: {e}")
         try:
-            #time.sleep(20)
             os.remove(temp_file_name)
         except:
             pass
