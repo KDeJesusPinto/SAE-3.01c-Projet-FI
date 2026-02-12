@@ -1,6 +1,7 @@
 {% extends "admin/base_admin.html" %}
 
 {% block content %}
+<div id="planning-boite">
     <div class="glass boite_verticale">
         <a href="{{ url_for('planning_admini') }}" class="petit_bouton" style="position: absolute; left: 20px; width: fit-content; font-size: 0.7em; padding: 10px 20px; margin: 0;"><i class="fas fa-code"></i> Retour</a>
         <div class="boite_horizontale">
@@ -96,4 +97,5 @@
             </a>
         {% endif %}
     </div>
+</div>
 {% endblock %}
