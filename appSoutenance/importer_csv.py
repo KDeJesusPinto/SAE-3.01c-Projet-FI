@@ -8,13 +8,13 @@ from werkzeug.datastructures import FileStorage
 
 import time, os
 
-
 def importer_etudiants_stages(file_storage:FileStorage):
     """Importe les données Étudiants/Stages à partir d'un flux de fichier CSV"""
 
-    ajout = 0
     try:
-        temp_file = suppression_sauts_a_la_ligne_csv(file_storage)
+        ajout = 0
+        temp_file_name = suppression_sauts_a_la_ligne_csv(file_storage)
+        temp_file = open(temp_file_name, 'rb')
         content = temp_file.read().decode('utf-8')
         stream = io.StringIO(content)
         reader = csv.DictReader(stream)
@@ -22,7 +22,6 @@ def importer_etudiants_stages(file_storage:FileStorage):
         champs_attendus = ['mail_etu', 'nom_stagiaire', 'prenom_stagiaire', 'civilite_stagiaire']
         if not all(champ in reader.fieldnames for champ in champs_attendus):
             return False, f"Format CSV invalide. Colonnes attendues : {', '.join(champs_attendus)}"
-
         for row in reader:
             email = row.get('mail_perso') or row.get('mail_etu')
             if not email:
@@ -38,19 +37,16 @@ def importer_etudiants_stages(file_storage:FileStorage):
                 db.session.add(etu)
                 db.session.flush()            
             ajout += 1
-
-
         db.session.commit()
-        os.remove(temp_file)
+        os.remove(temp_file_name)
         return True, f"{ajout} lignes traitées."
-    
     except Exception as e:
-        db.session.rollback()
-        try:
-            os.remove(temp_file)
-        except:
-            pass
-        return False, str(e)
+            db.session.rollback()
+            try:
+                os.remove(temp_file_name)
+            except:
+                pass
+            return False, str(e)
 
 
 def importer_entreprises(file_storage):
@@ -92,41 +88,56 @@ def importer_entreprises(file_storage):
         return False, f"Erreur critique lors de l'importation : {e}"
 
 def suppression_sauts_a_la_ligne_csv(fichier:str|FileStorage):
-    str_fichier = ""
     if type(fichier) == str:
         print(fichier)
-        with open(fichier, "r") as file:
-            
-            entete = file.readline().split(",") # liste contenant les entêtes
-            nb_virgules_par_ligne = len(entete) - 1
-            cpt_virgules = 0
-            resultat = ""
+        file = open(fichier)
+        nom_fichier = fichier.split("/")[-1]
 
-            fichier_original = file.read()
-            #print(fichier_original)
+        entete = file.readline().split(",") # liste contenant les entêtes
+        nb_virgules_par_ligne = len(entete) - 1
+        cpt_virgules = 0
+        resultat = ""
 
-            for carac in fichier_original:
-                if carac == ",":
-                    cpt_virgules += 1
+        fichier_original = file.read()
 
-                elif carac == "\n":
-                    #print("haaaa")
+    elif isinstance(fichier, FileStorage):
+        file = fichier
+        nom_fichier = fichier.filename
 
-                    if cpt_virgules >= nb_virgules_par_ligne:
-                        #print("réinitialisation à 0")
-                        cpt_virgules = 0
-                    else:
-                        continue
+        entete = file.readline().decode('utf-8').split(",") # liste contenant les entêtes
+        nb_virgules_par_ligne = len(entete) - 1
+        cpt_virgules = 0
+        resultat = ""
 
-                resultat += carac
-                #print(cpt_virgules, nb_virgules_par_ligne)
+        fichier_original = file.read().decode('utf-8')
 
-            #print(resultat)
+    else:
+        raise TypeError()
 
-            with open("appSoutenance/data/temp_" + fichier.split("/")[-1], "w") as nouveau_fichier:
-                nouveau_fichier.write(",".join(entete) + resultat)
+    for carac in fichier_original:
+        if carac == ",":
+            cpt_virgules += 1
 
-    return "appSoutenance/data/temp_" + fichier.split("/")[-1]
+        elif carac == "\n":
+            #print("haaaa")
+
+            if cpt_virgules >= nb_virgules_par_ligne:
+                #print("réinitialisation à 0")
+                cpt_virgules = 0
+
+            else:
+                continue
+
+        resultat += carac
+        #print(cpt_virgules, nb_virgules_par_ligne)
+    
+    #print(resultat)
+    with open("appSoutenance/data/temp_" + nom_fichier, "w") as nouveau_fichier:
+        nouveau_fichier.write(",".join(entete) + resultat)
+
+    file.close()
+
+    return "appSoutenance/data/temp_" + nom_fichier
 
 
 if __name__ == "__main__":
