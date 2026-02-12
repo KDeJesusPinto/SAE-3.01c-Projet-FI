@@ -1,0 +1,16 @@
+ID;Nom;Prénom;Email;Promo;Année;Régime
+1;Doe;John;john.doe@gmail.com;BUT2;2025;Formation initiale
+2;Smith;Jane;jane.smith@gmail.com;BUT2;2025;Formation initiale
+3;Brown;Alice;alice.brown@gmail.com;BUT2;2025;Formation initiale
+4;Martin;Lucas;lucas.martin@gmail.com;BUT3;2025;Formation apprentissage
+5;Wilson;Emma;emma.wilson@gmail.com;BUT3;2025;Formation apprentissage
+6;Taylor;Olivia;olivia.taylor@gmail.com;BUT2;2025;Formation initiale
+7;Anderson;Liam;liam.anderson@gmail.com;BUT2;2025;Formation initiale
+8;Thomas;Sophia;sophia.thomas@gmail.com;BUT3;2025;Formation apprentissage
+9;Jackson;Mia;mia.jackson@gmail.com;BUT2;2025;Formation initiale
+10;White;Noah;noah.white@gmail.com;BUT2;2025;Formation initiale
+11;Dupond;Marc;laura.de-carvalho@univ-orleans.fr;BUT 3 INFORMATIQUE  REA. APPLI : CONCEPT.DEVPT VALIDATION   ;2025;Initiale
+12;De Carvalho;Laura;mailpro@gmail.com; BUT 3 INFORMATIQUE  REA. APPLI : CONCEPT.DEVPT VALIDATION;2025;Initiale
+13;anonyme;anonyme;email@anonyme.com;Promo inconnue;2025;Initiale
+14;anonyme;anonyme;email@anonyme.com;Promo inconnue;2025;Initiale
+15; Initiale; 01/03/2025; 16; Tech Solutions;2025; 75008

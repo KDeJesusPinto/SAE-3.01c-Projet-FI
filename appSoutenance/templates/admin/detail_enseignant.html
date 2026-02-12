@@ -26,7 +26,7 @@
                 <p><strong>N'est jury d'aucune soutenance</strong></p>
             {% else %}
                 <p><strong>Jury des soutenances : </strong></p>
-                <ul style="margin: 0 0 0 20px;">
+                <ul style="margin: 0 0 0 20px; padding-bottom: 20px;">
                     {% for s in soutenances %}
                         <li>
                             <a href="{{ url_for('detail_soutenance_admin', id=s.id) }}" style="text-decoration: underline;">Soutenance n°{{ s.id }} - {{ s.titre }} ({{ s.role }})</a>

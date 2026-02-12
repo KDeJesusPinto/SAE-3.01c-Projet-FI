@@ -65,7 +65,6 @@ class FormSoutenance(FlaskForm):
     id_soutenance = HiddenField("ID:")
     id_stage = HiddenField("ID du stage ")
     h_debut = StringField("Heure de début: ")
-    dateS = StringField("Date de la soutenance: ", validators=[DataRequired()])
     dateS = DateField("Date de la soutenance: ", validators=[DataRequired()])
     salle = StringField ("Salle de la soutenance: ")
     nom_enseignant =  StringField("Liste prof")
@@ -73,7 +72,7 @@ class FormSoutenance(FlaskForm):
 
 class ImportForm(FlaskForm):
     type_import = SelectField(
-        "Les 2 types de fichier CSV à importer",
+        "Type de données à importer :",
         choices=[
             ('etudiants_stages', 'Étudiants et Stages'),
             ('entreprises', 'Entreprises')
@@ -85,3 +84,15 @@ class ImportForm(FlaskForm):
                                      FileAllowed(['csv'], "Format CSV uniquement")]
                         )
     submit = SubmitField("Importer le fichier CSV")
+
+class ExportForm(FlaskForm):
+    type_export = SelectField(
+        "Type de données à exporter :",
+        choices=[
+            ('etudiants', 'Étudiants'),
+            ('entreprises', 'Entreprises'),
+            ('soutenances', 'Soutenances')
+        ],
+        validators=[DataRequired(message="Veuillez sélectionner le type d'export.")]
+    )
+    submit = SubmitField("Exporter en CSV")

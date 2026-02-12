@@ -70,41 +70,45 @@
             </div>
         </div>
         
-        <div class="boite_horizontale">
-            <div class="glass boite_verticale" id="import_form_container" style="text-align: center;">
-                <h3> Importer un fichier CSV</h3>
+        <div class="boite boite_horizontale">
+            <div class="glass boite boite_verticale" id="import_form_container">
+                <h2> Importer un fichier CSV</h2>
                 <form method="POST" action="{{ url_for('accueil_admin') }}" enctype="multipart/form-data">
-                    {{ createForm.hidden_tag() }}
+                    {{ importForm.hidden_tag() }}
                     <div class="form-group" style="display: flex; flex-direction: column; align-items: center;">
-                        {{ createForm.type_import.label }}
-                        {{ createForm.type_import(class="combobox", style="width: fit-content;") }}
-                        {% for error in createForm.type_import.errors %}
+                        {{ importForm.type_import.label }}
+                        {{ importForm.type_import(class="combobox", style="width: fit-content;") }}
+                        {% for error in importForm.type_import.errors %}
                             <span style="color: red; font-size: 0.8em; display: block;">[{{ error }}]</span>
                         {% endfor %}
                         <label for="ficCSV_input" class="petit_bouton" style="cursor: pointer; display: inline-block; font-size: 0.7em; text-align: center; width: 70%;">
                             <span>Sélectionner le fichier CSV</span>
                         </label>
-                        {{ createForm.ficCSV(id='ficCSV_input', style="display: none", accept=".csv") }}
+                        {{ importForm.ficCSV(id='ficCSV_input', style="display: none", accept=".csv") }}
                         
                         <p id="file-name-display" style="margin-top: 10px; font-size: 0.9em; color: #555;">Aucun fichier sélectionné</p>
-                        {% for error in createForm.ficCSV.errors %}
+                        {% for error in importForm.ficCSV.errors %}
                             <p style="color: red; font-size: 0.8em;">[{{ error }}]</p>
                         {% endfor %}
                     </div>
 
                     <div style="margin-top: 15px; display: flex; justify-content: center;">
-                        {{ createForm.submit(class="petit_bouton", style="font-size:0.7em; width: fit-content;") }}
+                        {{ importForm.submit(class="petit_bouton", style="font-size:0.7em; width: fit-content; padding: 10px 20px") }}
                     </div>
                 </form>
             </div>
-            <div class="glass boite_verticale" id="export_form_container">
-                <h3>Exporter en CSV</h3>
-                <div id="export_container" style="display: flex; align-items: center; justify-content: center;">
-                    <label for="export_csv" class="petit_bouton">
-                        <span>Exporter CSV</span>
-                        <input id="export_csv" type="button" style="display: none;">
-                    </label>
-                </div>
+            <div class="glass boite_verticale" id="export_form_container" style="text-align: center; justify-content: center;">
+                <h2>Exporter en CSV</h2>
+                <form method="POST" action="{{ url_for('accueil_admin') }}">
+                    {{ exportForm.hidden_tag() }}
+                    <div class="form-group" style="display: flex; flex-direction: column; align-items: center;">
+                        {{ exportForm.type_export.label }}
+                        {{ exportForm.type_export(class="combobox", style="width: fit-content;") }}
+                        <div style="margin-top: 15px;">
+                            {{ exportForm.submit(class="petit_bouton", style="font-size:0.7em; width: fit-content; padding: 10px 20px;") }}
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

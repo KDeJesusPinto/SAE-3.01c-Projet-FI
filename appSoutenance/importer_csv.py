@@ -2,8 +2,7 @@ import csv
 import logging as lg
 from datetime import datetime
 import io
-from .models import db, Etudiant, Promo, Appartenir, Entreprise, MaitreStage, Demarche, Stage
-from sqlalchemy.exc import IntegrityError
+from .models import db, Etudiant, Entreprise
 
 
 def importer_etudiants_stages(file_storage):

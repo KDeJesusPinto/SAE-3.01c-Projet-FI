@@ -54,11 +54,11 @@
                     <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Démarches : {{ res.nb_demarches }}</p>
                     <p class="pliste" style="padding-right: 5px;">Dernière démarche : {{ res.situation }}</p>
                     {% if res.situation == "Acceptée" %}
-                        <i class="fas fa-check-circle grande_icone" style="color:green; font-size: 4rem !important;"></i>
+                        <i class="fas fa-check-circle grande_icone" style="color:green; font-size: 2rem !important;"></i>
                     {% elif res.situation == "En cours" %}
-                        <i class="fas fa-search grande_icone" style="color:orange; font-size: 4rem !important;"></i>
+                        <i class="fas fa-search grande_icone" style="color:orange; font-size: 2rem !important;"></i>
                     {% else %}
-                        <i class="fas fa-times-circle grande_icone" style="color:red; font-size: 4rem !important;"></i>
+                        <i class="fas fa-times-circle grande_icone" style="color:red; font-size: 2rem !important;"></i>
                     {% endif %}
                 </div>
             </div>

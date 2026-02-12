@@ -26,8 +26,6 @@ DROP TABLE IF EXISTS ENTREPRISE;
 
 DROP TABLE IF EXISTS ADMINI;
 
-use appsoutenance;
-
 CREATE TABLE ENTREPRISE (
   PRIMARY KEY (id_entreprise),
   id_entreprise INT NOT NULL,
@@ -118,7 +116,7 @@ CREATE TABLE JURY (
   id_jury INT NOT NULL,
   date_jury DATE NOT NULL,
   h_jury VARCHAR(5),
-  duree_jury INT,
+  duree INT,
   id_soutenance INT NULL,
   UNIQUE (id_soutenance)
 );
