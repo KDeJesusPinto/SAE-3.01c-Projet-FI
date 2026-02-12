@@ -73,6 +73,10 @@ a{
     /* positionnement */
 }
 
+button, select{
+    border: none;
+}
+
 /* ---------------- STYLES GÉNÉRAUX DES BOÎTES ----------------*/
 
 .glass{
