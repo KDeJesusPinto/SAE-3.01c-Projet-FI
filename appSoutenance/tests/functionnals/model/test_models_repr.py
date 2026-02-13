@@ -71,7 +71,7 @@ def test_promo_repr(testapp):
 
 def test_appartenir_repr(testapp):
     with testapp.app_context():
-        appartenir = db.session.get(Appartenir, (1, "BUT Informatique", 2025))
+        appartenir = db.session.get(Appartenir, (1, "BUT2", 2025))
         if appartenir:
             expected = f"<Etudiant : {appartenir.id_etudiant} appartient a {appartenir.nom_promo} en {appartenir.annee_promo}>"
             assert repr(appartenir) == expected

@@ -892,15 +892,18 @@ def api_etudiants_par_tuteur(id_enseignant, id_soutenance):
                 query = query.join(Appartenir).filter(Appartenir.nom_promo == app.nom_promo)
 
     sout_ref = Soutenance.query.get(id_soutenance)
+    if sout_ref:
+        filter_condition = (Soutenance.id_soutenance == None) | (
+            (Soutenance.dateS == sout_ref.dateS) &
+            (Soutenance.h_debut == sout_ref.h_debut) &
+            (Soutenance.salle == sout_ref.salle)
+        )
+    else:
+        filter_condition = (Soutenance.id_soutenance == None)
+
     query = query.join(Demarche).filter(Demarche.situation == 'Acceptée').join(
         Stage, Demarche.id_demarche == Stage.id_demarche).outerjoin(
-        Soutenance, Stage.id_stage == Soutenance.id_stage).filter(
-            (Soutenance.id_soutenance == None) |
-            (
-                (Soutenance.dateS == sout_ref.dateS) &
-                (Soutenance.h_debut == sout_ref.h_debut) &
-                (Soutenance.salle == sout_ref.salle)
-            ))
+        Soutenance, Stage.id_stage == Soutenance.id_stage).filter(filter_condition)
 
     
     
@@ -914,12 +917,13 @@ def api_etudiants_par_tuteur(id_enseignant, id_soutenance):
 
 @app.route('/api/salle_disponible/')
 @login_required
-def api_salle_disponible(id_soutenance):
+def api_salle_disponible():
     date_s = request.args.get('date')
     heure_s = request.args.get('heure')
     salle_s = request.args.get('salle')
     if not date_s or not heure_s or not salle_s:
         return jsonify({'disponible': True})
+    return jsonify({'disponible': True})
 
 
 
@@ -1223,7 +1227,7 @@ def valider_jury():
         # Créer le jury associé
         nouveau_jury = Jury(
             date_jury=date_obj,
-            h_jury=heure_sel,
+            heure_jury=heure_sel,
             duree=duree,
             id_soutenance=nouvelle_sout.id_soutenance
         )

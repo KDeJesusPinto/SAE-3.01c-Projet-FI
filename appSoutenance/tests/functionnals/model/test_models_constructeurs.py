@@ -56,3 +56,20 @@ def test_new_tutorer_creation(testapp):
         db.session.add(tut)
         db.session.commit()
         assert tut.id_enseignant == 1
+
+def test_new_enseignant_creation(testapp):
+    """Vérifie la création manuelle d'un enseignant"""
+    with testapp.app_context():
+        ens = Enseignant("Nom", "Prenom", "M.", "email@test.com", "login", "pwd")
+        db.session.add(ens)
+        db.session.commit()
+        assert ens.id_enseignant is not None
+
+def test_new_assembler_creation(testapp):
+    """Vérifie la création d'une relation Assembler (Jury-Admin)"""
+    with testapp.app_context():
+        # Admin A001 et Jury 1 existent via loaddb
+        assembler = Assembler(id_jury=1, id_admin="A001")
+        db.session.add(assembler)
+        db.session.commit()
+        assert assembler.id_jury == 1
