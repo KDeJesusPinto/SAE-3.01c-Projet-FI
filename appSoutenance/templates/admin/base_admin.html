@@ -14,7 +14,13 @@
                 </ul>
             </li>
 
-            <li><a href="{{ url_for('liste_etu_admin') }}" class="bouton_nav">Étudiants</a></li>
+            <li><a href="{{ url_for('liste_etu_admin') }}" class="bouton_nav">Étudiants</a>
+                <ul class="sous_menu">
+                    <li><a href="{{ url_for('liste_etu_admin2') }}">BUT2</a></li>
+                    <li><a href="{{ url_for('liste_etu_admin3') }}">BUT3</a></li>
+                </ul>
+            </li>
+
             <li><a href="{{ url_for('liste_ens_admin') }}" class="bouton_nav">Enseignants</a></li>
         </ul>
         

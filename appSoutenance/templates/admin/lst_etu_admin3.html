@@ -3,7 +3,7 @@
 {% block content %}
     <div class="boite_horizontale">
         <aside id="en_haut" id="filtre_liste_admin">
-            <form method="get" action="{{ url_for('liste_etu_admin') }}">
+            <form method="get" action="{{ url_for(request.endpoint) }}">
             
                 <select class="combobox" name="annee" id="annee">
                     <option value="">Année</option>
