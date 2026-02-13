@@ -9,8 +9,5 @@ ID;Nom;Prénom;Email;Promo;Année;Régime
 8;Thomas;Sophia;sophia.thomas@gmail.com;BUT3;2025;Formation apprentissage
 9;Jackson;Mia;mia.jackson@gmail.com;BUT2;2025;Formation initiale
 10;White;Noah;noah.white@gmail.com;BUT2;2025;Formation initiale
-11;Dupond;Marc;laura.de-carvalho@univ-orleans.fr;BUT 3 INFORMATIQUE  REA. APPLI : CONCEPT.DEVPT VALIDATION   ;2025;Initiale
-12;De Carvalho;Laura;mailpro@gmail.com; BUT 3 INFORMATIQUE  REA. APPLI : CONCEPT.DEVPT VALIDATION;2025;Initiale
-13;anonyme;anonyme;email@anonyme.com;Promo inconnue;2025;Initiale
-14;anonyme;anonyme;email@anonyme.com;Promo inconnue;2025;Initiale
-15; Initiale; 01/03/2025; 16; Tech Solutions;2025; 75008
+11;Dupont;Marc;laura.de-carvalho@univ-orleans.fr;BUT3;2025;Formation initiale
+12;De Carvalho;Laura;mailpro@gmail.com;BUT3;2025;Formation initiale

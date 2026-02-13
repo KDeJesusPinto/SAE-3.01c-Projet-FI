@@ -392,11 +392,14 @@ div#import_form_container, div#export_form_container{
     height: 500px;
 }
 
-div.liste_etu, div.liste_ens{
+div.liste_etu{
     /* style */
     /* positionnement */
-    flex-grow: 1;
-    height: fit-content;
+    width: 100%;
+    box-sizing: border-box;
+    flex: 0 0 100px;
+    height: 100px;
+    overflow: hidden;
     min-height: 100px;
     margin: 0; 
 }
@@ -430,11 +433,13 @@ a#voir{
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 70px
 }
 
 button#ajout_sout {
     /* style */
     border-radius: 40px;
+/*---------------- MENU DEROULANT ----------------*/
 
     font-family: "Arimo", sans-serif;
     font-size: 0.8rem;
@@ -442,6 +447,9 @@ button#ajout_sout {
     /* positionnement */
     width: 200px;
     height: auto;
+}
+#barre_navigation ul li {
+    position: relative;
 }
 
 button#importer, button#exporter{
@@ -456,16 +464,36 @@ button#importer, button#exporter{
     margin: 20px;
     height: auto; 
 }
+.sous_menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--couleur_sombre_principale);
+    min-width: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100;
+    border-radius: 0 0 5px 5px;
+    padding: 0;
+    list-style: none;
+}
 
 button#filtrer{
     /* style */
-    font-size: 1rem;
+    font-size: 0.7rem;
 
     /* positionnement */
-    width: 300px;
+    width: 70%;
     margin: 10px auto;
-
     display: block;
+}
+
+.sous_menu li a {
+    padding: 10px;
+    display: block;
+    color: var(--couleur_texte_clair);
+    text-decoration: none;
+    text-align: center;
 }
 
 button#voir {
@@ -479,6 +507,9 @@ button#voir {
     width: 300px;
     height: 150px;
 }
+.sous_menu li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
 
 div#contenu_admin {
     /* style */
@@ -487,11 +518,17 @@ div#contenu_admin {
     /* positionnement */
     align-items: center;
 }
+#barre_navigation ul li:hover .sous_menu {
+    display: block;
+}
 
 p.pliste {
     /* style */
     font-family: "Arimo", sans-serif;
     font-size: 0.7em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     /* positionnement */
     margin: 10px 0;
@@ -540,8 +577,9 @@ label[for="import_csv"], label[for="export_csv"]{
     font-size: 0.7em;
 
     /* positionnement */
-    width: 10%;
+    width: 7%;
     margin-right: 0;
+    margin-left: auto;
 }
 
 /*---------------- POUR LE PLANNING DES PAGES ADMIN ----------------*/
@@ -586,9 +624,6 @@ label[for="import_csv"], label[for="export_csv"]{
     }
 }
 
-#planning-boite:first-child{
-    padding-left: 0;
-}
 
 /*---------------- POUR LES MESSAGES D'ALERTES ----------------*/
 

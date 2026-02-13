@@ -137,8 +137,7 @@ class Stage(db.Model):
                  titre_stage,
                  theme_stage,
                  id_demarche,
-                 id_maitre=None,
-                 id_soutenance=None):
+                 id_maitre=None):
         self.typeS = typeS
         self.date_debut = date_debut
         self.date_fin = date_fin
@@ -146,7 +145,6 @@ class Stage(db.Model):
         self.theme_stage = theme_stage
         self.id_demarche = id_demarche
         self.id_maitre = id_maitre
-        self.id_soutenance = id_soutenance
 
     def __repr__(self):
         return f"<Stage {self.titre_stage} de type {self.typeS} débutant le {self.date_debut} et se terminant le {self.date_fin}>"
@@ -167,7 +165,7 @@ class MaitreStage(db.Model):
     entreprise = db.relationship("Entreprise",
                                  backref=db.backref("maitre_stage",
                                                     lazy="joined",
-                                                    uselist=False))
+                                                    uselist=True))
 
     def __init__(self,
                  civilite_maitre,
@@ -350,7 +348,7 @@ class Jury(db.Model):
     id_jury = db.Column(db.Integer, primary_key=True)
     date_jury = db.Column(db.Date)
     h_jury = db.Column(db.String(5))
-    duree_jury = db.Column(db.Integer)  # durée en minutes
+    duree = db.Column(db.Integer)  # durée en minutes
 
     # 0,1
     id_soutenance = db.Column(db.Integer,
@@ -362,14 +360,14 @@ class Jury(db.Model):
                                                     lazy="select",
                                                     uselist=False))
 
-    def __init__(self, date_jury, heure_jury, duree_jury, id_soutenance=None):
+    def __init__(self, date_jury, heure_jury, duree, id_soutenance=None):
         self.date_jury = date_jury
         self.h_jury = heure_jury
-        self.duree_jury = duree_jury
+        self.duree = duree
         self.id_soutenance = id_soutenance
 
     def __repr__(self):
-        return f"<Le jury pour la soutenance {self.id_soutenance} le {self.date_jury} a {self.h_jury} pendant {self.duree_jury} minutes>"
+        return f"<Le jury pour la soutenance {self.id_soutenance} le {self.date_jury} a {self.h_jury} pendant {self.duree} minutes>"
 
 
 class Composer(db.Model):
