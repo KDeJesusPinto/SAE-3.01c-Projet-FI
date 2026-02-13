@@ -9,30 +9,12 @@ from .app import app, db
 from .models import *
 
 
-# def resetdb():
 @app.cli.command()
-
-@click.pass_context
-def resetdb(ctx):
-    """Réinitialise la base de données à son état initial"""
-    # db.drop_all()
-    # db.create_all()
-    ctx.invoke(loaddb, filename='appSoutenance/data/arexis_donnees.csv')
-    lg.warning("Base de données réinitialisée avec succès avec les données CSV !")
-
-    sql_file = Path("appSoutenance/data/donnee.sql")
-    if sql_file.exists():
-        with open(sql_file, "r", encoding="utf-8") as f:
-            sql_script = f.read()
-            for statement in sql_script.split(";"):
-                statement = statement.strip()
-                if statement:
-                    db.session.execute(text(statement))
-                    db.session.commit()
-        db.session.commit()
-        lg.warning("Base de données réinitialisée avec succès !")
-    else:
-        lg.warning("Tables créées mais aucun fichier donnee.sql trouvé pour les données initiales")
+def resetdb():
+    """Supprime toutes les données et recrée les tables vides."""
+    db.drop_all()
+    db.create_all()
+    lg.warning("Base de données vidée : toutes les données ont été supprimées")
 
 
 @app.cli.command()
@@ -56,7 +38,7 @@ def loaddb(filename):
         db.session.commit()
         lg.warning("Fichier donnee.sql exécuté avec succès!")
     else:
-        lg.warning("Aucun fichier donnee.sql trouvé.")
+        lg.warning("Aucun fichier donnee.sql trouvé")
 
     with open(filename, newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -89,7 +71,7 @@ def loaddb(filename):
             if not promo:
                 promo = Promo(nom_promo=nom_promo,
                               annee_promo=annee_promo,
-                              formation_promo="Informatique")
+                              formation_promo="BUT Informatique")
                 db.session.add(promo)
                 db.session.flush()
 

@@ -261,27 +261,21 @@ INSERT INTO MAITRE_STAGE (id_maitre, nom_maitre, prenom_maitre, civilite_maitre,
 -- ============================
 
 INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, date_relance, resultat, raison_refus, cv, lettre_motiv, id_entreprise, id_etudiant) VALUES
--- Groupe 1 : Soutenance groupée (1, 31, 61)
 (1, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-15', NULL, 'Stage obtenu', NULL, 'cv_dupont.pdf', 'lm_dupont.pdf', 1, 1),
 (2, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-10', NULL, 'Stage obtenu', NULL, 'cv_legrand.pdf', 'lm_legrand.pdf', 2, 31),
 (3, 'Salon', 'Contact direct', 'Acceptée', '2025-09-20', NULL, 'Stage obtenu', NULL, 'cv_barbier.pdf', 'lm_barbier.pdf', 3, 61),
 
--- Groupe 2 : Soutenance groupée (2, 32)
 (4, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-12', NULL, 'Stage obtenu', NULL, 'cv_moreau.pdf', 'lm_moreau.pdf', 2, 2),
 (5, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-08', NULL, 'Stage obtenu', NULL, 'cv_gauthier.pdf', 'lm_gauthier.pdf', 4, 32),
 
--- Groupe 3 : Soutenance seule (3)
 (6, 'Réseau personnel', 'Recommandation', 'Acceptée', '2025-09-18', NULL, 'Stage obtenu', NULL, 'cv_laurent.pdf', 'lm_laurent.pdf', 3, 3),
 
--- Apprentis avec stage mais sans soutenance (33, 91)
 (7, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-05', NULL, 'Stage obtenu', NULL, 'cv_perrin.pdf', 'lm_perrin.pdf', 5, 33),
 (8, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-25', NULL, 'Stage obtenu', NULL, 'cv_denis.pdf', 'lm_denis.pdf', 6, 91),
 
--- Initial avec stage mais sans soutenance (4, 62)
 (9, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-14', NULL, 'Stage obtenu', NULL, 'cv_simon.pdf', 'lm_simon.pdf', 4, 4),
 (10, 'Salon', 'Contact direct', 'Acceptée', '2025-09-11', NULL, 'Stage obtenu', NULL, 'cv_arnaud.pdf', 'lm_arnaud.pdf', 7, 62),
 
--- Etudiants avec plusieurs démarches mais pas de stage (5, 34)
 (11, 'Indeed', 'Réponse à offre', 'Refusée', '2025-09-16', NULL, 'Refusé', 'Profil junior', 'cv_michel.pdf', 'lm_michel.pdf', 5, 5),
 (12, 'LinkedIn', 'Réponse à offre', 'En attente', '2025-09-22', NULL, NULL, NULL, 'cv_michel.pdf', 'lm_michel2.pdf', 8, 5),
 (13, 'Site entreprise', 'Candidature spontanée', 'Refusée', '2025-09-07', '2025-09-21', 'Refusé', 'Profil inadapté', 'cv_michel.pdf', 'lm_michel3.pdf', 1, 5),
@@ -289,12 +283,10 @@ INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, date_re
 (14, 'Réseau personnel', 'Recommandation', 'Refusée', '2025-09-19', NULL, 'Refusé', 'Pas de poste', 'cv_robin.pdf', 'lm_robin.pdf', 6, 34),
 (15, 'Site entreprise', 'Candidature spontanée', 'En attente', '2025-09-15', NULL, NULL, NULL, 'cv_robin.pdf', 'lm_robin2.pdf', 6, 34),
 
--- Nouveaux étudiants avec stage pour plus de soutenances (11, 63, 92)
 (16, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-20', NULL, 'Stage obtenu', NULL, 'cv_garnier.pdf', 'lm_garnier.pdf', 1, 11),
 (17, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-22', NULL, 'Stage obtenu', NULL, 'cv_martinez.pdf', 'lm_martinez.pdf', 2, 63),
 (18, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-25', NULL, 'Stage obtenu', NULL, 'cv_dumont.pdf', 'lm_dumont.pdf', 3, 92),
 
--- Etudiants avec stage validé mais SANS soutenance (pour tests création)
 (19, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-20', NULL, 'Stage obtenu', NULL, 'cv_david.pdf', 'lm_david.pdf', 1, 21),
 (20, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-22', NULL, 'Stage obtenu', NULL, 'cv_bertrand.pdf', 'lm_bertrand.pdf', 2, 22),
 (21, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-25', NULL, 'Stage obtenu', NULL, 'cv_morel.pdf', 'lm_morel.pdf', 3, 23),
@@ -312,30 +304,24 @@ INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, date_re
 -- ============================
 
 INSERT INTO STAGE (id_stage, typeS, date_debut, date_fin, duree_stage, unite_duree, titre_stage, theme_stage, id_maitre, id_demarche) VALUES
--- Stages pour Groupe 1
 (1, 'Stage de fin d''études', '2025-10-01', '2025-03-31', 6, 'mois', 'Développement d''une application web de gestion', 'Développement Full-Stack', 1, 1),
 (2, 'Alternance', '2025-09-01', '2026-08-31', 12, 'mois', 'Développement Backend Java', 'Backend', 2, 2),
 (3, 'Stage de fin d''études', '2025-04-01', '2025-09-30', 6, 'mois', 'Data Science et IA', 'IA', 3, 3),
 
--- Stages pour Groupe 2
 (4, 'Stage de fin d''études', '2025-10-15', '2025-04-15', 6, 'mois', 'Analyse de données massives', 'Big Data', 2, 4),
 (5, 'Alternance', '2025-09-01', '2026-08-31', 12, 'mois', 'Sécurité des réseaux', 'Cybersécurité', 4, 5),
 
--- Stage pour Groupe 3
 (6, 'Stage de fin d''études', '2025-10-01', '2025-03-31', 6, 'mois', 'Site e-commerce', 'Web', 3, 6),
 
--- Stages sans soutenance
 (7, 'Alternance', '2025-09-01', '2026-08-31', 12, 'mois', 'DevOps et Cloud', 'Cloud', 5, 7),
 (8, 'Alternance', '2025-09-01', '2026-08-31', 12, 'mois', 'Support technique', 'Support', 6, 8),
 (9, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Application mobile', 'Mobile', 4, 9),
 (10, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Refonte site web', 'Web', 7, 10),
 
--- Nouveaux stages pour soutenances supplémentaires
 (11, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Développement Web', 'Web', 1, 16),
 (12, 'Stage de fin d''études', '2025-04-01', '2025-06-30', 3, 'mois', 'Data Analyst', 'Data', 2, 17),
 (13, 'Alternance', '2025-09-01', '2026-08-31', 12, 'mois', 'Admin Sys', 'Réseau', 3, 18),
 
--- Stages sans soutenance (pour tests création)
 (14, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Dev Mobile', 'Mobile', 1, 19),
 (15, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Dev Web', 'Web', 2, 20),
 (16, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Data Science', 'Data', 3, 21),
@@ -358,45 +344,27 @@ INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, id_entr
 (53, 'Import', 'Stage', 'Acceptée', '2025-01-10', 4, 74), (54, 'Import', 'Stage', 'Acceptée', '2025-01-10', 4, 75), (55, 'Import', 'Stage', 'Acceptée', '2025-01-10', 4, 76);
 
 INSERT INTO STAGE (id_stage, typeS, date_debut, date_fin, titre_stage, id_demarche) VALUES
-(20, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe A1', 44), (21, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe A2', 45), (22, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe A3', 46),
-(23, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe B1', 47), (24, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe B2', 48), (25, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe B3', 49),
+(120, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe A1', 44), (121, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe A2', 45), (122, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe A3', 46),
+(123, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe B1', 47), (124, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe B2', 48), (125, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe B3', 49),
 (26, 'Stage BUT3', '2025-03-01', '2025-08-31', 'Expertise Groupe C1', 50), (27, 'Stage BUT3', '2025-03-01', '2025-08-31', 'Expertise Groupe C2', 51), (28, 'Stage BUT3', '2025-03-01', '2025-08-31', 'Expertise Groupe C3', 52),
 (29, 'Stage BUT3', '2025-03-01', '2025-08-31', 'Expertise Groupe D1', 53), (30, 'Stage BUT3', '2025-03-01', '2025-08-31', 'Expertise Groupe D2', 54), (31, 'Stage BUT3', '2025-03-01', '2025-08-31', 'Expertise Groupe D3', 55);
 
--- ============================
--- SOUTENANCES
--- ============================
 INSERT INTO SOUTENANCE (id_soutenance, salle, nom_bat, dateS, h_debut, h_fin, id_stage) VALUES
-(1, 101, 'Bâtiment A', '2025-04-15', '09:00', '09:45', 1), (2, 101, 'Bâtiment A', '2025-04-15', '09:00', '09:45', 2), (3, 101, 'Bâtiment A', '2025-04-15', '09:00', '09:45', 3),
-(4, 102, 'Bâtiment A', '2025-04-15', '09:00', '09:45', 4), (5, 102, 'Bâtiment A', '2025-04-15', '09:00', '09:45', 5), (6, 102, 'Bâtiment A', '2025-04-15', '09:00', '09:45', 6),
-(7, 103, 'Bâtiment B', '2025-04-15', '09:00', '09:45', 7), (8, 103, 'Bâtiment B', '2025-04-15', '09:00', '09:45', 8), (9, 103, 'Bâtiment B', '2025-04-15', '09:00', '09:45', 9),
-(10, 101, 'Bâtiment A', '2025-04-15', '10:00', '10:45', 10), (11, 101, 'Bâtiment A', '2025-04-15', '10:00', '10:45', 11), (12, 101, 'Bâtiment A', '2025-04-15', '10:00', '10:45', 12),
-(13, 102, 'Bâtiment A', '2025-04-15', '10:00', '10:45', 13), (14, 102, 'Bâtiment A', '2025-04-15', '10:00', '10:45', 14), (15, 102, 'Bâtiment A', '2025-04-15', '10:00', '10:45', 15),
-(16, 103, 'Bâtiment B', '2025-04-15', '10:00', '10:45', 16), (17, 103, 'Bâtiment B', '2025-04-15', '10:00', '10:45', 17), (18, 103, 'Bâtiment B', '2025-04-15', '10:00', '10:45', 18),
-(19, 104, 'Bâtiment B', '2025-04-15', '09:00', '09:45', 19), (20, 104, 'Bâtiment B', '2025-04-15', '09:00', '09:45', 20), (21, 104, 'Bâtiment B', '2025-04-15', '09:00', '09:45', 21),
-(22, 105, 'Bâtiment A', '2025-06-15', '09:00', '09:45', 22), (23, 105, 'Bâtiment A', '2025-06-15', '09:00', '09:45', 23), (24, 105, 'Bâtiment A', '2025-06-15', '09:00', '09:45', 24),
-(25, 105, 'Bâtiment A', '2025-06-15', '10:00', '10:45', 25);
-
-INSERT INTO SOUTENANCE (id_soutenance, salle, nom_bat, dateS, h_debut, h_fin, id_stage) VALUES
--- Groupe 1 : 2 élèves BUT2 FI (1, 2)
 (1, 101, 'Bâtiment A', '2025-06-20', '09:00', '10:00', 1),
 (4, 101, 'Bâtiment A', '2025-06-20', '09:00', '10:00', 4),
 
--- Groupe 2 : 3 élèves BUT2 Alternance (31, 32, 33)
 (2, 201, 'Bâtiment C', '2025-06-21', '09:00', '10:00', 2),
 (5, 201, 'Bâtiment C', '2025-06-21', '09:00', '10:00', 5),
 (7, 201, 'Bâtiment C', '2025-06-21', '09:00', '10:00', 7),
 
--- Groupe 3 : 2 élèves BUT2 FI (6, 11)
 (6, 101, 'Bâtiment A', '2025-06-20', '14:00', '15:00', 6),
 (10, 101, 'Bâtiment A', '2025-06-20', '14:00', '15:00', 11),
 
--- BUT3 (Restent individuels ou séparés pour l'instant)
-(3, 101, 'Bâtiment A', '2025-07-03', '09:00', '10:00', 3), -- BUT3 FI
-(8, 201, 'Bâtiment C', '2025-07-03', '10:00', '11:00', 8), -- Etu 91 (BUT3 App)
-(9, 201, 'Bâtiment C', '2025-07-03', '11:00', '12:00', 10), -- Etu 62 (BUT3 FI)
-(11, 202, 'Bâtiment C', '2025-07-03', '15:00', '16:00', 12), -- Etu 63 (BUT3 FI)
-(12, 202, 'Bâtiment C', '2025-07-03', '16:00', '17:00', 13); -- Etu 92 (BUT3 App)
+(3, 101, 'Bâtiment A', '2025-07-03', '09:00', '10:00', 3),
+(8, 201, 'Bâtiment C', '2025-07-03', '10:00', '11:00', 8),
+(9, 201, 'Bâtiment C', '2025-07-03', '11:00', '12:00', 10),
+(11, 202, 'Bâtiment C', '2025-07-03', '15:00', '16:00', 12),
+(12, 202, 'Bâtiment C', '2025-07-03', '16:00', '17:00', 13),
 (26, 106, 'Bâtiment B', '2025-06-16', '09:00', '10:00', 26), (27, 106, 'Bâtiment B', '2025-06-16', '10:00', '11:00', 27), (28, 106, 'Bâtiment B', '2025-06-16', '11:00', '12:00', 28),
 (29, 106, 'Bâtiment B', '2025-06-16', '13:00', '14:00', 29), (30, 106, 'Bâtiment B', '2025-06-16', '14:00', '15:00', 30), (31, 106, 'Bâtiment B', '2025-06-16', '15:00', '16:00', 31);
 
@@ -415,7 +383,7 @@ INSERT INTO JURY (id_jury, date_jury, h_jury, duree, id_soutenance) VALUES
 (8, '2025-07-03', '10:00', 60, 8),
 (9, '2025-07-03', '11:00', 60, 9),
 (11, '2025-07-03', '15:00', 60, 11),
-(12, '2025-07-03', '16:00', 60, 12);
+(12, '2025-07-03', '16:00', 60, 12),
 (20, '2025-06-15', '09:00', 45, 20), (21, '2025-06-15', '09:00', 45, 21), (22, '2025-06-15', '09:00', 45, 22),
 (23, '2025-06-15', '10:00', 45, 23), (24, '2025-06-15', '10:00', 45, 24), (25, '2025-06-15', '10:00', 45, 25),
 (26, '2025-06-16', '09:00', 60, 26), (27, '2025-06-16', '10:00', 60, 27), (28, '2025-06-16', '11:00', 60, 28),
@@ -425,20 +393,16 @@ INSERT INTO JURY (id_jury, date_jury, h_jury, duree, id_soutenance) VALUES
 -- COMPOSITIONS DES JURYS
 -- ============================
 INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
--- Groupe 1 (Soutenances 1, 4) : Jury 1, 2
 (1, 1), (2, 1),
 (1, 4), (2, 4),
 
--- Groupe 2 (Soutenances 2, 5, 7) : Jury 7, 8
 (7, 2), (8, 2),
 (7, 5), (8, 5),
 (7, 7), (8, 7),
 
--- Groupe 3 (Soutenance 6, 10) : Jury 5, 6
 (5, 6), (6, 6),
 (5, 10), (6, 10),
 
--- BUT3
 (1, 3), (2, 3),
 (7, 8), (8, 8),
 (9, 9), (10, 9),
