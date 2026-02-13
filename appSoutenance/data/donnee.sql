@@ -171,86 +171,62 @@ INSERT INTO ETUDIANT (id_etudiant, nom_etudiant, prenom_etudiant, date_naissance
 INSERT INTO APPARTENIR (id_etudiant, nom_promo, annee_promo, regime_etudiant) VALUES
 (1, 'BUT2', 2025, 'Formation initiale'),
 (2, 'BUT2', 2025, 'Formation initiale'),
-(3, 'BUT2', 2025, 'Alternance'),
+(3, 'BUT2', 2025, 'Formation initiale'),
 (4, 'BUT2', 2025, 'Formation initiale'),
 (5, 'BUT2', 2025, 'Formation initiale'),
-(6, 'BUT2', 2025, 'Alternance'),
+(6, 'BUT2', 2025, 'Formation initiale'),
 (7, 'BUT2', 2025, 'Formation initiale'),
 (8, 'BUT2', 2025, 'Formation initiale'),
-
 (9, 'BUT2', 2025, 'Formation initiale'),
 (10, 'BUT2', 2025, 'Formation initiale'),
-(11, 'BUT2', 2025, 'Alternance'),
+(11, 'BUT2', 2025, 'Formation initiale'),
 (12, 'BUT2', 2025, 'Formation initiale'),
 (13, 'BUT2', 2025, 'Formation initiale'),
-(14, 'BUT2', 2025, 'Alternance'),
+(14, 'BUT2', 2025, 'Formation initiale'),
 (15, 'BUT2', 2025, 'Formation initiale'),
 (16, 'BUT2', 2025, 'Formation initiale'),
-
 (17, 'BUT2', 2025, 'Formation initiale'),
 (18, 'BUT2', 2025, 'Formation initiale'),
-(19, 'BUT2', 2025, 'Alternance'),
+(19, 'BUT2', 2025, 'Formation initiale'),
 (20, 'BUT2', 2025, 'Formation initiale'),
 (21, 'BUT2', 2025, 'Formation initiale'),
-(22, 'BUT2', 2025, 'Alternance'),
+(22, 'BUT2', 2025, 'Formation initiale'),
 (23, 'BUT2', 2025, 'Formation initiale'),
-(24, 'BUT2', 2025, 'Formation initiale');
-
-INSERT INTO APPARTENIR (id_etudiant, nom_promo, annee_promo, regime_etudiant) VALUES
+(24, 'BUT2', 2025, 'Formation initiale'),
 (25, 'BUT2', 2025, 'Formation initiale'), (26, 'BUT2', 2025, 'Formation initiale'), (27, 'BUT2', 2025, 'Formation initiale'), (28, 'BUT2', 2025, 'Formation initiale'), (29, 'BUT2', 2025, 'Formation initiale'),
-(30, 'BUT2', 2025, 'Formation initiale'), (31, 'BUT2', 2025, 'Formation initiale'), (32, 'BUT2', 2025, 'Formation initiale'), (33, 'BUT2', 2025, 'Formation initiale'), (34, 'BUT2', 2025, 'Formation initiale'),
-(35, 'BUT2', 2025, 'Formation initiale'), (36, 'BUT2', 2025, 'Formation initiale'), (37, 'BUT2', 2025, 'Formation initiale'), (38, 'BUT2', 2025, 'Formation initiale'), (39, 'BUT2', 2025, 'Formation initiale'),
-(40, 'BUT2', 2025, 'Formation initiale'), (41, 'BUT2', 2025, 'Formation initiale'), (42, 'BUT2', 2025, 'Formation initiale'), (43, 'BUT2', 2025, 'Formation initiale'), (44, 'BUT2', 2025, 'Formation initiale'),
-(45, 'BUT2', 2025, 'Formation initiale'), (46, 'BUT2', 2025, 'Formation initiale'), (47, 'BUT2', 2025, 'Formation initiale'), (48, 'BUT2', 2025, 'Formation initiale'), (49, 'BUT2', 2025, 'Formation initiale'),
-(50, 'BUT2', 2025, 'Formation initiale'), (51, 'BUT2', 2025, 'Formation initiale'), (52, 'BUT2', 2025, 'Formation initiale'), (53, 'BUT2', 2025, 'Formation initiale'), (54, 'BUT2', 2025, 'Formation initiale'),
-(55, 'BUT2', 2025, 'Formation initiale'), (56, 'BUT2', 2025, 'Formation initiale'), (57, 'BUT2', 2025, 'Formation initiale'), (58, 'BUT2', 2025, 'Formation initiale'), (59, 'BUT2', 2025, 'Formation initiale'),
-(60, 'BUT2', 2025, 'Formation initiale'), (61, 'BUT2', 2025, 'Formation initiale'), (62, 'BUT2', 2025, 'Formation initiale'), (63, 'BUT2', 2025, 'Formation initiale'), (64, 'BUT2', 2025, 'Formation initiale'),
-(65, 'BUT2', 2025, 'Formation initiale'), (66, 'BUT2', 2025, 'Formation initiale'), (67, 'BUT2', 2025, 'Formation initiale'), (68, 'BUT2', 2025, 'Formation initiale'), (69, 'BUT2', 2025, 'Formation initiale'),
-(70, 'BUT2', 2025, 'Formation initiale'), (71, 'BUT3', 2025, 'Formation initiale'), (72, 'BUT3', 2025, 'Formation initiale'), (73, 'BUT3', 2025, 'Formation initiale'), (74, 'BUT3', 2025, 'Formation initiale'), (75, 'BUT3', 2025, 'Formation initiale'),
+(30, 'BUT2', 2025, 'Formation initiale'),
+
+(31, 'BUT2', 2025, 'Formation apprentissage'), (32, 'BUT2', 2025, 'Formation apprentissage'), (33, 'BUT2', 2025, 'Formation apprentissage'), (34, 'BUT2', 2025, 'Formation apprentissage'), (35, 'BUT2', 2025, 'Formation apprentissage'),
+(36, 'BUT2', 2025, 'Formation apprentissage'), (37, 'BUT2', 2025, 'Formation apprentissage'), (38, 'BUT2', 2025, 'Formation apprentissage'), (39, 'BUT2', 2025, 'Formation apprentissage'), (40, 'BUT2', 2025, 'Formation apprentissage'),
+(41, 'BUT2', 2025, 'Formation apprentissage'), (42, 'BUT2', 2025, 'Formation apprentissage'), (43, 'BUT2', 2025, 'Formation apprentissage'), (44, 'BUT2', 2025, 'Formation apprentissage'), (45, 'BUT2', 2025, 'Formation apprentissage'),
+(46, 'BUT2', 2025, 'Formation apprentissage'), (47, 'BUT2', 2025, 'Formation apprentissage'), (48, 'BUT2', 2025, 'Formation apprentissage'), (49, 'BUT2', 2025, 'Formation apprentissage'), (50, 'BUT2', 2025, 'Formation apprentissage'),
+(51, 'BUT2', 2025, 'Formation apprentissage'), (52, 'BUT2', 2025, 'Formation apprentissage'), (53, 'BUT2', 2025, 'Formation apprentissage'), (54, 'BUT2', 2025, 'Formation apprentissage'), (55, 'BUT2', 2025, 'Formation apprentissage'),
+(56, 'BUT2', 2025, 'Formation apprentissage'), (57, 'BUT2', 2025, 'Formation apprentissage'), (58, 'BUT2', 2025, 'Formation apprentissage'), (59, 'BUT2', 2025, 'Formation apprentissage'), (60, 'BUT2', 2025, 'Formation apprentissage'),
+
+(61, 'BUT3', 2025, 'Formation initiale'), (62, 'BUT3', 2025, 'Formation initiale'), (63, 'BUT3', 2025, 'Formation initiale'), (64, 'BUT3', 2025, 'Formation initiale'), (65, 'BUT3', 2025, 'Formation initiale'),
+(66, 'BUT3', 2025, 'Formation initiale'), (67, 'BUT3', 2025, 'Formation initiale'), (68, 'BUT3', 2025, 'Formation initiale'), (69, 'BUT3', 2025, 'Formation initiale'), (70, 'BUT3', 2025, 'Formation initiale'),
+(71, 'BUT3', 2025, 'Formation initiale'), (72, 'BUT3', 2025, 'Formation initiale'), (73, 'BUT3', 2025, 'Formation initiale'), (74, 'BUT3', 2025, 'Formation initiale'), (75, 'BUT3', 2025, 'Formation initiale'),
 (76, 'BUT3', 2025, 'Formation initiale'), (77, 'BUT3', 2025, 'Formation initiale'), (78, 'BUT3', 2025, 'Formation initiale'), (79, 'BUT3', 2025, 'Formation initiale'), (80, 'BUT3', 2025, 'Formation initiale'),
 (81, 'BUT3', 2025, 'Formation initiale'), (82, 'BUT3', 2025, 'Formation initiale'), (83, 'BUT3', 2025, 'Formation initiale'), (84, 'BUT3', 2025, 'Formation initiale'), (85, 'BUT3', 2025, 'Formation initiale'),
 (86, 'BUT3', 2025, 'Formation initiale'), (87, 'BUT3', 2025, 'Formation initiale'), (88, 'BUT3', 2025, 'Formation initiale'), (89, 'BUT3', 2025, 'Formation initiale'), (90, 'BUT3', 2025, 'Formation initiale'),
-(91, 'BUT3', 2025, 'Formation initiale'), (92, 'BUT3', 2025, 'Formation initiale'), (93, 'BUT3', 2025, 'Formation initiale'), (94, 'BUT3', 2025, 'Formation initiale'), (95, 'BUT3', 2025, 'Formation initiale'),
-(96, 'BUT3', 2025, 'Formation initiale'), (97, 'BUT3', 2025, 'Formation initiale'), (98, 'BUT3', 2025, 'Formation initiale'), (99, 'BUT3', 2025, 'Formation initiale'), (100, 'BUT3', 2025, 'Formation initiale'),
-(101, 'BUT3', 2025, 'Formation initiale'), (102, 'BUT3', 2025, 'Formation initiale'), (103, 'BUT3', 2025, 'Formation initiale'), (104, 'BUT3', 2025, 'Formation initiale'), (105, 'BUT3', 2025, 'Formation initiale'),
-(106, 'BUT3', 2025, 'Formation initiale'), (107, 'BUT3', 2025, 'Formation initiale'), (108, 'BUT3', 2025, 'Formation initiale'), (109, 'BUT3', 2025, 'Formation initiale'), (110, 'BUT3', 2025, 'Formation initiale'),
-(111, 'BUT3', 2025, 'Formation initiale'), (112, 'BUT3', 2025, 'Formation initiale'), (113, 'BUT3', 2025, 'Formation initiale'), (114, 'BUT3', 2025, 'Formation initiale'), (115, 'BUT3', 2025, 'Formation initiale'),
-(116, 'BUT3', 2025, 'Formation initiale'), (117, 'BUT3', 2025, 'Formation initiale'), (118, 'BUT3', 2025, 'Formation initiale'), (119, 'BUT3', 2025, 'Formation initiale'), (120, 'BUT3', 2025, 'Formation initiale');
+
+(91, 'BUT3', 2025, 'Formation apprentissage'), (92, 'BUT3', 2025, 'Formation apprentissage'), (93, 'BUT3', 2025, 'Formation apprentissage'), (94, 'BUT3', 2025, 'Formation apprentissage'), (95, 'BUT3', 2025, 'Formation apprentissage'),
+(96, 'BUT3', 2025, 'Formation apprentissage'), (97, 'BUT3', 2025, 'Formation apprentissage'), (98, 'BUT3', 2025, 'Formation apprentissage'), (99, 'BUT3', 2025, 'Formation apprentissage'), (100, 'BUT3', 2025, 'Formation apprentissage'),
+(101, 'BUT3', 2025, 'Formation apprentissage'), (102, 'BUT3', 2025, 'Formation apprentissage'), (103, 'BUT3', 2025, 'Formation apprentissage'), (104, 'BUT3', 2025, 'Formation apprentissage'), (105, 'BUT3', 2025, 'Formation apprentissage'),
+(106, 'BUT3', 2025, 'Formation apprentissage'), (107, 'BUT3', 2025, 'Formation apprentissage'), (108, 'BUT3', 2025, 'Formation apprentissage'), (109, 'BUT3', 2025, 'Formation apprentissage'), (110, 'BUT3', 2025, 'Formation apprentissage'),
+(111, 'BUT3', 2025, 'Formation apprentissage'), (112, 'BUT3', 2025, 'Formation apprentissage'), (113, 'BUT3', 2025, 'Formation apprentissage'), (114, 'BUT3', 2025, 'Formation apprentissage'), (115, 'BUT3', 2025, 'Formation apprentissage'),
+(116, 'BUT3', 2025, 'Formation apprentissage'), (117, 'BUT3', 2025, 'Formation apprentissage'), (118, 'BUT3', 2025, 'Formation apprentissage'), (119, 'BUT3', 2025, 'Formation apprentissage'), (120, 'BUT3', 2025, 'Formation apprentissage');
 
 -- ============================
--- TUTEURS (120 tuteurs, répartis sur 20 enseignants)
+-- TUTEURS (120 tuteurs, répartis sur 20 enseignants, 6 étudiants par prof)
 -- ============================
 INSERT INTO TUTORER (id_enseignant, id_etudiant, annee) VALUES
-(1, 1, 2025), (2, 2, 2025), (3, 3, 2025), (4, 4, 2025),
-(5, 5, 2025), (6, 6, 2025), (7, 7, 2025), (8, 8, 2025),
-(9, 9, 2025), (10, 10, 2025), (1, 11, 2025), (2, 12, 2025),
-(3, 13, 2025), (4, 14, 2025), (5, 15, 2025), (6, 16, 2025),
-(7, 17, 2025), (8, 18, 2025), (9, 19, 2025), (10, 20, 2025),
-(1, 21, 2025), (2, 22, 2025), (3, 23, 2025), (4, 24, 2025),
-(5, 25, 2025), (6, 26, 2025), (7, 27, 2025), (8, 28, 2025),
-(9, 29, 2025), (10, 30, 2025), (11, 31, 2025), (12, 32, 2025),
-(13, 33, 2025), (14, 34, 2025), (15, 35, 2025), (16, 36, 2025),
-(17, 37, 2025), (18, 38, 2025), (19, 39, 2025), (20, 40, 2025),
-(1, 41, 2025), (2, 42, 2025), (3, 43, 2025), (4, 44, 2025),
-(5, 45, 2025), (6, 46, 2025), (7, 47, 2025), (8, 48, 2025),
-(9, 49, 2025), (10, 50, 2025), (11, 51, 2025), (12, 52, 2025),
-(13, 53, 2025), (14, 54, 2025), (15, 55, 2025), (16, 56, 2025),
-(17, 57, 2025), (18, 58, 2025), (19, 59, 2025), (20, 60, 2025),
-(1, 61, 2025), (2, 62, 2025), (3, 63, 2025), (4, 64, 2025),
-(5, 65, 2025), (6, 66, 2025), (7, 67, 2025), (8, 68, 2025),
-(9, 69, 2025), (10, 70, 2025), (11, 71, 2025), (12, 72, 2025),
-(13, 73, 2025), (14, 74, 2025), (15, 75, 2025), (16, 76, 2025),
-(17, 77, 2025), (18, 78, 2025), (19, 79, 2025), (20, 80, 2025),
-(1, 81, 2025), (2, 82, 2025), (3, 83, 2025), (4, 84, 2025),
-(5, 85, 2025), (6, 86, 2025), (7, 87, 2025), (8, 88, 2025),
-(9, 89, 2025), (10, 90, 2025), (11, 91, 2025), (12, 92, 2025),
-(13, 93, 2025), (14, 94, 2025), (15, 95, 2025), (16, 96, 2025),
-(17, 97, 2025), (18, 98, 2025), (19, 99, 2025), (20, 100, 2025),
-(1, 101, 2025), (2, 102, 2025), (3, 103, 2025), (4, 104, 2025),
-(5, 105, 2025), (6, 106, 2025), (7, 107, 2025), (8, 108, 2025),
-(9, 109, 2025), (10, 110, 2025), (11, 111, 2025), (12, 112, 2025),
-(13, 113, 2025), (14, 114, 2025), (15, 115, 2025), (16, 116, 2025),
-(17, 117, 2025), (18, 118, 2025), (19, 119, 2025), (20, 120, 2025);
+(1, 1, 2025), (2, 2, 2025), (3, 3, 2025), (4, 4, 2025), (5, 5, 2025), (6, 6, 2025), (7, 7, 2025), (8, 8, 2025), (9, 9, 2025), (10, 10, 2025), (11, 11, 2025), (12, 12, 2025), (13, 13, 2025), (14, 14, 2025), (15, 15, 2025), (16, 16, 2025), (17, 17, 2025), (18, 18, 2025), (19, 19, 2025), (20, 20, 2025),
+(1, 21, 2025), (2, 22, 2025), (3, 23, 2025), (4, 24, 2025), (5, 25, 2025), (6, 26, 2025), (7, 27, 2025), (8, 28, 2025), (9, 29, 2025), (10, 30, 2025), (11, 31, 2025), (12, 32, 2025), (13, 33, 2025), (14, 34, 2025), (15, 35, 2025), (16, 36, 2025), (17, 37, 2025), (18, 38, 2025), (19, 39, 2025), (20, 40, 2025),
+(1, 41, 2025), (2, 42, 2025), (3, 43, 2025), (4, 44, 2025), (5, 45, 2025), (6, 46, 2025), (7, 47, 2025), (8, 48, 2025), (9, 49, 2025), (10, 50, 2025), (11, 51, 2025), (12, 52, 2025), (13, 53, 2025), (14, 54, 2025), (15, 55, 2025), (16, 56, 2025), (17, 57, 2025), (18, 58, 2025), (19, 59, 2025), (20, 60, 2025),
+(1, 61, 2025), (2, 62, 2025), (3, 63, 2025), (4, 64, 2025), (5, 65, 2025), (6, 66, 2025), (7, 67, 2025), (8, 68, 2025), (9, 69, 2025), (10, 70, 2025), (11, 71, 2025), (12, 72, 2025), (13, 73, 2025), (14, 74, 2025), (15, 75, 2025), (16, 76, 2025), (17, 77, 2025), (18, 78, 2025), (19, 79, 2025), (20, 80, 2025),
+(1, 81, 2025), (2, 82, 2025), (3, 83, 2025), (4, 84, 2025), (5, 85, 2025), (6, 86, 2025), (7, 87, 2025), (8, 88, 2025), (9, 89, 2025), (10, 90, 2025), (11, 91, 2025), (12, 92, 2025), (13, 93, 2025), (14, 94, 2025), (15, 95, 2025), (16, 96, 2025), (17, 97, 2025), (18, 98, 2025), (19, 99, 2025), (20, 100, 2025),
+(1, 101, 2025), (2, 102, 2025), (3, 103, 2025), (4, 104, 2025), (5, 105, 2025), (6, 106, 2025), (7, 107, 2025), (8, 108, 2025), (9, 109, 2025), (10, 110, 2025), (11, 111, 2025), (12, 112, 2025), (13, 113, 2025), (14, 114, 2025), (15, 115, 2025), (16, 116, 2025), (17, 117, 2025), (18, 118, 2025), (19, 119, 2025), (20, 120, 2025);
 
 -- ============================
 -- INSERTION DES ENTREPRISES
@@ -284,51 +260,44 @@ INSERT INTO MAITRE_STAGE (id_maitre, nom_maitre, prenom_maitre, civilite_maitre,
 -- DÉMARCHES (6 étudiants avec max 3 démarches chacun)
 -- ============================
 
-
 INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, date_relance, resultat, raison_refus, cv, lettre_motiv, id_entreprise, id_etudiant) VALUES
 (1, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-15', NULL, 'Stage obtenu', NULL, 'cv_dupont.pdf', 'lm_dupont.pdf', 1, 1),
-(2, 'LinkedIn', 'Réponse à offre', 'Refusée', '2025-09-10', '2025-09-25', 'Refusé', 'Profil junior', 'cv_dupont.pdf', 'lm_dupont2.pdf', 2, 1),
-(3, 'Salon', 'Contact direct', 'En attente', '2025-09-20', NULL, NULL, NULL, 'cv_dupont.pdf', 'lm_dupont3.pdf', 3, 1),
+(2, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-10', NULL, 'Stage obtenu', NULL, 'cv_legrand.pdf', 'lm_legrand.pdf', 2, 31),
+(3, 'Salon', 'Contact direct', 'Acceptée', '2025-09-20', NULL, 'Stage obtenu', NULL, 'cv_barbier.pdf', 'lm_barbier.pdf', 3, 61),
+
 (4, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-12', NULL, 'Stage obtenu', NULL, 'cv_moreau.pdf', 'lm_moreau.pdf', 2, 2),
-(5, 'Site entreprise', 'Candidature spontanée', 'Refusée', '2025-09-08', '2025-09-22', 'Refusé', 'Pas de place', 'cv_moreau.pdf', 'lm_moreau2.pdf', 4, 2),
+(5, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-08', NULL, 'Stage obtenu', NULL, 'cv_gauthier.pdf', 'lm_gauthier.pdf', 4, 32),
+
 (6, 'Réseau personnel', 'Recommandation', 'Acceptée', '2025-09-18', NULL, 'Stage obtenu', NULL, 'cv_laurent.pdf', 'lm_laurent.pdf', 3, 3),
-(7, 'Indeed', 'Réponse à offre', 'Refusée', '2025-09-05', NULL, 'Refusé', 'Niveau insuffisant', 'cv_laurent.pdf', 'lm_laurent2.pdf', 5, 3),
-(8, 'LinkedIn', 'Réponse à offre', 'En attente', '2025-09-25', NULL, NULL, NULL, 'cv_laurent.pdf', 'lm_laurent3.pdf', 6, 3),
-(9, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-14', NULL, 'Stage obtenu', NULL, 'cv_bonnet.pdf', 'lm_bonnet.pdf', 4, 9),
-(10, 'Salon', 'Contact direct', 'Refusée', '2025-09-11', NULL, 'Refusé', 'Budget limité', 'cv_bonnet.pdf', 'lm_bonnet2.pdf', 7, 9),
-(11, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-16', NULL, 'Stage obtenu', NULL, 'cv_blanc.pdf', 'lm_blanc.pdf', 5, 10),
-(12, 'LinkedIn', 'Réponse à offre', 'En attente', '2025-09-22', NULL, NULL, NULL, 'cv_blanc.pdf', 'lm_blanc2.pdf', 8, 10),
-(13, 'Site entreprise', 'Candidature spontanée', 'Refusée', '2025-09-07', '2025-09-21', 'Refusé', 'Profil inadapté', 'cv_blanc.pdf', 'lm_blanc3.pdf', 1, 10),
-(14, 'Réseau personnel', 'Recommandation', 'Acceptée', '2025-09-19', NULL, 'Stage obtenu', NULL, 'cv_garnier.pdf', 'lm_garnier.pdf', 6, 11),
-(15, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-15', NULL, 'Stage obtenu', NULL, 'cv_faure.pdf', 'lm_faure.pdf', 6, 12),
-(16, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-12', NULL, 'Stage obtenu', NULL, 'cv_roussel.pdf', 'lm_roussel.pdf', 7, 13),
-(17, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-10', NULL, 'Stage obtenu', NULL, 'cv_vincent.pdf', 'lm_vincent.pdf', 8, 14),
-(18, 'Salon', 'Contact direct', 'Acceptée', '2025-09-20', NULL, 'Stage obtenu', NULL, 'cv_muller.pdf', 'lm_muller.pdf', 1, 15),
-(19, 'Réseau personnel', 'Recommandation', 'Acceptée', '2025-09-18', NULL, 'Stage obtenu', NULL, 'cv_lefevre.pdf', 'lm_lefevre.pdf', 2, 16),
-(20, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-05', NULL, 'Stage obtenu', NULL, 'cv_mercier.pdf', 'lm_mercier.pdf', 1, 17),
-(21, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-25', NULL, 'Stage obtenu', NULL, 'cv_lemoine.pdf', 'lm_lemoine.pdf', 2, 18),
-(22, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-14', NULL, 'Stage obtenu', NULL, 'cv_andre.pdf', 'lm_andre.pdf', 3, 19),
-(23, 'Salon', 'Contact direct', 'Acceptée', '2025-09-11', NULL, 'Stage obtenu', NULL, 'cv_roux.pdf', 'lm_roux.pdf', 4, 20),
-(24, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-16', NULL, 'Stage obtenu', NULL, 'cv_david.pdf', 'lm_david.pdf', 5, 21),
-(25, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-22', NULL, 'Stage obtenu', NULL, 'cv_bertrand.pdf', 'lm_bertrand.pdf', 6, 22),
-(26, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-07', NULL, 'Stage obtenu', NULL, 'cv_morel.pdf', 'lm_morel.pdf', 7, 23),
-(27, 'Réseau personnel', 'Recommandation', 'Acceptée', '2025-09-19', NULL, 'Stage obtenu', NULL, 'cv_fontaine.pdf', 'lm_fontaine.pdf', 8, 24),
-(28, 'Indeed', 'Réponse à offre', 'En cours', '2025-10-05', NULL, NULL, NULL, 'cv_guerin.pdf', 'lm_guerin.pdf', 1, 25),
-(29, 'LinkedIn', 'Réponse à offre', 'Refusée', '2025-10-01', '2025-10-15', 'Refusé', 'Manque d''expérience', 'cv_rousseau.pdf', 'lm_rousseau.pdf', 2, 26),
-(30, 'Site entreprise', 'Candidature spontanée', 'En cours', '2025-10-10', NULL, NULL, NULL, 'cv_blanc_t.pdf', 'lm_blanc_t.pdf', 3, 27),
-(31, 'Salon', 'Contact direct', 'Acceptée', '2025-10-12', NULL, 'Stage obtenu', NULL, 'cv_garnier_l.pdf', 'lm_garnier_l.pdf', 4, 28),
-(32, 'Indeed', 'Réponse à offre', 'Refusée', '2025-09-28', NULL, 'Refusé', 'Poste pourvu', 'cv_chevalier.pdf', 'lm_chevalier.pdf', 5, 29),
-(33, 'LinkedIn', 'Réponse à offre', 'En cours', '2025-10-14', NULL, NULL, NULL, 'cv_francois.pdf', 'lm_francois.pdf', 6, 30),
-(34, 'Indeed', 'Réponse à offre', 'Refusée', '2025-09-20', '2025-10-05', 'Refusé', 'Profil trop junior', 'cv_dupont.pdf', 'lm_dupont4.pdf', 4, 1),
-(35, 'LinkedIn', 'Réponse à offre', 'En cours', '2025-10-12', NULL, NULL, NULL, 'cv_moreau.pdf', 'lm_moreau3.pdf', 5, 2),
-(36, 'Site entreprise', 'Candidature spontanée', 'Refusée', '2025-09-25', NULL, 'Refusé', 'Pas de recrutement actuellement', 'cv_laurent.pdf', 'lm_laurent4.pdf', 7, 3),
-(37, 'Indeed', 'Réponse à offre', 'En cours', '2025-10-18', NULL, NULL, NULL, 'cv_legrand.pdf', 'lm_legrand.pdf', 1, 31),
-(38, 'LinkedIn', 'Réponse à offre', 'Refusée', '2025-10-05', '2025-10-20', 'Refusé', 'Test technique non concluant', 'cv_gauthier.pdf', 'lm_gauthier.pdf', 2, 32),
-(39, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-10-22', NULL, 'Stage obtenu', NULL, 'cv_perrin.pdf', 'lm_perrin.pdf', 3, 33),
-(40, 'Salon', 'Contact direct', 'En cours', '2025-10-25', NULL, NULL, NULL, 'cv_robin.pdf', 'lm_robin.pdf', 4, 34),
-(41, 'Indeed', 'Réponse à offre', 'Refusée', '2025-10-10', NULL, 'Refusé', 'Candidature incomplète', 'cv_clement.pdf', 'lm_clement.pdf', 5, 35),
-(42, 'LinkedIn', 'Réponse à offre', 'En cours', '2025-10-28', NULL, NULL, NULL, 'cv_morin.pdf', 'lm_morin.pdf', 6, 36),
-(43, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-10-15', NULL, 'Stage obtenu', NULL, 'cv_nicolas.pdf', 'lm_nicolas.pdf', 7, 37);
+
+(7, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-05', NULL, 'Stage obtenu', NULL, 'cv_perrin.pdf', 'lm_perrin.pdf', 5, 33),
+(8, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-25', NULL, 'Stage obtenu', NULL, 'cv_denis.pdf', 'lm_denis.pdf', 6, 91),
+
+(9, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-14', NULL, 'Stage obtenu', NULL, 'cv_simon.pdf', 'lm_simon.pdf', 4, 4),
+(10, 'Salon', 'Contact direct', 'Acceptée', '2025-09-11', NULL, 'Stage obtenu', NULL, 'cv_arnaud.pdf', 'lm_arnaud.pdf', 7, 62),
+
+(11, 'Indeed', 'Réponse à offre', 'Refusée', '2025-09-16', NULL, 'Refusé', 'Profil junior', 'cv_michel.pdf', 'lm_michel.pdf', 5, 5),
+(12, 'LinkedIn', 'Réponse à offre', 'En attente', '2025-09-22', NULL, NULL, NULL, 'cv_michel.pdf', 'lm_michel2.pdf', 8, 5),
+(13, 'Site entreprise', 'Candidature spontanée', 'Refusée', '2025-09-07', '2025-09-21', 'Refusé', 'Profil inadapté', 'cv_michel.pdf', 'lm_michel3.pdf', 1, 5),
+
+(14, 'Réseau personnel', 'Recommandation', 'Refusée', '2025-09-19', NULL, 'Refusé', 'Pas de poste', 'cv_robin.pdf', 'lm_robin.pdf', 6, 34),
+(15, 'Site entreprise', 'Candidature spontanée', 'En attente', '2025-09-15', NULL, NULL, NULL, 'cv_robin.pdf', 'lm_robin2.pdf', 6, 34),
+
+(16, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-20', NULL, 'Stage obtenu', NULL, 'cv_garnier.pdf', 'lm_garnier.pdf', 1, 11),
+(17, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-22', NULL, 'Stage obtenu', NULL, 'cv_martinez.pdf', 'lm_martinez.pdf', 2, 63),
+(18, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-25', NULL, 'Stage obtenu', NULL, 'cv_dumont.pdf', 'lm_dumont.pdf', 3, 92),
+
+(19, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-20', NULL, 'Stage obtenu', NULL, 'cv_david.pdf', 'lm_david.pdf', 1, 21),
+(20, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-22', NULL, 'Stage obtenu', NULL, 'cv_bertrand.pdf', 'lm_bertrand.pdf', 2, 22),
+(21, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-25', NULL, 'Stage obtenu', NULL, 'cv_morel.pdf', 'lm_morel.pdf', 3, 23),
+(22, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-20', NULL, 'Stage obtenu', NULL, 'cv_fontaine.pdf', 'lm_fontaine.pdf', 4, 24),
+(23, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-22', NULL, 'Stage obtenu', NULL, 'cv_guerin.pdf', 'lm_guerin.pdf', 5, 25),
+(24, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-25', NULL, 'Stage obtenu', NULL, 'cv_rousseau.pdf', 'lm_rousseau.pdf', 6, 26),
+(25, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-20', NULL, 'Stage obtenu', NULL, 'cv_blanc.pdf', 'lm_blanc.pdf', 7, 27),
+(26, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-22', NULL, 'Stage obtenu', NULL, 'cv_garnier.pdf', 'lm_garnier.pdf', 8, 28),
+(27, 'Site entreprise', 'Candidature spontanée', 'Acceptée', '2025-09-25', NULL, 'Stage obtenu', NULL, 'cv_chevalier.pdf', 'lm_chevalier.pdf', 1, 29),
+(28, 'Indeed', 'Réponse à offre', 'Acceptée', '2025-09-20', NULL, 'Stage obtenu', NULL, 'cv_francois.pdf', 'lm_francois.pdf', 2, 30),
+(29, 'LinkedIn', 'Réponse à offre', 'Acceptée', '2025-09-22', NULL, 'Stage obtenu', NULL, 'cv_faure.pdf', 'lm_faure.pdf', 3, 12);
 
 -- ============================
 -- STAGES 
@@ -336,24 +305,34 @@ INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, date_re
 
 INSERT INTO STAGE (id_stage, typeS, date_debut, date_fin, duree_stage, unite_duree, titre_stage, theme_stage, id_maitre, id_demarche) VALUES
 (1, 'Stage de fin d''études', '2025-10-01', '2025-03-31', 6, 'mois', 'Développement d''une application web de gestion', 'Développement Full-Stack', 1, 1),
-(2, 'Stage de fin d''études', '2025-10-15', '2025-04-15', 6, 'mois', 'Analyse de données massives pour la prédiction', 'Big Data et Machine Learning', 2, 4),
-(3, 'Stage de fin d''études', '2025-10-01', '2025-03-31', 6, 'mois', 'Création d''un site e-commerce responsive', 'Développement Web', 3, 6),
-(4, 'Stage de fin d''études', '2025-10-15', '2025-04-15', 6, 'mois', 'Développement d''applications mobiles iOS/Android', 'Mobile Development', 6, 15),
-(5, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Mise en place d''une infrastructure sécurisée', 'Cybersécurité et Réseaux', 4, 9),
-(6, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Migration vers le Cloud AWS', 'Cloud Computing', 5, 11),
-(7, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Développement d''une application mobile de fitness', 'Applications mobiles', 6, 14),
-(8, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Développement d''un ERP sur mesure', 'Développement logiciel', 7, 16),
-(9, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Transformation digitale des processus internes', 'Digital & Innovation', 8, 17),
-(10, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Développement d''une plateforme web collaborative', 'Développement Web', 9, 18),
-(11, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Optimisation des performances d''applications', 'Performance & Big Data', 10, 19),
-(12, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Création d''interfaces utilisateur modernes', 'UX/UI Design', 1, 20),
-(13, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Analyse de données clients pour le marketing', 'Data Analytics', 2, 21),
-(14, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Développement d''API REST pour microservices', 'Architecture logicielle', 3, 22),
-(15, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Mise en place d''une solution IoT', 'Internet des Objets', 4, 23),
-(16, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Développement d''un chatbot intelligent', 'Intelligence Artificielle', 5, 24),
-(17, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Automatisation des tests logiciels', 'QA & Testing', 6, 25),
-(18, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Développement d''un système de monitoring', 'DevOps', 7, 26),
-(19, 'Stage professionnel', '2025-04-15', '2025-07-15', 3, 'mois', 'Création d''un CMS personnalisé', 'Développement Web', 8, 27);
+(2, 'Alternance', '2025-09-01', '2026-08-31', 12, 'mois', 'Développement Backend Java', 'Backend', 2, 2),
+(3, 'Stage de fin d''études', '2025-04-01', '2025-09-30', 6, 'mois', 'Data Science et IA', 'IA', 3, 3),
+
+(4, 'Stage de fin d''études', '2025-10-15', '2025-04-15', 6, 'mois', 'Analyse de données massives', 'Big Data', 2, 4),
+(5, 'Alternance', '2025-09-01', '2026-08-31', 12, 'mois', 'Sécurité des réseaux', 'Cybersécurité', 4, 5),
+
+(6, 'Stage de fin d''études', '2025-10-01', '2025-03-31', 6, 'mois', 'Site e-commerce', 'Web', 3, 6),
+
+(7, 'Alternance', '2025-09-01', '2026-08-31', 12, 'mois', 'DevOps et Cloud', 'Cloud', 5, 7),
+(8, 'Alternance', '2025-09-01', '2026-08-31', 12, 'mois', 'Support technique', 'Support', 6, 8),
+(9, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Application mobile', 'Mobile', 4, 9),
+(10, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Refonte site web', 'Web', 7, 10),
+
+(11, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Développement Web', 'Web', 1, 16),
+(12, 'Stage de fin d''études', '2025-04-01', '2025-06-30', 3, 'mois', 'Data Analyst', 'Data', 2, 17),
+(13, 'Alternance', '2025-09-01', '2026-08-31', 12, 'mois', 'Admin Sys', 'Réseau', 3, 18),
+
+(14, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Dev Mobile', 'Mobile', 1, 19),
+(15, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Dev Web', 'Web', 2, 20),
+(16, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Data Science', 'Data', 3, 21),
+(17, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Cyber', 'Secu', 4, 22),
+(18, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Reseau', 'Reseau', 5, 23),
+(19, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Cloud', 'Cloud', 6, 24),
+(20, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'IA', 'IA', 7, 25),
+(21, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Big Data', 'Data', 8, 26),
+(22, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'DevOps', 'DevOps', 1, 27),
+(23, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Fullstack', 'Web', 2, 28),
+(24, 'Stage professionnel', '2025-04-01', '2025-06-30', 3, 'mois', 'Backend', 'Web', 3, 29);
 
 -- ============================
 -- DÉMARCHES ET STAGES SUPPLÉMENTAIRES
@@ -365,26 +344,27 @@ INSERT INTO DEMARCHE (id_demarche, source, typeD, situation, date_envoi, id_entr
 (53, 'Import', 'Stage', 'Acceptée', '2025-01-10', 4, 74), (54, 'Import', 'Stage', 'Acceptée', '2025-01-10', 4, 75), (55, 'Import', 'Stage', 'Acceptée', '2025-01-10', 4, 76);
 
 INSERT INTO STAGE (id_stage, typeS, date_debut, date_fin, titre_stage, id_demarche) VALUES
-(20, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe A1', 44), (21, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe A2', 45), (22, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe A3', 46),
-(23, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe B1', 47), (24, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe B2', 48), (25, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe B3', 49),
+(120, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe A1', 44), (121, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe A2', 45), (122, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe A3', 46),
+(123, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe B1', 47), (124, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe B2', 48), (125, 'Stage BUT2', '2025-05-01', '2025-06-30', 'Projet Groupe B3', 49),
 (26, 'Stage BUT3', '2025-03-01', '2025-08-31', 'Expertise Groupe C1', 50), (27, 'Stage BUT3', '2025-03-01', '2025-08-31', 'Expertise Groupe C2', 51), (28, 'Stage BUT3', '2025-03-01', '2025-08-31', 'Expertise Groupe C3', 52),
 (29, 'Stage BUT3', '2025-03-01', '2025-08-31', 'Expertise Groupe D1', 53), (30, 'Stage BUT3', '2025-03-01', '2025-08-31', 'Expertise Groupe D2', 54), (31, 'Stage BUT3', '2025-03-01', '2025-08-31', 'Expertise Groupe D3', 55);
 
--- ============================
--- SOUTENANCES
--- ============================
 INSERT INTO SOUTENANCE (id_soutenance, salle, nom_bat, dateS, h_debut, h_fin, id_stage) VALUES
-(1, 101, 'Bâtiment A', '2025-04-15', '09:00', '09:45', 1), (2, 101, 'Bâtiment A', '2025-04-15', '09:00', '09:45', 2), (3, 101, 'Bâtiment A', '2025-04-15', '09:00', '09:45', 3),
-(4, 102, 'Bâtiment A', '2025-04-15', '09:00', '09:45', 4), (5, 102, 'Bâtiment A', '2025-04-15', '09:00', '09:45', 5), (6, 102, 'Bâtiment A', '2025-04-15', '09:00', '09:45', 6),
-(7, 103, 'Bâtiment B', '2025-04-15', '09:00', '09:45', 7), (8, 103, 'Bâtiment B', '2025-04-15', '09:00', '09:45', 8), (9, 103, 'Bâtiment B', '2025-04-15', '09:00', '09:45', 9),
-(10, 101, 'Bâtiment A', '2025-04-15', '10:00', '10:45', 10), (11, 101, 'Bâtiment A', '2025-04-15', '10:00', '10:45', 11), (12, 101, 'Bâtiment A', '2025-04-15', '10:00', '10:45', 12),
-(13, 102, 'Bâtiment A', '2025-04-15', '10:00', '10:45', 13), (14, 102, 'Bâtiment A', '2025-04-15', '10:00', '10:45', 14), (15, 102, 'Bâtiment A', '2025-04-15', '10:00', '10:45', 15),
-(16, 103, 'Bâtiment B', '2025-04-15', '10:00', '10:45', 16), (17, 103, 'Bâtiment B', '2025-04-15', '10:00', '10:45', 17), (18, 103, 'Bâtiment B', '2025-04-15', '10:00', '10:45', 18),
-(19, 104, 'Bâtiment B', '2025-04-15', '09:00', '09:45', 19), (20, 104, 'Bâtiment B', '2025-04-15', '09:00', '09:45', 20), (21, 104, 'Bâtiment B', '2025-04-15', '09:00', '09:45', 21),
-(22, 105, 'Bâtiment A', '2025-06-15', '09:00', '09:45', 22), (23, 105, 'Bâtiment A', '2025-06-15', '09:00', '09:45', 23), (24, 105, 'Bâtiment A', '2025-06-15', '09:00', '09:45', 24),
-(25, 105, 'Bâtiment A', '2025-06-15', '10:00', '10:45', 25);
+(1, 101, 'Bâtiment A', '2025-06-20', '09:00', '10:00', 1),
+(4, 101, 'Bâtiment A', '2025-06-20', '09:00', '10:00', 4),
 
-INSERT INTO SOUTENANCE (id_soutenance, salle, nom_bat, dateS, h_debut, h_fin, id_stage) VALUES
+(2, 201, 'Bâtiment C', '2025-06-21', '09:00', '10:00', 2),
+(5, 201, 'Bâtiment C', '2025-06-21', '09:00', '10:00', 5),
+(7, 201, 'Bâtiment C', '2025-06-21', '09:00', '10:00', 7),
+
+(6, 101, 'Bâtiment A', '2025-06-20', '14:00', '15:00', 6),
+(10, 101, 'Bâtiment A', '2025-06-20', '14:00', '15:00', 11),
+
+(3, 101, 'Bâtiment A', '2025-07-03', '09:00', '10:00', 3),
+(8, 201, 'Bâtiment C', '2025-07-03', '10:00', '11:00', 8),
+(9, 201, 'Bâtiment C', '2025-07-03', '11:00', '12:00', 10),
+(11, 202, 'Bâtiment C', '2025-07-03', '15:00', '16:00', 12),
+(12, 202, 'Bâtiment C', '2025-07-03', '16:00', '17:00', 13),
 (26, 106, 'Bâtiment B', '2025-06-16', '09:00', '10:00', 26), (27, 106, 'Bâtiment B', '2025-06-16', '10:00', '11:00', 27), (28, 106, 'Bâtiment B', '2025-06-16', '11:00', '12:00', 28),
 (29, 106, 'Bâtiment B', '2025-06-16', '13:00', '14:00', 29), (30, 106, 'Bâtiment B', '2025-06-16', '14:00', '15:00', 30), (31, 106, 'Bâtiment B', '2025-06-16', '15:00', '16:00', 31);
 
@@ -392,6 +372,18 @@ INSERT INTO SOUTENANCE (id_soutenance, salle, nom_bat, dateS, h_debut, h_fin, id
 -- JURYS
 -- ============================
 INSERT INTO JURY (id_jury, date_jury, h_jury, duree, id_soutenance) VALUES
+(1, '2025-06-20', '09:00', 60, 1),
+(4, '2025-06-20', '09:00', 60, 4),
+(2, '2025-06-21', '09:00', 60, 2),
+(5, '2025-06-21', '09:00', 60, 5),
+(7, '2025-06-21', '09:00', 60, 7),
+(6, '2025-06-20', '14:00', 60, 6),
+(10, '2025-06-20', '14:00', 60, 10),
+(3, '2025-07-03', '09:00', 60, 3),
+(8, '2025-07-03', '10:00', 60, 8),
+(9, '2025-07-03', '11:00', 60, 9),
+(11, '2025-07-03', '15:00', 60, 11),
+(12, '2025-07-03', '16:00', 60, 12),
 (20, '2025-06-15', '09:00', 45, 20), (21, '2025-06-15', '09:00', 45, 21), (22, '2025-06-15', '09:00', 45, 22),
 (23, '2025-06-15', '10:00', 45, 23), (24, '2025-06-15', '10:00', 45, 24), (25, '2025-06-15', '10:00', 45, 25),
 (26, '2025-06-16', '09:00', 60, 26), (27, '2025-06-16', '10:00', 60, 27), (28, '2025-06-16', '11:00', 60, 28),
@@ -401,25 +393,18 @@ INSERT INTO JURY (id_jury, date_jury, h_jury, duree, id_soutenance) VALUES
 -- COMPOSITIONS DES JURYS
 -- ============================
 INSERT INTO COMPOSER (id_enseignant, id_soutenance) VALUES
--- Salle 101 - 09:00
-(1, 1), (2, 1), (1, 2), (2, 2), (1, 3), (2, 3),
--- Salle 102 - 09:00
-(3, 4), (4, 4), (3, 5), (4, 5), (3, 6), (4, 6),
--- Salle 103 - 09:00
-(5, 7), (6, 7), (5, 8), (6, 8), (5, 9), (6, 9),
--- Salle 101 - 10:00
-(7, 10), (8, 10), (7, 11), (8, 11), (7, 12), (8, 12),
--- Salle 102 - 10:00
-(9, 13), (10, 13), (9, 14), (10, 14), (9, 15), (10, 15),
--- Salle 103 - 10:00
-(11, 16), (12, 16), (11, 17), (12, 17), (11, 18), (12, 18),
--- Salle 104 - 09:00
-(13, 19), (14, 19), (13, 20), (14, 20), (13, 21), (14, 21),
--- Salle 105 - 09:00
-(11, 22), (12, 22), (11, 23), (12, 23), (11, 24), (12, 24),
--- Salle 105 - 10:00
-(11, 25), (12, 25),
--- Salle 106 - 09:00 (BUT3)
-(13, 26), (14, 26), (13, 27), (14, 27), (13, 28), (14, 28),
--- Salle 106 - 10:00 (BUT3)
-(13, 29), (14, 29), (13, 30), (14, 30), (13, 31), (14, 31);
+(1, 1), (2, 1),
+(1, 4), (2, 4),
+
+(7, 2), (8, 2),
+(7, 5), (8, 5),
+(7, 7), (8, 7),
+
+(5, 6), (6, 6),
+(5, 10), (6, 10),
+
+(1, 3), (2, 3),
+(7, 8), (8, 8),
+(9, 9), (10, 9),
+(13, 11), (14, 11),
+(15, 12), (16, 12);
