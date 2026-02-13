@@ -121,48 +121,6 @@ div.demarches{
 
 /*---------------- POUR LES PAGES ENSEIGNANT ----------------*/
 
-/*#accueil_enseignant{
-    width: 100%;
-
-    > div{
-        width: 100%;
-
-        div{
-            width: 100%;
-            height: 100%;
-        }
-    }
-
-    > div:last-of-type{
-        align-items: baseline;
-
-        > .boite_verticale .glass{
-            height: 40vh;
-
-            h2{
-                text-align: left;
-            }
-
-            a{
-                align-self: flex-end;
-            }
-        }
-
-        #planning_accueil{
-            .glass{
-                max-height: 40vh;
-                overflow: scroll;
-                overflow-x: hidden;
-            }
-        }
-    }
-
-    .tutore_accueil{
-        flex-grow: 0;
-        width: auto;
-    }
-}*/
-
 :root:has(#tutores){
     body{
         overflow-y: hidden;
@@ -340,19 +298,19 @@ section#tutores{
     /*positionnement
     width: 270px;
     padding: 10px;
-}*/
+}
 
-.dark_planning_accueil{
+.dark_planning_accueil{*/
     /* style */
-    background-color: var(--couleur_sombre_principale);
+    /*background-color: var(--couleur_sombre_principale);
     border-radius: 40px;
 
     color:var(--couleur_texte_clair);
 
-    /* positionnement */
+    /* positionnement *//*
     width: 80%;
     padding: 10px;
-}
+}*/
 
 /*---------------- POUR LES PAGES ADMIN ----------------*/
 
@@ -394,9 +352,21 @@ div#boite{
     justify-content: center;
 }
 
-div#import_form_container, div#export_form_container{
-    width: 700px;
-    height: 500px;
+#barre_haut_accueil_admin{
+    /*width: 700px;*/
+    height: 35dvh;
+
+    > *{
+        height: 100%;
+    }
+    
+    .boite_verticale {
+        row-gap: 0;
+    }
+
+    .boite_horizontale{
+        padding: 0;
+    }
 }
 
 div.liste_etu{
@@ -411,12 +381,64 @@ div.liste_etu{
     margin: 0; 
 }
 
-div#contenu_admin {
-    /* style */
-    font-size: 1rem;
+.boite_horizontale:has(#contenu_admin){
+    width: 100%;
+    justify-content: space-around;
+    padding: 30px 0;
 
-    /* positionnement */
-    align-items: center;
+    #contenu_admin {
+        /* style */
+        font-size: 1rem;
+
+        /* positionnement */
+        height: 70vh;
+        max-width: 800px;
+        width: 40%;
+
+        > *{
+            padding: 5px 0;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        h2{
+            white-space: nowrap;
+        }
+
+        .glass{
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            row-gap: 5px;
+
+            a{
+                align-self: flex-end;
+            }
+
+            h3{
+                align-self: flex-start;
+            }
+        }
+    }
+}
+
+
+
+@media (max-width: 1300px) {
+    body{
+        /*background: aqua;*/
+        overflow-y: scroll !important;
+    }
+
+    .boite_horizontale:has(#contenu_admin){
+        flex-direction: column;
+        align-items: center;
+        row-gap: 100px;
+
+        section{
+            width: 100% !important;
+        }
+    }
 }
 
 a#voir{

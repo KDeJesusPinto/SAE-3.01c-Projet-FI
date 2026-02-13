@@ -27,7 +27,7 @@ body{
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
-    overflow-x: hidden;
+    overflow-x: scroll;
 
     font-family: "Arimo", sans-serif;
     color: var(--couleur_texte_sombre);
@@ -98,8 +98,13 @@ a{
     /* positionnement */
 }
 
-select, button{
+select, button, input{
     border: none;
+}
+
+
+sup{
+    font-size: 1.3rem;
 }
 
 /* ---------------- STYLES GÉNÉRAUX DES BOÎTES ----------------*/
@@ -439,3 +444,4 @@ select.form-control,
 textarea.form-control {
    border-radius: 50px;
 }
+

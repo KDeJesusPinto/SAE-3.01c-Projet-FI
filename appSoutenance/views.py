@@ -615,41 +615,73 @@ def accueil_admin():
 
     requete_les_etudiants = Etudiant.query.outerjoin(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).outerjoin(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
 
+    requete_les_etudiants_2 = requete_les_etudiants.filter((Promo.nom_promo.like("%BUT2%")) | (Promo.nom_promo.like("%BUT 2%")))
+    requete_les_etudiants_3 = requete_les_etudiants.filter((Promo.nom_promo.like("%BUT3%")) | (Promo.nom_promo.like("%BUT 3%")))
+
     if formation_filter:
         terme = "Informatique" if formation_filter == "Info" else formation_filter
         requete_les_etudiants = requete_les_etudiants.filter(Promo.formation_promo.like(f"%{terme}%"))
 
     # Nombre total d'étudiants
-    nb_etudiants = requete_les_etudiants.distinct().count()
+    nb_etudiants_2 = requete_les_etudiants_2.distinct().count()
+    nb_etudiants_3 = requete_les_etudiants_3.distinct().count()
 
     # Nombre de stages trouvés
-    requete_nb_stages_trouves = requete_les_etudiants.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
+    requete_nb_stages_trouves = requete_les_etudiants_2.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
                                                 .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
                                                 .filter(Demarche.situation == 'Acceptée')
     nb_stages_trouves = requete_nb_stages_trouves.with_entities(Stage.id_stage).distinct().count()
 
+    # 3ème année
+    requete_nb_stages_trouves3 = requete_les_etudiants_3.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
+                                                .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
+                                                .filter(Demarche.situation == 'Acceptée')
+    nb_stages_trouves3 = requete_nb_stages_trouves3.with_entities(Stage.id_stage).distinct().count()
+
     # Nombre d'étudiants alternants
-    requete_nb_etudiants_alternants = requete_les_etudiants.filter(Appartenir.regime_etudiant == 'Formation apprentissage')
-    nb_etudiants_alternants = requete_nb_etudiants_alternants.distinct().count()
+    requete_nb_etudiants_alternants2 = requete_les_etudiants_2.filter(Appartenir.regime_etudiant == 'Formation apprentissage')
+    nb_etudiants_alternants2 = requete_nb_etudiants_alternants2.distinct().count()
+
+    #but3
+    requete_nb_etudiants_alternants3 = requete_les_etudiants_3.filter(Appartenir.regime_etudiant == 'Formation apprentissage')
+    nb_etudiants_alternants3 = requete_nb_etudiants_alternants3.distinct().count()
 
     # Nombre de soutenances d'alternants prévues
-    requete_nb_soutenances_alternants = requete_nb_etudiants_alternants.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
+    requete_nb_soutenances_alternants2 = requete_nb_etudiants_alternants2.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
                                                                     .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
                                                                     .join(Soutenance, Stage.id_stage == Soutenance.id_stage)
-    nb_soutenances_alternants = requete_nb_soutenances_alternants.with_entities(Soutenance.id_soutenance).distinct().count()
+    #but3
+    requete_nb_soutenances_alternants3 = requete_nb_etudiants_alternants3.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
+                                                                    .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
+                                                                    .join(Soutenance, Stage.id_stage == Soutenance.id_stage)
+    nb_soutenances_alternants2 = requete_nb_soutenances_alternants2.with_entities(Soutenance.id_soutenance).distinct().count()
+    nb_soutenances_alternants3 = requete_nb_soutenances_alternants3.with_entities(Soutenance.id_soutenance).distinct().count()
 
     # Nombre de soutenances posées par tuteur
-    requete_soutenances = requete_les_etudiants.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
+    requete_soutenances2 = requete_les_etudiants_2.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
                                                      .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
                                                      .join(Soutenance, Stage.id_stage == Soutenance.id_stage)\
                                                      .join(Tutorer, Etudiant.id_etudiant == Tutorer.id_etudiant)
-    nb_soutenances_posees = requete_soutenances.with_entities(Soutenance.id_soutenance).distinct().count()
+    
+    #but3
+    requete_soutenances3 = requete_les_etudiants_3.join(Demarche, Etudiant.id_etudiant == Demarche.id_etudiant)\
+                                                     .join(Stage, Demarche.id_demarche == Stage.id_demarche)\
+                                                     .join(Soutenance, Stage.id_stage == Soutenance.id_stage)\
+                                                     .join(Tutorer, Etudiant.id_etudiant == Tutorer.id_etudiant)
+
+
+
+
+    nb_soutenances_posees2 = requete_soutenances2.with_entities(Soutenance.id_soutenance).distinct().count()
+    nb_soutenances_posees3 = requete_soutenances3.with_entities(Soutenance.id_soutenance).distinct().count()
     nb_tuteurs = db.session.query(Tutorer.id_enseignant).distinct().count()
 
     # Nombre de soutenances en attente de candide
-    requete_ids_soutenances_pertinentes = requete_soutenances.with_entities(Soutenance.id_soutenance).distinct()
+    requete_ids_soutenances_pertinentes2 = requete_soutenances2.with_entities(Soutenance.id_soutenance).distinct()
+    requete_ids_soutenances_pertinentes3 = requete_soutenances3.with_entities(Soutenance.id_soutenance).distinct()
     soutenances_jury_complet_ids = db.session.query(Composer.id_soutenance).group_by(Composer.id_soutenance).having(func.count(Composer.id_enseignant) >= 2)
-    nb_soutenances_attente_candide = requete_ids_soutenances_pertinentes.filter(Soutenance.id_soutenance.notin_(soutenances_jury_complet_ids)).count()
+    nb_soutenances_attente_candide2 = requete_ids_soutenances_pertinentes2.filter(Soutenance.id_soutenance.notin_(soutenances_jury_complet_ids)).count()
+    nb_soutenances_attente_candide3 = requete_ids_soutenances_pertinentes3.filter(Soutenance.id_soutenance.notin_(soutenances_jury_complet_ids)).count()
 
 
     return render_template(
@@ -658,11 +690,17 @@ def accueil_admin():
         title="Accueil",
         personne=admin,
         nb_stages_trouves=nb_stages_trouves,
-        nb_etudiants=nb_etudiants,
-        nb_etudiants_alternants=nb_etudiants_alternants,
-        nb_soutenances_alternants=nb_soutenances_alternants,
-        nb_soutenances_posees=nb_soutenances_posees,
-        nb_soutenances_attente_candide=nb_soutenances_attente_candide,
+        nb_stages_trouves3 =nb_etudiants_3,
+        nb_etudiants_2=nb_etudiants_2,
+        nb_etudiants_3=nb_etudiants_3,
+        nb_etudiants_alternants2=nb_etudiants_alternants2,
+        nb_etudiants_alternants3=nb_etudiants_alternants3,
+        nb_soutenances_alternants2=nb_soutenances_alternants2,
+        nb_soutenances_alternants3=nb_soutenances_alternants3,
+        nb_soutenances_posees2=nb_soutenances_posees2,
+        nb_soutenances_posees3=nb_soutenances_posees3,
+        nb_soutenances_attente_candide2=nb_soutenances_attente_candide2,
+        nb_soutenances_attente_candide3=nb_soutenances_attente_candide3,
         nb_tuteurs=nb_tuteurs,
         importForm = importForm,
         exportForm = exportForm)
