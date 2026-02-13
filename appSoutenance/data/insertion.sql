@@ -297,7 +297,7 @@ VALUES (1, 'BUT2', 2025, 'Formation initiale'),
     (3, 'BUT2', 2025, 'Formation initiale'),
     (4, 'BUT3', 2025, 'Formation apprentissage'),
     (10, 'BUT2', 2025, 'Formation initiale'),
-    (5, 'BUT3', 2025, 'Formation apprentissage'),
+    (5, 'BUT2', 2025, 'Formation apprentissage'),
     (6, 'BUT2', 2025, 'Formation initiale'),
     (7, 'BUT2', 2025, 'Formation initiale'),
     (8, 'BUT3', 2025, 'Formation apprentissage'),
@@ -641,7 +641,7 @@ VALUES (
         102,
         'Bâtiment B',
         '2025-03-25',
-        '09:00',
+        '08:00',
         '09:45',
         5
     );

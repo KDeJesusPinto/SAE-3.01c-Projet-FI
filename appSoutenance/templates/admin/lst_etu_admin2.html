@@ -1,4 +1,4 @@
-{% extends "enseignant/base_enseignant.html" %}
+{% extends "admin/base_admin.html" %}
 
 {% block content %}
     <div class="boite_horizontale">
@@ -28,18 +28,18 @@
                     <option value="NbDemarches">Nombre de démarches</option>
                 </select>
                 <button class="petit_bouton" id="filtrer" type="submit" style="display: block; margin: 12px auto;">Appliquer</button>
-                <a href="{{ url_for('accueil_enseignant') }}" class="petit_bouton" id="retour"><i class="fas fa-code"></i> Retour</a>
+                <a href="{{ url_for('accueil_admin') }}" class="petit_bouton" id="retour"><i class="fas fa-code"></i> Retour</a>
             </form>
         </aside>
 
         <div class="boite_verticale">
-            <h1>Liste des étudiants{% if current_promo == '2A' %} BUT2{% elif current_promo == '3A' %} BUT3{% endif %}</h1>
+            <h1>Liste des étudiants{% if current_promo == '2A' %} BUT2{% endif %}</h1>
             {% if resultats|length == 0 %}
                 <p>Aucun étudiant trouvé</p>
             {% endif %}
             {% for res in resultats %}
             <div class="glass liste_etu" style="position: relative;">
-                <a href="{{ url_for('detail_etudiant_ens', num_personne=res.etudiant.id_etudiant) }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></a>
+                <a href="{{ url_for('detail_etudiant_admin', id=res.etudiant.id_etudiant) }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></a>
 
                 <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 50px 1fr 0.8fr 0.5fr 0.6fr 0.8fr 1.2fr 50px; align-items: center; gap: 10px; position: relative; pointer-events: none;">
                     <i class="fas fa-user-circle grande_icone"></i>

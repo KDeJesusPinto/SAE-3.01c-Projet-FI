@@ -11,22 +11,10 @@ from .models import *
 
 @app.cli.command()
 def resetdb():
-    """Réinitialise la base de données à son état initial"""
+    """Supprime toutes les données et recrée les tables vides."""
     db.drop_all()
     db.create_all()
-
-    sql_file = Path("appSoutenance/data/insertion.sql")
-    if sql_file.exists():
-        with open(sql_file, "r", encoding="utf-8") as f:
-            sql_script = f.read()
-            for statement in sql_script.split(";"):
-                statement = statement.strip()
-                if statement:
-                    db.session.execute(text(statement))
-        db.session.commit()
-        lg.warning("Base de données réinitialisée avec succès !")
-    else:
-        lg.warning("Tables créées mais aucun fichier insertion.sql trouvé pour les données initiales")
+    lg.warning("Base de données vidée : toutes les données ont été supprimées")
 
 
 @app.cli.command()
@@ -38,7 +26,7 @@ def loaddb(filename):
     db.create_all()
 
     # Exécution du script d'insertion
-    sql_file = Path("appSoutenance/data/insertion.sql")
+    sql_file = Path("appSoutenance/data/donnee.sql")
     if sql_file.exists():
         with open(sql_file, "r", encoding="utf-8") as f:
             sql_script = f.read()
@@ -46,10 +34,11 @@ def loaddb(filename):
                 statement = statement.strip()
                 if statement:
                     db.session.execute(text(statement))
+                    db.session.commit()
         db.session.commit()
-        lg.warning("Fichier insertion.sql exécuté avec succès!")
+        lg.warning("Fichier donnee.sql exécuté avec succès!")
     else:
-        lg.warning("Aucun fichier insertion.sql trouvé.")
+        lg.warning("Aucun fichier donnee.sql trouvé")
 
     with open(filename, newline='', encoding='utf-8') as csvfile:
         reader = csv.DictReader(csvfile)
@@ -62,14 +51,20 @@ def loaddb(filename):
             email = row['mail_perso'] or row['mail_etu'] or "email@anonyme.com"
 
             # Création de l'étudiant
-            etu = Etudiant(
-                nom_etudiant=nom_stagiaire,
-                prenom_etudiant=prenom_stagiaire,
-                civilite_etudiant=civilite_stagiaire,
-                date_naissance=datetime(2000, 1, 1).date(),
-                email_etudiant=email)
-            db.session.add(etu)
-            db.session.flush()
+            etu = Etudiant.query.filter_by(email_etudiant=email).first()
+            if not etu:
+                etu = Etudiant(
+                    nom_etudiant=nom_stagiaire,
+                    prenom_etudiant=prenom_stagiaire,
+                    civilite_etudiant=civilite_stagiaire,
+                    date_naissance=datetime(2000, 1, 1).date(),
+                    email_etudiant=email,
+                    login_etudiant=(prenom_stagiaire[0] + nom_stagiaire).lower().replace(" ", ""),
+                    pwd_etudiant="")
+                db.session.add(etu)
+                db.session.flush()
+                etu.pwd_etudiant = f"pass{etu.id_etudiant}"
+                db.session.flush()
 
             #Promo
             nom_promo = row.get("lib_import") or "Promo inconnue"
@@ -78,18 +73,23 @@ def loaddb(filename):
             if not promo:
                 promo = Promo(nom_promo=nom_promo,
                               annee_promo=annee_promo,
-                              formation_promo="Informatique")
+                              formation_promo="BUT Informatique")
                 db.session.add(promo)
                 db.session.flush()
 
             # Association étudiant --> promo
-            appart = Appartenir(
+            appart = Appartenir.query.filter_by(
                 id_etudiant=etu.id_etudiant,
                 nom_promo=promo.nom_promo,
-                annee_promo=promo.annee_promo,
-                regime_etudiant=row.get('intitule_regime_inscription') or
-                "Initiale")
-            db.session.add(appart)
+                annee_promo=promo.annee_promo
+            ).first()
+            if not appart:
+                appart = Appartenir(
+                    id_etudiant=etu.id_etudiant,
+                    nom_promo=promo.nom_promo,
+                    annee_promo=promo.annee_promo,
+                    regime_etudiant=row.get('intitule_regime_inscription') or "Initiale")
+                db.session.add(appart)
 
             # Entreprise
             nom_ent = row.get(
@@ -140,29 +140,33 @@ def loaddb(filename):
             except (ValueError, TypeError):
                 dtfin = None
 
-            demarche = Demarche(source="CSV import",
-                                typeD="Stage",
-                                situation="En cours",
-                                date_envoi=dtdeb or datetime.today().date(),
-                                date_relance=None,
-                                resultat=None,
-                                raison_refus=None,
-                                cv=None,
-                                lettre_motiv=None,
-                                id_entreprise=entreprise.id_entreprise,
-                                id_etudiant=etu.id_etudiant)
-            db.session.add(demarche)
-            db.session.flush()
+            demarche = Demarche.query.filter_by(
+                id_etudiant=etu.id_etudiant,
+                id_entreprise=entreprise.id_entreprise,
+                typeD="Stage"
+            ).first()
+
+            if not demarche:
+                demarche = Demarche(source="CSV import",
+                                    typeD="Stage",
+                                    situation="En cours",
+                                    date_envoi=dtdeb or datetime.today().date(),
+                                    id_entreprise=entreprise.id_entreprise,
+                                    id_etudiant=etu.id_etudiant)
+                db.session.add(demarche)
+                db.session.flush()
 
             # Stage
-            stage = Stage(typeS="Stage",
-                          date_debut=dtdeb or datetime.today().date(),
-                          date_fin=dtfin or datetime.today().date(),
-                          titre_stage=row.get("titre_stage") or "Stage inconnu",
-                          theme_stage=row.get("theme_stage") or "NC",
-                          id_demarche=demarche.id_demarche,
-                          id_maitre=maitre.id_maitre)
-            db.session.add(stage)
+            if not Stage.query.filter_by(id_demarche=demarche.id_demarche).first():
+                stage = Stage(typeS="Stage",
+                              date_debut=dtdeb or datetime.today().date(),
+                              date_fin=dtfin or datetime.today().date(),
+                              titre_stage=row.get("titre_stage") or "Stage inconnu",
+                              theme_stage=row.get("theme_stage") or "NC",
+                              id_demarche=demarche.id_demarche,
+                              id_maitre=maitre.id_maitre)
+                db.session.add(stage)
+                db.session.flush()
         db.session.commit()
         lg.warning("Database initialized!!!!")
 
@@ -215,19 +219,16 @@ def test(ctx):
     # 1. Réinitialisation initiale
     ctx.invoke(loaddb, filename='appSoutenance/data/arexis_donnees.csv')
 
-    try:
-        # 2. Exécution des tests via subprocess pour un coverage précis
-        res = subprocess.run([
-            "coverage", "run", "-m", "pytest", 
-            "--cov=appSoutenance", "--cov-report=term-missing", "appSoutenance/tests"
-        ])
-        # 3. Affichage du rapport de couverture
-        subprocess.run(["coverage", "report", "-m"])
-        return_code = res.returncode
-    finally:
-        # 4. Nettoyage des sessions et réinitialisation finale pour retrouver la base de dev propre
-        db.session.remove()
-        db.engine.dispose()
-        ctx.invoke(loaddb, filename='appSoutenance/data/arexis_donnees.csv')
+    # 2. Exécution des tests via subprocess pour un coverage précis
+    res = subprocess.run([
+        "coverage", "run", "--source=appSoutenance", "-m", "pytest", 
+        "appSoutenance/tests"
+    ])
+    # 3. Affichage du rapport de couverture
+    subprocess.run(["coverage", "report", "-m"])
 
-    sys.exit(return_code)
+    # 4. Réinitialisation finale pour retrouver la base de dev propre (après le coverage)
+    lg.warning("Restauration de la base de données après les tests...")
+    ctx.invoke(loaddb, filename='appSoutenance/data/arexis_donnees.csv')
+
+    sys.exit(res.returncode)

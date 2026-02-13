@@ -268,10 +268,9 @@ div.demarche_etape{
 
 #retour {
     /* style */
-    font-size: 0.7em;
+    font-size: 0.7rem;
 
     /* positionnement */
-    align-items: center;
     display: block;
     margin: 12px auto;
     margin-bottom:10%;
@@ -353,6 +352,33 @@ nav#barre_navigation{
         /* positionnement */
     }
 }
+
+nav#barre_navigation ul {
+    list-style: none;
+    display: flex;
+    column-gap: 50px;
+    margin: 0;
+    padding: 0;
+}
+
+nav#barre_navigation ul li {
+    position: relative;
+}
+.sous_menu {
+    display: none !important; 
+    top: 100%;
+    left: 0;
+    background-color: var(--couleur_sombre_principale);
+    min-width: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    list-style: none;
+    padding: 0;
+}
+
+nav#barre_navigation li:hover > .sous_menu {
+    display: block !important;
+}
   
 .choix{
     /* style */
@@ -389,7 +415,7 @@ select.combobox {
     color:var(--couleur_texte_clair);
 
     /* positionnement */
-    width: 300px;
+    width: 250px;
     min-width: 220px;
     height: 75px;
     padding: 15px 40px;

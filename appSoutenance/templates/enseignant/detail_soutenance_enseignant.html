@@ -1,14 +1,16 @@
-{% extends "admin/base_admin.html" %}
+{% extends "enseignant/base_enseignant.html" %}
 
 {% block content %}
-<div id="planning-boite">
-    <div class="glass boite_verticale">
-        <a href="{{ url_for('planning_admini') }}" class="petit_bouton" style="position: absolute; left: 20px; width: fit-content; font-size: 0.7em; padding: 10px 20px;"><i class="fas fa-code"></i> Retour</a>
+    
+        
+      
+
+        <div class="glass boite_verticale">
+        <a href="{{ url_for('soutenance_enseignant') }}" class="petit_bouton" style="position: absolute; left: 20px; width: fit-content; font-size: 0.7em; padding: 10px 20px; margin: 0;"><i class="fas fa-code"></i> Retour</a>
         <div class="boite_horizontale">
             <span id="date" style="padding-top: 20px;">{{ soutenance.dateS }}</span>
             <div class="boite_horizontale">
                 <span class="badge_promo">{{ soutenance.nom_promo }}</span>
-                <span class="regime_etudiant">{{ regime_etu }}</span>
                 <span class="texte_header" bloc-label="Créneau">{{ soutenance.h_debut }} - {{ soutenance.h_fin }}</span>
                 <span class="texte_header" bloc-label="salle">Salle: {{ soutenance.salle }}</span>
             </div>
@@ -39,6 +41,7 @@
             </thead>
             <tbody>
                 {% for s in soutenances_groupe %}
+                {% set s_id=s.id_soutenance%}
                 <tr>
                     <td>
                         {% if s.stage and s.stage.demarche and s.stage.demarche.etudiant %}
@@ -88,34 +91,18 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div class="boite_horizontale">
+            {% if bouton_desinscription %}
+                <p><a href="{{ url_for('desinscription_enseignant', liste_soutenance=liste_id_soutenance,detail=true) }}" class="petit_bouton">se désinscrire</a></p>
+            {% elif bouton_inscription %}
+                <p><a href="{{ url_for('inscription_enseignant', liste_soutenance=liste_id_soutenance,detail=true) }}" class="petit_bouton">s'inscrire</a></p>
+            {% endif %}
+            {% if inscris %}
+                <p>Inscris</p>
+            {% endif %} 
+        </div>
     </div>
-    <div>
-        <a href="{{ url_for('modifier_soutenance_admin', id=soutenance.id_soutenance)}}" class="petit_bouton" 
-        style="margin-top: 20px; width: fit-content; font-size: 0.7em; padding: 15px 20px;"><i class="fas fa-edit"></i> Modifier</a>
 
-        {% if request.args.get('confirm') =='1' %}
-            <div class="glass" style="margin-top:20px; padding:20px;">
-                <p>Êtes-vous sûr de vouloir supprimer cette soutenance ?</p>
 
-                <form method="POST" action="{{ url_for('erase_soutenance_admin', id=soutenance.id_soutenance)}}" style="display:inline;">
-                    {{ deleteForm.hidden_tag() }}
-                    <button type="submit" class="petit_bouton" style="background:#e74c3c;color:white;">
-                        Confirmer la suppression
-                    </button>
-                </form>
-
-                <a href="{{url_for('detail_soutenance_admin', id=soutenance.id_soutenance)}}"
-                class="petit_bouton">
-                    Annuler
-                </a>
-            </div>
-        {% else %}
-            <a href="{{ url_for('detail_soutenance_admin', id=soutenance.id_soutenance, confirm=1) }}"
-            class="petit_bouton"
-            style="margin-top:20px; background:#e74c3c;color:white; font-size: 0.7em; width: fit-content; padding: 15px 20px;">
-                <i class="fas fa-trash"></i> Supprimer
-            </a>
-        {% endif %}
-    </div>
-</div>
+        
 {% endblock %}
