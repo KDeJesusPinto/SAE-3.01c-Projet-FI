@@ -165,7 +165,7 @@ class MaitreStage(db.Model):
     entreprise = db.relationship("Entreprise",
                                  backref=db.backref("maitre_stage",
                                                     lazy="joined",
-                                                    uselist=False))
+                                                    uselist=True))
 
     def __init__(self,
                  civilite_maitre,
