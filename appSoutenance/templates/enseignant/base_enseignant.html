@@ -6,15 +6,15 @@
             <img src="{{ url_for('static', filename='images/icone.png') }}" alt = "">
         </a>
         <ul>
-            <li><a href="{{ url_for('planning_enseignant', num_personne=personne.id_enseignant) }}">Planning</li></a>
-            <li><a href="{{ url_for(accueil, num_personne=personne.id_enseignant) }}">Tutorés</li></a>
-            <li><a href="{{ url_for('soutenance_enseignant', num_personne=personne.id_enseignant) }}">Soutenances</li></a>
-            <li><a href="{{ url_for('liste_etu_enseignant', num_personne=personne.id_enseignant) }}">Étudiants</li></a>
+            <li><a href="{{ url_for('planning_enseignant', num_personne=personne.id_enseignant) }}">Planning</a></li>
+            <li><a href="{{ url_for(accueil, num_personne=personne.id_enseignant) }}">Tutorés</a></li>
+            <li><a href="{{ url_for('soutenance_enseignant', num_personne=personne.id_enseignant) }}">Soutenances</a></li>
+            <li><a href="{{ url_for('liste_etu_enseignant', num_personne=personne.id_enseignant) }}">Étudiants</a></li>
         </ul>
 
         <div class="boite_horizontale">
             <div class="boite_horizontale">
-                <p>{{ personne.prenom_enseignant }}<br>{{ personne.nom_enseignant }}</p>
+                <p>{{ personne.nom_enseignant }}<br>{{ personne.prenom_enseignant }}</p>
                 <i class="fas fa-user-circle petite_icone"></i>
             </div>
             <a href="{{ url_for('index') }}"><i class="fas fa-sign-out-alt petite_icone"></i></a>

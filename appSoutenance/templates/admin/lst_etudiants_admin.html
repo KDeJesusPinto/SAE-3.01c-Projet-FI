@@ -4,7 +4,7 @@
     <div class="boite_horizontale">
         <aside id="en_haut" id="filtre_liste_admin">
             <form method="get" action="{{ url_for('liste_etu_admin') }}">
-            <a href="{{ url_for('accueil_admin') }}" class="petit_bouton" style="font-size: 0.7em; align-items: center; display: block; margin: 12px auto; margin-bottom:10%; width: 30%;"><i class="fas fa-code"></i> Retour</a>
+            
                 <select class="combobox" name="annee" id="annee">
                     <option value="">Année</option>
                     <option value="2A" {% if request.args.get('annee') == '2A' %}selected{% endif %}>2ème année</option>
@@ -26,13 +26,14 @@
                     <option value="Alternant" {% if request.args.get('regime') == 'Alternant' %}selected{% endif %}>Alternant</option>
                     <option value="Formation Initiale" {% if request.args.get('regime') == 'Formation Initiale' %}selected{% endif %}>Formation Initiale</option>
                 </select>
-                <button class="petit_bouton" id="filtrer" type="submit" style="display: block; margin: 12px auto;">Appliquer</button>
                 <select class="combobox" name="trier" id="trier">
                     <option value="">Trier par</option>
                     <option value="Nom">Nom</option>
                     <option value="Annee">Année</option>
                     <option value="NbDemarches">Nombre de démarches</option>
                 </select>
+                <button class="petit_bouton" id="filtrer" type="submit" style="display: block; margin: 12px auto;">Appliquer</button>
+                <a href="{{ url_for('accueil_admin') }}" class="petit_bouton" id="retour"><i class="fas fa-code"></i> Retour</a>
             </form>
         </aside>
 
@@ -41,22 +42,23 @@
                 <p>Aucun étudiant trouvé</p>
             {% endif %}
             {% for res in resultats %}
-            <div class="glass" id="liste_etu">
-                <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 10px 0.35fr 0.2fr 0.2fr 0.1fr 0.25fr 0.4fr 50px 50px; align-items: center;">
+            <div class="glass liste_etu" style="position: relative;">
+                <a href="{{ url_for('detail_etudiant_admin', id=res.etudiant.id_etudiant) }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></a>
+
+                <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 50px 1fr 0.8fr 0.5fr 0.6fr 0.8fr 1.2fr 50px; align-items: center; gap: 10px; position: relative; pointer-events: none;">
                     <i class="fas fa-user-circle grande_icone"></i>
-                    <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.etudiant.prenom_etudiant }} {{ res.etudiant.nom_etudiant }}</p>
+                    <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.etudiant.nom_etudiant }} {{ res.etudiant.prenom_etudiant }}</p>
                     <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.formation }}</p>
                     <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.promo }} {{ res.annee }}</p>
                     <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">{{ res.regime }}</p>
                     <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Démarches : {{ res.nb_demarches }}</p>
                     <p class="pliste" style="padding-right: 5px;">Dernière démarche : {{ res.situation }}</p>
-                    <a id="detail" href="{{ url_for('detail_etudiant_admin', id=res.etudiant.id_etudiant) }}"><i class="fas fa-info"></i></a>
                     {% if res.situation == "Acceptée" %}
-                        <i class="fas fa-check-circle grande_icone" style="color:green; font-size: 4rem !important;"></i>
+                        <i class="fas fa-check-circle grande_icone" style="color:green; font-size: 2rem !important;"></i>
                     {% elif res.situation == "En cours" %}
-                        <i class="fas fa-search grande_icone" style="color:orange; font-size: 4rem !important;"></i>
+                        <i class="fas fa-search grande_icone" style="color:orange; font-size: 2rem !important;"></i>
                     {% else %}
-                        <i class="fas fa-times-circle grande_icone" style="color:red; font-size: 4rem !important;"></i>
+                        <i class="fas fa-times-circle grande_icone" style="color:red; font-size: 2rem !important;"></i>
                     {% endif %}
                 </div>
             </div>

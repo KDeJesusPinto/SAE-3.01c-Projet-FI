@@ -1,0 +1,82 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+    <div class="glass boite_verticale">
+        <a href="{{ url_for('planning_admini') }}" class="petit_bouton" style="position: absolute; left: 20px; width: fit-content; font-size: 0.7em; padding: 10px 20px; margin: 0;"><i class="fas fa-code"></i> Retour</a>
+        <div class="boite_horizontale">
+            <span id="date">{{ soutenance.dateS }}</span>
+            <div class="boite_horizontale">
+                <span class="badge_promo">{{ soutenance.nom_promo }}</span>
+                <span class="texte_header" bloc-label="Créneau">{{ soutenance.h_debut }}</span>
+                <span class="texte_header" bloc-label="salle">Salle: {{ soutenance.salle }}</span>
+            </div>
+        </div>
+        
+        <p><strong>Jury :</strong>
+            {% if enseignants_jury %}
+                {% for ens in enseignants_jury %}
+                    <a href="{{ url_for('detail_enseignant', id=ens.id_enseignant) }}" style="text-decoration: underline; color: inherit;">
+                        {{ ens.nom_enseignant }} {{ ens.prenom_enseignant }}
+                    </a>{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            {% else %}
+                Jury non assigné
+            {% endif %}
+        </p>
+
+        <table >
+            <thead>
+                <tr>
+                    <th>Étudiants</th>
+                    <th>Intitulé du stage</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in soutenances_groupe %}
+                <tr>
+                    <td>
+                        {% if s.stage and s.stage.demarche and s.stage.demarche.etudiant %}
+                            {% set etudiant = s.stage.demarche.etudiant %}
+                            <a href="{{ url_for('detail_etudiant_admin', id=etudiant.id_etudiant)}}" 
+                            style="text-decoration: underline; color: inherit;">
+                                {{etudiant.nom_etudiant}} {{etudiant.prenom_etudiant}}
+                            </a>{% if not loop.last %}, {% endif %}
+                        {% else %}
+                            Étudiant inconnu
+                        {% endif %}
+                    </td>
+                    <td>{{ s.stage.titre_stage }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <a href="{{ url_for('modifier_soutenance_admin', id=soutenance.id_soutenance)}}" class="petit_bouton" 
+        style="margin-top: 20px; width: fit-content; font-size: 0.7em; padding: 15px 20px;"><i class="fas fa-edit"></i> Modifier</a>
+
+        {% if request.args.get('confirm') =='1' %}
+            <div class="glass" style="margin-top:20px; padding:20px;">
+                <p>Êtes-vous sûr de vouloir supprimer cette soutenance ?</p>
+
+                <form method="POST" action="{{ url_for('erase_soutenance_admin', id=soutenance.id_soutenance)}}" style="display:inline;">
+                    {{ deleteForm.hidden_tag() }}
+                    <button type="submit" class="petit_bouton" style="background:#e74c3c;color:white;">
+                        Confirmer la suppression
+                    </button>
+                </form>
+
+                <a href="{{url_for('detail_soutenance_admin', id=soutenance.id_soutenance)}}"
+                class="petit_bouton">
+                    Annuler
+                </a>
+            </div>
+        {% else %}
+            <a href="{{ url_for('detail_soutenance_admin', id=soutenance.id_soutenance, confirm=1) }}"
+            class="petit_bouton"
+            style="margin-top:20px; background:#e74c3c;color:white; font-size: 0.7em; width: fit-content; padding: 15px 20px;">
+                <i class="fas fa-trash"></i> Supprimer
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}

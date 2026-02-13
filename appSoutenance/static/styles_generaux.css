@@ -2,13 +2,21 @@
 
 
 :root{
-    --couleur_sombre_principale: #242f53;
+    --couleur_sombre_principale: #2240a3;
 
-    --couleur_bouton_important: #8f11bc;
+    --couleur_bouton_important: #788d8e;;
 
-    --couleur_principale_site: #51a1a2;
+    --couleur_principale_site: #1f0068;
 
     --couleur_texte_clair: white;
+
+    --couleur_texte_sombre: black;
+
+    --couleur_glass: rgba(255, 255, 255, 0.55);
+
+    --couleur_glass_border: rgba(255, 255, 255, 0.9);
+
+    font-size: 3vh;
 }
 
 /*---------------- STYLES GÉNÉRAUX ----------------*/
@@ -19,9 +27,11 @@ body{
     background-position: center;
     background-size: cover;
     background-attachment: fixed;
+    overflow-x: hidden;
 
     font-family: "Arimo", sans-serif;
-    font-size: 30px;
+    color: var(--couleur_texte_sombre);
+    /*font-size: 30px;
 
     /* positionnement */
     padding: 0;
@@ -39,8 +49,8 @@ h1{
     font-family: "Barlow Condensed", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 2.5em;
-    letter-spacing: -0.04em;
+    font-size: 2.7rem;
+    letter-spacing: -0.04rem;
     text-transform: uppercase;
     white-space: nowrap;
     
@@ -55,8 +65,8 @@ h2{
     font-family: "Barlow Condensed", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 2em;
-    letter-spacing: -0.04em;
+    font-size: 2rem;
+    letter-spacing: -0.04rem;
     text-transform: uppercase;
 
     /* positionnement */
@@ -65,11 +75,25 @@ h2{
     margin: 0;
 }
 
+h3{
+    /* style */
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 1rem;
+    letter-spacing: -0.04rem;
+    text-transform: uppercase;
+
+    /* positionnement */
+    text-align: left;
+
+    margin: 0;
+}
+
 a{
     /* style */
-    color: black;
+    color: var(--couleur_texte_sombre);
     text-decoration: none;
-    cursor: url(images/cursor.png), pointer;
 
     /* positionnement */
 }
@@ -79,9 +103,9 @@ a{
 .glass{
     /* style */
     border-radius: 40px;
-    border: 2px solid rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--couleur_glass_border);
     backdrop-filter: blur(3px);
-    background-color: rgba(255, 255, 255, 0.55);
+    background-color: var(--couleur_glass);
 
     /* positionnement */
 }
@@ -134,14 +158,14 @@ div.boite_horizontale p{
 
 .grande_icone{
     /* style */
-    font-size: 2em !important;
+    font-size: 2rem !important;
 
     /* positionnement */
 }
 
 .petite_icone{
     /* style */
-    font-size: 1.4em !important;
+    font-size: 1.4rem !important;
 
     /* positionnement */
 }
@@ -157,10 +181,10 @@ div.boite_horizontale p{
     background-color:var(--couleur_sombre_principale);
     color:var(--couleur_texte_clair);
     text-align: center;
-    cursor: pointer;
+    cursor: url(images/cursor.png), pointer;
 
     /* positionnement */
-    padding: 15px;
+    padding: 2%;
     width: 100%;
 }
 
@@ -193,7 +217,7 @@ div.boite_horizontale p{
 
     border-radius: 20px;
     
-    font-size: 1.4em;
+    font-size: 1.4rem;
     text-align: center;
 
     /* positionnement */
@@ -219,7 +243,7 @@ div.bouton_horizontal{
     /* style */
     background-color: rgb(178, 185, 187);
     content: attr(data-tooltip);
-    font-size: 0.7em;
+    font-size: 0.7rem;
 
     /* positionnement */
     position: absolute;
@@ -233,6 +257,16 @@ div.demarche_etape{
     flex-grow: 0;
 }
 
+#retour {
+    /* style */
+    font-size: 0.7rem;
+
+    /* positionnement */
+    display: block;
+    margin: 12px auto;
+    margin-bottom:10%;
+    width: fit-content;
+}
 /*---------------- STYLE DE LA BOITE CONTENANT TOUT LE CONTENU ----------------*/
 
 div#main_body{
@@ -284,7 +318,7 @@ nav#barre_navigation{
 
     p, li{
         /* style */
-        font-size: 0.7em;
+        font-size: 0.7rem;
         text-align: right;
 
         /* positionnement */
@@ -299,10 +333,42 @@ nav#barre_navigation{
     a{
         /* style */
         color:var(--couleur_texte_clair);
-        font-size: 1.3em;
+        font-size: 1rem;
+        font-family: "Barlow Condensed", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        letter-spacing: -0.04rem;
+        text-transform: uppercase;
 
         /* positionnement */
     }
+}
+
+nav#barre_navigation ul {
+    list-style: none;
+    display: flex;
+    column-gap: 50px;
+    margin: 0;
+    padding: 0;
+}
+
+nav#barre_navigation ul li {
+    position: relative;
+}
+.sous_menu {
+    display: none !important; 
+    top: 100%;
+    left: 0;
+    background-color: var(--couleur_sombre_principale);
+    min-width: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    list-style: none;
+    padding: 0;
+}
+
+nav#barre_navigation li:hover > .sous_menu {
+    display: block !important;
 }
   
 .choix{
@@ -329,18 +395,18 @@ input#import_csv{
 /* ---------------- STYLES DES COMBOBOX ----------------*/
 
 
-select.combobox { /* Agrandissement des combobox */
+select.combobox {
     /* style */
     background-color: var(--couleur_principale_site);
     border-radius: 80px;
 
     font-family: "Arimo", sans-serif;
-    font-size: 0.7em; /* Augmente la taille de la police */
+    font-size: 0.7em;
     text-align: center;
     color:var(--couleur_texte_clair);
 
     /* positionnement */
-    width: 300px;
+    width: 250px;
     min-width: 220px;
     height: 75px;
     padding: 15px 40px;
@@ -353,13 +419,13 @@ select.combobox { /* Agrandissement des combobox */
 /* ---------------- STYLES DES FORMULAIRES ----------------*/
 
 .form-group, .form-check {
-   padding-top: 1em;
+   padding-top: 1rem;
 }
 
 
 .form-label {
    color: #064a72;
-   margin-bottom: 0.3em;
+   margin-bottom: 0.3rem;
 }
 
 

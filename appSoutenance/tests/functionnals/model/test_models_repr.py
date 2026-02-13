@@ -85,7 +85,7 @@ def test_enseignant_repr(testapp):
 def test_jury_repr(testapp):
     with testapp.app_context():
         jury = Jury.query.get(1)
-        expected = f"<Le jury pour la soutenance {jury.id_soutenance} le {jury.date_jury} a {jury.h_jury} pendant {jury.duree_jury} minutes>"
+        expected = f"<Le jury pour la soutenance {jury.id_soutenance} le {jury.date_jury} a {jury.h_jury} pendant {jury.duree} minutes>"
         assert repr(jury) == expected
 
 def test_admini_repr(testapp):
