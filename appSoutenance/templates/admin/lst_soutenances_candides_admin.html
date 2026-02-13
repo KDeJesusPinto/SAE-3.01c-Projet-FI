@@ -8,14 +8,15 @@
                     <p>Aucune soutenance trouvée</p>
                 {% endif %}
                 {% for res in resultats %}
-                <div class="glass" id="liste_etu">
-                    <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr 2.3fr 1.4fr; align-items: center; gap: 30px;">
+                <div class="glass liste_etu" style="position: relative;">
+                    <a href="{{ url_for('detail_soutenance_admin', id=res.soutenance.id_soutenance) }}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;"></a>
+                    <div class="boite_horizontale info-grid" style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr 2.3fr 1.4fr; align-items: center; gap: 30px; position: relative; pointer-events: none;">
                         <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Soutenance n°{{ res.soutenance.id_soutenance }}</p>
                         <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Etudiant : {{ res.etudiant.civilite_etudiant }} {{ res.etudiant.nom_etudiant }} {{ res.etudiant.prenom_etudiant }}</p>
                         <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Tuteur : {{ res.tuteur.civilite_enseignant}} {{ res.tuteur.nom_enseignant }} {{ res.tuteur.prenom_enseignant }}</p>
                         <p class="pliste" style="border-right: 2px solid; padding-right: 5px;">Stage : {{ res.stage.titre_stage }}</p>
                         {% if id_enseignant %}
-                            <a href="{{ url_for('ajouter_candide_admin', id_ens=id_enseignant, id_sout=res.soutenance.id_soutenance) }}" class="petit_bouton" style="font-size: 0.7em; width: 80%;">Ajouter cet enseignant</a>
+                            <a href="{{ url_for('ajouter_candide_admin', id_ens=id_enseignant, id_sout=res.soutenance.id_soutenance) }}" class="petit_bouton" style="font-size: 0.7em; width: 80%; position: relative; z-index: 2; pointer-events: auto;">Ajouter cet enseignant</a>
                         {% else %}
                             <p class="pliste">Consultation uniquement</p>
                         {% endif %}

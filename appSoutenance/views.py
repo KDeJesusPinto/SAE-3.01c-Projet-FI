@@ -677,11 +677,13 @@ def accueil_admin():
     nb_tuteurs = db.session.query(Tutorer.id_enseignant).distinct().count()
 
     # Nombre de soutenances en attente de candide
-    requete_ids_soutenances_pertinentes2 = requete_soutenances2.with_entities(Soutenance.id_soutenance).distinct()
-    requete_ids_soutenances_pertinentes3 = requete_soutenances3.with_entities(Soutenance.id_soutenance).distinct()
-    soutenances_jury_complet_ids = db.session.query(Composer.id_soutenance).group_by(Composer.id_soutenance).having(func.count(Composer.id_enseignant) >= 2)
-    nb_soutenances_attente_candide2 = requete_ids_soutenances_pertinentes2.filter(Soutenance.id_soutenance.notin_(soutenances_jury_complet_ids)).count()
-    nb_soutenances_attente_candide3 = requete_ids_soutenances_pertinentes3.filter(Soutenance.id_soutenance.notin_(soutenances_jury_complet_ids)).count()
+    ids_soutenances2 = [r[0] for r in requete_soutenances2.with_entities(Soutenance.id_soutenance).distinct().all()]
+    ids_soutenances3 = [r[0] for r in requete_soutenances3.with_entities(Soutenance.id_soutenance).distinct().all()]
+
+    soutenances_jury_complet_ids = [r[0] for r in db.session.query(Composer.id_soutenance).group_by(Composer.id_soutenance).having(func.count(Composer.id_enseignant) >= 2).all()]
+
+    nb_soutenances_attente_candide2 = len([i for i in ids_soutenances2 if i not in soutenances_jury_complet_ids])
+    nb_soutenances_attente_candide3 = len([i for i in ids_soutenances3 if i not in soutenances_jury_complet_ids])
 
 
     return render_template(
@@ -1800,14 +1802,25 @@ def liste_soutenances_candides_admin(id=None):
         .having(func.count(Composer.id_enseignant) >= 2)
 
     # On récupère toutes les soutenances dont l'ID n'est pas dans la liste des complets
-    requete_soutenances_sans_candide = db.session.query(Soutenance, Etudiant, Enseignant, Stage)\
+    query = db.session.query(Soutenance, Etudiant, Enseignant, Stage)\
         .join(Stage, Soutenance.id_stage == Stage.id_stage)\
         .join(Demarche, Stage.id_demarche == Demarche.id_demarche)\
         .join(Etudiant, Demarche.id_etudiant == Etudiant.id_etudiant)\
         .outerjoin(Tutorer, Etudiant.id_etudiant == Tutorer.id_etudiant)\
         .outerjoin(Enseignant, Tutorer.id_enseignant == Enseignant.id_enseignant)\
-        .filter(Soutenance.id_soutenance.notin_(soutenances_jury_complet_ids))\
-        .all()
+        .filter(Soutenance.id_soutenance.notin_(soutenances_jury_complet_ids))
+    
+    promo = request.args.get('promo')
+    if promo == "2A":
+        query = query.join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant)\
+                     .join(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))\
+                     .filter((Promo.nom_promo.like("%BUT2%")) | (Promo.nom_promo.like("%BUT 2%")))
+    elif promo == "3A":
+        query = query.join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant)\
+                     .join(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))\
+                     .filter((Promo.nom_promo.like("%BUT3%")) | (Promo.nom_promo.like("%BUT 3%")))
+
+    requete_soutenances_sans_candide = query.all()
     
     resultats = []
     for soutenance, etudiant, tuteur, stage in requete_soutenances_sans_candide:
