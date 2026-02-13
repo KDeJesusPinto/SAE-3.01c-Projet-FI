@@ -457,15 +457,9 @@ def accueil_admin():
         return Response(output.getvalue(), mimetype="text/csv", headers={"Content-Disposition": f"attachment;filename={filename}"})
 
     # Filtres
-    annee_filter = request.args.get('annee')
     formation_filter = request.args.get('formation')
 
     requete_les_etudiants = Etudiant.query.outerjoin(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).outerjoin(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
-
-    if annee_filter == "2A":
-        requete_les_etudiants = requete_les_etudiants.filter((Promo.nom_promo.like("%BUT2%")) | (Promo.nom_promo.like("%BUT 2%")))
-    if annee_filter == "3A":
-        requete_les_etudiants = requete_les_etudiants.filter((Promo.nom_promo.like("%BUT3%")) | (Promo.nom_promo.like("%BUT 3%")))
 
     if formation_filter:
         terme = "Informatique" if formation_filter == "Info" else formation_filter
@@ -644,7 +638,8 @@ def _planning_admin_common(template_name, forced_promo=None):
                     'jury_noms': membres_jury_noms,
                     'nom_promo': promo_etudiant,
                     'regime_etudiant': regime_etu,
-                    'stages': []
+                    'stages': [],
+                    'promos': set()
                 }
             regroupement[cle_regroupement]['promos'].add(promo_etudiant)
             regroupement[cle_regroupement]['stages'].append({
@@ -1511,6 +1506,7 @@ def liste_etu_admin_common(template_name, forced_promo=None):
     
     args = request.args
     nom_promo = forced_promo if forced_promo else args.get('nom_promo')
+    annee_filter = request.args.get('annee')
     formation_filter = request.args.get('formation')
     situation_filter = request.args.get('situation')
     regime_filter = request.args.get('regime')
@@ -1518,7 +1514,13 @@ def liste_etu_admin_common(template_name, forced_promo=None):
 
     requete_les_etudiants = Etudiant.query.outerjoin(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).outerjoin(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
     annee_a_filtrer = forced_promo if forced_promo else annee_filter
+
     # Les filtres
+    if annee_a_filtrer == "2A":
+        requete_les_etudiants = requete_les_etudiants.filter((Promo.nom_promo.like("%BUT2%")) | (Promo.nom_promo.like("%BUT 2%")))
+    if annee_a_filtrer == "3A":
+        requete_les_etudiants = requete_les_etudiants.filter((Promo.nom_promo.like("%BUT3%")) | (Promo.nom_promo.like("%BUT 3%")))
+
     if formation_filter:
         terme = "Informatique" if formation_filter == "Info" else formation_filter
         requete_les_etudiants = requete_les_etudiants.filter(Promo.formation_promo.like(f"%{terme}%"))
