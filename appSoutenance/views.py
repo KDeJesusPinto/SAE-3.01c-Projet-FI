@@ -328,6 +328,7 @@ def soutenance_enseignant():
                 regroupement[cle_regroupement] = {
                     'dateS': date_formatee,
                     'h_debut': soutenance.h_debut,
+                    'h_fin': soutenance.h_fin,
                     'liste_id_soutenance':[],
                     'salle': soutenance.salle,
                     'jury_noms': membres_jury_noms,
