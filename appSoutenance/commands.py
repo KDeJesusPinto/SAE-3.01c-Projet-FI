@@ -221,8 +221,8 @@ def test(ctx):
 
     # 2. Exécution des tests via subprocess pour un coverage précis
     res = subprocess.run([
-        "coverage", "run", "-m", "pytest", 
-        "--cov=appSoutenance", "--cov-report=term-missing", "appSoutenance/tests"
+        "coverage", "run", "--source=appSoutenance", "-m", "pytest", 
+        "appSoutenance/tests"
     ])
     # 3. Affichage du rapport de couverture
     subprocess.run(["coverage", "report", "-m"])

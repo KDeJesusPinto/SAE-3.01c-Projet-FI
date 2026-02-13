@@ -47,7 +47,7 @@ def test_login_form_etudiant_invalid_password(testapp: Flask):
     """Test de l'authentification étudiant avec un mauvais mot de passe"""
 
     with testapp.app_context():
-        form = LoginForm(Login="johndoe", Password="mdp")
+        form = LoginForm(Login="adupont", Password="mdp")
         assert form.get_authenticated_etudiant() is None
 
 def test_login_form_admin_invalid_password(testapp: Flask):
