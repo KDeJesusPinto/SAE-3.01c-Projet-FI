@@ -59,9 +59,11 @@ def loaddb(filename):
                     civilite_etudiant=civilite_stagiaire,
                     date_naissance=datetime(2000, 1, 1).date(),
                     email_etudiant=email,
-                    login_etudiant=email.split('@')[0],
-                    pwd_etudiant=nom_stagiaire.lower())
+                    login_etudiant=(prenom_stagiaire[0] + nom_stagiaire).lower().replace(" ", ""),
+                    pwd_etudiant="")
                 db.session.add(etu)
+                db.session.flush()
+                etu.pwd_etudiant = f"pass{etu.id_etudiant}"
                 db.session.flush()
 
             #Promo
