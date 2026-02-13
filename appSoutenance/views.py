@@ -335,7 +335,8 @@ def soutenance_enseignant():
                     'stages': [],
                     'bouton_desinscription':user_present and "2" in promo_etudiant,
                     'bouton_inscription':(not user_present) and  "2" in promo_etudiant,
-                    'inscris':user_present
+                    'inscris':user_present,
+                    'id_soutenance':soutenance.id_soutenance
                 }
             regroupement[cle_regroupement]['stages'].append({
                 'nom_etudiant': etudiant_lie.nom_etudiant,
@@ -455,6 +456,47 @@ def detail_etudiant_ens():
     enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
     return render_template("admin/detail_etudiant_ens.html", accueil="accueil_enseignant", personne=enseignant, title="Detail de l'etudiant")
 
+@app.route('/enseignant/soutenances/<int:id>/')
+@login_required
+def detail_soutenance_enseignant(id):
+    """Page de détail d'une soutenance pour les administrateurs
+
+
+    Args:
+        id (int): l'identifiant de la soutenance
+    """
+
+
+    enseingnant = current_user
+
+   
+    soutenance = Soutenance.query.get(id)
+    if not soutenance:
+        flash("Soutenance introuvable.", "danger")
+        return redirect(url_for('soutenance_enseignant'))
+   
+    soutenances_groupe = Soutenance.query.filter_by(
+        dateS=soutenance.dateS,
+        h_debut=soutenance.h_debut,
+        salle=soutenance.salle
+    ).all()
+
+    enseignants_jury = db.session.query(Enseignant)\
+            .join(Composer)\
+            .filter(Composer.id_soutenance == id)\
+            .all()
+    
+    entreprise_groupe = db.session.query(Entreprise).join(Demarche).join(Stage).join(Soutenance).filter(Soutenance.id_soutenance == id).all()
+
+
+    return render_template("/enseignant/detail_soutenance_enseignant.html",
+                           accueil="accueil_enseignant",
+                           title="Détail de la soutenance",
+                           soutenance = soutenance,
+                           soutenances_groupe = soutenances_groupe,
+                           entreprise_groupe = entreprise_groupe,
+                           enseignants_jury = enseignants_jury,
+                           personne=enseingnant)
 
 ########################## POUR LES ADMINISTRATEURS ##########################
 
