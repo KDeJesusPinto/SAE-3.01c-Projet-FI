@@ -1423,6 +1423,11 @@ def liste_ens_admin():
     total_enseignants = Enseignant.query.count()
     total_etudiants = Etudiant.query.count()
     nb_tutores_max_global = (total_etudiants + total_enseignants - 1) // total_enseignants if total_enseignants > 0 else 0 # Arrondis à l'entier supérieur
+    
+    total_etudiants_but2 = Etudiant.query.join(Appartenir).filter((Appartenir.nom_promo.like("%BUT2%")) | (Appartenir.nom_promo.like("%BUT 2%"))).count()
+    total_etudiants_but3 = Etudiant.query.join(Appartenir).filter((Appartenir.nom_promo.like("%BUT3%")) | (Appartenir.nom_promo.like("%BUT 3%"))).count()
+    nb_tutores_max_but2 = (total_etudiants_but2 + total_enseignants - 1) // total_enseignants if total_enseignants > 0 else 0
+    nb_tutores_max_but3 = (total_etudiants_but3 + total_enseignants - 1) // total_enseignants if total_enseignants > 0 else 0
 
     res = []
 
@@ -1431,6 +1436,20 @@ def liste_ens_admin():
         nb_tutore = Tutorer.query.filter_by(
             id_enseignant=enseignant.id_enseignant).count()
         nb_tutores_max = nb_tutores_max_global
+
+        nb_tutore_but2 = db.session.query(Tutorer)\
+            .join(Etudiant, Tutorer.id_etudiant == Etudiant.id_etudiant)\
+            .join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant)\
+            .filter(Tutorer.id_enseignant == enseignant.id_enseignant)\
+            .filter((Appartenir.nom_promo.like("%BUT2%")) | (Appartenir.nom_promo.like("%BUT 2%")))\
+            .distinct().count()
+
+        nb_tutore_but3 = db.session.query(Tutorer)\
+            .join(Etudiant, Tutorer.id_etudiant == Etudiant.id_etudiant)\
+            .join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant)\
+            .filter(Tutorer.id_enseignant == enseignant.id_enseignant)\
+            .filter((Appartenir.nom_promo.like("%BUT3%")) | (Appartenir.nom_promo.like("%BUT 3%")))\
+            .distinct().count()
 
         nb_soutenances = Composer.query.filter_by(
             id_enseignant=enseignant.id_enseignant).count()
@@ -1451,6 +1470,10 @@ def liste_ens_admin():
             "enseignant": enseignant,
             "nb_tutores": nb_tutore,
             "nb_tutores_max": nb_tutores_max,
+            "nb_tutores_but2": nb_tutore_but2,
+            "nb_tutores_max_but2": nb_tutores_max_but2,
+            "nb_tutores_but3": nb_tutore_but3,
+            "nb_tutores_max_but3": nb_tutores_max_but3,
             "nb_soutenances": nb_soutenances,
             "nb_soutenances_en_tuteur": nb_soutenances_en_tuteur,
             "nb_candide": nb_candide
@@ -1488,8 +1511,7 @@ def liste_etu_admin_common(template_name, forced_promo=None):
     
     args = request.args
     nom_promo = forced_promo if forced_promo else args.get('nom_promo')
-    annee_filter = request.args.get('annee')
-    formation_filter = request.args.get('formation_promo')
+    formation_filter = request.args.get('formation')
     situation_filter = request.args.get('situation')
     regime_filter = request.args.get('regime')
     tri = request.args.get("trier", "Nom") # Par défaut, trié par nom
@@ -1497,11 +1519,6 @@ def liste_etu_admin_common(template_name, forced_promo=None):
     requete_les_etudiants = Etudiant.query.outerjoin(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant).outerjoin(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
     annee_a_filtrer = forced_promo if forced_promo else annee_filter
     # Les filtres
-    if annee_a_filtrer == "2A":
-        requete_les_etudiants = requete_les_etudiants.filter((Promo.nom_promo.like("%BUT2%")) | (Promo.nom_promo.like("%BUT 2%")))
-    if annee_a_filtrer == "3A":
-        requete_les_etudiants = requete_les_etudiants.filter((Promo.nom_promo.like("%BUT3%")) | (Promo.nom_promo.like("%BUT 3%")))
-
     if formation_filter:
         terme = "Informatique" if formation_filter == "Info" else formation_filter
         requete_les_etudiants = requete_les_etudiants.filter(Promo.formation_promo.like(f"%{terme}%"))
