@@ -194,7 +194,7 @@ def accueil_enseignant():
         res_tutore.append({'etudiant':etudiant,'etat':derniere_demarche.situation if derniere_demarche else "Aucune",'soutenance_tutore':soutenance_prevue_tutore})
         
     heure_date_deja_utilisé=[]
-    for soutenance in query_soutenance_prevue.distinct():
+    for soutenance in query_soutenance_prevue.distinct().order_by(Soutenance.h_debut):
         print(soutenance)
         if soutenance.horaire() not in heure_date_deja_utilisé:
             res_soutenance.append(soutenance)
