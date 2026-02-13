@@ -344,13 +344,31 @@ nav#barre_navigation{
     }
 }
 
-.sous_menu{
-    display: none;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    background-color: var(--couleur_sombre_principale);
+nav#barre_navigation ul {
+    list-style: none;
+    display: flex;
+    column-gap: 50px;
+    margin: 0;
+    padding: 0;
 }
-nav#barre_navigation li:hover .sous_menu{
-    display: block;
+
+nav#barre_navigation ul li {
+    position: relative;
+}
+.sous_menu {
+    display: none !important; 
+    top: 100%;
+    left: 0;
+    background-color: var(--couleur_sombre_principale);
+    min-width: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    list-style: none;
+    padding: 0;
+}
+
+nav#barre_navigation li:hover > .sous_menu {
+    display: block !important;
 }
   
 .choix{

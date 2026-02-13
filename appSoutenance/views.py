@@ -1105,6 +1105,15 @@ def valider_jury():
         db.session.add(nouvelle_sout)
         db.session.flush()
 
+        # Créer le jury associé
+        nouveau_jury = Jury(
+            date_jury=date_obj,
+            h_jury=heure_sel,
+            duree=duree,
+            id_soutenance=nouvelle_sout.id_soutenance
+        )
+        db.session.add(nouveau_jury)
+
         for j in range(1, 4):
             id_ens = request.form.get(f'ens{j}')
             if id_ens and id_ens.strip():
