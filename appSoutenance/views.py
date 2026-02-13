@@ -186,28 +186,33 @@ def accueil_enseignant():
 
     res_tutore = []
     res_soutenance=[]
+    res_liste_etu_sout=dict()
 
     for etudiant in queryListeTutore:
         derniere_demarche = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant).order_by(desc(Demarche.date_envoi)).first()
         soutenance_prevue_tutore=Soutenance.query.join(Stage,Stage.id_stage==Soutenance.id_stage).join(Demarche,Demarche.id_demarche==Stage.id_demarche).join(Etudiant,Etudiant.id_etudiant==Demarche.id_etudiant).filter(Etudiant.id_etudiant==etudiant.id_etudiant).first()
         res_tutore.append({'etudiant':etudiant,'etat':derniere_demarche.situation if derniere_demarche else "Aucune",'soutenance_tutore':soutenance_prevue_tutore})
         
-    for soutenance in query_soutenance_prevue.distinct():
+    heure_date_deja_utilisé=[]
+    for soutenance in query_soutenance_prevue.distinct().order_by(Soutenance.h_debut):
         print(soutenance)
-        res_soutenance.append({'soutenance':soutenance,'date':soutenance.dateS,'heure':soutenance.h_debut,'salle':soutenance.salle})
+        if soutenance.horaire() not in heure_date_deja_utilisé:
+            res_soutenance.append(soutenance)
+            heure_date_deja_utilisé.append(soutenance.horaire())
+            res_liste_etu_sout[soutenance.horaire()]=[]
+        res_liste_etu_sout[soutenance.horaire()].append(soutenance.get_nom_prenom_etu())
     date_soute=query_soutenance_prevue.distinct(Soutenance.dateS)
     res_date=[]
     for date in date_soute:
         if date.dateS not in res_date:
             res_date.append(date.dateS)
-    print(res_date)
     enseignant = current_user
     nb_soutenance_place=query_soutenance_prevue.count()
     nb_soutenance_place_tutore=queryListeTutore.count()
     
 
 
-    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil",liste_tutore=res_tutore,liste_soutenance=res_soutenance,date_soute=res_date,nb_sout_place=nb_soutenance_place)
+    return render_template("enseignant/accueil_enseignant.html", accueil="accueil_enseignant", personne=enseignant, title="Accueil",liste_tutore=res_tutore,liste_soutenance=res_soutenance,date_soute=res_date,nb_sout_place=nb_soutenance_place,res_liste_etu_sout=res_liste_etu_sout)
 
 
 @app.route('/enseignant/planning/')
@@ -227,74 +232,86 @@ MOIS = {
 }
 
 
+
+
 @app.route('/enseignant/soutenances/')
 @login_required
 def soutenance_enseignant():
-    enseignant=current_user
-    if not isinstance(enseignant, Enseignant):
-        flash("Accès réservé aux enseignants.", "warning")
-        return redirect(url_for("login"))
-
-    ##Filtre:
-    args = request.args
-    annee_promo = args.get('annee_promo', '')
-    formation_promo = args.get('formation_promo', '')
-    date_soutenance = args.get('date_soutenance', '')
-    heure_soutenance = args.get('heure_soutenance', '')
-    jury_enseignant_id = args.get('jury_enseignant_id', '')
-
-    num_personne = request.args.get('num_personne')
     enseignant = current_user
 
-    query = Soutenance.query.order_by(Soutenance.dateS, Soutenance.h_debut)
+
+    args = request.args
+    nom_promo = args.get('nom_promo')
+    regime = args.get('regime')
+    formation_promo = args.get('formation_promo')
+    date_soutenance = args.get('date_soutenance')
+    heure_soutenance = args.get('heure_soutenance')
+    jury_enseignant_id = args.get('jury_enseignant_id')
+    tri = args.get('trier')
+
+
     dates_disponibles_dt = db.session.query(distinct(Soutenance.dateS)).order_by(Soutenance.dateS).all()
-    # Conversion au format string lisible (ex: 25 Mar)
-    dates_disponibles = [f"{d[0].day} {MOIS[d[0].month]}" for d in dates_disponibles_dt]
+    dates_disponibles = [(d[0].strftime('%Y-%m-%d'), f"{d[0].day} {MOIS[d[0].month]}") for d in dates_disponibles_dt]
 
 
     heures_disponibles = db.session.query(distinct(Soutenance.h_debut)).order_by(Soutenance.h_debut).all()
     heures_disponibles = [h[0] for h in heures_disponibles]
+    enseignants_disponibles = Enseignant.query.order_by(Enseignant.nom_enseignant).all()
 
 
-    # 1. Filtrer par Jour (date)
+    query = Soutenance.query.join(Stage).join(Demarche).join(Etudiant).join(Appartenir).join(Promo)
+
+    # Filtres
+    if nom_promo == "2A":
+        query = query.filter((Promo.nom_promo.like("%BUT2%")) | (Promo.nom_promo.like("%BUT 2%")))
+    if nom_promo == "3A":
+        query = query.filter((Promo.nom_promo.like("%BUT3%")) | (Promo.nom_promo.like("%BUT 3%")))
+
+    if formation_promo:
+        terme = "Informatique" if formation_promo == "Info" else formation_promo
+        query = query.filter(Promo.formation_promo.like(f"%{terme}%"))
+
+    if regime:
+        regime_val = "Formation initiale" if regime == "Initial" else "Formation apprentissage"
+        query = query.filter(Appartenir.regime_etudiant == regime_val)
+
     if date_soutenance:
-        pass
+        query = query.filter(Soutenance.dateS == date_soutenance)
+
     if heure_soutenance:
         query = query.filter(Soutenance.h_debut == heure_soutenance)
+
     if jury_enseignant_id:
         query = query.join(Composer, Soutenance.id_soutenance == Composer.id_soutenance) \
                      .filter(Composer.id_enseignant == jury_enseignant_id)
-       
-    if annee_promo or formation_promo:
- 
-        subquery_stages = db.session.query(Stage.id_stage) \
-                              .join(Demarche, Stage.id_demarche == Demarche.id_demarche) \
-                              .join(Etudiant, Demarche.id_etudiant == Etudiant.id_etudiant) \
-                              .join(Entreprise,Entreprise.id_entreprise==Demarche.id_entreprise) \
-                              .join(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant)
-        if annee_promo:
-            subquery_stages = subquery_stages.filter(Appartenir.nom_promo == annee_promo)
-        if formation_promo:
-            subquery_stages = subquery_stages.filter(Appartenir.formation_promo == formation_promo)
 
+    # Tri
+    if tri == "Nom":
+        query = query.order_by(Etudiant.nom_etudiant, Etudiant.prenom_etudiant)
+    elif tri == "DateDesc":
+        query = query.order_by(desc(Soutenance.dateS), desc(Soutenance.h_debut))
+    else:
+        query = query.order_by(asc(Soutenance.dateS), asc(Soutenance.h_debut))
 
-        query = query.filter(Soutenance.id_stage.in_(subquery_stages))
-
-    lesSoutenances = query.all()
+    lesSoutenances = query.distinct().all()
     regroupement = {}
 
     for soutenance in lesSoutenances:
         stage = Stage.query.get(soutenance.id_stage)
-
-        entreprise_stage = None
-
+        
         etudiant_lie = None
         if stage and stage.demarche:
             etudiant_lie = stage.demarche.etudiant
        
         enseignants_jury = db.session.query(Enseignant).join(Composer).filter(Composer.id_soutenance == soutenance.id_soutenance).all()
         membres_jury_noms =', '.join( [f"{e.nom_enseignant} {e.prenom_enseignant}" for e in enseignants_jury])
+        user_present=enseignant.nom_enseignant+" "+enseignant.prenom_enseignant in membres_jury_noms
 
+        promo_etudiant = "N/C"
+        if etudiant_lie:
+            appartenance = Appartenir.query.filter_by(id_etudiant=etudiant_lie.id_etudiant).first()
+            if appartenance:
+                promo_etudiant = appartenance.nom_promo
 
         if not membres_jury_noms:
             membres_jury_noms = "Jury non assigné"
@@ -303,42 +320,79 @@ def soutenance_enseignant():
         if etudiant_lie:
             jour_mois = soutenance.dateS.day
             mois_francais = MOIS[soutenance.dateS.month]
-            date_formatee = f"{jour_mois} {mois_francais}"
+            date_formatee = f"{jour_mois} {mois_francais} {soutenance.dateS.year}"
 
-            
 
             cle_regroupement = f"{soutenance.dateS.strftime('%Y-%m-%d')}-{soutenance.h_debut}-{soutenance.salle}-{membres_jury_noms}"
-           
             if cle_regroupement not in regroupement:
-                # Si la clé n'existe pas, créer une nouvelle entrée (le "bloc")
                 regroupement[cle_regroupement] = {
                     'dateS': date_formatee,
                     'h_debut': soutenance.h_debut,
+                    'h_fin': soutenance.h_fin,
+                    'liste_id_soutenance':[],
                     'salle': soutenance.salle,
                     'jury_noms': membres_jury_noms,
-                    'stages': []  # Initialiser la liste des stages/étudiants
+                    'nom_promo': promo_etudiant,
+                    'stages': [],
+                    'bouton_desinscription':user_present and "3" in promo_etudiant,
+                    'bouton_inscription':(not user_present) and  "3" in promo_etudiant,
+                    'inscris':user_present,
+                    'id_soutenance':soutenance.id_soutenance
                 }
-
-            if stage and stage.demarche:
-                entreprise_stage=stage.demarche.entreprise
-
-
-            # Ajouter l'étudiant/stage à la liste 'stages' de ce bloc
             regroupement[cle_regroupement]['stages'].append({
                 'nom_etudiant': etudiant_lie.nom_etudiant,
                 'prenom_etudiant': etudiant_lie.prenom_etudiant,
+                'nom_entreprise': stage.demarche.entreprise.nom_entreprise if stage else "Entreprise non trouvée",
                 'titre_stage': stage.titre_stage if stage else "Titre de stage non trouvé",
-                'nom_entreprise': entreprise_stage.nom_entreprise if entreprise_stage else "entreprise non trouvé"
-            })      
+                'nom_maitre': stage.maitre_stage.prenom_maitre + " " + stage.maitre_stage.nom_maitre if stage and stage.maitre_stage else "Maître de stage non trouvé   "
+            })
+            regroupement[cle_regroupement]['liste_id_soutenance'].append(soutenance.id_soutenance)
 
     resultats_regroupes = list(regroupement.values())
     return render_template("enseignant/soutenance_enseignant.html",
-                           accueil="accueil_enseignant",personne=enseignant,
+                           accueil="accueil_enseignant",
+                           title="Planning", resultats = resultats_regroupes,
                            heures_disponibles = heures_disponibles,
-                           title="soutenance", resultats = resultats_regroupes)
+                           enseignants_disponibles = enseignants_disponibles,
+                           dates_disponibles = dates_disponibles,
+                           personne=enseignant)
 
 
 
+@app.route('/enseignant/soutenances/inscription/')
+@login_required
+def inscription_enseignant():
+    enseignant = current_user
+    sout_trouve=Soutenance.query.filter(Soutenance.id_soutenance==request.args.get('liste_soutenance')).first()
+    liste_sout=Soutenance.query.filter(Soutenance.h_debut==sout_trouve.h_debut,Soutenance.h_fin==sout_trouve.h_fin,Soutenance.dateS==sout_trouve.dateS,Soutenance.salle==sout_trouve.salle,Soutenance.nom_bat==sout_trouve.nom_bat).all()
+    for soutenance in liste_sout:
+        inscription_soutenance = Composer(
+            id_enseignant=enseignant.id_enseignant,
+            id_soutenance=soutenance.id_soutenance
+            )
+        db.session.add(inscription_soutenance)
+        db.session.commit()
+        id_s=soutenance.id_soutenance
+    if(request.args.get('detail')):
+        return redirect(url_for('detail_soutenance_enseignant',id=id_s))
+    return redirect(url_for('soutenance_enseignant'))
+
+
+@app.route('/enseignant/soutenances/desinscription/')
+@login_required
+def desinscription_enseignant():
+    enseignant = current_user
+
+    sout_trouve=Soutenance.query.filter(Soutenance.id_soutenance==request.args.get('liste_soutenance')).first()
+    liste_sout=Soutenance.query.filter(Soutenance.h_debut==sout_trouve.h_debut,Soutenance.h_fin==sout_trouve.h_fin,Soutenance.dateS==sout_trouve.dateS,Soutenance.salle==sout_trouve.salle,Soutenance.nom_bat==sout_trouve.nom_bat).all()
+    print(liste_sout)
+    for soutenance in liste_sout:
+        Composer.query.filter(Composer.id_enseignant==enseignant.id_enseignant,Composer.id_soutenance==soutenance.id_soutenance).delete()
+        db.session.commit()
+        id_s=soutenance.id_soutenance
+    if(request.args.get('detail')):
+        return redirect(url_for('detail_soutenance_enseignant',id=id_s))
+    return redirect(url_for('soutenance_enseignant'))
 
 
 @app.route('/enseignant/liste+etu/')
@@ -401,6 +455,55 @@ def detail_etudiant_ens():
     enseignant = Enseignant.query.filter(Enseignant.id_enseignant==num_personne).one()
     return render_template("admin/detail_etudiant_ens.html", accueil="accueil_enseignant", personne=enseignant, title="Detail de l'etudiant")
 
+@app.route('/enseignant/soutenances/<int:id>/')
+@login_required
+def detail_soutenance_enseignant(id):
+    """Page de détail d'une soutenance pour les administrateurs
+
+
+    Args:
+        id (int): l'identifiant de la soutenance
+    """
+
+
+    enseignant = current_user
+
+   
+    soutenance = Soutenance.query.get(id)
+    if not soutenance:
+        flash("Soutenance introuvable.", "danger")
+        return redirect(url_for('soutenance_enseignant'))
+   
+    soutenances_groupe = Soutenance.query.filter_by(
+        dateS=soutenance.dateS,
+        h_debut=soutenance.h_debut,
+        salle=soutenance.salle
+    ).all()
+    liste_id_soutenance=[soutenance.id_soutenance]
+    enseignants_jury = db.session.query(Enseignant)\
+            .join(Composer)\
+            .filter(Composer.id_soutenance == id)\
+            .all()
+    
+    entreprise_groupe = db.session.query(Entreprise).join(Demarche).join(Stage).join(Soutenance).filter(Soutenance.id_soutenance == id).all()
+    user_present=enseignant in enseignants_jury
+    promo_etudiant=soutenance.nom_promo
+    bouton_desinscription=user_present and "3" in promo_etudiant
+    bouton_inscription=(not user_present) and  "3" in promo_etudiant
+
+
+    return render_template("/enseignant/detail_soutenance_enseignant.html",
+                           accueil="accueil_enseignant",
+                           title="Détail de la soutenance",
+                           soutenance = soutenance,
+                           soutenances_groupe = soutenances_groupe,
+                           bouton_desinscription=bouton_desinscription,
+                           bouton_inscription=bouton_inscription,
+                           inscris=user_present,
+                           entreprise_groupe = entreprise_groupe,
+                           enseignants_jury = enseignants_jury,
+                           personne=enseignant,
+                           liste_id_soutenance=liste_id_soutenance)
 
 ########################## POUR LES ADMINISTRATEURS ##########################
 

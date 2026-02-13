@@ -232,6 +232,13 @@ section#section_planning_accueil{
                 margin: 10px 0;
                 justify-content: space-between;
                 padding: 20px;
+
+                font-size: 0.8rem;
+
+                > .boite_horizontale, > .boite_verticale{
+                    width: 100%;
+                    justify-content: space-between;
+                }
             }
         }
     }

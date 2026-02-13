@@ -24,8 +24,12 @@
                         </div>
                         <div class="boite_horizontale">
                             <i class="fas fa-calendar-alt petite_icone"></i>
-                            <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
-                                en {{tutore.soutenance_tutore.salle}}</p>
+                            {% if tutore.soutenance_tutore.dateS==None %}
+                                <p>pas encore planiéfié</p>
+                            {% else %}
+                                <p>Le {{tutore.soutenance_tutore.dateS}} à {{tutore.soutenance_tutore.h_debut}} 
+                                    en {{tutore.soutenance_tutore.salle}}</p>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}
@@ -48,19 +52,30 @@
                         <div class="glass">
                             <p>{{date}}</p>
                             {% for soutenance in liste_soutenance %}
-                                {% if soutenance.soutenance.dateS==date %}
-                                    <div class="petit_bouton boite_horizontale">
+                                {%if soutenance.dateS==date%}
+                                    <div class="petit_bouton boite_verticale">
                                         <div class="boite_verticale">
-                                            <p>{{soutenance.soutenance.h_debut}}</p>
-                                            <p>{{soutenance.soutenance.h_fin}}</p>
+                                            {% for h in res_liste_etu_sout %}
+                                                {% if h==soutenance.horaire() %}
+                                                    {% for nom_etu in res_liste_etu_sout[h] %}
+                                                        <p>{{nom_etu}}</p>
+                                                    {% endfor %}    
+                                                {% endif %}
+                                            {% endfor %}
                                         </div>
                                         <div class="boite_horizontale">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            <p>{{soutenance.soutenance.salle}}</p> 
+                                            <div class="boite_verticale">
+                                                <p>{{soutenance.h_debut}}</p>
+                                                <p>{{soutenance.h_fin}}</p>
+                                            </div>
+                                            <div class="boite_horizontale">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                <p>{{soutenance.salle}}</p> 
+                                            </div>
                                         </div>
                                     </div>   
                                 {% endif %}
-                            {% endfor%}
+                            {% endfor %}
                         </div>
                     {% endfor %}
                     </article>

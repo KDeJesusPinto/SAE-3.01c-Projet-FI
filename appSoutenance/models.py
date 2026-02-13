@@ -223,9 +223,15 @@ class Soutenance(db.Model):
         self.id_stage = id_stage
 
     def __repr__(self):
+        return f"<La soutenance a lieu le {self.dateS} à {self.h_debut} au batîment {self.nom_bat} {self.salle} {self.id_stage}>"
+    
+    def horaire(self):
         return f"<La soutenance a lieu le {self.dateS} à {self.h_debut} au batîment {self.nom_bat} {self.salle}>"
 
-
+    def get_nom_prenom_etu(self):
+        etu=Etudiant.query.join(Demarche,Demarche.id_etudiant==Etudiant.id_etudiant).join(Stage,Stage.id_demarche==Demarche.id_demarche).join(Soutenance,Soutenance.id_stage==Stage.id_stage).filter(Soutenance.id_soutenance==self.id_soutenance).first()
+        return etu.nom_etudiant+" "+etu.prenom_etudiant
+        
 
 class Etudiant(db.Model, UserMixin):
     id_etudiant = db.Column(db.Integer, primary_key=True)
@@ -390,6 +396,9 @@ class Composer(db.Model):
     def __init__(self, id_enseignant, id_soutenance):
         self.id_enseignant = id_enseignant
         self.id_soutenance = id_soutenance
+
+    def __repr__(self):
+        return f"<Composer : {self.id_enseignant}, {self.id_soutenance}>"
 
 
 class Tutorer(db.Model):
