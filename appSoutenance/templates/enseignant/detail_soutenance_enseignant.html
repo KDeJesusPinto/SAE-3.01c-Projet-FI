@@ -1,13 +1,17 @@
 {% extends "enseignant/base_enseignant.html" %}
 
 {% block content %}
-    <div class="glass boite_verticale" style="width: 60%; height: 60%;">
+    
+        
+      
+
+        <div class="glass boite_verticale">
         <a href="{{ url_for('soutenance_enseignant') }}" class="petit_bouton" style="position: absolute; left: 20px; width: fit-content; font-size: 0.7em; padding: 10px 20px; margin: 0;"><i class="fas fa-code"></i> Retour</a>
         <div class="boite_horizontale">
-            <span id="date">{{ soutenance.dateS }}</span>
+            <span id="date" style="padding-top: 20px;">{{ soutenance.dateS }}</span>
             <div class="boite_horizontale">
                 <span class="badge_promo">{{ soutenance.nom_promo }}</span>
-                <span class="texte_header" bloc-label="Créneau">{{ soutenance.h_debut }}</span>
+                <span class="texte_header" bloc-label="Créneau">{{ soutenance.h_debut }} - {{ soutenance.h_fin }}</span>
                 <span class="texte_header" bloc-label="salle">Salle: {{ soutenance.salle }}</span>
             </div>
         </div>
@@ -29,25 +33,74 @@
                 <tr>
                     <th>Étudiants</th>
                     <th>Intitulé du stage</th>
+                    <th>Entreprise</th>
+                    <th>Tuteur de stage</th>
+                    <th>Email tuteur</th>
+                    <th>Telephone tuteur</th>
                 </tr>
             </thead>
             <tbody>
                 {% for s in soutenances_groupe %}
                 <tr>
                     <td>
-                        {% set etudiant = s.stage.demarche.etudiant %}
-                        <a href="{{ url_for('detail_etudiant_admin', id=etudiant.id_etudiant)}}" 
-                        style="text-decoration: underline; color: inherit;">
-                            {{etudiant.nom_etudiant}} {{etudiant.prenom_etudiant}}
-                        </a>{% if not loop.last %}, {% endif %}
+                        {% if s.stage and s.stage.demarche and s.stage.demarche.etudiant %}
+                            {% set etudiant = s.stage.demarche.etudiant %}
+                            <a href="{{ url_for('detail_etudiant_admin', id=etudiant.id_etudiant)}}" 
+                            style="text-decoration: underline; color: inherit;">
+                                {{etudiant.nom_etudiant}} {{etudiant.prenom_etudiant}}
+                            </a>{% if not loop.last %} {% endif %}
+                        {% else %}
+                            Étudiant inconnu
+                        {% endif %}
                     </td>
                     <td>{{ s.stage.titre_stage }}</td>
+                    {% if entreprise_groupe %}
+                        {% for ent in entreprise_groupe %}
+                            <td>{{ ent.nom_entreprise }}</td>
+                        {% endfor %}
+                    {% else %}
+                        Entreprise inconnue
+                    {% endif %}
+                        
+                    <td>
+                        {% if s.stage and s.stage.maitre_stage %}
+                            {{ s.stage.maitre_stage.prenom_maitre }} {{ s.stage.maitre_stage.nom_maitre }}
+                        {% else %}
+                            Non renseigné
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if s.stage and s.stage.maitre_stage %}
+                            {{ s.stage.maitre_stage.email_maitre }}
+                        {% else %}
+                            Non renseigné
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if s.stage and s.stage.maitre_stage %}
+                            {{ s.stage.maitre_stage.tel_maitre }}
+                        {% else %}
+                            Non renseigné
+                        {% endif %}
+                    </td>
+
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <div class="boite_horizontale">
+            {% if bouton_desinscription %}
+                <p><a href="{{ url_for('desinscription_enseignant', liste_soutenance=liste_id_soutenance,detail=true) }}" class="petit_bouton">se désinscrire</a></p>
+            {% elif bouton_inscription %}
+                <p><a href="{{ url_for('inscription_enseignant', liste_soutenance=liste_id_soutenance,detail=true) }}" class="petit_bouton">s'inscrire</a></p>
+            {% endif %}
+            {% if inscris %}
+                <p>Inscris</p>
+            {% endif %} 
+        </div>
     </div>
-    <div>
 
 
         

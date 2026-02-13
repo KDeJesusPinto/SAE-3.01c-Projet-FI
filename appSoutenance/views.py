@@ -467,7 +467,7 @@ def detail_soutenance_enseignant(id):
     """
 
 
-    enseingnant = current_user
+    enseignant = current_user
 
    
     soutenance = Soutenance.query.get(id)
@@ -487,6 +487,10 @@ def detail_soutenance_enseignant(id):
             .all()
     
     entreprise_groupe = db.session.query(Entreprise).join(Demarche).join(Stage).join(Soutenance).filter(Soutenance.id_soutenance == id).all()
+    user_present=enseignant in enseignants_jury
+    promo_etudiant=soutenance.nom_promo
+    bouton_desinscription=user_present and "2" in promo_etudiant
+    bouton_inscription=(not user_present) and  "2" in promo_etudiant
 
 
     return render_template("/enseignant/detail_soutenance_enseignant.html",
@@ -494,9 +498,12 @@ def detail_soutenance_enseignant(id):
                            title="Détail de la soutenance",
                            soutenance = soutenance,
                            soutenances_groupe = soutenances_groupe,
+                           bouton_desinscription=bouton_desinscription,
+                           bouton_inscription=bouton_inscription,
+                           inscris=user_present,
                            entreprise_groupe = entreprise_groupe,
                            enseignants_jury = enseignants_jury,
-                           personne=enseingnant)
+                           personne=enseignant)
 
 ########################## POUR LES ADMINISTRATEURS ##########################
 
@@ -715,13 +722,14 @@ def planning_admini():
             date_formatee = f"{jour_mois} {mois_francais} {soutenance.dateS.year}"
 
 
-            cle_regroupement = f"{soutenance.dateS.strftime('%Y-%m-%d')}-{soutenance.h_debut}-{soutenance.salle}-{membres_jury_noms}"
+            cle_regroupement = f"{soutenance.dateS.strftime('%Y-%m-%d')}-{soutenance.h_debut}-{soutenance.h_fin}-{soutenance.salle}-{membres_jury_noms}"
            
             if cle_regroupement not in regroupement:
                 regroupement[cle_regroupement] = {
                     'id_soutenance': soutenance.id_soutenance,
                     'dateS': date_formatee,
                     'h_debut': soutenance.h_debut,
+                    'h_fin':soutenance.h_fin,
                     'salle': soutenance.salle,
                     'jury_noms': membres_jury_noms,
                     'nom_promo': promo_etudiant,
@@ -730,7 +738,9 @@ def planning_admini():
             regroupement[cle_regroupement]['stages'].append({
                 'nom_etudiant': etudiant_lie.nom_etudiant,
                 'prenom_etudiant': etudiant_lie.prenom_etudiant,
-                'titre_stage': stage.titre_stage if stage else "Titre de stage non trouvé"
+                'titre_stage': stage.titre_stage if stage else "Titre de stage non trouvé",
+                'nom_entreprise':stage.demarche.entreprise.nom_entreprise,
+                'nom_maitre': stage.maitre_stage.prenom_maitre + " " + stage.maitre_stage.nom_maitre if stage and stage.maitre_stage else "Maître de stage non trouvé   "
             })
 
     resultats_regroupes = list(regroupement.values())
