@@ -16,7 +16,7 @@
 
     --couleur_glass_border: rgba(255, 255, 255, 0.9);
 
-    font-size: 3vh;
+    font-size: 2.3dvh;
 }
 
 /*---------------- STYLES GÉNÉRAUX ----------------*/
@@ -96,6 +96,10 @@ a{
     text-decoration: none;
 
     /* positionnement */
+}
+
+select, button{
+    border: none;
 }
 
 /* ---------------- STYLES GÉNÉRAUX DES BOÎTES ----------------*/
@@ -303,7 +307,7 @@ nav#barre_navigation{
     img{
         /* style */
         /* positionnement */
-        height: 35px;
+        height: 3.5dvh;
     }
 
     ul{

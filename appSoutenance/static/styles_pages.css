@@ -164,8 +164,6 @@ div.demarches{
 }*/
 
 :root:has(#tutores){
-    font-size: 2.5vh;
-
     body{
         overflow-y: hidden;
     }
