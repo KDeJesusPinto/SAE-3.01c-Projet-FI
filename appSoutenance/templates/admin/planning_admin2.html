@@ -5,11 +5,6 @@
     <div class="boite_horizontale">
         <form id="en_haut" method="get" action="{{ url_for(request.endpoint) }}">
             <aside id="filtre_liste_admin">
-                <select class="combobox" name="nom_promo" id="nom_promo">
-                    <option value="">Niveau</option>
-                    <option value="2A" {% if current_promo == '2A' %}selected{% endif %}>2ème année</option>
-                    <option value="3A" {% if current_promo == '3A' %}selected{% endif %}>3ème année</option>
-                </select>
                 <select class="combobox" name="regime" id="regime">
                     <option value="">Régime</option>
                     <option value="Initial" {% if request.args.get('regime') == 'Initial' %}selected{% endif %}>Initial</option>
