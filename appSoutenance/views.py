@@ -1236,7 +1236,7 @@ def valider_jury():
         # Créer le jury associé
         nouveau_jury = Jury(
             date_jury=date_obj,
-            h_jury=heure_sel,
+            heure_jury=heure_sel,
             duree=duree,
             id_soutenance=nouvelle_sout.id_soutenance
         )
