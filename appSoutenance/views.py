@@ -341,7 +341,9 @@ def soutenance_enseignant():
             regroupement[cle_regroupement]['stages'].append({
                 'nom_etudiant': etudiant_lie.nom_etudiant,
                 'prenom_etudiant': etudiant_lie.prenom_etudiant,
-                'titre_stage': stage.titre_stage if stage else "Titre de stage non trouvé"
+                'nom_entreprise': stage.demarche.entreprise.nom_entreprise if stage else "Entreprise non trouvée",
+                'titre_stage': stage.titre_stage if stage else "Titre de stage non trouvé",
+                'nom_maitre': stage.maitre_stage.prenom_maitre + " " + stage.maitre_stage.nom_maitre if stage and stage.maitre_stage else "Maître de stage non trouvé   "
             })
             regroupement[cle_regroupement]['liste_id_soutenance'].append(soutenance.id_soutenance)
 
