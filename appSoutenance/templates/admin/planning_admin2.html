@@ -63,7 +63,9 @@
                     <div class="boite_horizontale">
                         <span id="date">{{ bloc.dateS }}</span>
                         <div class="boite_horizontale">
-                            <span class="badge_promo">{{ bloc.nom_promo }}</span>
+                            {% for p in bloc.promos %}
+                                <span class="badge_promo">{{ p }}</span>
+                            {% endfor %}
                             <span class="texte_header" bloc-label="Créneau">{{ bloc.h_debut }}</span>
                             <span class="texte_header" bloc-label="salle">Salle: {{ bloc.salle }}</span>
                         </div>
