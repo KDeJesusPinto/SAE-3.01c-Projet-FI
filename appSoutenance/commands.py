@@ -59,9 +59,11 @@ def loaddb(filename):
                     civilite_etudiant=civilite_stagiaire,
                     date_naissance=datetime(2000, 1, 1).date(),
                     email_etudiant=email,
-                    login_etudiant=email.split('@')[0],
-                    pwd_etudiant=nom_stagiaire.lower())
+                    login_etudiant=(prenom_stagiaire[0] + nom_stagiaire).lower().replace(" ", ""),
+                    pwd_etudiant="")
                 db.session.add(etu)
+                db.session.flush()
+                etu.pwd_etudiant = f"pass{etu.id_etudiant}"
                 db.session.flush()
 
             #Promo
@@ -217,19 +219,16 @@ def test(ctx):
     # 1. Réinitialisation initiale
     ctx.invoke(loaddb, filename='appSoutenance/data/arexis_donnees.csv')
 
-    try:
-        # 2. Exécution des tests via subprocess pour un coverage précis
-        res = subprocess.run([
-            "coverage", "run", "-m", "pytest", 
-            "--cov=appSoutenance", "--cov-report=term-missing", "appSoutenance/tests"
-        ])
-        # 3. Affichage du rapport de couverture
-        subprocess.run(["coverage", "report", "-m"])
-        return_code = res.returncode
-    finally:
-        # 4. Nettoyage des sessions et réinitialisation finale pour retrouver la base de dev propre
-        db.session.remove()
-        db.engine.dispose()
-        ctx.invoke(loaddb, filename='appSoutenance/data/arexis_donnees.csv')
+    # 2. Exécution des tests via subprocess pour un coverage précis
+    res = subprocess.run([
+        "coverage", "run", "--source=appSoutenance", "-m", "pytest", 
+        "appSoutenance/tests"
+    ])
+    # 3. Affichage du rapport de couverture
+    subprocess.run(["coverage", "report", "-m"])
 
-    sys.exit(return_code)
+    # 4. Réinitialisation finale pour retrouver la base de dev propre (après le coverage)
+    lg.warning("Restauration de la base de données après les tests...")
+    ctx.invoke(loaddb, filename='appSoutenance/data/arexis_donnees.csv')
+
+    sys.exit(res.returncode)
