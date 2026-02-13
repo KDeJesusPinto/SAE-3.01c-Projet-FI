@@ -333,8 +333,8 @@ def soutenance_enseignant():
                     'jury_noms': membres_jury_noms,
                     'nom_promo': promo_etudiant,
                     'stages': [],
-                    'bouton_desinscription':user_present and "2" in promo_etudiant,
-                    'bouton_inscription':(not user_present) and  "2" in promo_etudiant,
+                    'bouton_desinscription':user_present and "3" in promo_etudiant,
+                    'bouton_inscription':(not user_present) and  "3" in promo_etudiant,
                     'inscris':user_present,
                     'id_soutenance':soutenance.id_soutenance
                 }
@@ -485,8 +485,8 @@ def detail_soutenance_enseignant(id):
     entreprise_groupe = db.session.query(Entreprise).join(Demarche).join(Stage).join(Soutenance).filter(Soutenance.id_soutenance == id).all()
     user_present=enseignant in enseignants_jury
     promo_etudiant=soutenance.nom_promo
-    bouton_desinscription=user_present and "2" in promo_etudiant
-    bouton_inscription=(not user_present) and  "2" in promo_etudiant
+    bouton_desinscription=user_present and "3" in promo_etudiant
+    bouton_inscription=(not user_present) and  "3" in promo_etudiant
 
 
     return render_template("/enseignant/detail_soutenance_enseignant.html",
