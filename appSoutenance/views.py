@@ -344,7 +344,6 @@ def soutenance_enseignant():
                 'titre_stage': stage.titre_stage if stage else "Titre de stage non trouvé"
             })
             regroupement[cle_regroupement]['liste_id_soutenance'].append(soutenance.id_soutenance)
-            print(regroupement[cle_regroupement]['liste_id_soutenance'])
 
     resultats_regroupes = list(regroupement.values())
     return render_template("enseignant/soutenance_enseignant.html",
@@ -361,21 +360,18 @@ def soutenance_enseignant():
 @login_required
 def inscription_enseignant():
     enseignant = current_user
-    print(request.args.get('liste_soutenance'),"    desinscription")
     sout_trouve=Soutenance.query.filter(Soutenance.id_soutenance==request.args.get('liste_soutenance')).first()
     liste_sout=Soutenance.query.filter(Soutenance.h_debut==sout_trouve.h_debut,Soutenance.h_fin==sout_trouve.h_fin,Soutenance.dateS==sout_trouve.dateS,Soutenance.salle==sout_trouve.salle,Soutenance.nom_bat==sout_trouve.nom_bat).all()
-    print(liste_sout)
     for soutenance in liste_sout:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        print(soutenance)
-        print(Composer.query.filter(Composer.id_enseignant==enseignant.id_enseignant,Composer.id_soutenance==soutenance.id_soutenance).all())
         inscription_soutenance = Composer(
             id_enseignant=enseignant.id_enseignant,
             id_soutenance=soutenance.id_soutenance
             )
-        print(inscription_soutenance," inscription")
         db.session.add(inscription_soutenance)
         db.session.commit()
+        id_s=soutenance.id_soutenance
+    if(request.args.get('detail')):
+        return redirect(url_for('detail_soutenance_enseignant',id=id_s))
     return redirect(url_for('soutenance_enseignant'))
 
 
@@ -383,16 +379,16 @@ def inscription_enseignant():
 @login_required
 def desinscription_enseignant():
     enseignant = current_user
-    print(request.args.get('liste_soutenance'),"    desinscription")
+
     sout_trouve=Soutenance.query.filter(Soutenance.id_soutenance==request.args.get('liste_soutenance')).first()
     liste_sout=Soutenance.query.filter(Soutenance.h_debut==sout_trouve.h_debut,Soutenance.h_fin==sout_trouve.h_fin,Soutenance.dateS==sout_trouve.dateS,Soutenance.salle==sout_trouve.salle,Soutenance.nom_bat==sout_trouve.nom_bat).all()
     print(liste_sout)
     for soutenance in liste_sout:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        print(soutenance)
-        print(Composer.query.filter(Composer.id_enseignant==enseignant.id_enseignant,Composer.id_soutenance==soutenance.id_soutenance).all())
         Composer.query.filter(Composer.id_enseignant==enseignant.id_enseignant,Composer.id_soutenance==soutenance.id_soutenance).delete()
         db.session.commit()
+        id_s=soutenance.id_soutenance
+    if(request.args.get('detail')):
+        return redirect(url_for('detail_soutenance_enseignant',id=id_s))
     return redirect(url_for('soutenance_enseignant'))
 
 
@@ -480,7 +476,7 @@ def detail_soutenance_enseignant(id):
         h_debut=soutenance.h_debut,
         salle=soutenance.salle
     ).all()
-
+    liste_id_soutenance=[soutenance.id_soutenance]
     enseignants_jury = db.session.query(Enseignant)\
             .join(Composer)\
             .filter(Composer.id_soutenance == id)\
@@ -503,7 +499,8 @@ def detail_soutenance_enseignant(id):
                            inscris=user_present,
                            entreprise_groupe = entreprise_groupe,
                            enseignants_jury = enseignants_jury,
-                           personne=enseignant)
+                           personne=enseignant,
+                           liste_id_soutenance=liste_id_soutenance)
 
 ########################## POUR LES ADMINISTRATEURS ##########################
 

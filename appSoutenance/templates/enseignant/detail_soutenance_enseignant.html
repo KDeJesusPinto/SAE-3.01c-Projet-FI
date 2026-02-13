@@ -41,6 +41,7 @@
             </thead>
             <tbody>
                 {% for s in soutenances_groupe %}
+                {% set s_id=s.id_soutenance%}
                 <tr>
                     <td>
                         {% if s.stage and s.stage.demarche and s.stage.demarche.etudiant %}

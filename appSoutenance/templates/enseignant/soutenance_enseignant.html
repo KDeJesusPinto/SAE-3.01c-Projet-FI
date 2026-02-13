@@ -93,18 +93,17 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                    <div class="boite_horizontale">
-                        {% if bloc.bouton_desinscription %}
-                            <p><a href="{{ url_for('desinscription_enseignant', liste_soutenance=bloc.liste_id_soutenance) }}" class="petit_bouton">se désinscrire</a></p>
-                            {% elif bloc.bouton_inscription %}
-                                <p><a href="{{ url_for('inscription_enseignant', liste_soutenance=bloc.liste_id_soutenance) }}" class="petit_bouton">s'inscrire</a></p>
-                            {% endif %}
-                            {% if bloc.inscris %}
-                                <p>Inscris</p>
-                            {% endif %}
-                    </div>
                 </div>
-                    
+                <div class="boite_horizontale">
+                    {% if bloc.bouton_desinscription %}
+                        <p><a href="{{ url_for('desinscription_enseignant', liste_soutenance=bloc.liste_id_soutenance) }}" class="petit_bouton">se désinscrire</a></p>
+                    {% elif bloc.bouton_inscription %}
+                        <p><a href="{{ url_for('inscription_enseignant', liste_soutenance=bloc.liste_id_soutenance) }}" class="petit_bouton">s'inscrire</a></p>
+                    {% endif %}
+                    {% if bloc.inscris %}
+                        <p>Inscris</p>
+                    {% endif %}
+                </div>
 
             
 
