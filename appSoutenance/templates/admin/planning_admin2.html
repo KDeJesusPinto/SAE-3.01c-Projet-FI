@@ -77,14 +77,16 @@
                         <thead>
                             <tr>
                                 <th>Étudiants</th>
-                                <th>Intitulé du stage</th>
+                                <th>Entreprise</th>
+                                <th>Maître de stage</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for stage_info in bloc.stages %}
                                 <tr>
                                     <td>{{ stage_info.nom_etudiant }} {{ stage_info.prenom_etudiant }}</td>
-                                    <td>{{ stage_info.titre_stage }}</td>
+                                    <td>{{ stage_info.nom_entreprise }}</td> 
+                                    <td>{{ stage_info.nom_maitre }}</td> 
                                 </tr>
                             {% endfor %}
                         </tbody>

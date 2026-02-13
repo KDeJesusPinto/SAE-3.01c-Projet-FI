@@ -623,6 +623,8 @@ def _planning_admin_common(template_name, forced_promo=None):
         if not membres_jury_noms:
             membres_jury_noms = "Jury non assigné"
 
+        regime_etu= regime if regime else (Appartenir.query.filter_by(id_etudiant=etudiant_lie.id_etudiant).first().regime_etudiant if etudiant_lie else "N/C")
+
 
         if etudiant_lie:
             jour_mois = soutenance.dateS.day
@@ -630,23 +632,27 @@ def _planning_admin_common(template_name, forced_promo=None):
             date_formatee = f"{jour_mois} {mois_francais} {soutenance.dateS.year}"
 
 
-            cle_regroupement = f"{soutenance.dateS}-{soutenance.h_debut}-{soutenance.salle}"
+            cle_regroupement = f"{soutenance.dateS.strftime('%Y-%m-%d')}-{soutenance.h_debut}-{soutenance.h_fin}-{soutenance.salle}-{membres_jury_noms}"
            
             if cle_regroupement not in regroupement:
                 regroupement[cle_regroupement] = {
                     'id_soutenance': soutenance.id_soutenance,
                     'dateS': date_formatee,
                     'h_debut': soutenance.h_debut,
+                    'h_fin': soutenance.h_fin,
                     'salle': soutenance.salle,
                     'jury_noms': membres_jury_noms,
-                    'promos': set(),
+                    'nom_promo': promo_etudiant,
+                    'regime_etudiant': regime_etu,
                     'stages': []
                 }
             regroupement[cle_regroupement]['promos'].add(promo_etudiant)
             regroupement[cle_regroupement]['stages'].append({
                 'nom_etudiant': etudiant_lie.nom_etudiant,
                 'prenom_etudiant': etudiant_lie.prenom_etudiant,
-                'titre_stage': stage.titre_stage if stage else "Titre de stage non trouvé"
+                'titre_stage': stage.titre_stage if stage else "Titre de stage non trouvé",
+                'nom_entreprise': stage.demarche.entreprise.nom_entreprise if stage else "Entreprise non trouvée",
+                'nom_maitre': stage.maitre_stage.prenom_maitre + " " + stage.maitre_stage.nom_maitre if stage and stage.maitre_stage else "Maître de stage non trouvé   "
             })
 
     resultats_regroupes = list(regroupement.values())
@@ -673,13 +679,10 @@ HEURE= {
 @login_required
 def detail_soutenance_admin(id):
     """Page de détail d'une soutenance pour les administrateurs
-
-
+    
     Args:
         id (int): l'identifiant de la soutenance
     """
-
-
     admin = current_user
     if not isinstance(admin, Admini):
         flash("Accès réservé aux administrateurs.", "warning")
@@ -700,6 +703,18 @@ def detail_soutenance_admin(id):
             .join(Composer)\
             .filter(Composer.id_soutenance == id)\
             .all()
+    
+    entreprise_groupe = db.session.query(Entreprise).join(Demarche).join(Stage).join(Soutenance).filter(Soutenance.id_soutenance == id).all()
+    
+    etudiant_lie = None
+    if soutenance.stage and soutenance.stage.demarche and soutenance.stage.demarche.etudiant:
+        etudiant_lie = soutenance.stage.demarche.etudiant
+
+    regime_etu = "N/C"
+    if etudiant_lie:
+        app = Appartenir.query.filter_by(id_etudiant=etudiant_lie.id_etudiant).first()
+        if app and app.regime_etudiant:
+            regime_etu = app.regime_etudiant
 
     deleteForm = FormSoutenance()
 
@@ -708,7 +723,9 @@ def detail_soutenance_admin(id):
                            title="Détail de la soutenance",
                            soutenance = soutenance,
                            soutenances_groupe = soutenances_groupe,
+                           entreprise_groupe = entreprise_groupe,
                            enseignants_jury = enseignants_jury,
+                           regime_etu = regime_etu,
                            deleteForm = deleteForm)
 
 
