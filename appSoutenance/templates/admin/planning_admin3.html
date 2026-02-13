@@ -3,13 +3,8 @@
 
 {% block content %}
     <div class="boite_horizontale">
-        <form id="en_haut" method="get" action="{{ url_for('planning_admini') }}">
+        <form id="en_haut" method="get" action="{{ url_for(request.endpoint) }}">
             <aside id="filtre_liste_admin">
-                <select class="combobox" name="nom_promo" id="nom_promo">
-                    <option value="">Niveau</option>
-                    <option value="2A" {% if request.args.get('nom_promo') == '2A' %}selected{% endif %}>2ème année</option>
-                    <option value="3A" {% if request.args.get('nom_promo') == '3A' %}selected{% endif %}>3ème année</option>
-                </select>
                 <select class="combobox" name="regime" id="regime">
                     <option value="">Régime</option>
                     <option value="Initial" {% if request.args.get('regime') == 'Initial' %}selected{% endif %}>Initial</option>
@@ -48,14 +43,13 @@
                     <option value="Nom" {% if request.args.get('trier') == 'Nom' %}selected{% endif %}>Nom de l'étudiant</option>
                     <option value="DateDesc" {% if request.args.get('trier') == 'DateDesc' %}selected{% endif %}>Date (Décroissant)</option>
                 </select>
-                <button class="petit_bouton" id="filtrer" type="submit">Filtrer</button>
+                <button class="petit_bouton" id="filtrer" type="submit">Appliquer</button>
                 <a href="{{ url_for('accueil_admin') }}" class="petit_bouton" id="retour"><i class="fas fa-code"></i> Retour</a>
             </aside>
         </form>
         <div id="planning-boite">
             <div class="boite_horizontale">
-                <h1>Planning des Soutenances</h1>
-                <a href="{{ url_for('creation_soutenance') }}"><i class="fas fa-plus-circle grande_icone"></i></a>        
+                <h1>Planning des Soutenances des BUT3</h1>
             </div>
             {% if resultats|length == 0 %}
                 <div class="no-bloc">
@@ -69,7 +63,8 @@
                         <span id="date">{{ bloc.dateS }}</span>
                         <div class="boite_horizontale">
                             <span class="badge_promo">{{ bloc.nom_promo }}</span>
-                            <span class="texte_header" bloc-label="Créneau">{{ bloc.h_debut }}</span>
+                            <span class="regime_etudiant">{{ bloc.regime_etudiant }}</span>
+                            <span class="texte_header" bloc-label="Créneau">{{ bloc.h_debut }} - {{ bloc.h_fin }}</span>
                             <span class="texte_header" bloc-label="salle">Salle: {{ bloc.salle }}</span>
                         </div>
                     </div>
