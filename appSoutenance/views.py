@@ -644,6 +644,7 @@ def _planning_admin_common(template_name, forced_promo=None):
                     'jury_noms': membres_jury_noms,
                     'nom_promo': promo_etudiant,
                     'regime_etudiant': regime_etu,
+                    'promos': set(),
                     'stages': []
                 }
             regroupement[cle_regroupement]['promos'].add(promo_etudiant)

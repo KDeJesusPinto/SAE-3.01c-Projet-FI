@@ -66,7 +66,8 @@
                             {% for p in bloc.promos %}
                                 <span class="badge_promo">{{ p }}</span>
                             {% endfor %}
-                            <span class="texte_header" bloc-label="Créneau">{{ bloc.h_debut }}</span>
+                            <span class="regime_etudiant">{{ bloc.regime_etudiant }}</span>
+                            <span class="texte_header" bloc-label="Créneau">{{ bloc.h_debut }} - {{ bloc.h_fin }}</span>
                             <span class="texte_header" bloc-label="salle">Salle: {{ bloc.salle }}</span>
                         </div>
                     </div>
