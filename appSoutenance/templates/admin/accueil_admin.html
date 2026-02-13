@@ -1,22 +1,68 @@
 {% extends "admin/base_admin.html" %}
 
 {% block content %}
-    <form method="get" action="{{ url_for('accueil_admin') }}">
-        <div class="glass boite_horizontale" id="filtre_admin">
+    <div class="boite_horizontale" id="barre_haut_accueil_admin">
+        <form class="glass boite_horizontale" id="filtre_admin" method="get" action="{{ url_for('accueil_admin') }}">
             <select class="combobox" name="formation" id="formation">
                 <option value="">Formation</option>
                 <option value="Info" {% if request.args.get('formation') == 'Info' %}selected{% endif %}>Informatique</option>
                 <option value="Chimie" {% if request.args.get('formation') == 'Chimie' %}selected{% endif %}>Chimie</option>
                 <option value="GEA" {% if request.args.get('formation') == 'GEA' %}selected{% endif %}>GEA</option>
             </select>
+            <!--
             <select class="combobox" name="annee" id="annee">
                 <option value="">Année</option>
                 <option value="2A" {% if request.args.get('annee') == '2A' %}selected{% endif %}>2ème année</option>
                 <option value="3A" {% if request.args.get('annee') == '3A' %}selected{% endif %}>3ème année</option>
-            </select>
-            <button class="petit_bouton" id="filtrer" type="submit">Filtrer</button>
+            </select>-->
+            <button class="petit_bouton" type="submit"><i class="fas fa-search petite_icone"></i></button>
+        </form>
+
+        <div class="glass boite boite_verticale" id="csv_form_container">
+            <h3>Importer un fichier CSV</h3>
+            <form method="POST" action="{{ url_for('accueil_admin') }}" enctype="multipart/form-data">
+                {{ importForm.hidden_tag() }}
+                <div class="form-group boite_verticale" style="">
+                    {{ importForm.type_import.label }}
+                    <div class="boite_horizontale">
+                        {{ importForm.type_import(class="combobox", style="width: fit-content;") }}
+                        {% for error in importForm.type_import.errors %}
+                            <span style="color: red; font-size: 0.8em; display: block;">[{{ error }}]</span>
+                        {% endfor %}
+                        <label for="ficCSV_input" class="petit_bouton" style="cursor: pointer; display: inline-block; font-size: 0.7em; text-align: center; width: 70%;">
+                            <span>Sélectionner le fichier CSV</span>
+                        </label>
+                        {{ importForm.ficCSV(id='ficCSV_input', style="display: none", accept=".csv") }}
+                    
+                    </div>
+                    
+                    <p id="file-name-display" style="margin-top: 10px; font-size: 0.9em; color: #555;">Aucun fichier sélectionné</p>
+                    {% for error in importForm.ficCSV.errors %}
+                        <p style="color: red; font-size: 0.8em;">[{{ error }}]</p>
+                    {% endfor %}
+                </div>
+
+                <div style="margin-top: 15px; display: flex; justify-content: center;">
+                    {{ importForm.submit(class="petit_bouton", style="font-size:0.7em; width: fit-content; padding: 10px 20px") }}
+                </div>
+            </form>
         </div>
-    </form>
+
+        <div class="glass boite_verticale" id="csv_form_container" style="text-align: center; justify-content: center;">
+            <h3>Exporter en CSV</h3>
+            <form method="POST" action="{{ url_for('accueil_admin') }}">
+                {{ exportForm.hidden_tag() }}
+                <div class="form-group" style="display: flex; flex-direction: column; align-items: center;">
+                    {{ exportForm.type_export.label }}
+                    {{ exportForm.type_export(class="combobox", style="width: fit-content;") }}
+                    <div style="margin-top: 15px;">
+                        {{ exportForm.submit(class="petit_bouton", style="font-size:0.7em; width: fit-content; padding: 10px 20px;") }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
 
     {% with messages = get_flashed_messages(with_categories=true) %} 
         {% if messages%} 
@@ -34,106 +80,101 @@
         {% endif %} 
     {% endwith %}
 
-    <div class="boite_verticale" id="contenu_admin">
-        <div class="boite_verticale">
+    <div class="boite_horizontale">
+        <section id="contenu_admin"> <!--class="boite_verticale"--> 
+            <h1>2<sup>È</sup> ANNÉE</h1>
+            
+            <span class="boite_horizontale">
+                    <h2>DONNÉES ÉLÈVES</h2>
+                    <a class="petit_bouton" id="voir" href="{{ url_for('liste_etu_admin2') }}">Voir tous les étudiants</a>
+            </span>
+
             <div class="boite_horizontale">
-                <h1 id="donnees_eleves">DONNÉES ÉLÈVES</h1>
-                <a class="petit_bouton" id="voir" href="{{ url_for('liste_etu_admin') }}">Voir tous les étudiants</a>
+                <article class="glass boite_verticale">
+                    <h3>STAGE TROUVÉ</h3>
+                    <h1>{{ nb_stages_trouves }} / {{ nb_etudiants_2 }}</h1>
+                    <a href="{{ url_for('liste_etu_admin2', situation='Trouvé', **request.args) }}">
+                        <i class="fas fa-arrow-circle-right petite_icone"></i>
+                    </a>
+                </article>
+                <article class="glass boite_verticale">
+                    <h3>SOUTENANCE ALTERNANT PRÉVU</h3>
+                    <h1>{{ nb_soutenances_alternants2 }} / {{ nb_etudiants_alternants2 }}</h1>
+                    <a href="{{ url_for('liste_etu_admin2', regime='Alternant', **request.args) }}">
+                        <i class="fas fa-arrow-circle-right petite_icone"></i>
+                    </a>
+                </article>
             </div>
+            
+            <span class="boite_horizontale">
+                    <h2>DONNÉES PROFESSEURS</h2>
+                    <a class="petit_bouton" id="voir" href="{{ url_for('liste_ens_admin') }}">Voir tous les enseignants</a>
+            </span>
+
             <div class="boite_horizontale">
-                <div class="glass boite_verticale" id="boite">
-                    <h2>STAGE TROUVÉ :<br>{{ nb_stages_trouves }} / {{ nb_etudiants }}</h2>
-                    <a href="{{ url_for('liste_etu_admin', situation='Trouvé', **request.args) }}" class="petit_bouton" id="bouton_info">Infos</a>
-                </div>
-                <div class="glass boite_verticale" id="boite">
-                    <h2>SOUTENANCE ALTERNANT PRÉVU :<br>{{ nb_soutenances_alternants }} / {{ nb_etudiants_alternants }}</h2>
-                    <a href="{{ url_for('liste_etu_admin', regime='Alternant', **request.args) }}" class="petit_bouton" id="bouton_info">Infos</a>
-                </div>
-            </div>
-        </div>
+                <article class="glass boite_verticale">
+                    <h3>SOUTENANCES POSÉES PAR TUTEUR</h3>
+                    <h1>{{ nb_soutenances_posees2 }} / {{ nb_tuteurs }}</h1>
+                    <a href="{{ url_for('liste_ens_admin', soutenance='Soutenance', **request.args) }}">
+                        <i class="fas fa-arrow-circle-right petite_icone"></i>
+                    </a>
+                </article>
+                <article class="glass boite_verticale">
+                    <h3>SOUTENANCE SANS CANDIDES</h3>
+                    <h1>{{ nb_soutenances_attente_candide2 }} / {{ nb_soutenances_posees2 }}</h1>
+                    <a href="{{ url_for('liste_soutenances_candides_admin', promo='2A')}}">
+                        <i class="fas fa-arrow-circle-right petite_icone"></i>
+                    </a>
+                </article>
+            </div>    
+        </section>
 
+        <section id="contenu_admin"> <!--class="boite_verticale"--> 
+            <h1>3<sup>È</sup> ANNÉE</h1>
+            
+            <span class="boite_horizontale">
+                    <h2>DONNÉES ÉLÈVES</h2>
+                    <a class="petit_bouton" id="voir" href="{{ url_for('liste_etu_admin3') }}">Voir tous les étudiants</a>
+            </span>
 
-        <div class="boite_verticale">
             <div class="boite_horizontale">
-                <h1 id="donnees_professeurs">DONNÉES PROFESSEURS</h1>
-                <a class="petit_bouton" id="voir" href="{{ url_for('liste_ens_admin') }}">Voir tous les enseignant</a>
+                <article class="glass boite_verticale">
+                    <h3>STAGE TROUVÉ</h3>
+                    <h1>{{ nb_stages_trouves3 }} / {{ nb_etudiants_3 }}</h1>
+                    <a href="{{ url_for('liste_etu_admin3', situation='Trouvé', **request.args) }}">
+                        <i class="fas fa-arrow-circle-right petite_icone"></i>
+                    </a>
+                </article>
+                <article class="glass boite_verticale">
+                    <h3>SOUTENANCE ALTERNANT PRÉVU</h3>
+                    <h1>{{ nb_soutenances_alternants3 }} / {{ nb_etudiants_alternants3 }}</h1>
+                    <a href="{{ url_for('liste_etu_admin3', regime='Alternant', **request.args) }}">
+                        <i class="fas fa-arrow-circle-right petite_icone"></i>
+                    </a>
+                </article>
             </div>
+            
+            <span class="boite_horizontale">
+                    <h2>DONNÉES PROFESSEURS</h2>
+                    <a class="petit_bouton" id="voir" href="{{ url_for('liste_ens_admin') }}">Voir tous les enseignants</a>
+            </span>
+
             <div class="boite_horizontale">
-                <div class="glass boite_verticale" id="boite">
-                    <h2>SOUTENANCES POSÉES PAR TUTEUR :<br>{{ nb_soutenances_posees }} / {{ nb_tuteurs }}</h2>
-                    <a href="{{ url_for('liste_ens_admin', soutenance='Soutenance', **request.args) }}" class="petit_bouton" id="bouton_info">Infos</a>
-                </div>
-                <div class="glass boite_verticale" id="boite">
-                    <h2>SOUTENANCE EN ATTENTE DE CANDIDE :<br>{{ nb_soutenances_attente_candide }} / {{ nb_soutenances_posees }}</h2>
-                    <a href="{{ url_for('liste_soutenances_candides_admin')}}" class="petit_bouton" id="bouton_info">Infos</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="boite_horizontale">
-            <div class="glass" id="import_form_container">
-                <h3> Importer un fichier CSV</h3>
-
-
-                <form method="POST" action="{{ url_for('accueil_admin') }}" enctype="multipart/form-data">
-                    {{ createForm.hidden_tag() }} <div class="form-group">
-                        {{ createForm.type_import.label }}
-                        {{ createForm.type_import(class="combobox", style="width: 100%;") }}
-                        {% for error in createForm.type_import.errors %}
-                            <span style="color: red; font-size: 0.8em; display: block;">[{{ error }}]</span>
-                        {% endfor %}
-                    </div>
-
-
-                    <div class="form-group" style="margin-top: 10px;">
-                       
-                        <label for="ficCSV_input" class="petit_bouton" style="cursor: pointer; display: inline-block;">
-                            <span>Sélectionner le fichier CSV</span>
-                        </label>
-                        {{ createForm.ficCSV(id='ficCSV_input', style="display: none", accept=".csv") }}
-                        
-                        <p id="file-name-display" style="margin-top: 5px; font-size: 0.9em; color: #555;">Aucun fichier sélectionné.</p>
-                        {% for error in createForm.ficCSV.errors %}
-                            <p style="color: red; font-size: 0.8em;">[{{ error }}]</p>
-                        {% endfor %}
-                    </div>
-
-                <div style="margin-top: 15px;">
-                    {{ createForm.submit(class="petit_bouton") }}
-                </div>
-                </form>
-            </div>
-
-
-            <div class="glass" id="export_container" style="display: flex; align-items: center; justify-content: center;">
-                 <label for="export_csv" class="petit_bouton">
-                    <span>Exporter CSV</span>
-                    <input id="export_csv" type="button" style="display: none;">
-                 </label>
-            </div>
-        </div>
-
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const fileInput = document.getElementById('ficCSV_input');
-                const fileNameDisplay = document.getElementById('file-name-display');
-
-
-                if (fileInput) {
-                    fileInput.addEventListener('change', function() {
-                        const fileName = this.files.length > 0 ? this.files[0].name : 'Aucun fichier sélectionné.';
-                        fileNameDisplay.textContent = 'Fichier : ' + fileName;
-                    });
-                }
-
-                // Fermeture manuelle des alertes si le JS de Bootstrap n'est pas chargé
-                document.querySelectorAll('.btn-close').forEach(button => {
-                    button.addEventListener('click', function() {
-                        this.closest('.alert').style.display = 'none';
-                    });
-                });
-            });
-        </script>
+                <article class="glass boite_verticale">
+                    <h3>SOUTENANCES POSÉES PAR TUTEUR</h3>
+                    <h1>{{ nb_soutenances_posees3 }} / {{ nb_tuteurs }}</h1>
+                    <a href="{{ url_for('liste_ens_admin', soutenance='Soutenance', **request.args) }}">
+                        <i class="fas fa-arrow-circle-right petite_icone"></i>
+                    </a>
+                </article>
+                <article class="glass boite_verticale">
+                    <h3>SOUTENANCE SANS CANDIDES</h3>
+                    <h1>{{ nb_soutenances_attente_candide3 }} / {{ nb_soutenances_posees3 }}</h1>
+                    <a href="{{ url_for('liste_soutenances_candides_admin', promo='3A')}}">
+                        <i class="fas fa-arrow-circle-right petite_icone"></i>
+                    </a>
+                </article>
+            </div>    
+        </section>
     </div>
 {% endblock %}

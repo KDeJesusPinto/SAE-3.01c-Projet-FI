@@ -2,8 +2,7 @@ import csv
 import logging as lg
 from datetime import datetime
 import io
-from .models import db, Etudiant, Promo, Appartenir, Entreprise, MaitreStage, Demarche, Stage
-from sqlalchemy.exc import IntegrityError
+from .models import db, Etudiant, Entreprise
 
 
 def importer_etudiants_stages(file_storage):
@@ -25,14 +24,19 @@ def importer_etudiants_stages(file_storage):
                 continue
             etu = Etudiant.query.filter_by(email_etudiant=email).first()
             if not etu:
+                nom = row.get('nom_stagiaire') or "anonyme"
+                prenom = row.get('prenom_stagiaire') or "anonyme"
                 etu = Etudiant(
-                    nom_etudiant=row.get('nom_stagiaire') or "anonyme",
-                    prenom_etudiant=row.get('prenom_stagiaire') or "anonyme",
+                    nom_etudiant=nom,
+                    prenom_etudiant=prenom,
                     date_naissance=datetime(2000, 1, 1).date(),
                     email_etudiant=email,
-                    civilite_etudiant=row.get('civilite_stagiaire') or "M.")
+                    civilite_etudiant=row.get('civilite_stagiaire') or "M.",
+                    login_etudiant=(prenom[0] + nom).lower().replace(" ", ""),
+                    pwd_etudiant="")
                 db.session.add(etu)
-                db.session.flush()            
+                db.session.flush()
+                etu.pwd_etudiant = f"pass{etu.id_etudiant}"
             ajout += 1
 
 

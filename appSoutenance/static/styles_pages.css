@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bebas+Neue&family=PT+Sans+Narrow:wght@400;700&display=swap');
 
 :root{
-    --couleur_sombre_principale: #242f53;
-
+    --couleur_sombre_principale: #a58bda;
+    /*--couleur_sombre_principale: #252b40;*/
     --couleur_texte_clair: white;
 }
 
@@ -10,14 +10,14 @@
 
 div#connexion{
     /* style */
-    font-size: 1em;
+    font-size: 1rem;
 
     /* positionnement */
-    width: 60%;
-    min-height: 60%;
-    padding: 50px 150px;
+    width: 60vw;
+    height: 70vh;
 
-    justify-content: space-around;
+    align-self: center;
+    justify-content: space-evenly;
     row-gap: 30px;
 
     form{
@@ -26,7 +26,7 @@ div#connexion{
     }
 
     .petit_bouton{
-        font-size: 1em;
+        font-size: 1rem;
         width: 60%;
     }
 
@@ -38,9 +38,13 @@ div#connexion{
     input{
         width: 100%;
         margin: 0;
-        font-size: 0.7em;
-        padding: 20px;
+        font-size: 0.7rem;
+        padding: 0.7rem;
     }
+}
+
+#main_body:has(#connexion){
+    padding: 0;
 }
 
 /*---------------- POUR LES DÉMARCHES ----------------*/
@@ -74,6 +78,11 @@ div.demarches{
             /* positionnement */
             width: 30%;
         }
+    }
+
+    .petit_bouton{
+        padding: 10%;
+        width: 10vw;
     }
 }
 
@@ -112,44 +121,196 @@ div.demarches{
 
 /*---------------- POUR LES PAGES ENSEIGNANT ----------------*/
 
-#glass_fleche_nav{
-    /* style */
-    /* positionnement */
-    padding: 20px;
+:root:has(#tutores){
+    body{
+        overflow-y: hidden;
+    }
 
-    align-items: center;
+    #main_body{
+        padding: 10vh 100px;
+
+        > *{
+            width: 100%;
+        }
+
+        .boite_horizontale, .boite_verticale{
+            padding: 0;
+        }
+
+        .glass{
+            padding: 15px;
+        }
+    }
 }
 
-.tutore_accueil{
+#main_body:has(#tutores){
+    padding: 10vh 100px;
+
+    .boite_horizontale, .boite_verticale{
+        padding: 0;
+    }
+
+    .glass{
+        padding: 15px;
+    }
+}
+
+section#section_planning_accueil{
+    flex-basis: 60%;
+    flex-shrink: 0;
+    align-self: flex-start;
+
+    *{
+        box-sizing: border-box;
+    }
+
+    > *{
+        width: 100%;
+    }
+
+    #planning_accueil{
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 20px;
+
+        .glass{
+            overflow-y: scroll;
+            padding: 10px;
+            max-height: 40vh;
+            /*overflow-x: hidden;*/
+            min-width: 200px;
+
+            *{
+                column-gap: 10%;
+                padding: 0;
+            }
+            
+            .petit_bouton{
+                width: 100%;
+                margin: 10px 0;
+                justify-content: space-between;
+                padding: 20px;
+
+                font-size: 0.8rem;
+
+                > .boite_horizontale, > .boite_verticale{
+                    width: 100%;
+                    justify-content: space-between;
+                }
+            }
+        }
+    }
+}
+
+section#section_soutenance_accueil{
+    flex-basis: 40%;
+    flex-grow: 0;
+    align-self: flex-start;
+
+    h1{
+        white-space: wrap;
+    }
+
+    a{
+        align-self: flex-end;
+    }
+
+    .glass{
+        row-gap: 0;
+        width: 50%;
+        padding: 20px;
+
+        height: 100%;
+        justify-content: space-between;
+    }
+}
+
+#section_soutenance_accueil>div:last-child{
+    height: 20vh;
+}
+
+section#tutores{
+    width: 100%;
+
+    > *{
+        width: 100%;
+    }
+
+    article{
+        overflow-x: scroll;
+        max-width: 100%;
+
+        .glass{
+            min-width: 250px;
+            max-width: 20vw;
+
+            p{
+                text-align: left;
+            }
+
+            .boite_horizontale{
+                padding-bottom: 20px !important;
+            }
+        }
+    }
+}
+
+@media (max-width: 1200px) {
+    body{
+        /*background: aqua;*/
+        overflow-y: scroll !important;
+    }
+
+    #main_body:has(#tutores)>div.boite_horizontale{
+        flex-direction: column;
+        align-items: center;
+        row-gap: 40px;
+
+        section{
+            width: 100%;
+        }
+    }
+}
+
+/*#glass_fleche_nav{
     /* style */
     /* positionnement */
-    width: 400px;
+    /*padding: 20px;
+
+    align-items: center;
+}*/
+
+/*.tutore_accueil{
+    /* style */
+    /* positionnement */
+    /*width: 400px;
 }
 
 .soutBUT3_accueil{
     /* style */
     /* positionnement */
-    width: 400px;
+    /*width: 400px;
     padding: 10px;
 }
 
 .planning_accueil{
     /* style */
-    /* positionnement */
+    /*positionnement
     width: 270px;
     padding: 10px;
 }
 
-.dark_planning_accueil{
+.dark_planning_accueil{*/
     /* style */
-    background-color: var(--couleur_sombre_principale);
+    /*background-color: var(--couleur_sombre_principale);
     border-radius: 40px;
 
     color:var(--couleur_texte_clair);
 
-    /* positionnement */
+    /* positionnement *//*
+    width: 80%;
     padding: 10px;
-}
+}*/
 
 /*---------------- POUR LES PAGES ADMIN ----------------*/
 
@@ -164,13 +325,6 @@ aside#filtre_liste_admin{
     /* style */
     /* positionnement */
     align-items: center;
-}
-
-#nav_admin {
-    /* style */
-    /* positionnement */
-    margin-right: auto;
-    justify-content: flex-start;
 }
 
 button#voir{
@@ -198,21 +352,93 @@ div#boite{
     justify-content: center;
 }
 
-div#liste_etu{
+#barre_haut_accueil_admin{
+    /*width: 700px;*/
+    height: 35dvh;
+
+    > *{
+        height: 100%;
+    }
+    
+    .boite_verticale {
+        row-gap: 0;
+    }
+
+    .boite_horizontale{
+        padding: 0;
+    }
+}
+
+div.liste_etu{
     /* style */
     /* positionnement */
     width: 100%;
-    height: fit-content;
+    box-sizing: border-box;
+    flex: 0 0 100px;
+    height: 100px;
+    overflow: hidden;
     min-height: 100px;
-    margin: 10px 0; 
+    margin: 0; 
 }
 
-div#contenu_admin {
-    /* style */
-    font-size: 1em;
+.boite_horizontale:has(#contenu_admin){
+    width: 100%;
+    justify-content: space-around;
+    padding: 30px 0;
 
-    /* positionnement */
-    align-items: center;
+    #contenu_admin {
+        /* style */
+        font-size: 1rem;
+
+        /* positionnement */
+        height: 70vh;
+        max-width: 800px;
+        width: 40%;
+
+        > *{
+            padding: 5px 0;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        h2{
+            white-space: nowrap;
+        }
+
+        .glass{
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            row-gap: 5px;
+
+            a{
+                align-self: flex-end;
+            }
+
+            h3{
+                align-self: flex-start;
+            }
+        }
+    }
+}
+
+
+
+@media (max-width: 1300px) {
+    body{
+        /*background: aqua;*/
+        overflow-y: scroll !important;
+    }
+
+    .boite_horizontale:has(#contenu_admin){
+        flex-direction: column;
+        align-items: center;
+        row-gap: 100px;
+
+        section{
+            width: 100% !important;
+        }
+    }
 }
 
 a#voir{
@@ -221,9 +447,9 @@ a#voir{
     width: 250px;
 }
 
-a#detail {
+.detail_icon, #detail {
     /* style */
-    font-size: 1.2em;
+    font-size: 1.2rem;
     color: var(--couleur_sombre_principale);
     text-align: center;
 
@@ -233,6 +459,26 @@ a#detail {
     width: 70px;
     height: auto;
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 70px
+}
+
+button#ajout_sout {
+    /* style */
+    border-radius: 40px;
+/*---------------- MENU DEROULANT ----------------*/
+
+    font-family: "Arimo", sans-serif;
+    font-size: 0.8rem;
+
+    /* positionnement */
+    width: 200px;
+    height: auto;
+}
+#barre_navigation ul li {
+    position: relative;
 }
 
 button#importer, button#exporter{
@@ -240,23 +486,43 @@ button#importer, button#exporter{
     border-radius: 40px;
 
     font-family: "Arimo", sans-serif;
-    font-size: 1.4em;
+    font-size: 1.4rem;
 
     /* positionnement */
     padding: 40px;
     margin: 20px;
     height: auto; 
 }
+.sous_menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--couleur_sombre_principale);
+    min-width: 100%;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100;
+    border-radius: 0 0 5px 5px;
+    padding: 0;
+    list-style: none;
+}
 
 button#filtrer{
     /* style */
-    font-size: 0.7em;
+    font-size: 0.7rem;
 
     /* positionnement */
-    width: 300px;
+    width: 70%;
     margin: 10px auto;
-
     display: block;
+}
+
+.sous_menu li a {
+    padding: 10px;
+    display: block;
+    color: var(--couleur_texte_clair);
+    text-decoration: none;
+    text-align: center;
 }
 
 button#voir {
@@ -264,25 +530,34 @@ button#voir {
     border-radius: 40px;
 
     font-family: "Arimo", sans-serif;
-    font-size: 1.2em;
+    font-size: 1.2rem;
 
     /* positionnement */
     width: 300px;
     height: 150px;
 }
+.sous_menu li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
 
 div#contenu_admin {
     /* style */
-    font-size: 1em;
+    font-size: 1rem;
 
     /* positionnement */
     align-items: center;
+}
+#barre_navigation ul li:hover .sous_menu {
+    display: block;
 }
 
 p.pliste {
     /* style */
     font-family: "Arimo", sans-serif;
     font-size: 0.7em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     /* positionnement */
     margin: 10px 0;
@@ -293,7 +568,7 @@ div#filtre_admin{
     /* positionnement */
     width: 80%;
     max-width: 1200px;
-    margin: 150px auto 20px auto;
+    margin: 20px auto 20px auto;
     padding: 20px;
 
     display: flex;
@@ -322,13 +597,21 @@ label[for="import_csv"], label[for="export_csv"]{
 
 #en_haut{
     align-self: baseline;
+    position: sticky;
+    top: 90px;
+}
+
+#ajouter_soutenance{
+    /* style */
+    font-size: 0.7em;
+
+    /* positionnement */
+    width: 7%;
+    margin-right: 0;
+    margin-left: auto;
 }
 
 /*---------------- POUR LE PLANNING DES PAGES ADMIN ----------------*/
-
-#filtres{
-    align-self: baseline;
-}
 
 #date {
     font-size: 2.2em; 
@@ -370,9 +653,6 @@ label[for="import_csv"], label[for="export_csv"]{
     }
 }
 
-#planning-boite:first-child{
-    padding-left: 0;
-}
 
 /*---------------- POUR LES MESSAGES D'ALERTES ----------------*/
 

@@ -19,10 +19,10 @@ def test_login_form_etudiant_valid(testapp: Flask):
     """Test du formulaire de connexion avec des données valides étudiant"""
 
     with testapp.app_context():
-        form = LoginForm(Login="johndoe", Password="pass1")
+        form = LoginForm(Login="adupont", Password="pass1")
         user = form.get_authenticated_etudiant()
         assert user is not None
-        assert user.login_etudiant == "johndoe"
+        assert user.login_etudiant == "adupont"
 
 
 def test_login_form_admin_valid(testapp: Flask):
@@ -47,7 +47,7 @@ def test_login_form_etudiant_invalid_password(testapp: Flask):
     """Test de l'authentification étudiant avec un mauvais mot de passe"""
 
     with testapp.app_context():
-        form = LoginForm(Login="johndoe", Password="mdp")
+        form = LoginForm(Login="adupont", Password="mdp")
         assert form.get_authenticated_etudiant() is None
 
 def test_login_form_admin_invalid_password(testapp: Flask):
@@ -77,12 +77,12 @@ def test_login_form_etudiant_sha256(testapp: Flask):
             pwd_etudiant=mdp_hashe,
         )
         db.session.add(nouveau_etu)
-        db.session.flush() # Envoie à la BD sans valider définitivement
+        db.session.flush()
 
         form = LoginForm(Login="shaetu", Password=mdp_clair)
         user = form.get_authenticated_etudiant()
         assert user is not None
-        db.session.rollback() # Annule l'insertion pour le test suivant
+        db.session.rollback()
 
 def test_login_form_admin_sha256(testapp: Flask):
     """Test du fallback SHA256 pour admin"""
@@ -150,10 +150,9 @@ def test_login_form_admin_not_found(testapp: Flask):
         assert form.get_authenticated_admin() is None
 
 def test_login_form_enseignant_not_found(testapp: Flask):
-    """Test du formulaire de connexion avec un utilisateur inexistant"""
+    """Test de l'authentification enseignant avec un utilisateur inexistant"""
 
     with testapp.app_context():
-        form = LoginForm(Login="utilisateur_inexistant", Password="mdp")
-
+        form = LoginForm(Login="inconnu", Password="mdp")
         user = form.get_authenticated_enseignant()
         assert user is None

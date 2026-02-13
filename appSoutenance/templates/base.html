@@ -8,12 +8,48 @@
     <link rel="stylesheet" href="{{ url_for('static', filename = 'styles_pages.css') }}">
     <link rel="shortcut icon" href="{{ url_for('static', filename = 'images/favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
+    
 </head>
 <body>
     {% block navbar %}{% endblock %}
     <div id="main_body" class="boite_verticale">
-        {% block content %}{% endblock %}
+        {% block content %}
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const fileInput = document.getElementById('ficCSV_input');
+                    const fileNameDisplay = document.getElementById('file-name-display');
+
+
+                    if (fileInput) {
+                        fileInput.addEventListener('change', function() {
+                            const fileName = this.files.length > 0 ? this.files[0].name : 'Aucun fichier sélectionné.';
+                            fileNameDisplay.textContent = 'Fichier : ' + fileName;
+                        });
+                    }
+
+                    document.querySelectorAll('.btn-close').forEach(button => {
+                        button.addEventListener('click', function() {
+                            this.closest('.alert').style.display = 'none';
+                        });
+                    });
+                });
+            </script>
+        {% endblock %}
     </div>
     <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/all.js" integrity="sha384-rOA1PnstxnOBLzCLMcre8ybwbTmemjzdNlILg8O7z1lUkLXozs4DHonlDtnE7fpc" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const scrollPosition = sessionStorage.getItem('scrollPosition');
+            if (scrollPosition) {
+                window.scrollTo(0, parseInt(scrollPosition));
+                sessionStorage.removeItem('scrollPosition');
+            }
+        });
+
+
+        window.addEventListener('beforeunload', function() {
+            sessionStorage.setItem('scrollPosition', window.scrollY);
+        });
+    </script>
 </body>
 </html>
