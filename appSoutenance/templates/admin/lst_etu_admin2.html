@@ -33,6 +33,7 @@
         </aside>
 
         <div class="boite_verticale">
+            <h1>Liste des étudiants{% if current_promo == '2A' %} BUT2{% endif %}</h1>
             {% if resultats|length == 0 %}
                 <p>Aucun étudiant trouvé</p>
             {% endif %}
