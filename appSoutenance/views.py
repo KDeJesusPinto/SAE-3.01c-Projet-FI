@@ -630,7 +630,7 @@ def _planning_admin_common(template_name, forced_promo=None):
             date_formatee = f"{jour_mois} {mois_francais} {soutenance.dateS.year}"
 
 
-            cle_regroupement = f"{soutenance.dateS.strftime('%Y-%m-%d')}-{soutenance.h_debut}-{soutenance.salle}-{membres_jury_noms}"
+            cle_regroupement = f"{soutenance.dateS}-{soutenance.h_debut}-{soutenance.salle}"
            
             if cle_regroupement not in regroupement:
                 regroupement[cle_regroupement] = {
@@ -639,9 +639,10 @@ def _planning_admin_common(template_name, forced_promo=None):
                     'h_debut': soutenance.h_debut,
                     'salle': soutenance.salle,
                     'jury_noms': membres_jury_noms,
-                    'nom_promo': promo_etudiant,
+                    'promos': set(),
                     'stages': []
                 }
+            regroupement[cle_regroupement]['promos'].add(promo_etudiant)
             regroupement[cle_regroupement]['stages'].append({
                 'nom_etudiant': etudiant_lie.nom_etudiant,
                 'prenom_etudiant': etudiant_lie.prenom_etudiant,
@@ -718,19 +719,30 @@ def modifier_soutenance_admin(id):
     jury_actuel_id = [int(c.id_enseignant) for c in compose]
     
     etu_actuels_id = []
-    for s in Soutenance.query.filter_by(
+    soutenances_groupe = Soutenance.query.filter_by(
             dateS=uneSoutenance.dateS,
             h_debut=uneSoutenance.h_debut,
             salle=uneSoutenance.salle
-        ).all():
+        ).all()
+    
+    for s in soutenances_groupe:
         if s.stage and s.stage.demarche and s.stage.demarche.etudiant:
-            etu_actuels_id.append(s.stage.demarche.etudiant.id_etudiant)
+            etu_actuels_id.append(int(s.stage.demarche.etudiant.id_etudiant))
+
+    promo = "BUT2" 
+    if soutenances_groupe:
+        sout_ref = soutenances_groupe[0]
+        if sout_ref.stage and sout_ref.stage.demarche and sout_ref.stage.demarche.etudiant:
+            app = Appartenir.query.filter_by(id_etudiant=sout_ref.stage.demarche.etudiant.id_etudiant).first()
+            if app and "BUT3" in app.nom_promo:
+                promo = "BUT3"
 
     return render_template(
         "admin/update_soutenance.html",
         uneSoutenance=uneSoutenance,
         jury_actuel_id=jury_actuel_id,
-        etu_actuels_id=etu_actuels_id
+        etu_actuels_id=etu_actuels_id,
+        promo=promo
     )
 
 
@@ -744,38 +756,90 @@ def save_soutenance_admin(id):
         flash("Soutenance introuvable.", "danger")
         return redirect(url_for('planning_admini'))
 
+    promo_type = request.form.get('promo')
     date_str = request.form.get('dateS')
     heure_str = request.form.get('h_debut')
     salle = request.form.get('salle')
 
-    # strptime pour convertir la date (string) au format date
-    if date_str:
-        soutenance.dateS = datetime.strptime(date_str, "%Y-%m-%d").date()
-
-    if heure_str:
-        soutenance.h_debut = heure_str
-    
-    soutenance.salle =salle
-
-    Composer.query.filter_by(id_soutenance=id).delete()
-
+    new_etu_ids = set()
     for i in range(1, 4):
-        id_ens = request.form.get(f'ens{i}')
-        if id_ens and id_ens.strip():
+        eid = request.form.get(f'etu{i}')
+        if eid and eid.strip():
             try:
-                comp = Composer(id_enseignant=int(id_ens), id_soutenance=soutenance.id_soutenance)
-                db.session.add(comp)
+                new_etu_ids.add(int(eid))
             except ValueError:
                 pass
 
+    regimes_trouves = set()
+    for id_etu in new_etu_ids:
+        app = Appartenir.query.filter_by(id_etudiant=id_etu).first()
+        if app and app.regime_etudiant:
+            regimes_trouves.add(app.regime_etudiant)
+    
+    if len(regimes_trouves) > 1:
+        flash("Modification impossible : Vous ne pouvez pas mélanger des étudiants de régimes différents (FI et Alternance) dans le même créneau.", "danger")
+        return redirect(url_for('modifier_soutenance_admin', id=id))
+
+
+    groupe_soutenances = Soutenance.query.filter_by(
+        dateS=soutenance.dateS,
+        h_debut=soutenance.h_debut,
+        salle=soutenance.salle
+    ).all()
+
+    # Préparation des nouvelles valeurs
+    new_date = soutenance.dateS
+    if date_str:
+        new_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+    new_heure = heure_str if heure_str else soutenance.h_debut
+    new_salle = salle if salle else soutenance.salle
+    
+
+    new_jury_ids = []
+    for i in range(1, 4):
+        jid = request.form.get(f'ens{i}')
+        if jid and jid.strip():
+            new_jury_ids.append(int(jid))
+
     try:
+        for s in groupe_soutenances:
+            etu_lie = s.stage.demarche.etudiant
+            
+            if etu_lie.id_etudiant in new_etu_ids:
+                s.dateS = new_date
+                s.h_debut = new_heure
+                s.salle = new_salle
+                
+                # Mise à jour du jury
+                Composer.query.filter_by(id_soutenance=s.id_soutenance).delete()
+                for jid in new_jury_ids:
+                    db.session.add(Composer(id_enseignant=jid, id_soutenance=s.id_soutenance))
+                
+                new_etu_ids.remove(etu_lie.id_etudiant)
+            else:
+                Composer.query.filter_by(id_soutenance=s.id_soutenance).delete()
+                Jury.query.filter_by(id_soutenance=s.id_soutenance).delete()
+                db.session.delete(s)
+
+        for eid in new_etu_ids:
+            stage = Stage.query.join(Demarche).filter(Demarche.id_etudiant == eid, Demarche.situation == 'Acceptée').first()
+            if stage:
+                ns = Soutenance(dateS=new_date, h_debut=new_heure, salle=new_salle, id_stage=stage.id_stage, nom_bat="")
+                db.session.add(ns)
+                db.session.flush() # Pour avoir l'ID
+                for jid in new_jury_ids:
+                    db.session.add(Composer(id_enseignant=jid, id_soutenance=ns.id_soutenance))
+
         db.session.commit()
         flash("Soutenance mise à jour avec succès !", "success")
     except Exception as e:
         db.session.rollback()
         flash(f"Erreur lors de la mise à jour : {e}", "danger")
 
-    return redirect(url_for('planning_admini'))
+    if promo_type == 'BUT3':
+        return redirect(url_for('planning_admini3'))
+    else:
+        return redirect(url_for('planning_admini2'))
 
 
 @app.route('/api/enseignants_disponibles/<int:id_soutenance>')
@@ -810,10 +874,36 @@ def api_enseignants_disponibles(id_soutenance):
 @app.route('/api/etudiants_par_tuteur/<int:id_enseignant>/<int:id_soutenance>')
 @login_required
 def api_etudiants_par_tuteur(id_enseignant, id_soutenance):
+    promo = request.args.get('promo')
     query = db.session.query(Etudiant).join(Tutorer).filter(Tutorer.id_enseignant == id_enseignant)
-    query = query.join(Demarche).filter(Demarche.situation == 'Acceptée').join(Stage, Demarche.id_demarche == Stage.id_demarche).outerjoin(Soutenance, Stage.id_stage == Soutenance.id_stage)
-    #query = query.filter(or_(Soutenance.id_soutenance == None, Soutenance.id_soutenance == id_soutenance)).distinct()  
-    query = query.filter((Soutenance.id_soutenance == None) | (Soutenance.id_soutenance == id_soutenance)).distinct()  
+
+    if promo:
+        if promo == "2A":
+            query = query.join(Appartenir).filter(Appartenir.nom_promo == 'BUT2')
+        elif promo == "3A":
+            query = query.join(Appartenir).filter(Appartenir.nom_promo == 'BUT3')
+        else:
+            query = query.join(Appartenir).filter(Appartenir.nom_promo == promo)
+    elif id_soutenance and id_soutenance != 0:
+        sout = Soutenance.query.get(id_soutenance)
+        if sout and sout.stage and sout.stage.demarche and sout.stage.demarche.etudiant:
+            app = Appartenir.query.filter_by(id_etudiant=sout.stage.demarche.etudiant.id_etudiant).first()
+            if app:
+                query = query.join(Appartenir).filter(Appartenir.nom_promo == app.nom_promo)
+
+    sout_ref = Soutenance.query.get(id_soutenance)
+    query = query.join(Demarche).filter(Demarche.situation == 'Acceptée').join(
+        Stage, Demarche.id_demarche == Stage.id_demarche).outerjoin(
+        Soutenance, Stage.id_stage == Soutenance.id_stage).filter(
+            (Soutenance.id_soutenance == None) |
+            (
+                (Soutenance.dateS == sout_ref.dateS) &
+                (Soutenance.h_debut == sout_ref.h_debut) &
+                (Soutenance.salle == sout_ref.salle)
+            ))
+
+    
+    
     etudiants = query.all()
 
     return jsonify([
@@ -894,6 +984,7 @@ def creation_soutenance():
     date_sel = request.args.get('dateS')
     heure_sel = request.args.get('h_debut')
     salle_sel = request.args.get('salle', '')
+    promo = request.args.get('promo')
 
     ens_ids = [request.args.get(f'ens{i}','') for i in range(1, 4)]
     etu_ids = [request.args.get(f'etu{i}','') for i in range(1, 4)]
@@ -915,6 +1006,15 @@ def creation_soutenance():
                     query = db.session.query(Etudiant).join(Tutorer).filter(
                         Tutorer.id_enseignant == int(ens_ids[i])
                     )
+
+                    if promo:
+                        if promo == "2A":
+                            query = query.join(Appartenir).filter(Appartenir.nom_promo == 'BUT2')
+                        elif promo == "3A":
+                            query = query.join(Appartenir).filter(Appartenir.nom_promo == 'BUT3')
+                        else:
+                            query = query.join(Appartenir).filter(Appartenir.nom_promo == promo)
+
                     # query = query.join(Demarche).filter(Demarche.situation == 'Acceptée').distinct()
                     # if ids_exclus:
                     #     query = query.filter(~Etudiant.id_etudiant.in_(ids_exclus))
@@ -954,7 +1054,8 @@ def creation_soutenance():
         ens_ids=ens_ids,
         etu_ids=etu_ids,
         ens_sel=ens_sel,
-        etu_sel=etu_sel
+        etu_sel=etu_sel,
+        promo=promo
     )
 
 @app.route('/soutenance/valider', methods=['POST'])
@@ -1015,6 +1116,23 @@ def valider_jury():
 
     if Soutenance.query.filter(Soutenance.dateS == date_obj, Soutenance.h_debut == heure_sel, Soutenance.salle == salle_sel).first():
         flash(f"La salle {salle_sel} est déjà occupée à cette date et heure.", "danger")
+        ens1 = request.form.get('ens1', '')
+        ens2 = request.form.get('ens2', '')
+        ens3 = request.form.get('ens3', '')
+        etu1 = request.form.get('etu1', '')
+        etu2 = request.form.get('etu2', '')
+        etu3 = request.form.get('etu3', '')
+        return redirect(url_for('creation_soutenance', dateS=dateS, h_debut=heure_sel, salle=salle_sel, ens1=ens1, ens2=ens2, ens3=ens3, etu1=etu1, etu2=etu2, etu3=etu3))
+
+
+    regimes_trouves = set()
+    for id_etu in unique_etu_ids:
+        app = Appartenir.query.filter_by(id_etudiant=id_etu).first()
+        if app and app.regime_etudiant:
+            regimes_trouves.add(app.regime_etudiant)
+    
+    if len(regimes_trouves) > 1:
+        flash("Impossible de mélanger des étudiants de régimes différents (Formation Initiale et Alternance) dans un même créneau.", "danger")
         ens1 = request.form.get('ens1', '')
         ens2 = request.form.get('ens2', '')
         ens3 = request.form.get('ens3', '')
