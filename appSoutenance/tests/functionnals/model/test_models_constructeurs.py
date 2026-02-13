@@ -3,6 +3,7 @@ from appSoutenance.models import *
 
 def test_new_entreprise_creation(testapp):
     """Vérifie la création manuelle d'une entreprise"""
+    
     with testapp.app_context():
         new_ent = Entreprise(
             nom_entreprise="Test Corp",
@@ -19,6 +20,7 @@ def test_new_entreprise_creation(testapp):
 
 def test_new_maitre_stage_creation(testapp):
     """Vérifie la création manuelle d'un maître de stage"""
+
     with testapp.app_context():
         new_maitre = MaitreStage(
             civilite_maitre="M.",
@@ -33,6 +35,7 @@ def test_new_maitre_stage_creation(testapp):
 
 def test_new_promo_creation(testapp):
     """Vérifie la création manuelle d'une promo"""
+    
     with testapp.app_context():
         new_promo = Promo("BUT Test", 2030, "Informatique")
         db.session.add(new_promo)
@@ -41,6 +44,7 @@ def test_new_promo_creation(testapp):
 
 def test_new_tutorer_creation(testapp):
     """Vérifie la création d'une relation de tutorat"""
+
     with testapp.app_context():
         etu = Etudiant(
             nom_etudiant="TestTutorat",
@@ -59,6 +63,7 @@ def test_new_tutorer_creation(testapp):
 
 def test_new_enseignant_creation(testapp):
     """Vérifie la création manuelle d'un enseignant"""
+
     with testapp.app_context():
         ens = Enseignant("Nom", "Prenom", "M.", "email@test.com", "login", "pwd")
         db.session.add(ens)
@@ -67,6 +72,7 @@ def test_new_enseignant_creation(testapp):
 
 def test_new_assembler_creation(testapp):
     """Vérifie la création d'une relation Assembler (Jury-Admin)"""
+
     with testapp.app_context():
         # Admin A001 et Jury 1 existent via loaddb
         assembler = Assembler(id_jury=1, id_admin="A001")

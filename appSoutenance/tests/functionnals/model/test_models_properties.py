@@ -5,12 +5,12 @@ def test_soutenance_properties_and_init(testapp):
     """Test des propriétés de Soutenance et des constructeurs manquants"""
 
     with testapp.app_context():
-        # 1. Setup Enseignants
+        # 1. Test Enseignants
         ens1 = Enseignant(nom="Prof1", prenom="P1", civilite="M.", email="p1@test.com", login_enseignant="p1", pwd_enseignant="pass")
         ens2 = Enseignant(nom="Prof2", prenom="P2", civilite="M.", email="p2@test.com", login_enseignant="p2", pwd_enseignant="pass")
         db.session.add_all([ens1, ens2])
         
-        # 2. Setup Etudiant & Promo
+        # 2. Test Etudiant & Promo
         etu = Etudiant(nom_etudiant="Etu", prenom_etudiant="P", civilite_etudiant="M.", date_naissance=datetime(2000,1,1).date(), email_etudiant="e@test.com")
         db.session.add(etu)
         db.session.flush()
@@ -21,7 +21,7 @@ def test_soutenance_properties_and_init(testapp):
         app = Appartenir(id_etudiant=etu.id_etudiant, nom_promo="BUT2-Test", annee_promo=2025, regime_etudiant="FI")
         db.session.add(app)
         
-        # 3. Setup Stage
+        # 3. Test Stage
         ent = Entreprise(nom_entreprise="EntTest", secteur="S", ville="V", adresse="A", code_postal="00000", typeE="T")
         db.session.add(ent)
         db.session.flush()
@@ -34,14 +34,14 @@ def test_soutenance_properties_and_init(testapp):
         db.session.add(st)
         db.session.flush()
         
-        # 4. Test Soutenance Init with h_fin
+        # 4. Test Soutenance Init
         sout = Soutenance(salle=101, dateS=datetime.now().date(), h_debut="10:00", id_stage=st.id_stage, h_fin="11:00", nom_bat="B")
         db.session.add(sout)
         db.session.commit()
         
         assert sout.h_fin == "11:00"
         
-        # 5. Test jury_noms property
+        # 5. Test jury_noms
         assert sout.jury_noms == "Jury non assigné"
         
         c1 = Composer(id_enseignant=ens1.id_enseignant, id_soutenance=sout.id_soutenance)
@@ -51,7 +51,7 @@ def test_soutenance_properties_and_init(testapp):
         
         assert "Prof1 P1" in sout.jury_noms
         
-        # 6. Test nom_promo property
+        # 6. Test nom_promo
         assert sout.nom_promo == "BUT2-Test"
         
         db.session.delete(app)
@@ -61,14 +61,14 @@ def test_soutenance_properties_and_init(testapp):
         
         assert sout.nom_promo == "N/C"
 
-        # 7. Test branche N/C finale
+        # 7. Test N/C
         sout_orphan = Soutenance(salle=102, dateS=datetime.now().date(), h_debut="14:00", id_stage=999999)
         assert sout_orphan.nom_promo == "N/C"
 
 def test_tutorer_init(testapp):
-    """Test de l'initialisation de Tutorer pour couvrir __init__"""
+    """Test de l'initialisation de Tutorer"""
+    
     with testapp.app_context():
-        # Création d'un enseignant et d'un étudiant pour le test
         ens = Enseignant(nom="ProfT", prenom="T", civilite="M.", email="pt@test.com", login_enseignant="pt", pwd_enseignant="pass")
         db.session.add(ens)
         

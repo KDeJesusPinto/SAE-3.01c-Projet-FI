@@ -223,7 +223,7 @@ class Soutenance(db.Model):
         self.id_stage = id_stage
 
     def __repr__(self):
-        return f"<La soutenance a lieu le {self.dateS} à {self.h_debut} au batîment {self.nom_bat} {self.salle} {self.id_stage}>"
+        return f"<La soutenance a lieu le {self.dateS} à {self.h_debut} au batiment {self.nom_bat} {self.salle}>"
     
     def horaire(self):
         return f"<La soutenance a lieu le {self.dateS} à {self.h_debut} au batîment {self.nom_bat} {self.salle}>"

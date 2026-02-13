@@ -7,6 +7,7 @@ from appSoutenance.models import db, Etudiant, Entreprise, Soutenance, Stage, De
 
 def test_exporter_etudiants_success(testapp: Flask):
     """Test de l'exportation réussie des étudiants"""
+
     with testapp.app_context():
         # Nettoyage de la base
         db.session.query(Appartenir).delete()
@@ -40,6 +41,7 @@ def test_exporter_etudiants_success(testapp: Flask):
 
 def test_exporter_etudiants_empty(testapp: Flask):
     """Test de l'exportation quand il n'y a pas d'étudiants"""
+
     with testapp.app_context():
         # Nettoyage de la base
         db.session.query(Appartenir).delete()
@@ -55,6 +57,7 @@ def test_exporter_etudiants_empty(testapp: Flask):
 
 def test_exporter_entreprises_success(testapp: Flask):
     """Test de l'exportation réussie des entreprises"""
+
     with testapp.app_context():
         # Nettoyage de la base
         db.session.query(Entreprise).delete()
@@ -79,6 +82,7 @@ def test_exporter_entreprises_success(testapp: Flask):
 
 def test_exporter_soutenances_success(testapp: Flask):
     """Test de l'exportation réussie des soutenances"""
+
     with testapp.app_context():
         # Nettoyage de la base
         db.session.query(Composer).delete()
@@ -147,6 +151,7 @@ def test_exporter_soutenances_success(testapp: Flask):
 
 def test_exporter_soutenances_no_jury(testapp: Flask):
     """Test de l'exportation d'une soutenance sans jury"""
+
     with testapp.app_context():
         db.session.query(Composer).delete()
         db.session.query(Soutenance).delete()
@@ -167,6 +172,7 @@ def test_exporter_soutenances_no_jury(testapp: Flask):
 
 def test_exporter_soutenances_partial_data(testapp: Flask):
     """Test de l'exportation avec un stage sans étudiant"""
+    
     with testapp.app_context():
         # Nettoyage
         db.session.query(Composer).delete()

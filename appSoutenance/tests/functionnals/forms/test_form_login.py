@@ -150,9 +150,9 @@ def test_login_form_admin_not_found(testapp: Flask):
         assert form.get_authenticated_admin() is None
 
 def test_login_form_enseignant_not_found(testapp: Flask):
-    """Test du formulaire de connexion avec un utilisateur inexistant"""
+    """Test de l'authentification enseignant avec un utilisateur inexistant"""
 
     with testapp.app_context():
-        form = LoginForm(Login="utilisateur_inexistant", Password="mdp")
+        form = LoginForm(Login="inconnu", Password="mdp")
         user = form.get_authenticated_enseignant()
         assert user is None
