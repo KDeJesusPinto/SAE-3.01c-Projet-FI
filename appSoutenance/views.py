@@ -398,14 +398,48 @@ def desinscription_enseignant():
 @app.route('/enseignant/liste+etu/')
 @login_required
 def liste_etu_enseignant():
+    return liste_etu_enseignant_common()
 
-    num_personne = request.args.get('num_personne')
+@app.route('/enseignant/liste+etu/but2')
+@login_required
+def liste_etu_enseignant_but2():
+    return liste_etu_enseignant_common(forced_promo="2A")
+
+@app.route('/enseignant/liste+etu/but3')
+@login_required
+def liste_etu_enseignant_but3():
+    return liste_etu_enseignant_common(forced_promo="3A")
+
+def liste_etu_enseignant_common(forced_promo=None):
     enseignant=current_user
     if not isinstance(enseignant, Enseignant):
         flash("Accès réservé aux enseignants.", "warning")
         return redirect(url_for("login"))
     
-    lesEtudiants = Etudiant.query.all()
+    # Filtres
+    formation_filter = request.args.get('formation')
+    situation_filter = request.args.get('situation')
+    regime_filter = request.args.get('regime')
+    tri = request.args.get("trier", "Nom")
+
+    requete_les_etudiants = Etudiant.query.join(Tutorer).filter(Tutorer.id_enseignant == enseignant.id_enseignant)\
+        .outerjoin(Appartenir, Etudiant.id_etudiant == Appartenir.id_etudiant)\
+        .outerjoin(Promo, (Appartenir.nom_promo == Promo.nom_promo) & (Appartenir.annee_promo == Promo.annee_promo))
+
+    if forced_promo == "2A":
+        requete_les_etudiants = requete_les_etudiants.filter((Promo.nom_promo.like("%BUT2%")) | (Promo.nom_promo.like("%BUT 2%")))
+    elif forced_promo == "3A":
+        requete_les_etudiants = requete_les_etudiants.filter((Promo.nom_promo.like("%BUT3%")) | (Promo.nom_promo.like("%BUT 3%")))
+
+    if formation_filter:
+        terme = "Informatique" if formation_filter == "Info" else formation_filter
+        requete_les_etudiants = requete_les_etudiants.filter(Promo.formation_promo.like(f"%{terme}%"))
+
+    if regime_filter:
+        regime = "Formation initiale" if regime_filter == "Formation Initiale" else "Formation apprentissage"
+        requete_les_etudiants = requete_les_etudiants.filter(Appartenir.regime_etudiant == regime)
+
+    lesEtudiants = requete_les_etudiants.distinct().all()
     res = []
 
 
@@ -424,6 +458,13 @@ def liste_etu_enseignant():
         derniere_demarche = Demarche.query.filter_by(id_etudiant=etudiant.id_etudiant)\
             .order_by(desc(Demarche.date_envoi)).first()
 
+        current_situation = derniere_demarche.situation if derniere_demarche else "Aucune"
+
+        if situation_filter:
+            if situation_filter == 'Trouvé' and current_situation != 'Acceptée':
+                continue
+            elif situation_filter == 'En cours' and current_situation != 'En cours':
+                continue
 
         res.append({
             'etudiant':
@@ -434,12 +475,22 @@ def liste_etu_enseignant():
                 promo.annee_promo if promo else "None",
             'promo':
                 promo.nom_promo if promo else "None",
+            'regime': 
+                "FI" if appartenance and appartenance.regime_etudiant == "Formation initiale" else ("Apprenti" if appartenance else "N/C"),
             'nb_demarches':
                 nb_demarches,
             'situation':
-                derniere_demarche.situation if derniere_demarche else "Aucune"
+                current_situation
         })
-    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", title="Liste des étudiants",resultats=res, personne=enseignant)
+
+    if tri == "Nom":
+        res = sorted(res, key=lambda x: x["etudiant"].nom_etudiant)
+    elif tri == "Annee":
+        res = sorted(res, key=lambda x: (x["annee"] is None, x["annee"]))
+    elif tri == "NbDemarches":
+        res = sorted(res, key=lambda x: x["nb_demarches"], reverse=True)
+
+    return render_template("enseignant/lst_etudiants_enseignant.html", accueil="accueil_enseignant", title="Liste des étudiants",resultats=res, personne=enseignant, current_promo=forced_promo)
 
 
 
