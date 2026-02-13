@@ -9,11 +9,16 @@ from .app import app, db
 from .models import *
 
 
+# def resetdb():
 @app.cli.command()
-def resetdb():
+
+@click.pass_context
+def resetdb(ctx):
     """Réinitialise la base de données à son état initial"""
-    db.drop_all()
-    db.create_all()
+    # db.drop_all()
+    # db.create_all()
+    ctx.invoke(loaddb, filename='appSoutenance/data/arexis_donnees.csv')
+    lg.warning("Base de données réinitialisée avec succès avec les données CSV !")
 
     sql_file = Path("appSoutenance/data/donnee.sql")
     if sql_file.exists():
