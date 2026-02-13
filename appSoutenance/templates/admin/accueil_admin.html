@@ -86,21 +86,21 @@
             
             <span class="boite_horizontale">
                     <h2>DONNÉES ÉLÈVES</h2>
-                    <a class="petit_bouton" id="voir" href="{{ url_for('liste_etu_admin') }}">Voir tous les étudiants</a>
+                    <a class="petit_bouton" id="voir" href="{{ url_for('liste_etu_admin2') }}">Voir tous les étudiants</a>
             </span>
 
             <div class="boite_horizontale">
                 <article class="glass boite_verticale">
                     <h3>STAGE TROUVÉ</h3>
                     <h1>{{ nb_stages_trouves }} / {{ nb_etudiants_2 }}</h1>
-                    <a href="{{ url_for('liste_etu_admin', situation='Trouvé', **request.args) }}">
+                    <a href="{{ url_for('liste_etu_admin2', situation='Trouvé', **request.args) }}">
                         <i class="fas fa-arrow-circle-right petite_icone"></i>
                     </a>
                 </article>
                 <article class="glass boite_verticale">
                     <h3>SOUTENANCE ALTERNANT PRÉVU</h3>
                     <h1>{{ nb_soutenances_alternants2 }} / {{ nb_etudiants_alternants2 }}</h1>
-                    <a href="{{ url_for('liste_etu_admin', regime='Alternant', **request.args) }}">
+                    <a href="{{ url_for('liste_etu_admin2', regime='Alternant', **request.args) }}">
                         <i class="fas fa-arrow-circle-right petite_icone"></i>
                     </a>
                 </article>
@@ -120,7 +120,7 @@
                     </a>
                 </article>
                 <article class="glass boite_verticale">
-                    <h3>SOUTENANCE EN ATTENTE DE CANDIDE</h3>
+                    <h3>SOUTENANCE AVEC CANDIDES</h3>
                     <h1>{{ nb_soutenances_attente_candide2 }} / {{ nb_soutenances_posees2 }}</h1>
                     <a href="{{ url_for('liste_soutenances_candides_admin')}}">
                         <i class="fas fa-arrow-circle-right petite_icone"></i>
@@ -134,21 +134,21 @@
             
             <span class="boite_horizontale">
                     <h2>DONNÉES ÉLÈVES</h2>
-                    <a class="petit_bouton" id="voir" href="{{ url_for('liste_etu_admin') }}">Voir tous les étudiants</a>
+                    <a class="petit_bouton" id="voir" href="{{ url_for('liste_etu_admin3') }}">Voir tous les étudiants</a>
             </span>
 
             <div class="boite_horizontale">
                 <article class="glass boite_verticale">
                     <h3>STAGE TROUVÉ</h3>
                     <h1>{{ nb_stages_trouves3 }} / {{ nb_etudiants_3 }}</h1>
-                    <a href="{{ url_for('liste_etu_admin', situation='Trouvé', **request.args) }}">
+                    <a href="{{ url_for('liste_etu_admin3', situation='Trouvé', **request.args) }}">
                         <i class="fas fa-arrow-circle-right petite_icone"></i>
                     </a>
                 </article>
                 <article class="glass boite_verticale">
                     <h3>SOUTENANCE ALTERNANT PRÉVU</h3>
                     <h1>{{ nb_soutenances_alternants3 }} / {{ nb_etudiants_alternants3 }}</h1>
-                    <a href="{{ url_for('liste_etu_admin', regime='Alternant', **request.args) }}">
+                    <a href="{{ url_for('liste_etu_admin3', regime='Alternant', **request.args) }}">
                         <i class="fas fa-arrow-circle-right petite_icone"></i>
                     </a>
                 </article>
@@ -168,7 +168,7 @@
                     </a>
                 </article>
                 <article class="glass boite_verticale">
-                    <h3>SOUTENANCE EN ATTENTE DE CANDIDE</h3>
+                    <h3>SOUTENANCE AVEC CANDIDES</h3>
                     <h1>{{ nb_soutenances_attente_candide3 }} / {{ nb_soutenances_posees3 }}</h1>
                     <a href="{{ url_for('liste_soutenances_candides_admin')}}">
                         <i class="fas fa-arrow-circle-right petite_icone"></i>
